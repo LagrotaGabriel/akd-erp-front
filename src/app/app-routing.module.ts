@@ -7,12 +7,10 @@ const routes: Routes = [
     path: '',
     component: SidenavComponent,
     children: [
-      /*{
-        path: 'inicio', component: HomeComponent
-      },
       {
-        path: 'clientes', component: ClientesComponent
-      },*/
+        path: 'clientes', 
+        loadChildren: () => import('./modules/clientes/clientes-routing.module').then( m => m.ClientesRoutingModule)
+      }
     ]
   },
   {

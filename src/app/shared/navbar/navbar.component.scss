@@ -1,0 +1,115 @@
+.container {
+    background-color: #15161a;
+    height: 100%;
+}
+
+.sidenav {
+    height: 100%;
+    background-color: #1E2026;
+    width: 14rem;
+    padding: 0;
+}
+
+/* CONTAINER ENVOLVENDO O ÍCONE, O NOME E O STATUS DO USUÁRIO */
+.avatar_container {
+    display: flex;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+
+/* AVATAR */
+.avatar_icone{
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    border-radius: 50%;
+    margin-left: 0.75rem;
+    background-image: url('https://avatars.githubusercontent.com/u/95034068?v=4');
+    background-size: cover;
+}
+
+/* BLOCO ENVOLVENDO O NOME E CARGO DO USUÁRIO LOGADO */
+
+.avatar_text_block {
+    margin-left: 0.5rem;
+} 
+
+.avatar_text {
+    margin: 0;
+    padding: 0;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+/* NOME DO USUÁRIO LOGADO */
+.avatar_nome {
+    color: #FFFF;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* CARGO DO USUÁRIO LOGADO */
+.avatar_cargo {
+    color: #949494;
+    font-size: 0.90rem;
+}
+
+/* BOLINHA DO AVATAR */
+.mat-badge-content {
+    background-color: #00ff2a;
+    color: transparent;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 10px;
+    height: 10px;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+/* TÍTULO DO MENU */
+.titulo_menu {
+    font-size: 1rem;
+    color: #949494;
+    font-weight: 500;
+    margin-left: 0.75rem;
+    margin-bottom: 0;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+/* ITEM ENVOLVENDO ÍCONE E TEXTO DO ÍCONE */
+.sidenav_item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* ÍCONE DO MENU LATERAL */
+.sidenav_icon {
+    padding: 0.5rem 0;
+    width: 1.5rem;
+    color: #949494;
+    margin: 0 0.5rem 0 0.75rem;
+}
+
+/* TEXTO DOS ÍCONES MENU LATERAL */
+.icon_text {
+    float: flex;
+    margin: 0;
+    color: #949494;
+    font-size: 1rem;
+    pointer-events: none;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+/* PROPRIEDADE DO ITEM LATERAL ATIVO */
+.titulo_item_ativo, .icone_ativo {
+    color: #ebe9e9;
+}

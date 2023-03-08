@@ -1,0 +1,275 @@
+<app-header
+  (enviaAlteracaoEstadoSidebar)="alteraEstadoSidebar($event)"
+></app-header>
+<mat-drawer-container class="container" hasBackdrop="false" autosize>
+  <mat-drawer
+    #sidenav
+    id="sidenav"
+    mode="side"
+    class="sidenav mat-elevation-z8"
+    [opened]="!estadoSidebar"
+  >
+    <div class="avatar_container">
+      <div
+        class="avatar_icone"
+        matBadge="."
+        matBadgePosition="below"
+        matBadgeSize="small"
+        matBadgeColor="primary"
+      ></div>
+
+      <div class="avatar_text_block">
+        <p class="avatar_text avatar_nome">Gabriel Lagrota</p>
+        <p class="avatar_text avatar_cargo">Desenvolvedor</p>
+      </div>
+    </div>
+
+    <h1 class="titulo_menu">MENU</h1>
+
+    <div
+      class="sidenav_item"
+      [routerLink]="['/inicio']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="home"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Página inicial
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      [routerLink]="['/clientes']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="person"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Clientes
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      [routerLink]="['/vendas']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="storefront"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Vendas
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      [routerLink]="['/estoque']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="trolley"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Estoque
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      [routerLink]="['/despesas']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="money_off"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Despesas
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      routerLink="['/fechamentos']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="auto_graph"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Fechamentos
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      routerLink="['/patrimonios']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="account_balance"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Patrimônios
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      routerLink="['/fornecedores']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="local_shipping"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Fornecedores
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      routerLink="['/compras']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="shopping_cart"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Compras
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      routerLink="['/colaboradores']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="badge"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Colaboradores
+      </p>
+    </div>
+
+    <div
+      class="sidenav_item"
+      routerLink="['/precos']"
+      [routerLinkActive]="['item_ativo']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      matRipple
+    >
+      <mat-icon
+        fontIcon="paid"
+        class="sidenav_icon"
+        [routerLinkActive]="['icone_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      ></mat-icon>
+      <p
+        class="icon_text"
+        [routerLinkActive]="['titulo_item_ativo']"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Preços
+      </p>
+    </div>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

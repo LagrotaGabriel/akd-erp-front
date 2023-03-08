@@ -1,0 +1,31 @@
+.container {
+    width: 100%;
+    background: linear-gradient(90deg, rgba(241,241,241,1) 0%, rgba(235,235,235,1) 50%, rgba(226,226,226,1) 100%);
+    padding: 1rem 0;
+  }
+  
+  .texto {
+    color: #212121;
+    display: flex;
+    justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+  
+  .titulo {
+    padding-bottom: 0;
+  }
+  
+  .button_box {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .button {
+    padding: 0;
+    width: 45%;
+    display: flex;
+    color: transparent;
+    background-color: #BBCAF0;
+  }

@@ -1,6 +1,6 @@
 import { ConfirmaLogoutComponent } from './confirma-logout/confirma-logout.component';
 
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({

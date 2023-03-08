@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NavbarComponent } from './shared/navbar/navbar.component';
+import { SidenavComponent } from './shared/sidenav/sidenav.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { ConfirmaLogoutComponent } from './shared/header/confirma-logout/confirma-logout.component';
 
@@ -28,9 +28,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
+    SidenavComponent,
     HeaderComponent,
-    ConfirmaLogoutComponent
+    ConfirmaLogoutComponent,
   ],
   imports: [
     BrowserModule,

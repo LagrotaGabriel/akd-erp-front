@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavbarComponent } from './shared/navbar/navbar.component';
+import { SidenavComponent } from './shared/sidenav/sidenav.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: NavbarComponent,
+    component: SidenavComponent,
     children: [
       /*{
         path: 'inicio', component: HomeComponent

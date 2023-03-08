@@ -24,6 +24,9 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 
+import { ClientesModule } from './modules/clientes/clientes.module';
+
+
 
 @NgModule({
   declarations: [
@@ -49,6 +52,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatDialogModule,
     MatTreeModule,
     MatExpansionModule,
+    ClientesModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,1 +1,35 @@
-<p>menu works!</p>
+<mat-grid-list cols="16" rowHeight="1.5rem" class="container">
+  <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <h1 class="titulo">Clientes</h1>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="13" [rowspan]="1">
+    <div class="botoes">
+      <mat-icon
+        fontIcon="add_circle"
+        class="icone"
+        matTooltip="Adicionar novo cliente"
+        matTooltipPosition="below"
+      ></mat-icon>
+      <mat-icon
+        fontIcon="restart_alt"
+        class="icone"
+        matTooltip="Resetar filtros de busca"
+        matTooltipPosition="below"
+      ></mat-icon>
+      <mat-icon
+        fontIcon="download"
+        class="icone"
+        matTooltip="Baixar relatório PDF"
+        matTooltipPosition="below"
+      ></mat-icon>
+      <mat-icon
+        fontIcon="filter_alt"
+        class="icone"
+        matTooltip="Realizar busca"
+        matTooltipPosition="below"
+      ></mat-icon>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<hr>

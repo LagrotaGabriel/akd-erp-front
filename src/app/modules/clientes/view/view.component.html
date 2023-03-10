@@ -1,2 +1,143 @@
 <app-menu></app-menu>
-<p>view works!</p>
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 container">
+
+    <!-- INFORMATIVOS -->
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row informativo_container">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_subcontainer">
+      <div class="col-xl-2 col-lg-6 col-md-3 col-sm-3 col-3 informativo_card">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_conteudo text-center">
+          <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_linha informativo_linha_titulo">
+            <div class="col-xl-3 col-lg-1 col-md-1 col-sm-1 col-1 icone_container">
+              <mat-icon fontIcon="mood" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_icone"></mat-icon>
+            </div>
+            <h1 class="col-xl-9 col-lg-11 col-md-11 col-sm-11 col-11 informativo_titulo">Cadastrados</h1>
+          </div>
+          <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_linha informativo_linha_texto">
+              <h2 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_texto">25K</h2>
+              <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6 linha_final_colorida"></div>
+              <div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-6 linha_final"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-2 col-lg-6 col-md-3 col-sm-3 col-3 informativo_card">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_conteudo text-center">
+          <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_linha informativo_linha_titulo">
+            <div class="col-xl-3 col-lg-1 col-md-1 col-sm-1 col-1 icone_container">
+              <mat-icon fontIcon="attach_money" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_icone"></mat-icon>
+            </div>
+            <h1 class="col-xl-9 col-lg-11 col-md-11 col-sm-11 col-11 informativo_titulo">Maior giro</h1>
+          </div>
+          <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_linha informativo_linha_texto">
+              <h2 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_texto">Fulano</h2>
+              <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6 linha_final_colorida"></div>
+              <div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-6 linha_final"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INPUT DE BUSCAS -->
+  <div
+    class="input_container"
+    (click)="input.select()"
+    [ngClass]="{
+      input_container_focado: focoInput,
+      input_container_sem_foco: !focoInput
+    }"
+  >
+    <input
+      class="input_filtro"
+      atInput
+      type="text"
+      placeholder="Busca de clientes por nome, telefone ou cpf..."
+      (focus)="focusFunction()"
+      (focusout)="removeFocusFunction(input.value)"
+      maxlength="40"
+      #input
+    />
+    <mat-icon
+      [ngClass]="{
+        icone_focado: focoInput,
+        icone_sem_foco: !focoInput
+      }"
+      (click)="input.select()"
+      fontIcon="person_search"
+      class="icone"
+    ></mat-icon>
+  </div>
+
+  <div
+    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table_container table-responsive-md"
+  >
+    <table
+      class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table table-dark table-hover"
+    >
+      <thead class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 thead">
+        <tr class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <th class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 th_data">
+            DATA
+          </th>
+          <th class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 th_nome">
+            NOME
+          </th>
+          <th class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 th_cpfCnpj">
+            CPF/CNPJ
+          </th>
+          <th class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 th_telefone">
+            TELEFONE
+          </th>
+          <th class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 th_acoes">
+            AÇÕES
+          </th>
+        </tr>
+      </thead>
+
+      <tbody class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <tr
+          class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+          *ngFor="let cliente of clientes; let i = index"
+        >
+          <td class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 td_dataCadastro">
+            {{ cliente.dataCadastro | date : "dd/MM/yyyy" }}
+          </td>
+
+          <td class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 td_nome">
+            {{ cliente.nome }}
+          </td>
+
+          <td class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 td_cpfCnpj">
+            {{ cliente.cpfCnpj }}
+          </td>
+
+          <td class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 td_telefone">
+            ({{ cliente.telefone.prefixo }}) {{ cliente.telefone.numero }}
+          </td>
+
+          <td class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 td_acoes">
+            <mat-icon
+              fontIcon="delete"
+              class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 icone"
+              matTooltip="Remover cliente"
+              matTooltipPosition="below"
+            ></mat-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container"
+    >
+      <ul class="pagination pagination-sm justify-content-end">
+        <li class="page-item"><a class="page-link">Anterior</a></li>
+        <li class="page-item"><a class="page-link">1</a></li>
+        <li class="page-item active"><a class="page-link">2</a></li>
+        <li class="page-item"><a class="page-link">3</a></li>
+        <li class="page-item"><a class="page-link">Próximo</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

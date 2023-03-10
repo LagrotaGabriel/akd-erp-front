@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 import { SidenavComponent } from './shared/sidenav/sidenav.component';
 import { HeaderComponent } from './shared/header/header.component';
@@ -23,10 +24,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatExpansionModule } from '@angular/material/expansion';
 
-
 import { ClientesModule } from './modules/clientes/clientes.module';
-
-
 
 @NgModule({
   declarations: [
@@ -53,8 +51,9 @@ import { ClientesModule } from './modules/clientes/clientes.module';
     MatTreeModule,
     MatExpansionModule,
     ClientesModule,
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

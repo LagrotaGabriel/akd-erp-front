@@ -1,6 +1,7 @@
 .container {
     background-color: #15161a;
     height: 100%;
+    padding: 0;
 }
 
 .sidenav {
@@ -86,12 +87,13 @@
     display: flex;
     align-items: center;
     margin: 0;
+    padding: 0.5rem 0;
     cursor: pointer;
 }
 
 /* ÍCONE DO MENU LATERAL */
 .sidenav_icon {
-    padding: 0.5rem 0;
+    padding: 0;
     width: 1.5rem;
     color: #949494;
     margin: 0 0.5rem 0 0.75rem;
@@ -116,5 +118,5 @@
 
 /* CONTEUDO PRINCIPAL */
 .conteudo {
-    padding: 1.5rem 1.5rem;
+    padding: 1.5rem 2rem;
 }

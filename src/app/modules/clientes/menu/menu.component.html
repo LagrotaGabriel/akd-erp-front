@@ -1,10 +1,12 @@
-<mat-grid-list cols="16" rowHeight="1.5rem" class="container">
+<mat-grid-list cols="16" rowHeight="1.5rem" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 container">
+  
   <mat-grid-tile [colspan]="3" [rowspan]="1">
     <h1 class="titulo">Clientes</h1>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="13" [rowspan]="1">
     <div class="botoes">
       <mat-icon
+        routerLink="['novo']"
         fontIcon="add_circle"
         class="icone"
         matTooltip="Adicionar novo cliente"

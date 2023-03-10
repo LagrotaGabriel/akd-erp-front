@@ -1,12 +1,14 @@
+@import '../../../dist/variables.scss';
+
 .container {
-    background-color: #15161a;
+    background-color: $dark-black;
     height: 100%;
     padding: 0;
 }
 
 .sidenav {
     height: 100%;
-    background-color: #1E2026;
+    background-color: $light-black;
     width: 14rem;
     padding: 0;
 }
@@ -45,20 +47,20 @@
 
 /* NOME DO USUÁRIO LOGADO */
 .avatar_nome {
-    color: #FFFF;
+    color: $light-white;
     font-size: 1rem;
     font-weight: 500;
 }
 
 /* CARGO DO USUÁRIO LOGADO */
 .avatar_cargo {
-    color: #949494;
+    color: $light-grey;
     font-size: 0.90rem;
 }
 
 /* BOLINHA DO AVATAR */
 .mat-badge-content {
-    background-color: #00ff2a;
+    background-color: $online-green;
     color: transparent;
     right: 0 !important;
     bottom: 0 !important;
@@ -72,7 +74,7 @@
 /* TÍTULO DO MENU */
 .titulo_menu {
     font-size: 1rem;
-    color: #949494;
+    color: $light-grey;
     font-weight: 500;
     margin-left: 0.75rem;
     margin-bottom: 0;
@@ -95,7 +97,7 @@
 .sidenav_icon {
     padding: 0;
     width: 1.5rem;
-    color: #949494;
+    color: $light-grey;
     margin: 0 0.5rem 0 0.75rem;
 }
 
@@ -103,7 +105,7 @@
 .icon_text {
     float: flex;
     margin: 0;
-    color: #949494;
+    color: $light-grey;
     font-size: 1rem;
     pointer-events: none;
     -webkit-user-select: none; /* Safari */
@@ -113,7 +115,7 @@
 
 /* PROPRIEDADE DO ITEM LATERAL ATIVO */
 .titulo_item_ativo, .icone_ativo {
-    color: #ebe9e9;
+    color: $light-white;
 }
 
 /* CONTEUDO PRINCIPAL */

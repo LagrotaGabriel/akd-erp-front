@@ -2,8 +2,8 @@
 
 .container {
     width: 100%;
-    margin-top: 1rem;
     padding: 0;
+    font-family: $font-poppins;
 }
 
 .mat-form-field input {
@@ -26,7 +26,7 @@
 }
 
 .input_filtro {
-    font-size: 1rem;
+    font-size: 0.85rem;
     width: 95%;
     height: 100%;
     margin: 0;
@@ -45,7 +45,7 @@
 }
 
 .input_container_sem_foco {
-    border: 1px solid $dark-grey;
+    border: 1px solid $light-grey;
 }
 
 .icone {
@@ -55,11 +55,11 @@
 }
 
 .icone_focado {
-    color: $light-grey;
+    color: $primary-color;
 }
 
 .icone_sem_foco {
-    color: $dark-grey;
+    color: $light-grey;
 }
 
 .input_filtro:focus{
@@ -78,7 +78,7 @@
 }
 
 .informativo_container {
-    margin: 1rem 0;
+    margin: 1.5rem 0;
 }
 
 .informativo_icone {
@@ -94,6 +94,7 @@
     font-size: 1rem;
     padding-left: 0.5rem;
     color: $dark-white;
+    font-family: $font-poppins;
 }
 
 .informativo_conteudo {
@@ -106,10 +107,11 @@
 
 .informativo_texto {
     color: $light-white;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 600;
     height: 100%;
     margin-bottom: 0.5rem;
+    font-family: $font-poppins;
 }
 
 .linha_final_colorida {
@@ -130,7 +132,6 @@
     font-size: 0.75rem;
     margin-bottom: 0;
     background-color: transparent;
-    
 }
 
 .thead {
@@ -168,12 +169,36 @@ tbody {
     padding: 0;
 }
 
+.icone_expand {
+    color: $primary-color;
+}
+
+.td_nome {
+    padding: 0.6rem 0.75rem 0 0.3rem;
+    margin: 0;
+}
+
+.nome_cliente {
+    padding: 0;
+    padding-top: 0.1rem;
+    margin: 0;
+}
+
 .td_acoes, .th_acoes {
     text-align: center;
 }
 
 .td_acoes {
+    padding: 0;
     padding-top: 0.45rem;
+}
+
+.icone_tabela {
+    margin: 0 0.2rem;
+}
+
+.icone_tabela_remove {
+    color: rgb(185, 48, 48);
 }
 
 /* TABLE ACCORDION */

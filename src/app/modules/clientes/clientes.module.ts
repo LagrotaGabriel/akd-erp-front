@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
 import { ClientesRoutingModule } from './clientes-routing.module';
 
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -26,6 +27,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatFormFieldModule,
     MatPaginatorModule,
     MatInputModule,
+    BrowserModule,
   ],
 })
 export class ClientesModule {}

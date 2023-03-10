@@ -130,10 +130,24 @@
     font-size: 0.75rem;
     margin-bottom: 0;
     background-color: transparent;
+    
 }
 
 .thead {
     background-color: transparent;
+    padding: 0;
+    
+}
+
+tr {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.linha_tabela {
+    margin: 0;
+    padding: 0;
 }
 
 th {
@@ -151,6 +165,7 @@ td {
 tbody {
     background-color: $light-black;
     border: 1px solid $dark-grey;
+    padding: 0;
 }
 
 .td_acoes, .th_acoes {
@@ -159,6 +174,34 @@ tbody {
 
 .td_acoes {
     padding-top: 0.45rem;
+}
+
+/* TABLE ACCORDION */
+
+.accordion_container, .accordion_linha_principal, .accordion_bloco, .accordion_subbloco, .accordion_subbloco_titulo, .accordion_subbloco_texto, 
+.accordion_titulo, .accordion_texto {
+    margin: 0;
+    padding: 0;
+}
+
+.accordion_container {
+    padding: 0.5rem 0;
+}
+
+.accordion_subbloco {
+    padding: 0.2rem;
+}
+
+.accordion_titulo {
+    font-size: 0.80rem;
+    font-weight: 500;
+    height: 1.2rem;
+    color: $light-white;
+}
+
+.accordion_texto {
+    font-size: 0.70rem;
+    color: $dark-white;
 }
 
 /* TABLE PAGINATION */

@@ -4,7 +4,9 @@
   <!-- INFORMATIVOS -->
   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row informativo_container">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_subcontainer">
-      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-5 informativo_card">
+
+      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-5 informativo_card"
+        matTooltip="Quantidade de clientes cadastrados" matTooltipPosition="below">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_conteudo text-center">
           <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_linha informativo_linha_titulo">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 icone_container">
@@ -25,7 +27,8 @@
         </div>
       </div>
 
-      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-5 informativo_card">
+      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-5 informativo_card"
+        matTooltip="Cliente que gerou maior faturamento bruto" matTooltipPosition="below">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_conteudo text-center">
           <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_linha informativo_linha_titulo">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 icone_container">
@@ -46,7 +49,8 @@
         </div>
       </div>
 
-      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-5 informativo_card">
+      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-5 informativo_card"
+        matTooltip="Cliente com maior número de ordens cadastradas" matTooltipPosition="below">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_conteudo text-center">
           <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_linha informativo_linha_titulo">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 icone_container">
@@ -67,7 +71,8 @@
         </div>
       </div>
 
-      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-5 informativo_card">
+      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-5 informativo_card"
+        matTooltip="Bairro com maior número de clientes cadastrados" matTooltipPosition="below">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_conteudo text-center">
           <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_linha informativo_linha_titulo">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 icone_container">
@@ -91,20 +96,44 @@
     </div>
   </div>
 
+  <hr>
+
   <!-- INPUT DE BUSCAS -->
-  <div class="input_container" (click)="input.select()" [ngClass]="{
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_container" [ngClass]="{
       input_container_focado: focoInput,
       input_container_sem_foco: !focoInput
     }">
-    <input class="input_filtro" atInput type="text" placeholder="Busca de clientes por nome, telefone ou cpf..."
-      (focus)="focusFunction()" (focusout)="removeFocusFunction(input.value)" maxlength="40" #input />
-    <mat-icon [ngClass]="{
+
+    <div class="row col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 input_subcontainer input_subcontainer_busca"
+      (click)="input.select()">
+      <mat-icon [ngClass]="{
         icone_focado: focoInput,
         icone_sem_foco: !focoInput
-      }" (click)="input.select()" fontIcon="person_search" class="icone"></mat-icon>
+      }" (click)="input.select()" fontIcon="person_search"
+        class="col-xl-1 col-lg-1 col-md-12 col-sm-1 col-1 icone icone_input"></mat-icon>
+      <input class="col-xl-11 col-lg-12 col-md-12 col-sm-12 col-12 input_filtro" atInput type="text"
+        placeholder="Busca de clientes por nome, telefone ou cpf..." (focus)="focusFunction()"
+        (focusout)="removeFocusFunction(input.value)" maxlength="40" #input />
+    </div>
+
+    <div class="row col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 input_subcontainer input_subcontainer_select">
+      <select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_select">
+        <option>
+          Por nome
+        </option>
+        <option>
+          Por cpf/cnpj
+        </option>
+        <option>
+          Por telefone
+        </option>
+      </select>
+    </div>
+
   </div>
 
-  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table_container table-responsive-md">
+  <!-- TABELA -->
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table_container table-responsive-xl">
     <table class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table table-dark table-hover">
 
       <thead class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 thead">
@@ -148,18 +177,18 @@
 
             <td class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 td_acoes">
               <mat-icon fontIcon="settings" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 icone icone_tabela"
-              matTooltip="Editar cliente" matTooltipPosition="above"></mat-icon>
-              <mat-icon fontIcon="cancel" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 icone icone_tabela icone_tabela_remove"
+                matTooltip="Editar cliente" matTooltipPosition="above"></mat-icon>
+              <mat-icon fontIcon="cancel"
+                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 icone icone_tabela icone_tabela_remove"
                 matTooltip="Remover cliente" matTooltipPosition="above"></mat-icon>
             </td>
-            
+
           </tr>
 
           <!-- ACCORDION -->
           <div id="{{ 'collapse-' + i }}" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 collapse collapsed"
-            [attr.href]="'#linha-' + i" 
-            [attr.data-parent]="'#linha-' + i">
-            
+            [attr.href]="'#linha-' + i" [attr.data-parent]="'#linha-' + i">
+
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 card-body accordion_container">
 
               <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_linha_principal">
@@ -262,8 +291,10 @@
       <ul class="pagination pagination-sm justify-content-end">
         <li class="page-item"><a class="page-link">Anterior</a></li>
         <li class="page-item"><a class="page-link">1</a></li>
-        <li class="page-item active"><a class="page-link">2</a></li>
-        <li class="page-item"><a class="page-link">3</a></li>
+        <li class="page-item"><a class="page-link">2</a></li>
+        <li class="page-item active"><a class="page-link">3</a></li>
+        <li class="page-item"><a class="page-link">4</a></li>
+        <li class="page-item"><a class="page-link">5</a></li>
         <li class="page-item"><a class="page-link">Próximo</a></li>
       </ul>
     </div>

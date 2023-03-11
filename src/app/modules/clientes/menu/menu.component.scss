@@ -11,18 +11,26 @@
     margin-bottom: 0.5rem;
 }
 
+.titulo_container {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
 .titulo {
     display: flex;
     justify-content: left;
     color: $dark-white;
     width: 100%;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 .botoes {
     width: 100%;
     display: flex;
     justify-content: right;
+    padding-top: 0.2rem;
 }
 
 .icone {

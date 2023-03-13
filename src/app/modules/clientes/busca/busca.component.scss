@@ -73,3 +73,55 @@ option {
 .input_select:focus {
     outline: none;
 }
+
+@media (max-width: 992px) {
+    .input_subcontainer_busca {
+        padding: 0 0.5rem;
+    }
+    .input_filtro {
+        font-size: 0.9rem;
+        padding-left: 0.5rem;
+    }
+    .input_select {
+        font-size: 0.9rem;
+        text-align: center;
+        padding: 0;
+    }
+    .icone {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .input_subcontainer_busca {
+        padding: 0 0.5rem;
+    }
+    .input_filtro {
+        font-size: 0.8rem;
+        padding-left: 0.5rem;
+    }
+    .input_select {
+        font-size: 0.8rem;
+        text-align: center;
+    }
+    .icone {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .input_container {
+        padding: 0 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .input_filtro {
+        font-size: 0.8rem;
+        padding-left: 0.5rem;
+    }
+    .input_subcontainer_select {
+        display: none;
+    }
+    .icone {
+        font-size: 1.3rem;
+    }
+}

@@ -53,14 +53,14 @@ tbody {
     border-top: none;
 }
 
-.icone_expand {
-    color: $primary-color;
-}
-
 .icone {
     color: $dark-white;
     padding: 0;
     cursor: pointer;
+}
+
+.icone_expand {
+    color: $primary-color;
 }
 
 .td_nome {

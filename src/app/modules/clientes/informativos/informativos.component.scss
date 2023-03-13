@@ -35,7 +35,7 @@
     background: $primary-color-gradient;
     border-radius: 10px;
     justify-content: center;
-    padding: 1rem 0;
+    padding: 1rem;
     font-size: 1.5rem;
     color: $light-white;
 }
@@ -48,7 +48,12 @@
 }
 
 .informativo_conteudo {
-    padding: 0 0.5rem 0 0;
+    padding: 0 0.3rem;
+    justify-content: center;
+}
+
+.informativo_linha {
+    justify-content: center;
 }
 
 .informativo_linha_texto {
@@ -59,9 +64,9 @@
     color: $light-white;
     font-size: 2rem;
     font-weight: 600;
-    height: 100%;
     margin-bottom: 0.4rem;
     font-family: $font-poppins;
+    justify-content: center;
 }
 
 .linha_final_colorida {
@@ -70,4 +75,94 @@
 
 .linha_final {
     border-bottom: 2px solid $dark-grey;
+}
+
+.informativo_card {
+    margin: 0 auto;
+}
+
+@media (max-width: 992px) {
+    .informativo_titulo {
+        font-size: 0.90rem;
+        justify-content: center;
+        width: 100%;
+    }
+    .informativo_linha_titulo {
+        margin-bottom: -0.7rem;
+    }
+    .informativo_linha_texto {
+        margin: 0;
+    }
+    .informativo_texto {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    .informativo_icone {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .informativo_titulo {
+        font-size: 0.90rem;
+        justify-content: center;
+        width: 100%;
+    }
+    .informativo_linha_titulo {
+        margin-bottom: -0.7rem;
+    }
+    .informativo_linha_texto {
+        margin: 0;
+    }
+    .informativo_texto {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    .informativo_icone {
+        padding: 0.9rem 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .informativo_titulo {
+        font-size: 1rem;
+        justify-content: center;
+        width: 100%;
+    }
+    .informativo_linha_titulo {
+        margin-bottom: -0.7rem;
+    }
+    .informativo_linha_texto {
+        margin-top: 0.3rem;
+    }
+    .informativo_texto {
+        font-size: 1.5rem;
+        margin-bottom: 0.3rem;
+    }
+    .informativo_icone {
+        padding: 1rem;
+    }
+    .informativo_card {
+        margin: 1rem auto;
+    }
+}
+
+@media (max-width: 380px) {
+    .informativo_card {
+        margin: 1rem auto;
+    }
+    .informativo_titulo {
+        font-size: 0.80rem;
+        width: 100%
+    }
+    .informativo_linha_texto {
+        margin: 0;
+    }
+    .informativo_texto {
+        font-size: 1.3rem;
+        margin: 0;
+    }
+    .informativo_icone {
+        padding: 0.9rem 1rem;
+    }
 }

@@ -13,9 +13,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MenuComponent } from './menu/menu.component';
 import { ViewComponent } from './view/view.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { InformativosComponent } from './informativos/informativos.component';
+import { TabelaComponent } from './tabela/tabela.component';
+import { BuscaComponent } from './busca/busca.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent],
+  declarations: [MenuComponent, ViewComponent, InformativosComponent, TabelaComponent, BuscaComponent],
   exports: [MenuComponent, ViewComponent],
   imports: [
     CommonModule,

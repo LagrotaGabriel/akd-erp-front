@@ -1,0 +1,163 @@
+@import '../../../../dist/variables.scss';
+@import "../../../../../node_modules/rfs/scss";
+
+.table_container {
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.table {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+    background-color: transparent;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.thead {
+    background-color: transparent;
+    padding: 0;
+}
+
+tr {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.linha_tabela {
+    margin: 0;
+    padding: 0;
+}
+
+th {
+    border: none !important;
+    padding-bottom: 0.2rem;
+    padding-top: 0;
+}
+
+td {
+    padding-top: 0.6rem;
+    padding-bottom: 0rem;
+    cursor: pointer;
+}
+
+tbody {
+    background-color: $light-black;
+    border: 1px solid $dark-grey;
+    padding: 0;
+    border-top: none;
+}
+
+.icone_expand {
+    color: $primary-color;
+}
+
+.icone {
+    color: $dark-white;
+    padding: 0;
+    cursor: pointer;
+}
+
+.td_nome {
+    padding: 0.6rem 0.75rem 0 0.3rem;
+    margin: 0;
+}
+
+.nome_cliente {
+    padding: 0;
+    padding-top: 0.1rem;
+    margin: 0;
+}
+
+.td_acoes,
+.th_acoes {
+    text-align: center;
+}
+
+.td_acoes {
+    padding: 0;
+    padding-top: 0.45rem;
+}
+
+.icone_tabela {
+    margin: 0 0.2rem;
+}
+
+.icone_tabela_remove {
+    color: $red;
+}
+
+/* TABLE ACCORDION */
+
+.accordion_container,
+.accordion_linha_principal,
+.accordion_bloco,
+.accordion_subbloco,
+.accordion_subbloco_titulo,
+.accordion_subbloco_texto,
+.accordion_titulo,
+.accordion_texto {
+    margin: 0;
+    padding: 0;
+}
+
+.accordion_container {
+    padding: 0.5rem 0;
+}
+
+.accordion_subbloco {
+    padding: 0.2rem;
+}
+
+.accordion_titulo {
+    font-size: 0.80rem;
+    font-weight: 500;
+    height: 1.2rem;
+    color: $light-white;
+}
+
+.accordion_texto {
+    font-size: 0.70rem;
+    color: $dark-white;
+}
+
+/* TABLE PAGINATION */
+
+.pagination_container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-top: none;
+    height: 3rem;
+    padding: 0;
+}
+
+.pagination {
+    margin: 0;
+}
+
+.page-item {
+    color: $light-grey;
+}
+
+.page-link {
+    background-color: $light-black;
+    border: 1px solid $dark-grey;
+    padding: 0.2rem 1rem !important;
+}
+
+.page-link:hover {
+    background-color: #24262c;
+}
+
+.pagination>.active>a,
+.pagination>.active>a:hover {
+    color: $light-white;
+    background-color: $primary-color !Important;
+    border: solid 1px $primary-color !Important;
+}

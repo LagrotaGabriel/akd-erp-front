@@ -1,0 +1,73 @@
+@import '../../../../dist/variables.scss';
+@import "../../../../../node_modules/rfs/scss";
+
+.informativo_container,
+.informativo_subcontainer,
+.informativo_card,
+.informativo_conteudo,
+.informativo_linha,
+.informativo_texto,
+.icone_container,
+.informativo_icone,
+.informativo_titulo {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.informativo_container {
+    margin: 1.5rem 0;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.informativo_subcontainer {
+    justify-content: center;
+}
+
+.informativo_icone {
+    background: $primary-color-gradient;
+    border-radius: 10px;
+    justify-content: center;
+    padding: 1rem 0;
+    font-size: 1.5rem;
+    color: $light-white;
+}
+
+.informativo_titulo {
+    @include font-size(1rem);
+    padding-left: 0.5rem;
+    color: $dark-white;
+    font-family: $font-poppins;
+}
+
+.informativo_conteudo {
+    padding: 0 0.5rem 0 0;
+}
+
+.informativo_linha_texto {
+    margin-top: 0.4rem;
+}
+
+.informativo_texto {
+    color: $light-white;
+    font-size: 2rem;
+    font-weight: 600;
+    height: 100%;
+    margin-bottom: 0.4rem;
+    font-family: $font-poppins;
+}
+
+.linha_final_colorida {
+    border-bottom: 2px solid $primary-color;
+}
+
+.linha_final {
+    border-bottom: 2px solid $dark-grey;
+}

@@ -1,6 +1,11 @@
 @import '../../../../dist/variables.scss';
+@import "../../../../../node_modules/rfs/scss";
 
-.container, .titulo_container, .botoes_container, .titulo, .botoes {
+.container,
+.titulo_container,
+.botoes_container,
+.titulo,
+.botoes {
     margin: 0;
     padding: 0;
     font-family: $font-poppins;
@@ -12,9 +17,12 @@
 }
 
 .titulo_container {
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
 }
 
 .titulo {
@@ -22,7 +30,7 @@
     justify-content: left;
     color: $dark-white;
     width: 100%;
-    font-size: 1.2rem;
+    @include font-size(1.2rem);
     font-weight: 500;
 }
 
@@ -45,4 +53,36 @@ hr {
     margin: 0;
     padding: 0;
     background-color: $dark-grey;
+}
+
+@media (max-width: 1200px) {
+    .titulo {
+        font-size: 1.2rem;
+    }
+}
+@media (max-width: 992px) {
+    .titulo {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .titulo {
+        font-size: 1rem;
+    }
+    .botoes {
+        justify-content: left;
+    }
+    .icone {
+        margin: 0 5px 0 0;
+    }
+}
+
+@media (max-width: 360px) {
+    .titulo {
+        font-size: 0.80rem;
+    }
+    .icone {
+        font-size: 1.3rem;
+    }
 }

@@ -1,24 +1,28 @@
+import { SideNavDetails } from './../models/SideNavDetails';
 import { ConfirmaLogoutComponent } from './confirma-logout/confirma-logout.component';
 
 import { MatDialog } from '@angular/material/dialog';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, OnChanges, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
-  @Output() public enviaAlteracaoEstadoSidebar = new EventEmitter();
-  public estadoSideBar: boolean = true;
+export class HeaderComponent{
 
-  exibeSideBar() {
-    if (this.estadoSideBar) {
-      this.estadoSideBar = false;
+  @Output() public enviaAlteracaoEstadoSidebar = new EventEmitter();
+  @Input() public sideNavDetails: SideNavDetails;
+
+  public botaoMenuLateralResponsivo: boolean;
+
+  alteraExibicaoSideBar() {
+    if (this.sideNavDetails.estadoSidebar) {
+      this.sideNavDetails.estadoSidebar = false;
     } else {
-      this.estadoSideBar = true;
+      this.sideNavDetails.estadoSidebar = true;
     }
-    this.enviaAlteracaoEstadoSidebar.emit(this.estadoSideBar);
+    this.enviaAlteracaoEstadoSidebar.emit(this.sideNavDetails.estadoSidebar);
   }
 
   confirmaLogout(
@@ -33,7 +37,5 @@ export class HeaderComponent implements OnInit {
   }
 
   constructor(public dialog: MatDialog) {}
-  ngOnInit(): void {
-    this.exibeSideBar();
-  }
+
 }

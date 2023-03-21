@@ -16,6 +16,7 @@ export class FiltrosService {
       switch (tipoFiltro) {
         case "nome":
           this.filtros.push({
+            disabled: false,
             tipoFiltro: TiposFiltro.NOME,
             descricao: 'nome',
             descricaoChip: 'Nome',
@@ -29,6 +30,7 @@ export class FiltrosService {
           break;
         case "email":
           this.filtros.push({
+            disabled: false,
             tipoFiltro: TiposFiltro.EMAIL,
             descricao: 'email',
             descricaoChip: 'E-mail',
@@ -42,6 +44,7 @@ export class FiltrosService {
           break
         case "cpfCnpj":
           this.filtros.push({
+            disabled: false,
             tipoFiltro: TiposFiltro.CPF_CNPJ,
             descricao: 'cpfCnpj',
             descricaoChip: 'Cpf/Cnpj',
@@ -55,6 +58,7 @@ export class FiltrosService {
           break;
         case "bairro":
           this.filtros.push({
+            disabled: false,
             tipoFiltro: TiposFiltro.BAIRRO,
             descricao: 'bairro',
             descricaoChip: 'Bairro',
@@ -68,6 +72,7 @@ export class FiltrosService {
           break;
         case "data":
           this.filtros.push({
+            disabled: false,
             tipoFiltro: TiposFiltro.DATA,
             descricao: 'data',
             descricaoChip: 'Data',
@@ -81,6 +86,7 @@ export class FiltrosService {
           break;
         case "mesAno":
           this.filtros.push({
+            disabled: false,
             tipoFiltro: TiposFiltro.MES_ANO,
             descricao: 'periodo',
             descricaoChip: 'Período',

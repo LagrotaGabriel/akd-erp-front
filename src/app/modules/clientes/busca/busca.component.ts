@@ -30,11 +30,13 @@ export class BuscaComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
     localStorage.setItem('filtros', JSON.stringify(this.filtrosAdicionados));
+    localStorage.setItem('tiposBuscaHabilitados', JSON.stringify(this.tiposBusca));
     localStorage.setItem('chips', JSON.stringify(this.chips));
   }
 
   ngOnInit(): void {
     this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
+    if (this.tiposBusca.length == 0) this.tiposBusca = this.filtrosService.setaTiposFiltro(this.tiposFiltroBusca);
   }
 
   popupFiltro: boolean = false;  // Verificação do estado do popup de adição de novos filtros
@@ -64,21 +66,21 @@ export class BuscaComponent implements OnInit, DoCheck {
     ]
 
   // Inicializando lista de objetos a serem filtrados com base nos tipos iniciados anteriormente
-  tiposBusca: Filtro[] = this.filtrosService.setaTiposFiltro(this.tiposFiltroBusca);
+  tiposBusca: Filtro[] = JSON.parse(localStorage.getItem("tiposBuscaHabilitados") || '[]');
 
   // Método responsável por adicionar um novo filtro de busca
   adicionaFiltroDeBusca() {
     if (!this.validarFiltroDeBusca()) return;
     if (this.tipoBuscaAtual.tipoFiltro == TiposFiltro.DATA) {
-      var dataConvertidaParaPadraoBr = this.datepipe.transform(new Date(this.inputBusca), 'dd-MM-yyyy')
+      //var dataConvertidaParaPadraoBr = this.datepipe.transform(new Date(this.inputBusca), 'dd-MM-yyyy')
       this.filtrosAdicionados = this.filtrosAdicionados.concat(
-        [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: dataConvertidaParaPadraoBr }]
+        [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: this.inputBusca }]
       )
     }
     else if (this.tipoBuscaAtual.tipoFiltro == TiposFiltro.MES_ANO) {
-      var mesAnoConvertidoParaPadraoBr = this.datepipe.transform(new Date(this.inputBusca), 'MM-yyyy');
+      //var mesAnoConvertidoParaPadraoBr = this.datepipe.transform(new Date(this.inputBusca), 'MM-yyyy');
       this.filtrosAdicionados = this.filtrosAdicionados.concat(
-        [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: mesAnoConvertidoParaPadraoBr }]
+        [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: this.inputBusca }]
       );
     }
     else {
@@ -86,6 +88,11 @@ export class BuscaComponent implements OnInit, DoCheck {
         [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: this.inputBusca }]
       );
     }
+
+    this.tiposBusca.forEach(tipoBusca => {
+      if (this.tipoBuscaAtual.tipoFiltro == tipoBusca.tipoFiltro) tipoBusca.disabled = true;
+    })
+
     this.abrePopupFiltro();
     this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
     if (!this.chips.chipsExibidos && this.filtrosAdicionados.length == 1) this.alteraEstadoChips();
@@ -99,15 +106,20 @@ export class BuscaComponent implements OnInit, DoCheck {
 
   // Método responsável por realizar o tratamento dos inputs de adição de filtros em tempo real
   realizaTratamentoDoInputDeAdicaoDeNovoFiltro() {
-    this.inputBusca = this.inputBusca.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "").trim();
-    if (this.tipoBuscaAtual.tipoFiltro == TiposFiltro.EMAIL)
-      this.inputBusca = this.inputBusca.replace(/\s/g, "");
-    else if (this.tipoBuscaAtual.tipoFiltro == TiposFiltro.CPF_CNPJ)
-      this.inputBusca = this.inputBusca.replace(/[&\/\\#,+()$~%.'":*?<>{}-]/g, "").trim();
+    if (this.tipoBuscaAtual.tipoFiltro != TiposFiltro.DATA && this.tipoBuscaAtual.tipoFiltro != TiposFiltro.MES_ANO) {
+      this.inputBusca = this.inputBusca.replace(/[&\/\\#,+@=()$~%.'":*?<>{}-]/g, "").trim();
+      if (this.tipoBuscaAtual.tipoFiltro == TiposFiltro.EMAIL)
+        this.inputBusca = this.inputBusca.replace(/\s/g, "");
+    }
   }
 
   // Método executado quando o "x" dos chips forem acionados. Tem como objetivo remover um filtro de busca
   removeFiltro(index: number) {
+    this.tiposBusca.forEach(tipoBusca => {
+      if (tipoBusca.tipoFiltro.toString() == this.filtrosAdicionados[index].tipoFiltro.toString()) {
+        this.tiposBusca[this.tiposBusca.indexOf(tipoBusca)].disabled = false;
+      }
+    })
     this.filtrosAdicionados = this.filtrosAdicionados.filter((_, item) => item < index || item >= index + 1);
     if (this.chips.chipsExibidos && this.filtrosAdicionados.length == 0) this.alteraEstadoChips();
     this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);

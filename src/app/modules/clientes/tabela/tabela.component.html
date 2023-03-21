@@ -117,7 +117,8 @@
                     <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data do cadastro:</h3>
                   </div>
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">10/03/2023 às 15:26</p>
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">{{ cliente.dataCadastro |
+                      date: 'dd/MM/yyyy' }} às {{ cliente.horaCadastro | slice:0:5}}</p>
                   </div>
                 </div>
               </div>
@@ -129,7 +130,7 @@
                   </div>
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                     <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                      gabriellagrota23@gmail.com</p>
+                      {{ cliente.email }}</p>
                   </div>
                 </div>
               </div>
@@ -141,7 +142,7 @@
                     </h3>
                   </div>
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">21/07/1998</p>
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">{{ cliente.dataNascimento | date: 'dd/MM/yyyy'}}</p>
                   </div>
                 </div>
               </div>

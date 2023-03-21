@@ -7,6 +7,7 @@ export enum InputTypeFiltro {
   }
 
 export interface Filtro {
+    disabled: boolean;
     tipoFiltro: TiposFiltro;
     descricao: string;
     descricaoChip: string;

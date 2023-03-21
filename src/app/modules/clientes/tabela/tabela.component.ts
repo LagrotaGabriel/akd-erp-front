@@ -15,7 +15,6 @@ export class TabelaComponent implements OnChanges {
   constructor(private clienteService: ClienteService) { }
 
   ngOnChanges(changes) {
-    console.log(changes.filtrosAdicionados.currentValue);
     this.clienteService.getClientes(this.filtrosAdicionados).subscribe(
       (res: any[]) => {
         this.clientes = res;

@@ -1,6 +1,11 @@
 <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 chip_container" *ngIf="chips.chipsExibidos">
   <div [@fadeInOut] *ngFor="let filtroAdicionado of filtrosAdicionados; let i = index" class="chip_block" matRipple>
-    <h4 class="chip_text">{{ filtroAdicionado.descricaoChip | titlecase }}: {{ filtroAdicionado.valor }}</h4>
+    <h4 *ngIf="filtroAdicionado.descricaoChip != 'Período' && filtroAdicionado.descricaoChip != 'Data'"
+      class="chip_text">{{ filtroAdicionado.descricaoChip }}: {{ filtroAdicionado.valor }}</h4>
+    <h4 *ngIf="filtroAdicionado.descricaoChip == 'Data'" class="chip_text">
+      {{ filtroAdicionado.descricaoChip }}: {{ filtroAdicionado.valor | date: 'dd/MM/yyyy' }}</h4>
+    <h4 *ngIf="filtroAdicionado.descricaoChip == 'Período'" class="chip_text">
+      {{ filtroAdicionado.descricaoChip }}: {{ filtroAdicionado.valor | date: 'MM/yyyy' }}</h4>
     <mat-icon (click)="removeFiltro(i)" fontIcon="close" class="icone chip_icone"></mat-icon>
   </div>
 </div>
@@ -35,7 +40,7 @@
         <select [(ngModel)]="tipoBuscaSelect" (change)="alteraTipoFiltro()"
           class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 popup_filtro_select mat-elevation-z6">
           <option value="" selected>Escolha um filtro</option>
-          <option *ngFor="let tipoBusca of tiposBusca" [value]="tipoBusca.descricao"
+          <option *ngFor="let tipoBusca of tiposBusca" [value]="tipoBusca.descricao" [disabled]="tipoBusca.disabled"
             ng-attr-campo="tipoBusca.tipoCampo">
             {{tipoBusca.descricaoOption}}
           </option>

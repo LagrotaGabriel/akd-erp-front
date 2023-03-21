@@ -25,6 +25,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 import { ClientesModule } from './modules/clientes/clientes.module';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import { ClientesModule } from './modules/clientes/clientes.module';
     ClientesModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { ClientesRoutingModule } from './clientes-routing.module';
 
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -9,6 +10,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatRippleModule } from '@angular/material/core';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { MenuComponent } from './menu/menu.component';
 import { ViewComponent } from './view/view.component';
@@ -31,6 +37,12 @@ import { BuscaComponent } from './busca/busca.component';
     MatPaginatorModule,
     MatInputModule,
     BrowserModule,
+    MatRippleModule,
+    MatChipsModule,
+    MatBadgeModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    FormsModule
   ],
 })
-export class ClientesModule {}
+export class ClientesModule { }

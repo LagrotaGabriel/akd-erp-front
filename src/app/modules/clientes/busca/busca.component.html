@@ -1,28 +1,104 @@
-<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_container" [ngClass]="{
-    input_container_focado: focoInput,
-    input_container_sem_foco: !focoInput
-  }">
+<div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 chip_container" *ngIf="chips.chipsExibidos">
+  <div [@fadeInOut] *ngFor="let filtroAdicionado of filtrosAdicionados; let i = index" class="chip_block" matRipple>
+    <h4 class="chip_text">{{ filtroAdicionado.descricaoChip | titlecase }}: {{ filtroAdicionado.valor }}</h4>
+    <mat-icon (click)="removeFiltro(i)" fontIcon="close" class="icone chip_icone"></mat-icon>
+  </div>
+</div>
 
-  <div class="row col-xl-10 col-lg-10 col-md-10 col-sm-9 col-12 input_subcontainer input_subcontainer_busca"
-    (click)="input.select()">
-    <mat-icon (click)="input.select()" fontIcon="person_search"
-      class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 icone icone_input"></mat-icon>
-    <input class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 input_filtro" atInput type="text"
-      placeholder="Busca de clientes por nome, telefone ou cpf..." maxlength="40" #input />
+<div class="row container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+  <div class="row busca_block" [matBadge]="filtrosAdicionados.length" matBadgePosition="before" matBadgeSize="medium"
+    matBadgeColor="accent" matTooltip='Adicionar filtros de busca' matTooltipPosition="below">
+    <div class="filtro_container" (click)="abrePopupFiltro()">
+      <div class="icone_filtro_container">
+        <mat-icon fontIcon="filter_alt" class="icone icone_filtro"></mat-icon>
+      </div>
+      <div class="texto_filtro_container">
+        <h3 class="texto_filtro">
+          Filtrar
+        </h3>
+      </div>
+    </div>
+    <div class="row popup_filtro_container mat-elevation-z8" *ngIf="popupFiltro" [@fadeInOut]>
+      <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 popup_filtro_titulo_container">
+        <h2 [ngClass]="{'col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12': filtrosAdicionados.length <= 0}"
+          class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 popup_filtro_container_titulo">
+          Novo filtro
+        </h2>
+        <h2 *ngIf="filtrosAdicionados.length > 0" (click)="removeTodosFiltros()"
+          class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 popup_filtro_limpar_todos">
+          Limpar filtros
+        </h2>
+      </div>
+
+      <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 select_container">
+        <select [(ngModel)]="tipoBuscaSelect" (change)="alteraTipoFiltro()"
+          class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 popup_filtro_select mat-elevation-z6">
+          <option value="" selected>Escolha um filtro</option>
+          <option *ngFor="let tipoBusca of tiposBusca" [value]="tipoBusca.descricao"
+            ng-attr-campo="tipoBusca.tipoCampo">
+            {{tipoBusca.descricaoOption}}
+          </option>
+        </select>
+      </div>
+
+      <input [@fadeInOut] [(ngModel)]="inputBusca" *ngIf="tipoBuscaAtual != null" [name]="tipoBuscaAtual.descricao"
+        [type]="tipoBuscaAtual.tipoInput" [min]="tipoBuscaAtual.tamanhoMinimo" [max]="tipoBuscaAtual.tamanhoMaximo"
+        [minLength]="tipoBuscaAtual.tamanhoMinimo" [max]="tipoBuscaAtual.tamanhoMaximo"
+        [maxlength]="tipoBuscaAtual.tamanhoMaximo" [value]=" inputBusca"
+        (input)="realizaTratamentoDoInputDeAdicaoDeNovoFiltro()" (keyup.enter)="adicionaFiltroDeBusca()"
+        class="popup_filtro_input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" spellcheck="off" autocomplete="off"
+        [placeholder]="tipoBuscaAtual.textoPlaceholder" />
+
+      <h6
+        *ngIf="tipoBuscaAtual != null && inputBusca != null && tipoBuscaAtual.descricao != 'data' && tipoBuscaAtual.descricao != 'periodo'"
+        class="contagem_caracteres col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        Caracteres {{ inputBusca.length }}/{{ tipoBuscaAtual.tamanhoMaximo }}
+      </h6>
+
+      <button *ngIf="tipoBuscaAtual != null && inputBusca != '' && inputBusca != null" type="button"
+        class="btn_add_filtro col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" (click)="adicionaFiltroDeBusca()"
+        [ngClass]="{'btn_filtro_com_margem_superior_maior': tipoBuscaAtual.descricao == 'data' || tipoBuscaAtual.descricao == 'periodo'}"
+        [@fadeInOut] matRipple>Adicionar filtro</button>
+
+    </div>
   </div>
 
-  <div class="row col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 input_subcontainer input_subcontainer_select">
-    <select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_select">
-      <option>
-        Por nome
-      </option>
-      <option>
-        Por cpf/cnpj
-      </option>
-      <option>
-        Por telefone
-      </option>
-    </select>
+  <div [ngClass]="{ 'iconeOlhoDesabilitado': !chips.chipsExibidos && filtrosAdicionados.length <= 0 }"
+    class="select_block" (click)="alteraEstadoChips()" matRipple [matRippleDisabled]="chips.matRippleOlhoDesabilitado">
+    <div class="select_icon">
+      <mat-icon [fontIcon]="chips.iconeOlho" class="icone icone_select" [matTooltip]="chips.descricaoAoPassarMouse"
+        matTooltipPosition="below"></mat-icon>
+    </div>
+  </div>
+
+  <div class="input_filtro_container">
+    <div class="input_block">
+      <div class="input_icon">
+        <mat-icon fontIcon="search" class="icone icone_filtro"></mat-icon>
+      </div>
+      <input class="input_busca" type="search" placeholder="Realizar busca rápida por clientes exibidos na tabela"
+        autocomplete="off" spellcheck="false" />
+    </div>
+  </div>
+
+  <div class="select_filtro_container">
+
+    <div class="select_block" matBadge="0" matBadgePosition="before" matBadgeSize="medium" matBadgeColor="accent"
+      matTooltip='Baixar relatório dos clientes selecionados' matTooltipPosition="below">
+      <div class="select_icon">
+        <mat-icon fontIcon="download" class="icone icone_select"></mat-icon>
+      </div>
+    </div>
+
+    <div class="select_block" matBadge="0" matBadgePosition="before" matBadgeSize="medium" matBadgeColor="accent"
+      matTooltip='Excluir clientes selecionados' matTooltipPosition="below">
+      <div class="select_icon">
+        <mat-icon fontIcon="delete" class="icone icone_select"></mat-icon>
+      </div>
+    </div>
   </div>
 
 </div>
+
+<hr *ngIf="chips.chipsExibidos">

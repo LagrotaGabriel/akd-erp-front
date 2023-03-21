@@ -13,7 +13,7 @@ export class ClienteService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2Nzg5NzQ3OTV9.OcKjF8wYEYCQvcRWdham0UC-cwz5VF3jbn5n2i9j-DHnqrCjTa8Pjvubr1Mev6qLE0sUY2QDRUOtgcDk2j5Asg'
+      'Authorization': '	Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2Nzk2MjA2Mzd9.sOBojG0nse6Dc1n2ZLPTUEhsH96_5I1c8793CrwnReSkKqjj5tAuYgYIsCkpxc8QmpIexUBUw2uPY3KupyPCHw'
     })
   }
 

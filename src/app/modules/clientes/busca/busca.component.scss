@@ -1,127 +1,325 @@
 @import '../../../../dist/variables.scss';
 @import "../../../../../node_modules/rfs/scss";
 
-.input_container,
-.input_filtro,
-.input_subcontainer {
+/* ======= GLOBAL ======= */
+
+.container,
+.icone_filtro,
+.texto_filtro,
+.busca_block,
+.icone_filtro_container,
+.texto_filtro_container,
+.input_block,
+.items_pagina_container,
+.chip_container,
+.chip_block,
+.chip,
+.chip_text,
+.chip_icone,
+.popup_filtro_container,
+.popup_filtro_titulo_container,
+.popup_filtro_container_titulo,
+.popup_filtro_limpar_todos,
+.popup_filtro_status_titulo,
+.select_container,
+.select_label,
+.popup_filtro_input,
+.filtro_container,
+.contagem_caracteres {
     margin: 0;
     padding: 0;
 }
 
-.input_container {
+.container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 2.5rem;
-    border-radius: 5px;
-    background-color: $light-black;
-    margin-bottom: 1.5rem;
-    border: 1px solid $dark-grey;
-}
-
-.input_filtro {
-    font-size: 0.90rem;
-    border: none;
-    padding: 0;
-    color: $dark-white;
-    background-color: $light-black;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-}
-
-.input_subcontainer_busca {
-    height: 100%;
-}
-
-
-.icone {
-    padding: 0;
-    cursor: pointer;
-    color: $light-grey;
-}
-
-.icone_input {
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    display: flex;
+    margin-bottom: 1rem;
     justify-content: center;
 }
 
-.input_subcontainer_select {
-    height: 100%;
+hr {
+    border: none;
+    height: 1px;
+    margin: 1.5rem 0 1rem 0;
+    padding: 0;
+    background-color: $dark-grey;
 }
 
-.input_select {
-    background: $primary-color-gradient;
-    opacity: 0.80;
-    color: $light-white;
-    border: none;
-    border-left: 1px solid $dark-grey;
-    padding: 0 1rem;
+/* ======= CHIP CONTAINER ======= */
+
+.chip_container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    justify-content: left;
+}
+
+.chip_block {
+    color: $dark-white;
+    background-color: $secondary-color;
+    padding: 0.2rem 0.5rem 0.2rem 1rem;
+    border: 1px solid $secondary-color;
+    border-radius: 15px;
+    display: flex;
+    margin-right: 0.75rem;
+    margin-bottom: 0.5rem;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
     cursor: pointer;
 }
 
-option {
-    background-color: $light-white;
-    color: $dark-black;
+.chip_block:hover {
+    color: $light-white;
 }
 
-.input_filtro:focus,
-.input_select:focus {
+.chip_text {
+    font-size: 0.90rem;
+    font-family: $font-roboto;
+    font-weight: 400;
+    display: flex;
+    justify-content: left;
+    text-align: left;
+}
+
+.chip_icone {
+    color: $light-white;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+/* ======= FILTROS ======= */
+
+.filtro_container {
+    display: flex;
+}
+
+.busca_block {
+    background-color: $primary-color;
+    padding: 0.1rem 0.5rem;
+    border: none;
+    border-radius: 5px;
+    color: $light-white;
+    cursor: pointer;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.icone_filtro_container {
+    margin-right: 0.3rem;
+}
+
+.icone_filtro_container {
+    display: flex;
+    justify-content: left;
+}
+
+.texto_filtro_container {
+    display: flex;
+    justify-content: right;
+}
+
+.mat-badge-content {
+    background: $secondary-color;
+    color: $light-white;
+}
+
+.texto_filtro {
+    font-family: $font-roboto;
+    font-size: 1rem;
+}
+
+/* ====== POPUP FILTRO ====== */
+
+.popup_filtro_container {
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    width: 20rem;
+    padding: 0.5rem 1.5rem;
+    padding-bottom: 1rem;
+    z-index: 1;
+    background-color: $light-black;
+    border: 1px solid $light-black;
+    border-radius: 5px;
+    display: flex;
+    align-items: baseline;
+}
+
+.popup_filtro_titulo_container {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+}
+
+.popup_filtro_container_titulo,
+.popup_filtro_limpar_todos {
+    color: $dark-white;
+    font-size: 1rem;
+    font-family: $font-poppins;
+    display: flex;
+}
+
+.popup_filtro_container_titulo {
+    justify-content: left;
+    font-weight: 700;
+}
+
+.popup_filtro_limpar_todos {
+    justify-content: right;
+    font-size: 0.80rem;
+    color: $secondary-color;
+    text-decoration: underline;
+}
+
+.popup_filtro_select {
+    background-color: $primary-color;
+    color: $dark-white;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    font-family: $font-poppins;
+    border: 1px solid $primary-color;
+    border-radius: 0;
+    cursor: pointer;
+}
+.popup_filtro_select:focus {
     outline: none;
 }
 
-@media (max-width: 992px) {
-    .input_subcontainer_busca {
-        padding: 0 0.5rem;
-    }
-    .input_filtro {
-        font-size: 0.9rem;
-        padding-left: 0.5rem;
-    }
-    .input_select {
-        font-size: 0.9rem;
-        text-align: center;
-        padding: 0;
-    }
-    .icone {
-        font-size: 1.5rem;
-    }
+.popup_filtro_select option {
+    color: $light-black;
+    padding: 1rem;
+    background-color: $primary-color;
+    color: $dark-white;
 }
 
-@media (max-width: 768px) {
-    .input_subcontainer_busca {
-        padding: 0 0.5rem;
-    }
-    .input_filtro {
-        font-size: 0.8rem;
-        padding-left: 0.5rem;
-    }
-    .input_select {
-        font-size: 0.8rem;
-        text-align: center;
-    }
-    .icone {
-        font-size: 1.4rem;
-    }
+.popup_filtro_input {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid $light-grey;
+    color: $light-grey;
+    background-color: transparent;
 }
 
-@media (max-width: 576px) {
-    .input_container {
-        padding: 0 0.5rem;
-        margin-bottom: 1rem;
-    }
-    .input_filtro {
-        font-size: 0.8rem;
-        padding-left: 0.5rem;
-    }
-    .input_subcontainer_select {
-        display: none;
-    }
-    .icone {
-        font-size: 1.3rem;
-    }
+.popup_filtro_input {
+    outline: none;
+}
+
+.contagem_caracteres {
+    text-align: right;
+    color: $dark-white;
+}
+
+.btn_add_filtro {
+    margin-top: 0.5rem;
+    background-color: $primary-color;
+    border-color: $primary-color;
+    font-size: 0.90rem;
+    font-family: $font-poppins;
+    font-weight: 600;
+    color: $dark-white;
+    padding: 0.4rem 1rem;
+    cursor: pointer
+}
+
+.btn_filtro_com_margem_superior_maior {
+    margin-top: 1rem;
+}
+
+.btn_add_filtro:focus {
+    outline: none;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+
+/* ======= INPUT BUSCA ======= */
+
+.input_filtro_container {
+    display: flex;
+    align-items: baseline;
+}
+
+.input_block {
+    display: flex;
+    border: 1px solid $dark-grey;
+    margin-left: 1rem;
+    background-color: transparent;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    align-items: center;
+}
+
+.input_busca {
+    border: none;
+    padding: 0rem 0.5rem;
+    width: 40rem;
+    background-color: transparent;
+    color: $secondary-color;
+}
+
+.input_busca:focus {
+    outline: none;
+}
+
+.input_icon {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    color: $dark-white;
+}
+
+/* ======= ITENS POR PÁGINA ======= */
+
+.select_filtro_container {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    right: 0;
+}
+
+.select_block {
+    display: flex;
+    border: 1px solid $primary-color;
+    margin-left: 1rem;
+    background-color: transparent;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    align-items: center;
+    cursor: pointer;
+    background-color: $primary-color;
+}
+
+.iconeOlhoDesabilitado {
+    background-color: $light-grey;
+    border: 1px solid $light-grey;
+    cursor: auto;
+    pointer-events: none;
+}
+
+.select_icon {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    color: $light-white;
+}
+
+.select {
+    border: none;
+    padding: 0rem 0.5rem;
+    background-color: transparent;
+    color: $secondary-color;
+    text-align: center;
 }

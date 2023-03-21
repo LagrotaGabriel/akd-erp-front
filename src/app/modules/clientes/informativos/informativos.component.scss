@@ -32,7 +32,7 @@
 }
 
 .informativo_icone {
-    background: $primary-color-gradient;
+    background: $primary-color;
     border-radius: 10px;
     justify-content: center;
     padding: 1rem;
@@ -57,12 +57,12 @@
 }
 
 .informativo_linha_texto {
-    margin-top: 0.4rem;
+    margin-top: 0rem;
 }
 
 .informativo_texto {
     color: $light-white;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 600;
     margin-bottom: 0.4rem;
     font-family: $font-poppins;

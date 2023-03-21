@@ -1,166 +1,205 @@
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table_container">
-    <table class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table table-dark table-hover">
 
-      <thead class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 thead">
+  <table class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table table-dark table-hover">
+
+    <thead class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 thead">
+      <tr class="tr_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+        <th class="th th_expande">
+          <mat-icon fontIcon="unfold_more" matTooltip="Remover cliente" matTooltipPosition="above"></mat-icon>
+        </th>
+        <th class="th th_checkbox">
+          <input type="checkbox" id="customCheck" name="example1">
+        </th>
+        <th class="th th_nome">
+          NOME
+        </th>
+        <th class="th th_cpfCnpj">
+          CPF/CNPJ
+        </th>
+        <th class="th th_status">
+          STATUS
+        </th>
+        <th class="th th_telefone">
+          TELEFONE
+        </th>
+        <th class="th th_giro">
+          GIRO
+        </th>
+        <th class="th th_acoes">
+          AÇÕES
+        </th>
+      </tr>
+    </thead>
+
+    <tbody class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+      <div *ngFor="let cliente of clientes; let i = index"
+        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela">
+
         <tr class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-          <th class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-5 th_nome">
-            NOME
-          </th>
-          <th class="col-xl-4 col-lg-4 col-md-3 col-sm-3 col-5 th_cpfCnpj">
-            CPF/CNPJ
-          </th>
-          <th class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 th_telefone">
-            TELEFONE
-          </th>
-          <th class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 th_acoes">
-            AÇÕES
-          </th>
-        </tr>
-      </thead>
 
-      <tbody class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <td class="td td_expande">
+            <mat-icon fontIcon="chevron_right" class="icone icone_expand" id="{{ 'linha-' + i }}" data-toggle="collapse"
+              [attr.href]="'#collapse-' + i"></mat-icon>
+          </td>
 
-        <div *ngFor="let cliente of clientes; let i = index"
-          class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela">
+          <td class="td td_checkbox">
+            <input type="checkbox" class="checkbox">
+          </td>
 
-          <tr class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <td class="td td_nome">
+            <div class="nome_cliente">{{ cliente.nome }}</div>
+          </td>
 
-            <td class="row col-xl-4 col-lg-4 col-md-4 col-sm-4 col-5 td_nome">
-              <mat-icon fontIcon="expand_more" class="col-xl-1 col-lg-1 col-md-2 col-sm-2 icone icone_expand"
-                matTooltip="Mais informações" matTooltipPosition="left" id="{{ 'linha-' + i }}" data-toggle="collapse"
-                [attr.href]="'#collapse-' + i"></mat-icon>
-              <div class="col-xl-11 col-lg-11 col-md-10 col-sm-10 col-12 nome_cliente">{{ cliente.nome }}</div>
-            </td>
+          <td class="td td_cpfCnpj">
+            {{ cliente.cpfCnpj }}
+          </td>
 
-            <td class="col-xl-4 col-lg-4 col-md-3 col-sm-3 col-5 td_cpfCnpj">
-              {{ cliente.cpfCnpj }}
-            </td>
+          <td class="td td_status">
+            <span class="td_status_box table-success">
+              Vip
+            </span>
+          </td>
 
-            <td class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 td_telefone">
-              ({{ cliente.telefone.prefixo }}) {{ cliente.telefone.numero }}
-            </td>
+          <td class="td td_telefone">
+            ({{ cliente.telefone.prefixo }}) {{ cliente.telefone.numero }}
+          </td>
 
-            <td class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 td_acoes">
-              <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 icon_container">
-              <mat-icon fontIcon="settings" class="icone icone_tabela"
-                matTooltip="Editar cliente" matTooltipPosition="above"></mat-icon>
-              <mat-icon fontIcon="cancel"
-                class="icone icone_tabela icone_tabela_remove"
-                matTooltip="Remover cliente" matTooltipPosition="above"></mat-icon>
+          <td class="td td_giro">
+            R$ 24.345,60
+            <mat-icon fontIcon="arrow_outward" class="icone icone_tabela icone_tabela_giro"></mat-icon>
+          </td>
+
+          <td class="td td_acoes">
+            <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 icon_container">
+              <!--<mat-icon fontIcon="settings" class="icone icone_tabela"
+                matTooltip="Editar cliente" matTooltipPosition="above"></mat-icon>-->
+              <mat-icon fontIcon="more_vert"
+                class="icone icone_tabela icone_tabela_remove dropdown dropleft float-right"
+                data-toggle="dropdown"></mat-icon>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">
+                  Editar
+                </a>
+                <a class="dropdown-item" href="#">
+                  Excluir
+                </a>
               </div>
-            </td>
+            </div>
+          </td>
 
-          </tr>
+        </tr>
 
-          <!-- ACCORDION -->
-          <div id="{{ 'collapse-' + i }}" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 collapse collapsed"
-            [attr.href]="'#linha-' + i" [attr.data-parent]="'#linha-' + i">
+        <!-- ACCORDION -->
+        <div id="{{ 'collapse-' + i }}" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 collapse collapsed"
+          [attr.href]="'#linha-' + i" [attr.data-parent]="'#linha-' + i">
 
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 card-body accordion_container">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 card-body accordion_container">
 
-              <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_linha_principal">
+            <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_linha_principal">
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Responsável pelo
-                        cadastro:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">Gabriel Lagrota</p>
-                    </div>
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Responsável pelo
+                      cadastro:</h3>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">Gabriel Lagrota</p>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data do cadastro:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">10/03/2023 às 15:26</p>
-                    </div>
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data do cadastro:</h3>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">10/03/2023 às 15:26</p>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">E-mail:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        gabriellagrota23@gmail.com</p>
-                    </div>
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">E-mail:</h3>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                      gabriellagrota23@gmail.com</p>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data de nascimento:
-                      </h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">21/07/1998</p>
-                    </div>
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 accordion_bloco">
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data de nascimento:
+                    </h3>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">21/07/1998</p>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Inscrição estadual:
-                      </h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">125664080114</p>
-                    </div>
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 accordion_bloco">
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Inscrição estadual:
+                    </h3>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">125664080114</p>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Giro total:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">R$ 12.560,45 (16 Ordens)
-                      </p>
-                    </div>
+              <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Giro total:</h3>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">R$ 12.560,45 (16 Ordens)
+                    </p>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Endereço:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">Av. Coronel Manuel Py,
-                        583 - Lauzane Paulista, São Paulo - SP, 02442-090</p>
-                    </div>
+              <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 accordion_bloco">
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Endereço:</h3>
+                  </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">Av. Coronel Manuel Py,
+                      583 - Lauzane Paulista, São Paulo - SP, 02442-090</p>
                   </div>
                 </div>
-
               </div>
 
             </div>
-          </div>
 
+          </div>
         </div>
 
-      </tbody>
-    </table>
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
-      <ul class="pagination pagination-sm justify-content-end">
-        <li class="page-item"><a class="page-link">Anterior</a></li>
-        <li class="page-item"><a class="page-link">1</a></li>
-        <li class="page-item"><a class="page-link">2</a></li>
-        <li class="page-item active"><a class="page-link">3</a></li>
-        <li class="page-item"><a class="page-link">4</a></li>
-        <li class="page-item"><a class="page-link">5</a></li>
-        <li class="page-item"><a class="page-link">Próximo</a></li>
-      </ul>
-    </div>
+      </div>
+
+    </tbody>
+  </table>
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
+    <ul class="pagination pagination-sm justify-content-end">
+      <li class="page-item"><a class="page-link">Anterior</a></li>
+      <li class="page-item"><a class="page-link">1</a></li>
+      <li class="page-item"><a class="page-link">2</a></li>
+      <li class="page-item active"><a class="page-link">3</a></li>
+      <li class="page-item"><a class="page-link">4</a></li>
+      <li class="page-item"><a class="page-link">5</a></li>
+      <li class="page-item"><a class="page-link">Próximo</a></li>
+    </ul>
   </div>
+</div>

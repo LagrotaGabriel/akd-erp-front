@@ -6,4 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
+
+  openDropdown(): void {
+    return null;
+  }
 }

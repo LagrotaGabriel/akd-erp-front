@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
+import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
 import { Cliente } from '../models/Cliente';
 
 @Injectable({
@@ -17,10 +18,22 @@ export class ClienteService {
     })
   }
 
-  public getClientes(): any {
-    return this.http.get<Cliente[]>(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
+  public getClientes(filtrosAdicionados: FiltroAdicionado[]): any {
+    var requestParams = this.buildRequestParams(filtrosAdicionados);
+    return this.http.get<Cliente[]>(`${API_URL.baseUrl}api/sistema/v1/cliente${requestParams}`, this.httpOptions).pipe(
       res => res,
       error => error
     )
+  }
+
+  private buildRequestParams(filtrosAdicionados: FiltroAdicionado[]): string {
+    var requestParamSintax = "";
+    var requestParams: string[] = [];
+    filtrosAdicionados.forEach(filtro => {
+      if(requestParamSintax == "") requestParamSintax += "?busca="
+      requestParams.push(filtro.tipoFiltro + "=" + filtro.valor);
+    })
+    requestParamSintax += requestParams.toString();
+    return requestParamSintax;
   }
 }

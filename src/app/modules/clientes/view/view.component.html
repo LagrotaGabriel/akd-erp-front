@@ -7,8 +7,8 @@
 
   <hr>
 
-  <app-busca></app-busca>
+  <app-busca (filtrosAdicionadosExportados)="filtrosExportados($event)"></app-busca>
 
-  <app-tabela></app-tabela>
+  <app-tabela [filtrosAdicionados]="filtrosAdicionados"></app-tabela>
 
 </div>

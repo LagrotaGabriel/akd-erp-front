@@ -1,5 +1,5 @@
 import { FiltrosService } from './../../../shared/services/filtros.service';
-import { Component, } from '@angular/core';
+import { Component, EventEmitter, Input, Output, DoCheck, OnInit } from '@angular/core';
 import { Filtro } from 'src/app/shared/models/filtros/Filtro';
 import { TiposFiltro } from 'src/app/shared/models/filtros/TiposFiltro';
 import { trigger, style, animate, transition } from '@angular/animations';
@@ -24,9 +24,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     ]),
   ]
 })
-export class BuscaComponent {
+export class BuscaComponent implements OnInit, DoCheck {
 
   constructor(public filtrosService: FiltrosService, public datepipe: DatePipe, private _snackBar: MatSnackBar) { }
+
+  ngDoCheck(): void {
+    localStorage.setItem('filtros', JSON.stringify(this.filtrosAdicionados));
+    localStorage.setItem('chips', JSON.stringify(this.chips));
+  }
+
+  ngOnInit(): void {
+    this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
+  }
 
   popupFiltro: boolean = false;  // Verificação do estado do popup de adição de novos filtros
 
@@ -39,7 +48,9 @@ export class BuscaComponent {
   tipoBuscaSelect: string = ""; // Select onde selecionamos o tipo de filtro a ser utilizado na busca
   inputBusca: string = ""; // Input com valor atualizado de um novo filtro
   tipoBuscaAtual: Filtro; // Objeto Filtro indicando qual é o tipo atual de filtro que está selecionado no popup
-  public filtrosAdicionados: Array<FiltroAdicionado> = JSON.parse(localStorage.getItem("filtros") || '[]'); // Lista de filtros de busca ativos
+
+  @Output() filtrosAdicionadosExportados = new EventEmitter();
+  public filtrosAdicionados: FiltroAdicionado[] = JSON.parse(localStorage.getItem("filtros") || '[]'); // Lista de filtros de busca ativos
 
   // Iniciando listagem de tipos de filtros que serão utilizados no módulo
   tiposFiltroBusca: TiposFiltro[] =
@@ -60,23 +71,23 @@ export class BuscaComponent {
     if (!this.validarFiltroDeBusca()) return;
     if (this.tipoBuscaAtual.tipoFiltro == TiposFiltro.DATA) {
       var dataConvertidaParaPadraoBr = this.datepipe.transform(new Date(this.inputBusca), 'dd-MM-yyyy')
-      this.filtrosAdicionados.push(
-        { tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: dataConvertidaParaPadraoBr }
-      );
+      this.filtrosAdicionados = this.filtrosAdicionados.concat(
+        [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: dataConvertidaParaPadraoBr }]
+      )
     }
     else if (this.tipoBuscaAtual.tipoFiltro == TiposFiltro.MES_ANO) {
       var mesAnoConvertidoParaPadraoBr = this.datepipe.transform(new Date(this.inputBusca), 'MM-yyyy');
-      this.filtrosAdicionados.push(
-        { tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: mesAnoConvertidoParaPadraoBr }
+      this.filtrosAdicionados = this.filtrosAdicionados.concat(
+        [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: mesAnoConvertidoParaPadraoBr }]
       );
     }
     else {
-      this.filtrosAdicionados.push(
-        { tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: this.inputBusca }
+      this.filtrosAdicionados = this.filtrosAdicionados.concat(
+        [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: this.inputBusca }]
       );
     }
     this.abrePopupFiltro();
-    localStorage.setItem('filtros', JSON.stringify(this.filtrosAdicionados));
+    this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
     if (!this.chips.chipsExibidos && this.filtrosAdicionados.length == 1) this.alteraEstadoChips();
   }
 
@@ -97,12 +108,12 @@ export class BuscaComponent {
 
   // Método executado quando o "x" dos chips forem acionados. Tem como objetivo remover um filtro de busca
   removeFiltro(index: number) {
-    this.filtrosAdicionados.splice(index, 1);
-    if (this.filtrosAdicionados) localStorage.setItem('filtros', JSON.stringify(this.filtrosAdicionados));
+    this.filtrosAdicionados = this.filtrosAdicionados.filter((_, item) => item < index || item >= index + 1);
     if (this.chips.chipsExibidos && this.filtrosAdicionados.length == 0) this.alteraEstadoChips();
-
+    this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
   }
 
+  // Método responsável pela remoção de todos os filtros adicionados
   removeTodosFiltros() {
     this.filtrosAdicionados = [];
     this.chips = {
@@ -110,14 +121,14 @@ export class BuscaComponent {
       'iconeOlho': 'visibility', 'descricaoAoPassarMouse': 'Não há filtros a serem exibidos'
     }
     this.abrePopupFiltro();
-    localStorage.setItem('filtros', JSON.stringify(this.filtrosAdicionados));
-    localStorage.setItem('chips', JSON.stringify(this.chips));
 
     this._snackBar.open("Todos os filtros de busca foram removidos com sucesso!", "X", {
       duration: 3000
     });
+    this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
   }
 
+  // Método responsável por exibir um pop up na parte inferior da tela ao remover todos os filtros
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action);
   }
@@ -156,7 +167,6 @@ export class BuscaComponent {
       this.chips.matRippleOlhoDesabilitado = false;
       this.chips.iconeOlho = 'visibility_off';
       this.chips.descricaoAoPassarMouse = 'Ocultar filtros ativos';
-      localStorage.setItem('chips', JSON.stringify(this.chips));
     }
     else if (this.chips.chipsExibidos) {
       // DESABILITAR CHIPS
@@ -168,7 +178,6 @@ export class BuscaComponent {
         this.chips.descricaoAoPassarMouse = 'Não há filtros a serem exibidos';
         this.chips.matRippleOlhoDesabilitado = true;
       }
-      localStorage.setItem('chips', JSON.stringify(this.chips));
     }
   }
 

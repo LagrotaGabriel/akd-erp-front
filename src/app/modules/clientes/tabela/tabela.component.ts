@@ -1,4 +1,5 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Input, DoCheck, OnChanges, AfterContentChecked } from '@angular/core';
+import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
 import { ClienteService } from '../services/cliente.service';
 
 @Component({
@@ -6,19 +7,22 @@ import { ClienteService } from '../services/cliente.service';
   templateUrl: './tabela.component.html',
   styleUrls: ['./tabela.component.scss']
 })
-export class TabelaComponent implements AfterViewInit {
+export class TabelaComponent implements OnChanges {
 
   clientes: any;
+  @Input() public filtrosAdicionados;
 
-  constructor(private clienteService: ClienteService) {}
+  constructor(private clienteService: ClienteService) { }
 
-  ngAfterViewInit(): void {
-    this.clienteService.getClientes().subscribe(
+  ngOnChanges(changes) {
+    console.log(changes.filtrosAdicionados.currentValue);
+    this.clienteService.getClientes(this.filtrosAdicionados).subscribe(
       (res: any[]) => {
         this.clientes = res;
       },
       (error: any) => console.log(error)
     );
   }
+
 
 }

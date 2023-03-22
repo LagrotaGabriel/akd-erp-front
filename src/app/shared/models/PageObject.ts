@@ -4,6 +4,7 @@ export interface Pageable {
     pageSize: number;
     paged: boolean;
     unpaged: boolean;
+    sortDirection: string;
 }
 
 export interface PageObject {

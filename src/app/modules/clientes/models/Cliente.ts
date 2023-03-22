@@ -15,5 +15,7 @@ export interface Cliente {
     endereco: Endereco,
     telefone: Telefone,
     idColaboradorResponsavel: number,
-    idEmpresa: number
+    idEmpresa: number,
+    checked?: boolean,
+    expanded?: boolean,
 }

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
-import { Pageable, PageObject } from '../models/PageObject';
+import { Pageable, PageObject } from '../../../shared/models/PageObject';
 
 @Injectable({
   providedIn: 'root'
@@ -43,10 +43,12 @@ export class ClienteService {
     if (pageableInfo != null) {
       requestParamSintax += "page=" + pageableInfo.pageNumber;
       requestParamSintax += "&size=" + pageableInfo.pageSize;
+      requestParamSintax += "&sort=dataCadastro," + pageableInfo.sortDirection + "&sort=horaCadastro," + pageableInfo.sortDirection;
     }
     else {
       requestParamSintax += "page=" + 0;
       requestParamSintax += "&size=" + 20;
+      requestParamSintax += "&sort=dataCadastro,desc&horaCadastro,desc";
     }
     return requestParamSintax;
   }

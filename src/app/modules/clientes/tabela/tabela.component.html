@@ -6,10 +6,10 @@
       <tr class="tr_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
         <th class="th th_expande">
-          <mat-icon fontIcon="unfold_more" matTooltip="Remover cliente" matTooltipPosition="above"></mat-icon>
+          <mat-icon (click)="alteraOrdenacao()" class="icon_expand_all" fontIcon="unfold_more"></mat-icon>
         </th>
         <th class="th th_checkbox">
-          <input type="checkbox" id="customCheck" name="example1">
+          <input (click)="checkAll()" [checked]="botaoCheckAllHabilitado" type="checkbox" id="customCheck" name="example1">
         </th>
         <th class="th th_nome">
           NOME
@@ -34,18 +34,20 @@
 
     <tbody *ngIf="pageObject != null" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-      <div *ngFor="let cliente of pageObject.content; let i = index"
+      <div *ngFor="let cliente of clientesEncontrados; let i = index"
         class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela">
 
         <tr class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
           <td class="td td_expande">
-            <mat-icon fontIcon="chevron_right" class="icone icone_expand" id="{{ 'linha-' + i }}" data-toggle="collapse"
-              [attr.href]="'#collapse-' + i"></mat-icon>
+            <i (click)="alteraEstadoExpansaoTabela(i)"
+              [ngClass]="{'fa-chevron-right': !cliente.expanded, 'fa-chevron-down': cliente.expanded}"
+              class="icone icone_expand fas fa-solid" id="{{ 'linha-' + i }}" data-toggle="collapse"
+              [attr.href]="'#collapse-' + i"></i>
           </td>
 
           <td class="td td_checkbox">
-            <input type="checkbox" class="checkbox">
+            <input (click)="alteraEstadoCheckTabela(i)" [checked]="cliente.checked" type="checkbox" class="checkbox">
           </td>
 
           <td class="td td_nome">
@@ -193,6 +195,7 @@
 
     </tbody>
   </table>
+
   <div *ngIf="pageObject != null" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
     <ul class="pagination pagination-sm justify-content-end">
       <li (click)="voltarPagina()" [ngClass]="{'disabled': pageObject.pageable.pageNumber == 0}" class="page-item"><a
@@ -201,8 +204,8 @@
         *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageObject.totalPages); let i = index"
         [ngClass]="{'active': pageObject.pageable.pageNumber == i}" class="page-item"><a class="page-link">{{ i+1 }}</a>
       </li>
-      <li (click)="avancarPagina()" [ngClass]="{'disabled': pageObject.pageable.pageNumber == pageObject.totalPages-1}" class="page-item"><a
-          class="page-link">Próximo</a></li>
+      <li (click)="avancarPagina()" [ngClass]="{'disabled': pageObject.pageable.pageNumber == pageObject.totalPages-1}"
+        class="page-item"><a class="page-link">Próximo</a></li>
     </ul>
   </div>
 </div>

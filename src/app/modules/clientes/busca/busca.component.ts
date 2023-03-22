@@ -68,6 +68,8 @@ export class BuscaComponent implements OnInit, DoCheck {
   // Inicializando lista de objetos a serem filtrados com base nos tipos iniciados anteriormente
   tiposBusca: Filtro[] = JSON.parse(localStorage.getItem("tiposBuscaHabilitados") || '[]');
 
+  @Input() public clientesSelecionadosNaTabela = [];
+
   // Método responsável por adicionar um novo filtro de busca
   adicionaFiltroDeBusca() {
     if (!this.validarFiltroDeBusca()) return;

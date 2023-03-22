@@ -1,7 +1,6 @@
 import { Pageable, PageObject } from '../../../shared/models/PageObject';
-import { Component, Input, ViewChild, OnChanges } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, AfterViewInit, AfterContentInit, Output, EventEmitter } from '@angular/core';
 import { ClienteService } from '../services/cliente.service';
-import { Event } from '@angular/router';
 import { Cliente } from '../models/Cliente';
 
 @Component({
@@ -9,25 +8,34 @@ import { Cliente } from '../models/Cliente';
   templateUrl: './tabela.component.html',
   styleUrls: ['./tabela.component.scss']
 })
-export class TabelaComponent implements OnChanges {
+export class TabelaComponent implements OnChanges, AfterViewInit, AfterContentInit {
 
   pageObject: PageObject;
   clientesEncontrados: Cliente[] = [];
-  clientesSelecionadosNaTabela: Cliente[] = [];
+
+  @Output() clientesSelecionadosNaTabelaExportados = new EventEmitter();
+  clientesSelecionadosNaTabela: Cliente[] = JSON.parse(localStorage.getItem("clientesSelecionados") || '[]');
   pageableInfo: Pageable = JSON.parse(localStorage.getItem("pageable") || 'null');
 
-  botaoCheckAllHabilitado: boolean = false;
+  botaoCheckAllHabilitado: boolean = JSON.parse(localStorage.getItem("checkAll") || 'false');
 
   @Input() public filtrosAdicionados;
 
   constructor(private clienteService: ClienteService) { }
 
   ngDoCheck(): void {
-    if (this.pageObject != null && this.pageableInfo == null) {
-      this.pageableInfo = this.pageObject.pageable;
-      this.pageableInfo.sortDirection = "desc"
-    }
     localStorage.setItem('pageable', JSON.stringify(this.pageableInfo));
+    localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
+    localStorage.setItem('clientesSelecionados', JSON.stringify(this.clientesSelecionadosNaTabela));
+    this.checkObjetosQueEstaoNoLocalStorageDeObjetosSelecionados();
+  }
+
+  ngAfterViewInit(): void {
+
+  }
+
+  ngAfterContentInit(): void {
+    
   }
 
   ngOnChanges() {
@@ -38,6 +46,10 @@ export class TabelaComponent implements OnChanges {
     this.clienteService.getClientes(this.filtrosAdicionados, this.pageableInfo).subscribe(
       (res: PageObject) => {
         this.pageObject = res;
+        if (this.pageableInfo == null) {
+          this.pageableInfo = this.pageObject.pageable;
+          this.pageableInfo.sortDirection = "desc"
+        }
         this.clientesEncontrados = this.pageObject.content;
         this.clientesEncontrados.forEach(cliente => {
           if (cliente.checked == null) cliente.checked = false;
@@ -46,6 +58,13 @@ export class TabelaComponent implements OnChanges {
       },
       (error: any) => console.log(error)
     );
+  }
+
+  checkObjetosQueEstaoNoLocalStorageDeObjetosSelecionados() {
+    this.clientesSelecionadosNaTabela.forEach(clienteSelecionado => {
+      var index: number = this.clientesEncontrados.findIndex(clienteEncontrado => clienteEncontrado.id === clienteSelecionado.id);
+      if (index != -1) this.clientesEncontrados[index].checked = true;
+    })
   }
 
   alteraOrdenacao() {
@@ -59,14 +78,27 @@ export class TabelaComponent implements OnChanges {
   }
 
   alteraEstadoCheckTabela(indice: number) {
+    if (this.clientesEncontrados[indice].checked) {
+      let indiceNaListaDeSelecionados: number = 
+        this.clientesSelecionadosNaTabela.findIndex(clienteSelecionado => clienteSelecionado.id === this.clientesEncontrados[indice].id);
+      this.clientesSelecionadosNaTabela =
+        this.clientesSelecionadosNaTabela.filter((_, item) => item < indiceNaListaDeSelecionados || item >= indiceNaListaDeSelecionados + 1);
+    }
+    else {
+      this.clientesSelecionadosNaTabela = this.clientesSelecionadosNaTabela.concat(this.clientesEncontrados[indice]);
+    }
     this.clientesEncontrados[indice].checked = !this.clientesEncontrados[indice].checked;
+    this.clientesSelecionadosNaTabelaExportados.emit(this.clientesSelecionadosNaTabela);
   }
 
   checkAll() {
     this.botaoCheckAllHabilitado = !this.botaoCheckAllHabilitado;
+    if (this.botaoCheckAllHabilitado) this.clientesSelecionadosNaTabela = this.clientesEncontrados;
+    else this.clientesSelecionadosNaTabela = [];
     this.clientesEncontrados.forEach(cliente => {
       cliente.checked = this.botaoCheckAllHabilitado;
     })
+    this.clientesSelecionadosNaTabelaExportados.emit(this.clientesSelecionadosNaTabela);
   }
 
   GeraNumerosParaNavegarNaPaginacao(n: number): Array<number> {

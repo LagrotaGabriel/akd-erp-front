@@ -69,8 +69,8 @@
     </div>
   </div>
 
-  <div [ngClass]="{ 'iconeOlhoDesabilitado': !chips.chipsExibidos && filtrosAdicionados.length <= 0 }"
-    class="select_block" (click)="alteraEstadoChips()" matRipple [matRippleDisabled]="chips.matRippleOlhoDesabilitado">
+  <div [ngClass]="{ 'iconeDesabilitado': !chips.chipsExibidos && filtrosAdicionados.length <= 0 }" class="select_block"
+    (click)="alteraEstadoChips()" matRipple [matRippleDisabled]="chips.matRippleOlhoDesabilitado">
     <div class="select_icon">
       <mat-icon [fontIcon]="chips.iconeOlho" class="icone icone_select" [matTooltip]="chips.descricaoAoPassarMouse"
         matTooltipPosition="below"></mat-icon>
@@ -89,15 +89,19 @@
 
   <div class="select_filtro_container">
 
-    <div class="select_block" matBadge="0" matBadgePosition="before" matBadgeSize="medium" matBadgeColor="accent"
-      matTooltip='Baixar relatório dos clientes selecionados' matTooltipPosition="below">
+    <div class="select_block" [ngClass]="{ 'iconeDesabilitado': clientesSelecionadosNaTabela.length == 0 }"
+      [matBadge]="clientesSelecionadosNaTabela.length" matBadgePosition="before" matBadgeSize="medium"
+      [matBadgeHidden]="clientesSelecionadosNaTabela.length == 0 ? true : false"
+      matBadgeColor="accent" matTooltip='Baixar relatório dos clientes selecionados' matTooltipPosition="below">
       <div class="select_icon">
         <mat-icon fontIcon="download" class="icone icone_select"></mat-icon>
       </div>
     </div>
 
-    <div class="select_block" matBadge="0" matBadgePosition="before" matBadgeSize="medium" matBadgeColor="accent"
-      matTooltip='Excluir clientes selecionados' matTooltipPosition="below">
+    <div class="select_block" [ngClass]="{ 'iconeDesabilitado': clientesSelecionadosNaTabela.length == 0 }"
+      [matBadge]="clientesSelecionadosNaTabela.length" matBadgePosition="before" matBadgeSize="medium"
+      [matBadgeHidden]="clientesSelecionadosNaTabela.length == 0 ? true : false"
+      matBadgeColor="accent" matTooltip='Excluir clientes selecionados' matTooltipPosition="below">
       <div class="select_icon">
         <mat-icon fontIcon="delete" class="icone icone_select"></mat-icon>
       </div>

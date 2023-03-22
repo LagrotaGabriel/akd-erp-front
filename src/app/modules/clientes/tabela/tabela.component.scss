@@ -242,6 +242,13 @@ input[type='checkbox'] {
     border: solid 1px $primary-color !Important;
 }
 
+.pagination>.disabled>a,
+.pagination>.disabled>a:hover {
+    color: $dark-grey;
+    background-color: $light-grey !Important;
+    border: solid 1px $light-grey !Important;
+}
+
 @media (max-width: 992px) {
     th, td {
         font-size: 0.8rem;

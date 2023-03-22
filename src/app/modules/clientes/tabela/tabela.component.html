@@ -32,9 +32,9 @@
       </tr>
     </thead>
 
-    <tbody class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <tbody *ngIf="pageObject != null" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-      <div *ngFor="let cliente of clientes; let i = index"
+      <div *ngFor="let cliente of pageObject.content; let i = index"
         class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela">
 
         <tr class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -142,7 +142,8 @@
                     </h3>
                   </div>
                   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">{{ cliente.dataNascimento | date: 'dd/MM/yyyy'}}</p>
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">{{ cliente.dataNascimento
+                      | date: 'dd/MM/yyyy'}}</p>
                   </div>
                 </div>
               </div>
@@ -192,15 +193,15 @@
 
     </tbody>
   </table>
-  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
+  <div *ngIf="pageObject != null" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
     <ul class="pagination pagination-sm justify-content-end">
-      <li class="page-item"><a class="page-link">Anterior</a></li>
-      <li class="page-item"><a class="page-link">1</a></li>
-      <li class="page-item"><a class="page-link">2</a></li>
-      <li class="page-item active"><a class="page-link">3</a></li>
-      <li class="page-item"><a class="page-link">4</a></li>
-      <li class="page-item"><a class="page-link">5</a></li>
-      <li class="page-item"><a class="page-link">Próximo</a></li>
+      <li [ngClass]="{'disabled': pageObject.pageable.pageNumber == 0}" class="page-item"><a
+          class="page-link">Anterior</a></li>
+      <li *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageObject.totalPages); let i = index"
+        [ngClass]="{'active': pageObject.pageable.pageNumber == i}" class="page-item"><a class="page-link">{{ i+1 }}</a>
+      </li>
+      <li [ngClass]="{'disabled': pageObject.pageable.pageNumber == pageObject.totalPages-1}" class="page-item"><a
+          class="page-link">Próximo</a></li>
     </ul>
   </div>
 </div>

@@ -1,5 +1,5 @@
-import { Component, AfterViewInit, Input, DoCheck, OnChanges, AfterContentChecked } from '@angular/core';
-import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
+import { Pageable, PageObject } from './../models/PageObject';
+import { Component, Input, OnChanges } from '@angular/core';
 import { ClienteService } from '../services/cliente.service';
 
 @Component({
@@ -9,19 +9,28 @@ import { ClienteService } from '../services/cliente.service';
 })
 export class TabelaComponent implements OnChanges {
 
-  clientes: any;
+  pageObject: PageObject;
+  pageableInfo: Pageable = JSON.parse(localStorage.getItem("pageable") || 'null')
+
   @Input() public filtrosAdicionados;
 
   constructor(private clienteService: ClienteService) { }
 
-  ngOnChanges(changes) {
-    this.clienteService.getClientes(this.filtrosAdicionados).subscribe(
-      (res: any[]) => {
-        this.clientes = res;
+  ngDoCheck(): void {
+    if(this.pageObject != null) localStorage.setItem('pageable', JSON.stringify(this.pageObject.pageable));
+  }
+
+  ngOnChanges() {
+    this.clienteService.getClientes(this.filtrosAdicionados, this.pageableInfo).subscribe(
+      (res: PageObject) => {
+        this.pageObject = res;
       },
       (error: any) => console.log(error)
     );
   }
 
+    GeraNumerosParaNavegarNaPaginacao(n: number): Array<number> {
+      return Array(n);
+    }
 
 }

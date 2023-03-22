@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
-import { Cliente } from '../models/Cliente';
+import { Pageable, PageObject } from '../models/PageObject';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +18,10 @@ export class ClienteService {
     })
   }
 
-  public getClientes(filtrosAdicionados: FiltroAdicionado[]): any {
+  public getClientes(filtrosAdicionados: FiltroAdicionado[], pageableInfo: Pageable): any {
     var requestParams = this.buildRequestParams(filtrosAdicionados);
-    return this.http.get<Cliente[]>(`${API_URL.baseUrl}api/sistema/v1/cliente${requestParams}`, this.httpOptions).pipe(
+    var pageableParams = this.buildPageableParams(pageableInfo);
+    return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente${pageableParams}${requestParams}`, this.httpOptions).pipe(
       res => res,
       error => error
     )
@@ -30,10 +31,25 @@ export class ClienteService {
     var requestParamSintax = "";
     var requestParams: string[] = [];
     filtrosAdicionados.forEach(filtro => {
-      if(requestParamSintax == "") requestParamSintax += "?busca="
+      if (requestParamSintax == "") requestParamSintax += "&busca="
       requestParams.push(filtro.tipoFiltro + "=" + filtro.valor);
     })
     requestParamSintax += requestParams.toString();
     return requestParamSintax;
   }
+
+  private buildPageableParams(pageableInfo: Pageable): string {
+    var requestParamSintax = "?";
+    if (pageableInfo != null) {
+      requestParamSintax += "page=" + pageableInfo.pageNumber;
+      requestParamSintax += "&size=" + pageableInfo.pageSize;
+    }
+    else {
+      requestParamSintax += "page=" + 0;
+      requestParamSintax += "&size=" + 5;
+    }
+    return requestParamSintax;
+  }
+
+
 }

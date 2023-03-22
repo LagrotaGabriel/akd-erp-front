@@ -46,7 +46,7 @@ export class ClienteService {
     }
     else {
       requestParamSintax += "page=" + 0;
-      requestParamSintax += "&size=" + 5;
+      requestParamSintax += "&size=" + 20;
     }
     return requestParamSintax;
   }

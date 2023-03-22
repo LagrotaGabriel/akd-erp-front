@@ -223,12 +223,24 @@ input[type='checkbox'] {
 
 .page-item {
     color: $light-grey;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
 }
 
 .page-link {
     background-color: $light-black;
     border: 1px solid $dark-grey;
     padding: 0.2rem 1rem !important;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
 }
 
 .page-link:hover {

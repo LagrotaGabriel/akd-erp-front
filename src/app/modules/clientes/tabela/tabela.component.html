@@ -195,12 +195,13 @@
   </table>
   <div *ngIf="pageObject != null" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
     <ul class="pagination pagination-sm justify-content-end">
-      <li [ngClass]="{'disabled': pageObject.pageable.pageNumber == 0}" class="page-item"><a
+      <li (click)="voltarPagina()" [ngClass]="{'disabled': pageObject.pageable.pageNumber == 0}" class="page-item"><a
           class="page-link">Anterior</a></li>
-      <li *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageObject.totalPages); let i = index"
+      <li (click)="selecionarPagina(i)"
+        *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageObject.totalPages); let i = index"
         [ngClass]="{'active': pageObject.pageable.pageNumber == i}" class="page-item"><a class="page-link">{{ i+1 }}</a>
       </li>
-      <li [ngClass]="{'disabled': pageObject.pageable.pageNumber == pageObject.totalPages-1}" class="page-item"><a
+      <li (click)="avancarPagina()" [ngClass]="{'disabled': pageObject.pageable.pageNumber == pageObject.totalPages-1}" class="page-item"><a
           class="page-link">Próximo</a></li>
     </ul>
   </div>

@@ -15,6 +15,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { MenuComponent } from './menu/menu.component';
 import { ViewComponent } from './view/view.component';
@@ -42,6 +43,7 @@ import { BuscaComponent } from './busca/busca.component';
     MatBadgeModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     FormsModule
   ],
 })

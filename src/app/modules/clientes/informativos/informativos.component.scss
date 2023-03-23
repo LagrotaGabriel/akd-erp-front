@@ -81,6 +81,11 @@
     margin: 0 auto;
 }
 
+.circle_progress {
+    display: flex;
+    justify-content: center;
+}
+
 @media (max-width: 992px) {
     .informativo_titulo {
         font-size: 0.90rem;

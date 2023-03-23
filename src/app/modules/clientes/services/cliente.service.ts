@@ -19,7 +19,7 @@ export class ClienteService {
   }
 
   public getClientes(filtrosAdicionados: FiltroAdicionado[], pageableInfo: Pageable): any {
-    var requestParams = this.buildRequestParams(filtrosAdicionados);
+    var requestParams = this.buildRequestParams(filtrosAdicionados, "&");
     var pageableParams = this.buildPageableParams(pageableInfo);
     return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente${pageableParams}${requestParams}`, this.httpOptions).pipe(
       res => res,
@@ -27,11 +27,19 @@ export class ClienteService {
     )
   }
 
-  private buildRequestParams(filtrosAdicionados: FiltroAdicionado[]): string {
+  public getMetaDados(filtrosAdicionados: FiltroAdicionado[]): any {
+    var requestParams = this.buildRequestParams(filtrosAdicionados, "?");
+    return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente/meta${requestParams}`, this.httpOptions).pipe(
+      res => res,
+      error => error
+    )
+  }
+
+  private buildRequestParams(filtrosAdicionados: FiltroAdicionado[], requestParamType: string): string {
     var requestParamSintax = "";
     var requestParams: string[] = [];
     filtrosAdicionados.forEach(filtro => {
-      if (requestParamSintax == "") requestParamSintax += "&busca="
+      if (requestParamSintax == "") requestParamSintax += (requestParamType + "busca=")
       requestParams.push(filtro.tipoFiltro + "=" + filtro.valor);
     })
     requestParamSintax += requestParams.toString();

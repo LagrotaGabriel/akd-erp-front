@@ -31,7 +31,9 @@ export class TabelaComponent implements OnChanges, AfterViewInit, AfterContentIn
   }
 
   ngAfterViewInit(): void {
-
+    setTimeout(() => {
+      this.clientesSelecionadosNaTabelaExportados.emit(this.clientesSelecionadosNaTabela);
+    }, 0);
   }
 
   ngAfterContentInit(): void {

@@ -7,6 +7,8 @@ import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado
 import { Chips } from 'src/app/shared/models/filtros/Chips';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ClienteService } from '../services/cliente.service';
+import { MetaDadosCliente } from '../models/MetaDadosCliente';
 
 @Component({
   selector: 'app-busca',
@@ -26,7 +28,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class BuscaComponent implements OnInit, DoCheck {
 
-  constructor(public filtrosService: FiltrosService, public datepipe: DatePipe, private _snackBar: MatSnackBar) { }
+  constructor(
+    private filtrosService: FiltrosService,
+    public datepipe: DatePipe,
+    private _snackBar: MatSnackBar) { }
 
   ngDoCheck(): void {
     localStorage.setItem('filtros', JSON.stringify(this.filtrosAdicionados));
@@ -35,10 +40,13 @@ export class BuscaComponent implements OnInit, DoCheck {
   }
 
   ngOnInit(): void {
-    this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
+    setTimeout(() => {
+      this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
+    }, 0);
     if (this.tiposBusca.length == 0) this.tiposBusca = this.filtrosService.setaTiposFiltro(this.tiposFiltroBusca);
   }
 
+  metaDados: MetaDadosCliente; // Meta dados obtido através de requisição HTTP
   popupFiltro: boolean = false;  // Verificação do estado do popup de adição de novos filtros
 
   // Estado atual dos chips

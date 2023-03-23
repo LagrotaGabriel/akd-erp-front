@@ -9,7 +9,8 @@
           <mat-icon (click)="alteraOrdenacao()" class="icon_expand_all" fontIcon="unfold_more"></mat-icon>
         </th>
         <th class="th th_checkbox">
-          <input (click)="checkAll()" [checked]="botaoCheckAllHabilitado" type="checkbox" id="customCheck" name="example1">
+          <input (click)="checkAll()" [checked]="botaoCheckAllHabilitado" type="checkbox" id="customCheck"
+            name="example1">
         </th>
         <th class="th th_nome">
           NOME
@@ -197,13 +198,22 @@
   </table>
 
   <div *ngIf="pageObject != null" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
-    <ul class="pagination pagination-sm justify-content-end">
+    <ul *ngIf="pageObject.totalPages > 1" class="pagination pagination-sm justify-content-end">
       <li (click)="voltarPagina()" [ngClass]="{'disabled': pageObject.pageable.pageNumber == 0}" class="page-item"><a
           class="page-link">Anterior</a></li>
-      <li (click)="selecionarPagina(i)"
-        *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageObject.totalPages); let i = index"
-        [ngClass]="{'active': pageObject.pageable.pageNumber == i}" class="page-item"><a class="page-link">{{ i+1 }}</a>
-      </li>
+      <ng-container *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageObject.totalPages); let i = index">
+        <li *ngIf="(pageObject.pageable.pageNumber - i) <= 3 && (pageObject.pageable.pageNumber - i) >= 0
+        || (i - pageObject.pageable.pageNumber) <= 3 && (i - pageObject.pageable.pageNumber) >= 0
+        || pageObject.pageable.pageNumber == 0 && (i - pageObject.pageable.pageNumber) <= 6 && (i - pageObject.pageable.pageNumber) >= 0
+        || pageObject.pageable.pageNumber == 1 && (i - pageObject.pageable.pageNumber) <= 5 && (i - pageObject.pageable.pageNumber) >= 0
+        || pageObject.pageable.pageNumber == 2 && (i - pageObject.pageable.pageNumber) <= 4 && (i - pageObject.pageable.pageNumber) >= 0
+        || (pageObject.pageable.pageNumber == (pageObject.totalPages-1)) && (pageObject.pageable.pageNumber - i) <= 6
+        || (pageObject.pageable.pageNumber == (pageObject.totalPages-2)) && (pageObject.pageable.pageNumber - i) <= 5
+        || (pageObject.pageable.pageNumber == (pageObject.totalPages-3)) && (pageObject.pageable.pageNumber - i) <= 4"
+          (click)="selecionarPagina(i)" [ngClass]="{'active': pageObject.pageable.pageNumber == i}" class="page-item">
+          <a class="page-link">{{ i+1 }}</a>
+        </li>
+      </ng-container>
       <li (click)="avancarPagina()" [ngClass]="{'disabled': pageObject.pageable.pageNumber == pageObject.totalPages-1}"
         class="page-item"><a class="page-link">Próximo</a></li>
     </ul>

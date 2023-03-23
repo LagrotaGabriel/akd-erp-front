@@ -1,5 +1,5 @@
 import { MetaDadosCliente } from './../models/MetaDadosCliente';
-import { Component, Input, OnChanges, DoCheck } from '@angular/core';
+import { Component, Input, OnChanges, DoCheck, SimpleChanges } from '@angular/core';
 import { ClienteService } from '../services/cliente.service';
 
 @Component({
@@ -18,14 +18,15 @@ export class InformativosComponent implements OnChanges, DoCheck {
     localStorage.setItem('metaDados', JSON.stringify(this.metaDados));
   }
 
-  ngOnChanges(): void {
-    this.obtemMetaDados();
+  ngOnChanges(changes: SimpleChanges): void {
+    if(!changes['filtrosAdicionados'].isFirstChange()) {
+      this.obtemMetaDados();
+    }
   }
 
   obtemMetaDados() {
     this.clienteService.getMetaDados(this.filtrosAdicionados).subscribe(
       (res: MetaDadosCliente) => {
-        console.log(res);
         this.metaDados = res;
         this.metaDados.totalClientesCadastrados = this.transformaQuantidadeDeClientesEmString(res.totalClientesCadastrados);
       },

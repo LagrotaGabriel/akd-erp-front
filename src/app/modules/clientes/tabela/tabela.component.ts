@@ -1,5 +1,5 @@
 import { Pageable, PageObject } from '../../../shared/models/PageObject';
-import { Component, Input, ViewChild, OnChanges, AfterViewInit, AfterContentInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, AfterViewInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ClienteService } from '../services/cliente.service';
 import { Cliente } from '../models/Cliente';
 
@@ -8,7 +8,7 @@ import { Cliente } from '../models/Cliente';
   templateUrl: './tabela.component.html',
   styleUrls: ['./tabela.component.scss']
 })
-export class TabelaComponent implements OnChanges, AfterViewInit, AfterContentInit {
+export class TabelaComponent implements OnChanges, AfterViewInit {
 
   pageObject: PageObject;
   clientesEncontrados: Cliente[] = [];
@@ -36,12 +36,10 @@ export class TabelaComponent implements OnChanges, AfterViewInit, AfterContentIn
     }, 0);
   }
 
-  ngAfterContentInit(): void {
-    
-  }
-
-  ngOnChanges() {
-    this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+  ngOnChanges(changes: SimpleChanges) {
+    if(!changes['filtrosAdicionados'].isFirstChange()) {
+      this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+    }
   }
 
   invocaRequisicaoHttpGetParaAtualizarObjetos() {

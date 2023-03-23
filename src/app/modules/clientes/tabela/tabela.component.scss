@@ -77,6 +77,11 @@ tbody {
     padding: 0;
 }
 
+.load-bar-tabela {
+    margin: 0 auto;
+    margin-top: 3rem;
+}
+
 .icon_container {
     justify-content: center;
 }
@@ -147,10 +152,39 @@ input[type='checkbox'] {
     accent-color: $primary-color;
 }
 
-.td_status_box {
-    border: 1px solid green;
-    color: green;
+.status_comum {
+    border: 1px solid #1c3475;
+    color: #1c3475;
+    background-color: #b1bdf1;
+    padding: 0 0.5rem;
+    font-weight: 400;
+}
+
+.status_vip {
+    border: 1px solid #008000;
+    color: #008000;
+    background-color: #b1f1ce;
+    border: 1px solid #663874;
+    color: #663874;
+    background-color: #e2b1f1;
     padding: 0 1.5rem;
+    font-weight: 400;
+}
+
+.status_debito {
+    border: 1px solid #581212;
+    color: #581212;
+    background-color: #f1b1b1;
+    padding: 0 0.5rem;
+    font-weight: 400;
+}
+
+.status_atencao {
+    border: 1px solid #75681d;
+    color: #75681d;
+    background-color: #f1e7b1;
+    padding: 0 0.5rem;
+    font-weight: 400;
 }
 
 .td_acoes,
@@ -207,6 +241,19 @@ input[type='checkbox'] {
 .accordion_texto {
     font-size: 0.70rem;
     color: $dark-white;
+}
+
+/* EMPTY TABLE */
+
+.tabela_vazia_container {
+    margin: 0;
+    padding: 0;
+}
+
+.tabela_vazia_container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
 }
 
 /* TABLE PAGINATION */

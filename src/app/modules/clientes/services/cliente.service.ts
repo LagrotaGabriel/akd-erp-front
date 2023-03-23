@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
 import { Pageable, PageObject } from '../../../shared/models/PageObject';
+import { Cliente } from '../models/Cliente';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,13 @@ export class ClienteService {
   public getMetaDados(filtrosAdicionados: FiltroAdicionado[]): any {
     var requestParams = this.buildRequestParams(filtrosAdicionados, "?");
     return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente/meta${requestParams}`, this.httpOptions).pipe(
+      res => res,
+      error => error
+    )
+  }
+
+  public removeCliente(id: number): any {
+    return this.http.delete<Cliente>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
       res => res,
       error => error
     )

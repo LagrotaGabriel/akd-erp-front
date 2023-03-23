@@ -144,7 +144,7 @@ export class BuscaComponent implements OnInit, DoCheck {
     }
     this.abrePopupFiltro();
 
-    this._snackBar.open("Todos os filtros de busca foram removidos com sucesso!", "X", {
+    this._snackBar.open("Todos os filtros de busca foram removidos com sucesso!", "x", {
       duration: 3000
     });
     this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);

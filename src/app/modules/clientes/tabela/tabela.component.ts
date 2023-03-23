@@ -1,8 +1,9 @@
+import { Cliente } from './../models/Cliente';
 import { Pageable, PageObject } from '../../../shared/models/PageObject';
 import { Component, Input, OnChanges, AfterViewInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ClienteService } from '../services/cliente.service';
-import { Cliente } from '../models/Cliente';
 import { Endereco } from 'src/app/shared/models/Endereco';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-tabela',
@@ -22,7 +23,7 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
 
   @Input() public filtrosAdicionados;
 
-  constructor(private clienteService: ClienteService) { }
+  constructor(private clienteService: ClienteService, private _snackBar: MatSnackBar) { }
 
   ngDoCheck(): void {
     localStorage.setItem('pageable', JSON.stringify(this.pageableInfo));
@@ -113,6 +114,21 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
       return enderecoCompleto;
     }
     else return '-';
+  }
+
+  excluiCliente(id: number) {
+    this.clienteService.removeCliente(id).subscribe(
+      (res: Cliente) => {
+        console.log(res.nome + ' Excluído com sucesso');
+        this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+        this._snackBar.open("Cliente " + res.nome + " Excluído com sucesso!", "x", {
+          duration: 3000
+        });
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
   GeraNumerosParaNavegarNaPaginacao(n: number): Array<number> {

@@ -88,16 +88,14 @@
 
             <td class="td td_acoes">
               <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 icon_container">
-                <!--<mat-icon fontIcon="settings" class="icone icone_tabela"
-                  matTooltip="Editar cliente" matTooltipPosition="above"></mat-icon>-->
                 <mat-icon fontIcon="more_vert"
                   class="icone icone_tabela icone_tabela_remove dropdown dropleft float-right"
                   data-toggle="dropdown"></mat-icon>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">
+                  <a class="dropdown-item">
                     Editar
                   </a>
-                  <a class="dropdown-item" href="#">
+                  <a (click)="excluiCliente(cliente.id)" class="dropdown-item">
                     Excluir
                   </a>
                 </div>

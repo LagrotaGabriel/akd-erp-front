@@ -121,7 +121,9 @@
                         cadastro:</h3>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">Gabriel Lagrota</p>
+                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                        {{ cliente.nomeColaboradorResponsavel | titlecase }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -132,9 +134,9 @@
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data do cadastro:</h3>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">{{ cliente.dataCadastro
-                        |
-                        date: 'dd/MM/yyyy' }} às {{ cliente.horaCadastro | slice:0:5}}</p>
+                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                        {{ cliente.dataCadastro | date: 'dd/MM/yyyy' }} às {{ cliente.horaCadastro | slice:0:5}}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -146,7 +148,10 @@
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                       <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ cliente.email }}</p>
+                        {{ (cliente.email != null && cliente.email != '')
+                        ? (cliente.email)
+                        : '-'}}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -158,9 +163,11 @@
                       </h3>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">{{
-                        cliente.dataNascimento
-                        | date: 'dd/MM/yyyy'}}</p>
+                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                        {{ (cliente.dataNascimento != null && cliente.dataNascimento != '')
+                        ? (cliente.dataNascimento | date: 'dd/MM/yyyy')
+                        : '-'}}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -172,7 +179,9 @@
                       </h3>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">125664080114</p>
+                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                        {{ cliente.inscricaoEstadual != null ? cliente.inscricaoEstadual : '-' }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -183,8 +192,18 @@
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Giro total:</h3>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">R$ 12.560,45 (16 Ordens)
+                      <p *ngIf="cliente.giroTotal > 0; else ClienteSemGiro"
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                        {{ cliente.giroTotal | currency : 'BRL' }}
+                        {{ cliente.qtdOrdensRealizadas == 1
+                        ? '(' + cliente.qtdOrdensRealizadas + ' Ordem)'
+                        : '(' + cliente.qtdOrdensRealizadas + ' Ordens)' }}
                       </p>
+                      <ng-template #ClienteSemGiro>
+                        <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                          {{ cliente.giroTotal | currency : 'BRL' }}
+                        </p>
+                      </ng-template>
                     </div>
                   </div>
                 </div>
@@ -195,8 +214,9 @@
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Endereço:</h3>
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">Av. Coronel Manuel Py,
-                        583 - Lauzane Paulista, São Paulo - SP, 02442-090</p>
+                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                        {{ trataEnderecoTabela(cliente.endereco) }}
+                      </p>
                     </div>
                   </div>
                 </div>

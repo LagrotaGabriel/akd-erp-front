@@ -2,6 +2,7 @@ import { Pageable, PageObject } from '../../../shared/models/PageObject';
 import { Component, Input, OnChanges, AfterViewInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ClienteService } from '../services/cliente.service';
 import { Cliente } from '../models/Cliente';
+import { Endereco } from 'src/app/shared/models/Endereco';
 
 @Component({
   selector: 'app-tabela',
@@ -99,6 +100,19 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
       cliente.checked = this.botaoCheckAllHabilitado;
     })
     this.clientesSelecionadosNaTabelaExportados.emit(this.clientesSelecionadosNaTabela);
+  }
+
+  trataEnderecoTabela(endereco: Endereco): string {
+    var enderecoCompleto = ""
+    if (endereco != null) {
+      enderecoCompleto += (endereco.logradouro + ', ' + endereco.numero);
+      if (endereco.bairro != null && endereco.cidade != null && endereco.estadoEnum != null)
+        enderecoCompleto += (' - ' + endereco.bairro + ', ' + endereco.cidade + ' - ' + endereco.estadoEnum);
+      if (endereco.codigoPostal != null)
+        enderecoCompleto += (' - ' + endereco.codigoPostal);
+      return enderecoCompleto;
+    }
+    else return '-';
   }
 
   GeraNumerosParaNavegarNaPaginacao(n: number): Array<number> {

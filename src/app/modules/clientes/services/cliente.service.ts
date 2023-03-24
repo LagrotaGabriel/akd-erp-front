@@ -15,7 +15,7 @@ export class ClienteService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': '	Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2Nzk2MjA2Mzd9.sOBojG0nse6Dc1n2ZLPTUEhsH96_5I1c8793CrwnReSkKqjj5tAuYgYIsCkpxc8QmpIexUBUw2uPY3KupyPCHw'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2ODAyNjc4OTl9.DW6XZiYD249z6GX7jrzdGXmkmI5zAYBvs6lVilsFKq2erj-vxaBPVJUpE_PN7I0WufPwyjYqeCrns3xj2r6yaQ'
     })
   }
 

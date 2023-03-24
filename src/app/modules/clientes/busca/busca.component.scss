@@ -191,6 +191,7 @@ hr {
     border-radius: 0;
     cursor: pointer;
 }
+
 .popup_filtro_select:focus {
     outline: none;
 }
@@ -322,4 +323,181 @@ hr {
     background-color: transparent;
     color: $secondary-color;
     text-align: center;
+}
+
+/* Responsividade */
+
+// XL
+@media (max-width: 1400px) {
+    .chip_text  {
+        font-size: 0.90rem;
+    }
+    .input_busca {
+        width: 30rem;
+        font-size: 0.90rem;
+    }
+
+    .texto_filtro {
+        font-size: 0.90rem;
+    }
+}
+
+// XL
+@media (max-width: 1300px) {
+    .input_busca {
+        width: 25rem;
+        font-size: 0.85rem;
+    }
+
+    .texto_filtro {
+        font-size: 0.85rem;
+    }
+}
+
+// LG
+@media (max-width: 1200px) {
+    .chip_text  {
+        font-size: 0.85rem;
+    }
+    .input_busca {
+        width: 25rem;
+        font-size: 0.85rem;
+    }
+
+    .texto_filtro {
+        font-size: 0.85rem;
+    }
+}
+
+// MD
+@media (max-width: 992px) {
+    .chip_text  {
+        font-size: 0.80rem;
+    }
+    .input_busca {
+        width: 25rem;
+        font-size: 0.80rem;
+    }
+    .texto_filtro {
+        font-size: 0.80rem;
+    }
+    .select_block {
+        padding: 0rem 0.3rem;
+    }
+    .busca_block {
+        padding: 0 0.4rem;
+    }
+}
+// MD
+@media (max-width: 892px) {
+    .input_block   {
+        padding: 0.1rem 0.3rem;
+    }
+    .input_busca {
+        width: 25rem;
+        font-size: 0.75rem;
+    }
+    .texto_filtro {
+        font-size: 0.75rem;
+    }
+    .select_block {
+        padding: 0.1rem 0.3rem;
+    }
+    .busca_block {
+        padding: 0rem 0.5rem;
+        padding-top: 0.1rem;
+    }
+}
+
+// SM
+@media (max-width: 820px) {
+    .input_busca {
+        width: 25rem;
+    }
+}
+
+// SM
+@media (max-width: 768px) {
+    .chip_text  {
+        font-size: 0.80rem;
+    }
+    .input_block   {
+        padding: 0.1rem 0.5rem;
+    }
+    .input_busca {
+        width: 20rem;
+        font-size: 0.70rem;
+    }
+    .texto_filtro {
+        font-size: 0.70rem;
+    }
+    .select_block {
+        padding: 0.1rem 0.4rem;
+    }
+    .busca_block {
+        padding: 0.1rem 0.5rem;
+        padding-top: 0.1rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .input_busca {
+        width: 18rem;
+    }
+}
+
+@media (max-width: 650px) {
+    .input_busca {
+        width: 16rem;
+    }
+}
+
+@media (max-width: 620px) {
+    .chip_text  {
+        font-size: 0.70rem;
+    }
+    .input_block   {
+        padding: 0rem 0.5rem;
+        padding-top: 0.1rem;
+    }
+    .input_busca {
+        width: 14rem;
+        font-size: 0.70rem;
+    }
+    .texto_filtro {
+        font-size: 0.70rem;
+    }
+    .select_block {
+        padding: 0rem 0.4rem;
+        margin-left: 0.7rem;
+    }
+    .busca_block {
+        padding: 0rem 0.5rem;
+    }
+}
+
+
+// X-SM
+@media (max-width: 576px) {
+    .chip_text  {
+        font-size: 0.70rem;
+    }
+    .chip_block {
+        margin-right: 0.4rem;
+    }
+    .container {
+        justify-content: left;
+    }
+    .input_filtro_container {
+        display: none;
+    }
+    .texto_filtro {
+        font-size: 0.70rem;
+    }
+    .select_block {
+        padding: 0rem 0.4rem;
+    }
+    .busca_block {
+        padding: 0rem 0.5rem;
+    }
 }

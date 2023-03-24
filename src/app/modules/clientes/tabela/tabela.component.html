@@ -36,7 +36,7 @@
     <tbody *ngIf="pageObject != null; else: loadBarTabela" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
       <div *ngIf="clientesEncontrados.length > 0; else: tabelaVazia"
-        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela_container">
         <div *ngFor="let cliente of clientesEncontrados; let i = index"
           class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela">
 
@@ -56,8 +56,8 @@
             <td class="td td_nome">
               <div class="nome_cliente">
                 {{
-                (cliente.nome.length > 15)
-                ? (cliente.nome | slice:0:15 | titlecase)+'...'
+                (cliente.nome.length > 14)
+                ? (cliente.nome | slice:0:14 | titlecase)+'...'
                 : (cliente.nome | titlecase)
                 }}
               </div>
@@ -154,7 +154,7 @@
                   </div>
                 </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 accordion_bloco">
+                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
                   <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data de nascimento:
@@ -170,7 +170,7 @@
                   </div>
                 </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 accordion_bloco">
+                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
                   <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Inscrição estadual:

@@ -100,7 +100,11 @@ export class BuscaComponent implements OnInit, DoCheck {
     }
 
     this.tiposBusca.forEach(tipoBusca => {
-      if (this.tipoBuscaAtual.tipoFiltro == tipoBusca.tipoFiltro) tipoBusca.disabled = true;
+      if (this.tipoBuscaAtual.tipoFiltro == tipoBusca.tipoFiltro
+        || this.tipoBuscaAtual.tipoFiltro == TiposFiltro.DATA && tipoBusca.tipoFiltro == TiposFiltro.MES_ANO
+        || this.tipoBuscaAtual.tipoFiltro == TiposFiltro.MES_ANO && tipoBusca.tipoFiltro == TiposFiltro.DATA) {
+        tipoBusca.disabled = true;
+      }
     })
 
     this.abrePopupFiltro();
@@ -126,7 +130,9 @@ export class BuscaComponent implements OnInit, DoCheck {
   // Método executado quando o "x" dos chips forem acionados. Tem como objetivo remover um filtro de busca
   removeFiltro(index: number) {
     this.tiposBusca.forEach(tipoBusca => {
-      if (tipoBusca.tipoFiltro.toString() == this.filtrosAdicionados[index].tipoFiltro.toString()) {
+      if (tipoBusca.tipoFiltro.toString() == this.filtrosAdicionados[index].tipoFiltro.toString()
+      || tipoBusca.tipoFiltro == TiposFiltro.DATA && this.filtrosAdicionados[index].tipoFiltro == TiposFiltro.MES_ANO
+      || tipoBusca.tipoFiltro == TiposFiltro.MES_ANO && this.filtrosAdicionados[index].tipoFiltro == TiposFiltro.DATA) {
         this.tiposBusca[this.tiposBusca.indexOf(tipoBusca)].disabled = false;
       }
     })
@@ -143,6 +149,10 @@ export class BuscaComponent implements OnInit, DoCheck {
       'iconeOlho': 'visibility', 'descricaoAoPassarMouse': 'Não há filtros a serem exibidos'
     }
     this.abrePopupFiltro();
+
+    this.tiposBusca.forEach(tipoBusca => {
+      this.tiposBusca[this.tiposBusca.indexOf(tipoBusca)].disabled = false;
+    })
 
     this._snackBar.open("Todos os filtros de busca foram removidos com sucesso!", "x", {
       duration: 3000

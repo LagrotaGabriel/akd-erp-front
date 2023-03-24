@@ -1,6 +1,8 @@
 import { MetaDadosCliente } from './../models/MetaDadosCliente';
 import { Component, Input, OnChanges, DoCheck, SimpleChanges } from '@angular/core';
 import { ClienteService } from '../services/cliente.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-informativos',
@@ -9,7 +11,7 @@ import { ClienteService } from '../services/cliente.service';
 })
 export class InformativosComponent implements OnChanges, DoCheck {
 
-  constructor(private clienteService: ClienteService) { }
+  constructor(private clienteService: ClienteService, private _snackBar: MatSnackBar) { }
 
   @Input() public filtrosAdicionados;
   metaDados: MetaDadosCliente = JSON.parse(localStorage.getItem("metaDados") || null);
@@ -30,9 +32,15 @@ export class InformativosComponent implements OnChanges, DoCheck {
         this.metaDados = res;
         this.metaDados.totalClientesCadastrados = this.transformaQuantidadeDeClientesEmString(res.totalClientesCadastrados);
       },
-      (error: any) => {
-        console.log(error);
-      })
+      (error: HttpErrorResponse) => {
+        if (error.status == 403) {
+          //TODO Encerrar sessão e redirecionar usuário para página de login. Aplicar NG GUARD (Se necessário)
+        }
+        else if (error.status == 0)
+          this.metaDados = null;
+          this._snackBar.open("Houve uma falha de comunicação com o servidor", "x");
+      }
+      )
   }
 
   transformaQuantidadeDeClientesEmString(qtdeClientes: any): string {

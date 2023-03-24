@@ -4,6 +4,7 @@ import { Component, Input, OnChanges, AfterViewInit, Output, EventEmitter, Simpl
 import { ClienteService } from '../services/cliente.service';
 import { Endereco } from 'src/app/shared/models/Endereco';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-tabela',
@@ -39,7 +40,7 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(!changes['filtrosAdicionados'].isFirstChange()) {
+    if (!changes['filtrosAdicionados'].isFirstChange()) {
       this.invocaRequisicaoHttpGetParaAtualizarObjetos();
     }
   }
@@ -58,7 +59,13 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
           if (cliente.expanded == null) cliente.expanded = false;
         })
       },
-      (error: any) => console.log(error)
+      (error: HttpErrorResponse) => {
+        if (error.status == 403) {
+          //TODO Encerrar sessão e redirecionar usuário para página de login. Aplicar NG GUARD (Se necessário)
+        }
+        else if (error.status == 0)
+          this._snackBar.open("Houve uma falha de comunicação com o servidor", "x");
+      }
     );
   }
 
@@ -81,7 +88,7 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
 
   alteraEstadoCheckTabela(indice: number) {
     if (this.clientesEncontrados[indice].checked) {
-      let indiceNaListaDeSelecionados: number = 
+      let indiceNaListaDeSelecionados: number =
         this.clientesSelecionadosNaTabela.findIndex(clienteSelecionado => clienteSelecionado.id === this.clientesEncontrados[indice].id);
       this.clientesSelecionadosNaTabela =
         this.clientesSelecionadosNaTabela.filter((_, item) => item < indiceNaListaDeSelecionados || item >= indiceNaListaDeSelecionados + 1);

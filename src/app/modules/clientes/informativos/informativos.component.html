@@ -113,9 +113,9 @@
           <h2 *ngIf="metaDados.bairroComMaisClientes != null; else: bairroSemInfo"
             class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 informativo_texto">
             {{
-            (metaDados.bairroComMaisClientes.split(' ')[0].length > 8)
-            ? (metaDados.bairroComMaisClientes.split(' ')[0] | slice:0:8 | titlecase)+'...'
-            : (metaDados.bairroComMaisClientes.split(' ')[0] | titlecase)
+            (metaDados.bairroComMaisClientes.length > 7)
+            ? (metaDados.bairroComMaisClientes | slice:0:7 | titlecase)+'...'
+            : (metaDados.bairroComMaisClientes | titlecase)
             }}
           </h2>
           <ng-template #bairroSemInfo>

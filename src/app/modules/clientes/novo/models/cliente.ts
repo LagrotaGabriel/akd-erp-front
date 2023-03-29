@@ -1,3 +1,4 @@
+import { Endereco } from "./endereco";
 import { Telefone } from "./telefone";
 
 export class Cliente {
@@ -8,5 +9,6 @@ export class Cliente {
     email?: string;
     dataNascimento?: string;
     status: string;
-    telefone?: Telefone; 
+    telefone?: Telefone;
+    endereco?: Endereco; 
 }

@@ -84,6 +84,10 @@ span {
     font-weight: 600;
 }
 
+.form_telefone {
+    margin-top: 0.5rem;
+}
+
 .input_group {
     padding: 0rem 1rem 1.5rem 1rem;
 }
@@ -112,14 +116,18 @@ span {
     padding: 0.5rem 1rem;
 }
 
-option, select, input {
+option,
+select,
+input {
     background: $dark-black !important;
     color: $primary-color !important;
     border: 1px solid $dark-grey !important;
     font-family: $font-poppins !important;
 }
 
-option:focus, select:focus, input:focus {
+option:focus,
+select:focus,
+input:focus {
     border: 1px solid $primary-color !important;
     outline: none;
 }
@@ -157,6 +165,43 @@ option:focus, select:focus, input:focus {
 .input_data {
     -ms-user-select: none;
     user-select: none;
+}
+
+.input_cidade::-webkit-calendar-picker-indicator {
+    display: none !important;
+}
+
+::ng-deep .mat-datepicker-content {
+    background-color: $light-black !important;
+}
+
+::ng-deep .mat-calendar-body-label,
+::ng-deep .mat-calendar-table-header tr th,
+::ng-deep .mdc-button__label span {
+    color: $primary-color !important;
+    font-weight: 500 !important;
+}
+
+::ng-deep .mat-calendar-arrow {
+    fill: $primary-color !important;
+}
+
+::ng-deep .mat-mdc-icon-button {
+    color: $primary-color !important;
+}
+
+::ng-deep .mat-calendar-body-cell {
+    outline: none !important;
+    --mat-mdc-button-ripple-color: transparent !important;
+    --mat-mdc-button-persistent-ripple-color: transparent !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+    color: $light-grey !important;
+}
+
+::ng-deep .mat-calendar-body-disabled .mat-calendar-body-cell-content {
+    color: $dark-grey !important;
 }
 
 ::ng-deep .mat-mdc-icon-button.mat-mdc-button-base {
@@ -202,7 +247,8 @@ option:focus, select:focus, input:focus {
     margin-left: 1rem;
 }
 
-.botaoHabilitado:hover {
+.botaoHabilitado:hover,
+.botaoHabilitado:focus {
     border: 1px solid $primary-color;
     color: $light-black;
     background-color: $primary-color;
@@ -233,11 +279,11 @@ option:focus, select:focus, input:focus {
         margin-bottom: 0;
     }
 
-    .label  {
+    .label {
         font-size: 1.1rem;
     }
 
-    .input  {
+    .input {
         font-size: 1rem;
     }
 
@@ -262,11 +308,11 @@ option:focus, select:focus, input:focus {
         margin-bottom: 0;
     }
 
-    .label  {
+    .label {
         font-size: 1rem;
     }
 
-    .input  {
+    .input {
         font-size: 0.9rem;
     }
 
@@ -299,11 +345,11 @@ option:focus, select:focus, input:focus {
         margin-bottom: 0;
     }
 
-    .label  {
+    .label {
         font-size: 1rem;
     }
 
-    .input  {
+    .input {
         font-size: 0.9rem;
     }
 
@@ -347,12 +393,12 @@ option:focus, select:focus, input:focus {
         margin: 0.8rem 0;
         margin-bottom: 0;
     }
-    
-    .label  {
+
+    .label {
         font-size: 0.9rem;
     }
 
-    .input  {
+    .input {
         font-size: 0.8rem;
         padding: 0.5rem;
     }
@@ -382,4 +428,3 @@ option:focus, select:focus, input:focus {
         padding: 0 0.5rem !important;
     }
 }
-

@@ -93,7 +93,7 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label
                             [ngClass]="{'label_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
-                            class="label">{{ cliente.tipoPessoa == 'FISICA' ? 'CPF' : 'CNPJ' }}</label>
+                            class="label">{{ cliente.tipoPessoa == 'FISICA' ? 'Cpf' : 'Cnpj' }}</label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="cpfCnpj" name="cpfCnpj"
@@ -181,13 +181,13 @@
                         <label class="label">Data de nascimento</label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input placeholder="--/--/----" [min]="minDate" [max]="maxDate" matInput spellcheck="false"
-                            tabindex="7" [matDatepicker]="picker" readonly autocomplete="off" type="text"
+                        <input placeholder="--/--/----" [min]="minDate" [max]="maxDate" matInput spellcheck="false" (focus)="picker.open()" 
+                            (click)="picker.open()" style="cursor: pointer" tabindex="7" [matDatepicker]="picker" readonly autocomplete="off" type="text"
                             formControlName="dataNascimento" name="dataNascimento"
                             class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-datepicker-toggle [disableRipple]="true" class="icone_data"
                             [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                        <mat-datepicker #picker startView="month" color="primary" touchUi></mat-datepicker>
                     </div>
 
                 </div>
@@ -206,16 +206,86 @@
                 <ng-template matStepLabel>
                     <span>Telefone</span>
                 </ng-template>
-                <div class="row col-xl-12 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+
+                <!-- Tipo do telefone -->
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Telefone</label>
-                        <h6 class="asterisco">*</h6>
+                        <label class="label">Tipo do telefone</label>
                     </div>
-                    <input formControlName="secondCtrl" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <select formControlName="tipoTelefone" name="tipoTelefone" [(ngModel)]="cliente.telefone.tipoTelefone" tabindex="9" autofocus
+                        (change)="atualizaValidatorsTelefone()" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <option value="" selected>Sem telefone</option>
+                            <option value="FIXO">Fixo</option>
+                            <option value="MOVEL">Móvel</option>
+                            <option value="WHATSAPP">Móvel com whatsapp</option>
+                        </select>
+                    </div>
                 </div>
+
+                <!-- PREFIXO -->
+                <div class="row col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid}"
+                            [ngClass]="{'label_desabilitada': cliente.telefone.tipoTelefone == '' || cliente.telefone.tipoTelefone == null}">
+                            Prefixo
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="text" autocomplete="off" maxlength="2" spellcheck="false" tabindex="10" (input)="realizaTratamentoPrefixo()"
+                            [ngClass]="{'input_invalida': dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid}"
+                            formControlName="prefixo" name="prefixo" [(ngModel)]="cliente.telefone.prefixo"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon
+                            *ngIf="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].value != ''"
+                            [fontIcon]="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid 
+                            ? 'error' 
+                            : 'check'"
+                            [ngClass]="{'icone_ok': !dadosTelefone.controls['prefixo'].invalid,
+                                    'icone_error': dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid}"
+                            class="icone"></mat-icon>
+                    </div>
+                    <div class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 *ngIf="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid"
+                            class="error_message">{{ 'O prefixo deve ser composto por dois caracteres numéricos' }}</h6>
+                    </div>
+                </div>
+
+                <!-- NÚMERO -->
+                <div class="row col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
+                            [ngClass]="{'label_desabilitada': cliente.telefone.tipoTelefone == '' || cliente.telefone.tipoTelefone == null}">
+                            Número
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="text" autocomplete="off" [maxlength]="inputLengthTelefone" spellcheck="false" 
+                            tabindex="11" (input)="realizaTratamentoNumeroTelefone()"
+                            [ngClass]="{'input_invalida': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
+                            formControlName="numero" name="numero" [(ngModel)]="cliente.telefone.numero"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon
+                            *ngIf="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].value != ''"
+                            [fontIcon]="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid 
+                            ? 'error' 
+                            : 'check'"
+                            [ngClass]="{'icone_ok': !dadosTelefone.controls['numero'].invalid,
+                                    'icone_error': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
+                            class="icone"></mat-icon>
+                    </div>
+                    <div class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 *ngIf="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid"
+                            class="error_message">{{ 'O número deve ser composto por ' + inputLengthTelefone + ' caracteres numéricos' }}</h6>
+                    </div>
+                </div>
+
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button class="button" mat-button matStepperPrevious>Voltar</button>
-                    <button class="button" mat-button matStepperNext>Próximo</button>
+                    <button class="button botaoHabilitado" mat-button matStepperPrevious>Voltar</button>
+                    <button class="button" mat-button class="button" 
+                    [ngClass]="{'botaoHabilitado': dadosTelefone.valid, 'botaoDesabilitado': !dadosTelefone.valid}" matStepperNext>Próximo</button>
                 </div>
             </form>
         </mat-step>

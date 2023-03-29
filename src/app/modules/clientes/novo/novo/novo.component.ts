@@ -13,12 +13,16 @@ export class NovoComponent implements OnInit {
   dadosTelefone: FormGroup;
   dadosEndereco: FormGroup;
 
-  startDate = new Date(1990, 0, 1);
   minDate: Date;
   maxDate: Date;
 
-  inputLengthCpfCnpj:number = 11;
-  inputPatternCpfCnpj:any = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
+  inputLengthCpfCnpj: number = 11;
+  inputPatternCpfCnpj: any = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
+
+  inputLengthPrefixo: number = 2;
+  inputPrefixoPattern: any = /^[0-9]{2}/;
+  inputLengthTelefone: number;
+  inputTelefonePattern: any;
 
   cliente: Cliente = new Cliente();
 
@@ -29,10 +33,14 @@ export class NovoComponent implements OnInit {
     this.minDate = new Date(1920, 0, 1);
     this.maxDate = new Date(currentYear, 0, 1);
     this.atualizaTipoPessoa();
+    this.atualizaValidatorsTelefone();
   }
 
   inicializarCliente() {
-    this.cliente = { nome: '', tipoPessoa: 'FISICA', cpfCnpj: '', inscricaoEstadual: '', email: '', dataNascimento: '', status: 'COMUM' }
+    this.cliente = {
+      nome: '', tipoPessoa: 'FISICA', cpfCnpj: '', inscricaoEstadual: '', email: '', dataNascimento: '', status: 'COMUM',
+      telefone: { tipoTelefone: '', prefixo: null, numero: null }
+    }
   }
 
   createForm() {
@@ -43,10 +51,12 @@ export class NovoComponent implements OnInit {
       inscricaoEstadual: ['', [Validators.pattern(/^[0-9]{12}/), Validators.maxLength(12), Validators.minLength(12)]],
       email: ['', [Validators.email, Validators.maxLength(50)]],
       dataNascimento: [''],
-      status: ['COMUM', Validators.required]
+      status: ['', Validators.required]
     });
     this.dadosTelefone = this.formBuilder.group({
-      secondCtrl: ['', Validators.required],
+      tipoTelefone: [''],
+      prefixo: ['', [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
+      numero: [''],
     });
     this.dadosEndereco = this.formBuilder.group({
       thirdCtrl: ['', Validators.required],
@@ -56,7 +66,6 @@ export class NovoComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) { }
 
   atualizaTipoPessoa() {
-    console.log(this.cliente.tipoPessoa);
     if (this.cliente.tipoPessoa == 'FISICA') {
       this.inputLengthCpfCnpj = 11;
       this.inputPatternCpfCnpj = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
@@ -67,14 +76,57 @@ export class NovoComponent implements OnInit {
       this.inputPatternCpfCnpj = /^[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}[0-9]{2}/
       this.dadosCliente.controls['inscricaoEstadual'].enable();
     }
-    this.dadosCliente.controls['cpfCnpj'].setValidators([Validators.maxLength(this.inputLengthCpfCnpj), Validators.minLength(this.inputLengthCpfCnpj)])
-    this.dadosCliente.controls['cpfCnpj'].setValidators(Validators.pattern(this.inputPatternCpfCnpj))
+    this.dadosCliente.controls['cpfCnpj'].setValidators([Validators.maxLength(this.inputLengthCpfCnpj), 
+      Validators.minLength(this.inputLengthCpfCnpj), Validators.pattern(this.inputPatternCpfCnpj)]);
 
     this.cliente.inscricaoEstadual = '';
     this.dadosCliente.controls['inscricaoEstadual'].reset();
 
     this.cliente.cpfCnpj = '';
     this.dadosCliente.controls['cpfCnpj'].reset();
+  }
+
+  atualizaValidatorsTelefone() {
+    this.cliente.telefone.prefixo = '';
+    this.dadosTelefone.controls['prefixo'].reset();
+
+    this.cliente.telefone.numero = '';
+    this.dadosTelefone.controls['numero'].reset();
+
+    this.dadosTelefone.controls['prefixo'].clearValidators();
+    this.dadosTelefone.controls['numero'].clearValidators();
+
+    if (this.cliente.telefone.tipoTelefone != '' && this.cliente.telefone.tipoTelefone != null) {
+
+      this.dadosTelefone.controls['prefixo'].enable();
+      this.dadosTelefone.controls['numero'].enable();
+
+      if (this.cliente.telefone.tipoTelefone == 'FIXO') {
+        this.inputLengthTelefone = 8;
+        this.inputTelefonePattern = /^[0-9]{4}[0-9]{4}/;
+      }
+      
+      else if (this.cliente.telefone.tipoTelefone == 'MOVEL' || this.cliente.telefone.tipoTelefone == 'MOVEL_WHATSAPP') {
+        this.inputLengthTelefone = 9;
+        this.inputTelefonePattern = /^[0-9][0-9]{4}[0-9]{4}/;
+      }
+
+      this.dadosTelefone.controls['prefixo'].addValidators(Validators.required);
+      this.dadosTelefone.controls['prefixo'].addValidators([Validators.maxLength(this.inputLengthPrefixo), Validators.minLength(this.inputLengthPrefixo)]);
+      this.dadosTelefone.controls['prefixo'].addValidators(Validators.pattern(this.inputPrefixoPattern));
+
+      this.dadosTelefone.controls['numero'].addValidators(Validators.required);
+      this.dadosTelefone.controls['numero'].addValidators([Validators.maxLength(this.inputLengthTelefone), Validators.minLength(this.inputLengthTelefone)]);
+      this.dadosTelefone.controls['numero'].addValidators(Validators.pattern(this.inputTelefonePattern));
+    }
+
+    else {
+      this.dadosTelefone.controls['prefixo'].disable();
+      this.dadosTelefone.controls['numero'].disable();
+    }
+
+    this.dadosTelefone.controls['prefixo'].updateValueAndValidity();
+    this.dadosTelefone.controls['numero'].updateValueAndValidity();
   }
 
   realizaTratamentoCpfCnpj() {
@@ -92,5 +144,18 @@ export class NovoComponent implements OnInit {
       .trim();
   }
 
+  realizaTratamentoPrefixo() {
+    this.cliente.telefone.prefixo = this.cliente.telefone.prefixo
+      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
+      .replace(/[^0-9.]/g, '')
+      .trim();
+  }
+
+  realizaTratamentoNumeroTelefone() {
+    this.cliente.telefone.numero = this.cliente.telefone.numero
+      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
+      .replace(/[^0-9.]/g, '')
+      .trim();
+  }
 
 }

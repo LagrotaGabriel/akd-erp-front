@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
 import { Pageable, PageObject } from '../../../shared/models/PageObject';
+import { Cliente as ClienteNovo } from '../novo/models/cliente';
 import { Cliente } from '../models/Cliente';
 
 @Injectable({
@@ -17,6 +18,13 @@ export class ClienteService {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2ODAyNzk1MzF9.02lW0gkD_eL_WGu4Z13o_S0KPAmqIbIVy7C-chkrviJHK32Jir9mqJuJiCH2h1SnH9pACP5CurCxyJFnIta79A'
     })
+  }
+
+  public novoCliente(clienteNovo: ClienteNovo): any {
+    return this.http.post<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
+      res => res,
+      error => error
+    )
   }
 
   public getClientes(filtrosAdicionados: FiltroAdicionado[], pageableInfo: Pageable): any {

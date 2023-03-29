@@ -1,6 +1,7 @@
+import { ClienteService } from './../../services/cliente.service';
 import { CnpjResponse } from './../../../../shared/models/brasil-api/cnpj-response';
 import { ConsultaCepResponse } from '../../../../shared/models/brasil-api/consulta-cep-response';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../models/cliente';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -39,18 +40,20 @@ export class NovoComponent implements OnInit {
   // Variaveis endereço
   estadosResponse: EstadosResponse[];
   municipiosResponse: MunicipiosResponse[];
+  @ViewChild('numeroEndereco') inputNumeroEndereco: ElementRef;
 
   ngOnInit(): void {
     this.inicializarCliente();
     this.createForm();
+
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(1920, 0, 1);
     this.maxDate = new Date(currentYear, 0, 1);
-    setTimeout(() => {
-      this.atualizaTipoPessoa();
-      this.atualizaValidatorsTelefone();
-      this.obtemTodosEstadosBrasileiros();
-    }, 0);
+
+    this.atualizaTipoPessoa();
+    this.atualizaValidatorsTelefone();
+    this.obtemTodosEstadosBrasileiros();
+
   }
 
   inicializarCliente() {
@@ -97,15 +100,15 @@ export class NovoComponent implements OnInit {
     this.dadosEndereco = this.formBuilder.group({
       logradouro: [''],
       numero: [''],
-      bairro: [''],
-      codigoPostal: [''],
-      cidade: [''],
-      complemento: [''],
-      estado: ['']
+      bairro: ['', Validators.maxLength(50)],
+      codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^[0-9]{5}[0-9]{3}/)]],
+      cidade: ['', Validators.maxLength(50)],
+      complemento: ['', Validators.maxLength(50)],
+      estado: ['', Validators.maxLength(50)]
     });
   }
 
-  constructor(private formBuilder: FormBuilder, private brasilApiService: BrasilApiService) { }
+  constructor(private formBuilder: FormBuilder, private brasilApiService: BrasilApiService, private clienteService: ClienteService) { }
 
   atualizaTipoPessoa() {
     if (this.cliente.tipoPessoa == 'FISICA') {
@@ -190,44 +193,69 @@ export class NovoComponent implements OnInit {
   }
 
   setaClienteComInformacoesObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    console.log(cnpjResponse);
     // Dados
-    this.cliente.nome = cnpjResponse.nome_fantasia != null && cnpjResponse.nome_fantasia != ''
-      ? cnpjResponse.nome_fantasia : this.cliente.nome;
+    if (cnpjResponse.nome_fantasia != null && cnpjResponse.nome_fantasia != '') {
+      this.cliente.nome = cnpjResponse.nome_fantasia;
+      this.dadosCliente.controls['nome'].markAsTouched();
+    }
 
-    this.cliente.email = cnpjResponse.email != null && cnpjResponse.email != ''
-      ? cnpjResponse.nome_fantasia : this.cliente.email;
+    if (cnpjResponse.email != null && cnpjResponse.email != '') {
+      this.cliente.email = cnpjResponse.email;
+      this.dadosCliente.controls['email'].markAsTouched();
+    }
 
     // Telefone
     if (cnpjResponse.ddd_telefone_1 != null && cnpjResponse.ddd_telefone_1 != '') {
-      this.cliente.telefone.tipoTelefone = cnpjResponse.ddd_telefone_1.length == 10 
-        ? this.cliente.telefone.tipoTelefone = 'FIXO' : this.cliente.telefone.tipoTelefone = 'MOVEL'
+      if (cnpjResponse.ddd_telefone_1.length == 10) {
+        this.cliente.telefone.tipoTelefone = 'FIXO';
+      }
+      else {
+        this.cliente.telefone.tipoTelefone = 'MOVEL';
+      }
       this.atualizaValidatorsTelefone();
-      this.cliente.telefone.prefixo = cnpjResponse.ddd_telefone_1.slice(0,2);
+      this.dadosTelefone.controls['tipoTelefone'].markAsTouched();
+
+      this.cliente.telefone.prefixo = cnpjResponse.ddd_telefone_1.slice(0, 2);
       this.cliente.telefone.numero = cnpjResponse.ddd_telefone_1.slice(2);
+      this.dadosTelefone.controls['prefixo'].markAsTouched();
+      this.dadosTelefone.controls['numero'].markAsTouched();
     }
 
     // Endereço
-    this.cliente.endereco.logradouro = cnpjResponse.logradouro != null && cnpjResponse.logradouro != ''
-      ? cnpjResponse.logradouro : this.cliente.endereco.logradouro;
+    if (cnpjResponse.logradouro != null && cnpjResponse.logradouro != '') {
+      this.cliente.endereco.logradouro = cnpjResponse.logradouro;
+      this.dadosEndereco.controls['logradouro'].markAsTouched();
+    }
 
-    this.cliente.endereco.numero = cnpjResponse.numero != null && cnpjResponse.numero != ''
-      ? parseInt(cnpjResponse.numero) : this.cliente.endereco.numero;
+    if (cnpjResponse.numero != null && cnpjResponse.numero != '') {
+      this.cliente.endereco.numero = parseInt(cnpjResponse.numero);
+      this.dadosEndereco.controls['numero'].markAsTouched();
+    }
 
-    this.cliente.endereco.bairro = cnpjResponse.bairro != null && cnpjResponse.bairro != ''
-      ? cnpjResponse.bairro : this.cliente.endereco.bairro;
+    if (cnpjResponse.bairro != null && cnpjResponse.bairro != '') {
+      this.cliente.endereco.bairro = cnpjResponse.bairro;
+      this.dadosEndereco.controls['bairro'].markAsTouched();
+    }
 
-    this.cliente.endereco.cidade = cnpjResponse.municipio != null && cnpjResponse.municipio != ''
-      ? cnpjResponse.municipio : this.cliente.endereco.cidade;
+    if (cnpjResponse.municipio != null && cnpjResponse.municipio != '') {
+      this.cliente.endereco.cidade = cnpjResponse.municipio;
+      this.dadosEndereco.controls['cidade'].markAsTouched();
+    }
 
-    this.cliente.endereco.codigoPostal = cnpjResponse.cep != null
-      ? (cnpjResponse.cep).toString() : this.cliente.endereco.codigoPostal;
+    if (cnpjResponse.cep != null) {
+      this.cliente.endereco.codigoPostal = (cnpjResponse.cep).toString();
+      this.dadosEndereco.controls['codigoPostal'].markAsTouched();
+    }
 
-    this.cliente.endereco.estado = cnpjResponse.uf != null && cnpjResponse.uf != ''
-      ? cnpjResponse.uf : this.cliente.endereco.estado;
+    if (cnpjResponse.uf != null && cnpjResponse.uf != '') {
+      this.cliente.endereco.estado = cnpjResponse.uf;
+      this.dadosEndereco.controls['estado'].markAsTouched();
+    }
 
-    this.cliente.endereco.complemento = cnpjResponse.complemento != null && cnpjResponse.complemento != ''
-      ? cnpjResponse.complemento : this.cliente.endereco.complemento;
+    if (cnpjResponse.complemento != null && cnpjResponse.complemento != '') {
+      this.cliente.endereco.complemento = cnpjResponse.complemento;
+      this.dadosEndereco.controls['complemento'].markAsTouched();
+    }
 
   }
 
@@ -254,6 +282,27 @@ export class NovoComponent implements OnInit {
   }
 
   // ENDEREÇO
+  atualizaValidatorsEndereco() {
+    if (this.cliente.endereco.logradouro != null && this.cliente.endereco.logradouro != '' ||
+      this.cliente.endereco.numero != null ||
+      this.cliente.endereco.bairro != null && this.cliente.endereco.bairro != '' ||
+      this.cliente.endereco.cidade != null && this.cliente.endereco.cidade != '' ||
+      this.cliente.endereco.estado != null && this.cliente.endereco.estado != '' ||
+      this.cliente.endereco.codigoPostal != null && this.cliente.endereco.codigoPostal != '' ||
+      this.cliente.endereco.complemento != null && this.cliente.endereco.complemento != '') {
+      this.dadosEndereco.controls['logradouro'].addValidators([Validators.required, Validators.maxLength(50), Validators.minLength(1)]);
+      this.dadosEndereco.controls['numero'].addValidators([Validators.required, Validators.max(99999), Validators.min(1)]);
+    }
+    else {
+      this.dadosEndereco.controls['logradouro'].clearValidators();
+      this.dadosEndereco.controls['numero'].clearValidators();
+    }
+
+    this.dadosEndereco.controls['logradouro'].updateValueAndValidity();
+    this.dadosEndereco.controls['numero'].updateValueAndValidity();
+
+  }
+
   obtemTodosEstadosBrasileiros() {
     this.brasilApiService.getTodosEstados().subscribe(
       (res: EstadosResponse[]) => {
@@ -267,7 +316,8 @@ export class NovoComponent implements OnInit {
   }
 
   realizaTratamentoCodigoPostal() {
-    this.cliente.telefone.numero = this.cliente.telefone.numero
+    this.atualizaValidatorsEndereco();
+    this.cliente.endereco.codigoPostal = this.cliente.endereco.codigoPostal
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
@@ -285,21 +335,46 @@ export class NovoComponent implements OnInit {
 
   setaEnderecoComInformacoesObtidasPeloCep(consultaCepResponse: ConsultaCepResponse) {
     this.cliente.endereco.logradouro = consultaCepResponse.street;
+    this.cliente.endereco.numero = null;
     this.cliente.endereco.bairro = consultaCepResponse.neighborhood;
     this.cliente.endereco.estado = consultaCepResponse.state;
     this.cliente.endereco.cidade = consultaCepResponse.city;
+    this.cliente.endereco.complemento = null;
+
+    this.dadosEndereco.controls['codigoPostal'].markAsTouched();
+    this.dadosEndereco.controls['logradouro'].markAsTouched();
+    this.dadosEndereco.controls['bairro'].markAsTouched();
+    this.dadosEndereco.controls['estado'].markAsTouched();
+    this.dadosEndereco.controls['cidade'].markAsTouched();
+
+    this.inputNumeroEndereco.nativeElement.focus();
+
     this.obtemTodosMunicipiosPorEstado();
   }
 
   public obtemTodosMunicipiosPorEstado() {
-    this.brasilApiService.obtemTodosMunicipiosPorEstado(this.cliente.endereco.estado).subscribe(
-      (res: MunicipiosResponse[]) => {
-        this.municipiosResponse = res;
+    this.atualizaValidatorsEndereco();
+    if (this.cliente.endereco.estado != null && this.cliente.endereco.estado != '') {
+      this.brasilApiService.obtemTodosMunicipiosPorEstado(this.cliente.endereco.estado).subscribe(
+        (res: MunicipiosResponse[]) => {
+          this.municipiosResponse = res;
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      )
+    }
+  }
+
+  public enviarFormulario() {
+    this.clienteService.novoCliente(this.cliente).subscribe(
+      (res: Cliente) => {
+        console.log(res);
       },
       (error: HttpErrorResponse) => {
         console.log(error);
       }
-    )
+    );
   }
 
 }

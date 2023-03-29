@@ -42,7 +42,7 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input matInput formControlName="nome" name="nome" maxlength="50" autocapitalize="words"
+                        <input matInput formControlName="nome" name="nome" maxlength="50" autocapitalize="words" style="text-transform:uppercase"
                             spellcheck="false" tabindex="1" type="text" autofocus="on" autocomplete="off"
                             [(ngModel)]="cliente.nome"
                             [ngClass]="{'input_invalida': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
@@ -157,7 +157,7 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="6"
+                        <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="6" style="text-transform:lowercase"
                             [ngClass]="{'input_invalida': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}"
                             formControlName="email" name="email" [(ngModel)]="cliente.email"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -303,12 +303,15 @@
                 <!-- CÓDIGO POSTAL -->
                 <div class="row col-xl-4 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Cep</label>
+                        <label class="label" 
+                            [ngClass]="{'label_invalida': dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid}">
+                            Cep
+                        </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="codigoPostal" name="codigoPostal"
                         spellcheck="false" [(ngModel)]="cliente.endereco.codigoPostal"
-                        (input)="realizaTratamentoCodigoPostal()"
+                        (input)="realizaTratamentoCodigoPostal()" maxlength="8"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon
@@ -330,22 +333,29 @@
                 <!-- ESTADO -->
                 <div class="row col-xl-4 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Estado</label>
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosEndereco.controls['estado'].touched && dadosEndereco.controls['estado'].invalid}">
+                            Estado
+                        </label>
                     </div>
                     <select formControlName="estado" name="estado" [(ngModel)]="cliente.endereco.estado" (change)="obtemTodosMunicipiosPorEstado()"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <option *ngFor="let estado of estadosResponse" [value]="estado.sigla">{{ estado.sigla + ' - ' + estado.nome }}</option>
+                        <option value=""></option>
+                        <option *ngFor="let estado of estadosResponse" [value]="estado.sigla">{{ estado.sigla + ' - ' + estado.nome | uppercase}}</option>
                     </select>
                 </div>  
 
                 <!-- CIDADE -->
                 <div class="row col-xl-4 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Cidade</label>
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}">
+                            Cidade
+                        </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="cidade" name="cidade"
-                        spellcheck="false" [(ngModel)]="cliente.endereco.cidade" list="municipiosEstado"
+                        <input type="text" autocomplete="off" formControlName="cidade" name="cidade" style="text-transform:uppercase"
+                        spellcheck="false" [(ngModel)]="cliente.endereco.cidade" list="municipiosEstado" maxlength="50" (input)="atualizaValidatorsEndereco()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}"
                         class="input input_cidade col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon
@@ -359,7 +369,7 @@
                     </div>
 
                     <datalist id="municipiosEstado">
-                        <option *ngFor="let municipio of municipiosResponse" [value]="municipio.nome"></option>
+                        <option *ngFor="let municipio of municipiosResponse" [value]="municipio.nome | uppercase"></option>
                     </datalist>
 
                     <div *ngIf="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid"
@@ -371,11 +381,14 @@
                 <!-- LOGRADOURO -->
                 <div class="row col-xl-10 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Logradouro</label>
+                        <label class="label"
+                        [ngClass]="{'label_invalida': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}">
+                            Logradouro
+                        </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="logradouro" name="logradouro"
-                        spellcheck="false" [(ngModel)]="cliente.endereco.logradouro" maxlength="50"
+                        <input type="text" autocomplete="off" formControlName="logradouro" name="logradouro" style="text-transform:uppercase"
+                        spellcheck="false" [(ngModel)]="cliente.endereco.logradouro" maxlength="50" (input)="atualizaValidatorsEndereco()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].value != ''"
@@ -396,11 +409,14 @@
                 <!-- NUMERO -->
                 <div class="row col-xl-2 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Número</label>
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}">
+                            Número
+                        </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="numero" name="numero"
-                        spellcheck="false"[(ngModel)]="cliente.endereco.numero"
+                        spellcheck="false"[(ngModel)]="cliente.endereco.numero" (input)="atualizaValidatorsEndereco()" #numeroEndereco
                         [ngClass]="{'input_invalida': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].value != ''"
@@ -421,11 +437,14 @@
                 <!-- BAIRRO -->
                 <div class="row col-xl-6 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Bairro</label>
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid}">
+                            Bairro
+                        </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="bairro" name="bairro"
-                        spellcheck="false"[(ngModel)]="cliente.endereco.bairro"
+                        <input type="text" autocomplete="off" formControlName="bairro" name="bairro" style="text-transform:uppercase"
+                        spellcheck="false"[(ngModel)]="cliente.endereco.bairro" maxlength="50" (input)="atualizaValidatorsEndereco()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon *ngIf="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].value != ''"
@@ -446,11 +465,14 @@
                 <!-- COMPLEMENTO -->
                 <div class="row col-xl-6 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Complemento</label>
+                        <label class="label" 
+                            [ngClass]="{'label_invalida': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}">
+                            Complemento
+                        </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="complemento" name="complemento"
-                        spellcheck="false"[(ngModel)]="cliente.endereco.complemento"
+                        <input type="text" autocomplete="off" formControlName="complemento" name="complemento" style="text-transform:uppercase"
+                        spellcheck="false"[(ngModel)]="cliente.endereco.complemento" maxlength="50" (input)="atualizaValidatorsEndereco()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].value != ''"
@@ -470,7 +492,8 @@
 
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <button class="button botaoHabilitado" mat-button matStepperPrevious>Voltar</button>
-                    <button class="button" [ngClass]="{'botaoHabilitado': dadosEndereco.valid, 'botaoDesabilitado': !dadosEndereco.valid}"mat-button>
+                    <button (click)="enviarFormulario()" 
+                    class="button" [ngClass]="{'botaoHabilitado': dadosEndereco.valid, 'botaoDesabilitado': !dadosEndereco.valid}"mat-button>
                         Enviar
                     </button>
                 </div>

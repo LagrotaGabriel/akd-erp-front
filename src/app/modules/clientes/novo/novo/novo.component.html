@@ -1,0 +1,245 @@
+<div class="container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mat-elevation-z8">
+
+    <h1 class="titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        Cadastrar novo cliente
+    </h1>
+
+    <hr class="hr">
+
+    <mat-horizontal-stepper linear #stepper>
+
+        <ng-template matStepperIcon="edit">
+            <i class="fa fa-check"></i>
+        </ng-template>
+
+        <ng-template matStepperIcon="done">
+            <i class="fa fa-check"></i>
+        </ng-template>
+
+        <ng-template matStepperIcon="number">
+            <i class="fa fa-fire"></i>
+        </ng-template>
+
+        <ng-template matStepperIcon="active">
+            <i class="fa fa-flag"></i>
+        </ng-template>
+
+        <mat-step [stepControl]="dadosCliente" editable="true">
+            <form #dadosClienteForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                [formGroup]="dadosCliente">
+                <ng-template matStepLabel>
+                    <span>Dados</span>
+                </ng-template>
+
+                <!-- INPUT GROUP NOME -->
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label
+                            [ngClass]="{'label_invalida': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
+                            class="label">
+                            Nome
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input matInput formControlName="nome" name="nome" maxlength="50" autocapitalize="words"
+                            spellcheck="false" tabindex="1" type="text" autofocus="on" autocomplete="off"
+                            [(ngModel)]="cliente.nome"
+                            [ngClass]="{'input_invalida': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon *ngIf="dadosCliente.controls['nome'].touched" [fontIcon]="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid 
+                            ? 'error' 
+                            : 'check'"
+                            [ngClass]="{'icone_ok': !dadosCliente.controls['nome'].invalid,
+                                        'icone_error': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
+                            class="icone"></mat-icon>
+                    </div>
+                    <div *ngIf="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid"
+                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 class="error_message">{{ dadosCliente.controls['nome'].errors['minlength']
+                            ? 'A quantidade mínima para este campo é de 3 caracteres'
+                            : 'O campo nome não pode ser vazio' }}</h6>
+                    </div>
+                </div>
+
+                <!-- INPUT GROUP TIPO -->
+                <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">Tipo</label>
+                    </div>
+                    <select formControlName="tipoPessoa" name="tipoPessoa" autocomplete="off" tabindex="2"
+                        (change)="atualizaTipoPessoa()" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                        [(ngModel)]="cliente.tipoPessoa" required>
+                        <option value="FISICA">Física</option>
+                        <option value="JURIDICA">Jurídica</option>
+                    </select>
+                </div>
+
+                <!-- INPUT GROUP STATUS -->
+                <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">Status</label>
+                    </div>
+                    <select formControlName="status" name="status" [(ngModel)]="cliente.status" tabindex="3"
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <option value="COMUM">Comum</option>
+                        <option value="DEVEDOR">Devedor</option>
+                        <option value="VIP">Vip</option>
+                        <option value="ATENCAO">Atenção</option>
+                    </select>
+                </div>
+
+                <!-- INPUT GROUP CPF/CNPJ -->
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label
+                            [ngClass]="{'label_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
+                            class="label">{{ cliente.tipoPessoa == 'FISICA' ? 'CPF' : 'CNPJ' }}</label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="text" autocomplete="off" formControlName="cpfCnpj" name="cpfCnpj"
+                            spellcheck="false" tabindex="4" (input)="realizaTratamentoCpfCnpj()"
+                            [(ngModel)]="cliente.cpfCnpj" [maxlength]="inputLengthCpfCnpj"
+                            [ngClass]="{'input_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon
+                            *ngIf="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].value != ''"
+                            [fontIcon]="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid 
+                            ? 'error' 
+                            : 'check'"
+                            [ngClass]="{'icone_ok': !dadosCliente.controls['cpfCnpj'].invalid,
+                                    'icone_error': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
+                            class="icone"></mat-icon>
+                    </div>
+
+                    <div *ngIf="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid"
+                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 class="error_message">{{ 'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos numéricos' }}</h6>
+                    </div>
+
+                </div>
+
+                <!-- INSCRIÇÃO ESTADUAL -->
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label
+                            [ngClass]="{'label_invalida': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
+                            [ngClass]="{'label_desabilitada': cliente.tipoPessoa == 'FISICA'}"
+                            class="label">Inscrição estadual</label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="text" autocomplete="off" formControlName="inscricaoEstadual"
+                            name="inscricaoEstadual" spellcheck="false" tabindex="5"
+                            [ngClass]="{'input_invalida': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
+                            (input)="realizaTratamentoInscricaoEstadual()" [(ngModel)]="cliente.inscricaoEstadual"
+                            maxlength="12" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon
+                            *ngIf="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].value != ''"
+                            [fontIcon]="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid 
+                            ? 'error' 
+                            : 'check'"
+                            [ngClass]="{'icone_ok': !dadosCliente.controls['inscricaoEstadual'].invalid,
+                                    'icone_error': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
+                            class="icone"></mat-icon>
+                    </div>
+                    <div class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 *ngIf="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid"
+                            class="error_message">{{ 'Este campo deve possuir 12 dígitos numéricos' }}</h6>
+                    </div>
+                </div>
+
+                <!-- E-MAIL -->
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}">
+                            E-mail
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="6"
+                            [ngClass]="{'input_invalida': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}"
+                            formControlName="email" name="email" [(ngModel)]="cliente.email"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon
+                            *ngIf="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].value != ''"
+                            [fontIcon]="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid 
+                            ? 'error' 
+                            : 'check'"
+                            [ngClass]="{'icone_ok': !dadosCliente.controls['email'].invalid,
+                                    'icone_error': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}"
+                            class="icone"></mat-icon>
+                    </div>
+                    <div class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 *ngIf="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid"
+                            class="error_message">{{ 'O e-mail digitado é inválido' }}</h6>
+                    </div>
+                </div>
+
+                <!-- DATA DE NASCIMENTO -->
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">Data de nascimento</label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input placeholder="--/--/----" [min]="minDate" [max]="maxDate" matInput spellcheck="false"
+                            tabindex="7" [matDatepicker]="picker" readonly autocomplete="off" type="text"
+                            formControlName="dataNascimento" name="dataNascimento"
+                            class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-datepicker-toggle [disableRipple]="true" class="icone_data"
+                            [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                    </div>
+
+                </div>
+
+                <!-- PRIMEIRO CONTAINER DE BOTÃO -->
+                <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <button tabindex="8" class="button" [ngClass]="{'botaoHabilitado': dadosClienteForm.valid, 'botaoDesabilitado': !dadosClienteForm.valid}"
+                        mat-button matStepperNext>Próximo</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="dadosTelefone" editable="true">
+            <form #dadosTelefoneForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                [formGroup]="dadosTelefone">
+                <ng-template matStepLabel>
+                    <span>Telefone</span>
+                </ng-template>
+                <div class="row col-xl-12 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">Telefone</label>
+                        <h6 class="asterisco">*</h6>
+                    </div>
+                    <input formControlName="secondCtrl" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                </div>
+                <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <button class="button" mat-button matStepperPrevious>Voltar</button>
+                    <button class="button" mat-button matStepperNext>Próximo</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="dadosEndereco" editable="true">
+            <form #dadosEnderecoForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                [formGroup]="dadosEndereco">
+                <ng-template matStepLabel>
+                    <span>Endereço</span>
+                </ng-template>
+                <div class="row col-xl-12 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">Telefone</label>
+                        <h6 class="asterisco">*</h6>
+                    </div>
+                    <input formControlName="thirdCtrl" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                </div>
+                <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <button class="button" mat-button matStepperPrevious>Voltar</button>
+                    <button class="button" mat-button>Enviar</button>
+                </div>
+            </form>
+        </mat-step>
+
+    </mat-horizontal-stepper>
+
+</div>

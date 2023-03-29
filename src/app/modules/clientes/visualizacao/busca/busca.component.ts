@@ -1,4 +1,4 @@
-import { FiltrosService } from './../../../shared/services/filtros.service';
+import { FiltrosService } from '../../../../shared/services/filtros.service';
 import { Component, EventEmitter, Input, Output, DoCheck, OnInit } from '@angular/core';
 import { Filtro } from 'src/app/shared/models/filtros/Filtro';
 import { TiposFiltro } from 'src/app/shared/models/filtros/TiposFiltro';
@@ -7,8 +7,8 @@ import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado
 import { Chips } from 'src/app/shared/models/filtros/Chips';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ClienteService } from '../services/cliente.service';
-import { MetaDadosCliente } from '../models/MetaDadosCliente';
+import { ClienteService } from '../../services/cliente.service';
+import { MetaDadosCliente } from '../../models/MetaDadosCliente';
 
 @Component({
   selector: 'app-busca',

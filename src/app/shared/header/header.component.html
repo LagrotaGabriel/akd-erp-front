@@ -7,12 +7,12 @@
         </button>
       </div>
 
-      <div class="container_nome_empresa">
+      <div class="container_nome_empresa" tabindex="-1">
         <h1 class="nome_empresa">AKADION SOLUTIONS</h1>
       </div>
   
       <div class="container_icones_direita">
-        <button
+        <button tabindex="-1"
           mat-icon-button
           class="icon"
           matTooltip="Avisos"
@@ -20,19 +20,19 @@
         >
           <mat-icon>error</mat-icon>
         </button>
-        <button mat-icon-button [matMenuTriggerFor]="menu" class="icon">
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="icon" tabindex="-1">
           <mat-icon>settings</mat-icon>
         </button>
         <mat-menu class="menu" #menu="matMenu">
-          <button class="menu_button" mat-menu-item>
+          <button class="menu_button" mat-menu-item tabindex="-1">
             <mat-icon>face_6</mat-icon>
             <span class="menu_text">Alterar perfil</span>
           </button>
-          <button class="menu_button" mat-menu-item>
+          <button class="menu_button" mat-menu-item tabindex="-1">
             <mat-icon>dark_mode</mat-icon>
             <span class="menu_text">Modo escuro</span>
           </button>
-          <button class="menu_button" mat-menu-item>
+          <button class="menu_button" mat-menu-item tabindex="-1">
             <mat-icon>support_agent</mat-icon>
             <span class="menu_text">Acionar suporte</span>
           </button>

@@ -1,7 +1,7 @@
-import { Cliente } from './../models/Cliente';
-import { Pageable, PageObject } from '../../../shared/models/PageObject';
+import { Cliente } from '../../models/Cliente';
+import { Pageable, PageObject } from '../../../../shared/models/PageObject';
 import { Component, Input, OnChanges, AfterViewInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { ClienteService } from '../services/cliente.service';
+import { ClienteService } from '../../services/cliente.service';
 import { Endereco } from 'src/app/shared/models/Endereco';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';

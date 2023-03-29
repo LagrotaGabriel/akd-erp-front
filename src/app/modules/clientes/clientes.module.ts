@@ -1,7 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClientesRoutingModule } from './clientes-routing.module';
 
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -17,21 +17,25 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
-import { MenuComponent } from './menu/menu.component';
-import { ViewComponent } from './view/view.component';
+import { MenuComponent } from './visualizacao/menu/menu.component';
+import { ViewComponent } from './visualizacao/view/view.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { InformativosComponent } from './informativos/informativos.component';
-import { TabelaComponent } from './tabela/tabela.component';
-import { BuscaComponent } from './busca/busca.component';
+import { InformativosComponent } from './visualizacao/informativos/informativos.component';
+import { TabelaComponent } from './visualizacao/tabela/tabela.component';
+import { BuscaComponent } from './visualizacao/busca/busca.component';
 
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
+import { NovoComponent } from './novo/novo/novo.component';
 
 registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, InformativosComponent, TabelaComponent, BuscaComponent],
+  declarations: [MenuComponent, ViewComponent, InformativosComponent, TabelaComponent, BuscaComponent, NovoComponent],
   exports: [MenuComponent, ViewComponent],
   imports: [
     CommonModule,
@@ -51,9 +55,13 @@ registerLocaleData(ptBr);
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    FormsModule
+    MatStepperModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers:    [
+  providers: [
     { provide: LOCALE_ID, useValue: 'pt' },
   ],
 })

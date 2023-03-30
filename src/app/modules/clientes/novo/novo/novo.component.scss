@@ -63,6 +63,10 @@ mat-step {
     color: $primary-color;
 }
 
+::ng-deep.mat-step-header .mat-step-icon-selected .mat-step-icon-content i {
+    animation: pulse 1.2s infinite;
+}
+
 ::ng-deep .mat-step-header .mat-step-icon-state-done,
 ::ng-deep .mat-step-header .mat-step-icon-state-edit {
     background-color: $primary-color !important;
@@ -427,4 +431,18 @@ input:focus {
     ::ng-deep .mat-horizontal-stepper-header {
         padding: 0 0.5rem !important;
     }
+}
+
+@keyframes pulse{
+
+    0%{
+        transform: scale(0.90);
+    }
+    70%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(0.90);
+    }
+
 }

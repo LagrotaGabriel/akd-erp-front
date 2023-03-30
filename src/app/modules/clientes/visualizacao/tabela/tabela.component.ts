@@ -64,7 +64,7 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
           //TODO Encerrar sessão e redirecionar usuário para página de login. Aplicar NG GUARD (Se necessário)
         }
         else if (error.status == 0)
-          this._snackBar.open("Houve uma falha de comunicação com o servidor", "x");
+          this._snackBar.open("Houve uma falha de comunicação com o servidor", "Fechar");
       }
     );
   }
@@ -114,8 +114,8 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
     var enderecoCompleto = ""
     if (endereco != null) {
       enderecoCompleto += (endereco.logradouro + ', ' + endereco.numero);
-      if (endereco.bairro != null && endereco.cidade != null && endereco.estadoEnum != null)
-        enderecoCompleto += (' - ' + endereco.bairro + ', ' + endereco.cidade + ' - ' + endereco.estadoEnum);
+      if (endereco.bairro != null && endereco.cidade != null && endereco.estado != null)
+        enderecoCompleto += (' - ' + endereco.bairro + ', ' + endereco.cidade + ' - ' + endereco.estado);
       if (endereco.codigoPostal != null)
         enderecoCompleto += (' - ' + endereco.codigoPostal);
       return enderecoCompleto;
@@ -128,7 +128,7 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
       (res: Cliente) => {
         console.log(res.nome + ' Excluído com sucesso');
         this.invocaRequisicaoHttpGetParaAtualizarObjetos();
-        this._snackBar.open("Cliente " + res.nome + " Excluído com sucesso!", "x", {
+        this._snackBar.open("Cliente Excluído com sucesso", "Fechar", {
           duration: 3000
         });
       },

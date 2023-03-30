@@ -6,5 +6,5 @@ export interface Endereco {
     codigoPostal: string,
     cidade: string,
     complemento: string,
-    estadoEnum: string
+    estado: string
 }

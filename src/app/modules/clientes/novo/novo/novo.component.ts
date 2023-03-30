@@ -8,6 +8,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BrasilApiService } from '../services/brasil-api.service';
 import { EstadosResponse } from '../../../../shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from '../../../../shared/models/brasil-api/municipios-response';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-novo',
@@ -40,7 +43,11 @@ export class NovoComponent implements OnInit {
   // Variaveis endereço
   estadosResponse: EstadosResponse[];
   municipiosResponse: MunicipiosResponse[];
+
   @ViewChild('numeroEndereco') inputNumeroEndereco: ElementRef;
+  @ViewChild('inputTipoTelefone') inputTipoTelefone: ElementRef;
+  @ViewChild('codigoPostal') codigoPostal: ElementRef;
+  @ViewChild('inputNome') inputNome: ElementRef;
 
   ngOnInit(): void {
     this.inicializarCliente();
@@ -54,6 +61,9 @@ export class NovoComponent implements OnInit {
     this.atualizaValidatorsTelefone();
     this.obtemTodosEstadosBrasileiros();
 
+    setTimeout(() => {
+      this.inputNome.nativeElement.focus();
+    }, 100);
   }
 
   inicializarCliente() {
@@ -64,7 +74,7 @@ export class NovoComponent implements OnInit {
       inscricaoEstadual: '',
       email: '',
       dataNascimento: '',
-      status: 'COMUM',
+      statusCliente: 'COMUM',
       telefone: {
         tipoTelefone: '',
         prefixo: null,
@@ -90,7 +100,7 @@ export class NovoComponent implements OnInit {
       inscricaoEstadual: ['', [Validators.pattern(/^[0-9]{12}/), Validators.maxLength(12), Validators.minLength(12)]],
       email: ['', [Validators.email, Validators.maxLength(50)]],
       dataNascimento: [''],
-      status: ['', Validators.required]
+      statusCliente: ['', Validators.required]
     });
     this.dadosTelefone = this.formBuilder.group({
       tipoTelefone: [''],
@@ -108,21 +118,54 @@ export class NovoComponent implements OnInit {
     });
   }
 
-  constructor(private formBuilder: FormBuilder, private brasilApiService: BrasilApiService, private clienteService: ClienteService) { }
+  constructor(private formBuilder: FormBuilder,
+    private brasilApiService: BrasilApiService,
+    private clienteService: ClienteService,
+    private router: Router,
+    private _snackBar: MatSnackBar,
+    private datePipe: DatePipe) { }
+
+  retornaParaVisualizacaoDeClientes() {
+    this.router.navigate(['/clientes'])
+  }
+
+  avancaPrimeiraEtapa() {
+    setTimeout(() => {
+      this.inputNome.nativeElement.focus();
+    }, 400);
+  }
+
+  avancaSegundaEtapa() {
+    setTimeout(() => {
+      this.inputTipoTelefone.nativeElement.focus();
+    }, 400);
+  }
+
+  avancaTerceiraEtapa() {
+    setTimeout(() => {
+      this.codigoPostal.nativeElement.focus();
+    }, 400);
+  }
 
   atualizaTipoPessoa() {
+
     if (this.cliente.tipoPessoa == 'FISICA') {
       this.inputLengthCpfCnpj = 11;
       this.inputPatternCpfCnpj = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
       this.dadosCliente.controls['inscricaoEstadual'].disable();
+      this.dadosCliente.controls['dataNascimento'].enable();
     }
     else if (this.cliente.tipoPessoa == 'JURIDICA') {
       this.inputLengthCpfCnpj = 14;
       this.inputPatternCpfCnpj = /^[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}[0-9]{2}/
       this.dadosCliente.controls['inscricaoEstadual'].enable();
+      this.dadosCliente.controls['dataNascimento'].disable();
     }
     this.dadosCliente.controls['cpfCnpj'].setValidators([Validators.maxLength(this.inputLengthCpfCnpj),
     Validators.minLength(this.inputLengthCpfCnpj), Validators.pattern(this.inputPatternCpfCnpj)]);
+
+    this.cliente.dataNascimento = '';
+    this.dadosCliente.controls['dataNascimento'].reset();
 
     this.cliente.inscricaoEstadual = '';
     this.dadosCliente.controls['inscricaoEstadual'].reset();
@@ -176,6 +219,7 @@ export class NovoComponent implements OnInit {
 
   // DADOS
   realizaTratamentoCpfCnpj() {
+
     this.cliente.cpfCnpj = this.cliente.cpfCnpj
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
@@ -291,7 +335,7 @@ export class NovoComponent implements OnInit {
       this.cliente.endereco.codigoPostal != null && this.cliente.endereco.codigoPostal != '' ||
       this.cliente.endereco.complemento != null && this.cliente.endereco.complemento != '') {
       this.dadosEndereco.controls['logradouro'].addValidators([Validators.required, Validators.maxLength(50), Validators.minLength(1)]);
-      this.dadosEndereco.controls['numero'].addValidators([Validators.required, Validators.max(99999), Validators.min(1)]);
+      this.dadosEndereco.controls['numero'].addValidators([Validators.required, Validators.max(99999), Validators.min(1), Validators.pattern(/^[0-9]{1,5}$/)]);
     }
     else {
       this.dadosEndereco.controls['logradouro'].clearValidators();
@@ -366,10 +410,18 @@ export class NovoComponent implements OnInit {
     }
   }
 
+  // SUBMIT
+
   public enviarFormulario() {
+    if (this.cliente.dataNascimento != null && this.cliente.dataNascimento != '')
+      this.cliente.dataNascimento = this.datePipe.transform(this.cliente.dataNascimento, "yyyy-MM-dd");
+
+    this.router.navigate(['/clientes'])
     this.clienteService.novoCliente(this.cliente).subscribe(
       (res: Cliente) => {
-        console.log(res);
+        this._snackBar.open("Cliente cadastrado com sucesso", "Fechar", {
+          duration: 3500
+        });
       },
       (error: HttpErrorResponse) => {
         console.log(error);

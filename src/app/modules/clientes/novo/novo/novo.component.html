@@ -12,17 +12,17 @@
             <i class="fa fa-check"></i>
         </ng-template>
 
-        <ng-template matStepperIcon="done">
-            <i class="fa fa-check"></i>
-        </ng-template>
-
         <ng-template matStepperIcon="number">
             <i class="fa fa-fire"></i>
         </ng-template>
 
-        <ng-template matStepperIcon="active">
+        <!--<ng-template matStepperIcon="done">
+            <i class="fa fa-check"></i>
+        </ng-template>-->
+
+        <!--<ng-template matStepperIcon="active">
             <i class="fa fa-flag"></i>
-        </ng-template>
+        </ng-template>-->
 
         <!-- PRIMEIRA ETAPA: CADASTRO DE DADOS DO CLIENTE -->
         <mat-step [stepControl]="dadosCliente" editable="true">
@@ -44,7 +44,8 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input matInput formControlName="nome" name="nome" maxlength="50" autocapitalize="words" style="text-transform:uppercase"
                             spellcheck="false" tabindex="1" type="text" autofocus="on" autocomplete="off"
-                            [(ngModel)]="cliente.nome"
+                            [(ngModel)]="cliente.nome" #inputNome 
+                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
                             [ngClass]="{'input_invalida': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon *ngIf="dadosCliente.controls['nome'].touched" [fontIcon]="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid 
@@ -54,6 +55,7 @@
                                         'icone_error': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
                             class="icone"></mat-icon>
                     </div>
+
                     <div *ngIf="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid"
                         class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 class="error_message">{{ dadosCliente.controls['nome'].errors['minlength']
@@ -68,8 +70,9 @@
                         <label class="label">Tipo</label>
                     </div>
                     <select formControlName="tipoPessoa" name="tipoPessoa" autocomplete="off" tabindex="2"
-                        (change)="atualizaTipoPessoa()" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                        [(ngModel)]="cliente.tipoPessoa" required>
+                    (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
+                    (change)="atualizaTipoPessoa()" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                    [(ngModel)]="cliente.tipoPessoa" required>
                         <option value="FISICA">Física</option>
                         <option value="JURIDICA">Jurídica</option>
                     </select>
@@ -80,8 +83,9 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label">Status</label>
                     </div>
-                    <select formControlName="status" name="status" [(ngModel)]="cliente.status" tabindex="3"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <select formControlName="statusCliente" name="statusCliente" [(ngModel)]="cliente.statusCliente" tabindex="3"
+                    (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
+                    class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <option value="COMUM">Comum</option>
                         <option value="DEVEDOR">Devedor</option>
                         <option value="VIP">Vip</option>
@@ -99,6 +103,7 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="cpfCnpj" name="cpfCnpj"
                             spellcheck="false" tabindex="4" (input)="realizaTratamentoCpfCnpj()"
+                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
                             [(ngModel)]="cliente.cpfCnpj" [maxlength]="inputLengthCpfCnpj"
                             [ngClass]="{'input_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -130,6 +135,7 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="inscricaoEstadual"
                             name="inscricaoEstadual" spellcheck="false" tabindex="5"
+                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
                             [ngClass]="{'input_invalida': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
                             (input)="realizaTratamentoInscricaoEstadual()" [(ngModel)]="cliente.inscricaoEstadual"
                             maxlength="12" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -160,6 +166,7 @@
                         <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="6" style="text-transform:lowercase"
                             [ngClass]="{'input_invalida': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}"
                             formControlName="email" name="email" [(ngModel)]="cliente.email"
+                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon
                             *ngIf="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].value != ''"
@@ -179,14 +186,18 @@
                 <!-- DATA DE NASCIMENTO -->
                 <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Data de nascimento</label>
+                        <label class="label"
+                        [ngClass]="{'label_desabilitada': cliente.tipoPessoa == 'JURIDICA'}">
+                            Data de nascimento
+                        </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input placeholder="--/--/----" [min]="minDate" [max]="maxDate" matInput spellcheck="false" (focus)="picker.open()" 
-                            (click)="picker.open()" style="cursor: pointer" tabindex="7" [matDatepicker]="picker" readonly autocomplete="off" type="text"
-                            formControlName="dataNascimento" name="dataNascimento"
-                            class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-datepicker-toggle [disableRipple]="true" class="icone_data"
+                        (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
+                        (click)="picker.open()" style="cursor: pointer" tabindex="7" [matDatepicker]="picker" readonly autocomplete="off" type="text"
+                        formControlName="dataNascimento" name="dataNascimento" formControlName="dataNascimento" name="dataNascimento"
+                        [(ngModel)]="cliente.dataNascimento" class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-datepicker-toggle *ngIf="cliente.tipoPessoa == 'FISICA'" [disableRipple]="true" class="icone_data"
                             [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker startView="month" color="primary" touchUi></mat-datepicker>
                     </div>
@@ -195,8 +206,9 @@
 
                 <!-- PRIMEIRO CONTAINER DE BOTÃO -->
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button tabindex="8" class="button" [ngClass]="{'botaoHabilitado': dadosClienteForm.valid, 'botaoDesabilitado': !dadosClienteForm.valid}"
-                        mat-button matStepperNext>Próximo</button>
+                    <button (click)="avancaSegundaEtapa()" tabindex="8" class="button" 
+                    [ngClass]="{'botaoHabilitado': dadosClienteForm.valid, 'botaoDesabilitado': !dadosClienteForm.valid}" 
+                    mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
                 </div>
             </form>
         </mat-step>
@@ -215,12 +227,13 @@
                         <label class="label">Tipo do telefone</label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <select formControlName="tipoTelefone" name="tipoTelefone" [(ngModel)]="cliente.telefone.tipoTelefone" tabindex="9" autofocus
-                        (change)="atualizaValidatorsTelefone()" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <select formControlName="tipoTelefone" name="tipoTelefone" [(ngModel)]="cliente.telefone.tipoTelefone" tabindex="9"
+                        (keydown.enter)="botaoProximoSegundaEtapa.click();" (keydown.esc)="botaoVoltarSegundaEtapa.click();" 
+                        (change)="atualizaValidatorsTelefone()" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" #inputTipoTelefone>
                             <option value="" selected>Sem telefone</option>
                             <option value="FIXO">Fixo</option>
                             <option value="MOVEL">Móvel</option>
-                            <option value="WHATSAPP">Móvel com whatsapp</option>
+                            <option value="MOVEL_WHATSAPP">Móvel com whatsapp</option>
                         </select>
                     </div>
                 </div>
@@ -238,7 +251,8 @@
                         <input type="text" autocomplete="off" maxlength="2" spellcheck="false" tabindex="10" (input)="realizaTratamentoPrefixo()"
                             [ngClass]="{'input_invalida': dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid}"
                             formControlName="prefixo" name="prefixo" [(ngModel)]="cliente.telefone.prefixo"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" (keydown.enter)="botaoProximoSegundaEtapa.click();" 
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click();" >
                         <mat-icon
                             *ngIf="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].value != ''"
                             [fontIcon]="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid 
@@ -265,10 +279,10 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" [maxlength]="inputLengthTelefone" spellcheck="false" 
-                            tabindex="11" (input)="realizaTratamentoNumeroTelefone()"
+                            tabindex="11" (input)="realizaTratamentoNumeroTelefone()" (keydown.enter)="botaoProximoSegundaEtapa.click();" 
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click();" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                             [ngClass]="{'input_invalida': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
-                            formControlName="numero" name="numero" [(ngModel)]="cliente.telefone.numero"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            formControlName="numero" name="numero" [(ngModel)]="cliente.telefone.numero">
                         <mat-icon
                             *ngIf="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].value != ''"
                             [fontIcon]="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid 
@@ -285,9 +299,14 @@
                 </div>
 
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button class="button botaoHabilitado" mat-button matStepperPrevious>Voltar</button>
-                    <button class="button" mat-button class="button" 
-                    [ngClass]="{'botaoHabilitado': dadosTelefone.valid, 'botaoDesabilitado': !dadosTelefone.valid}" matStepperNext>Próximo</button>
+                    <button class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button matStepperPrevious tabindex="12" 
+                    (click)="avancaPrimeiraEtapa()">
+                        Voltar
+                    </button>
+                    <button class="button" mat-button #botaoProximoSegundaEtapa type="button" tabindex="13" (click)="avancaTerceiraEtapa()"
+                    [ngClass]="{'botaoHabilitado': dadosTelefone.valid, 'botaoDesabilitado': !dadosTelefone.valid}" matStepperNext>
+                        Próximo
+                    </button>
                 </div>
             </form>
         </mat-step>
@@ -301,7 +320,7 @@
                 </ng-template>
 
                 <!-- CÓDIGO POSTAL -->
-                <div class="row col-xl-4 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+                <div class="row col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label" 
                             [ngClass]="{'label_invalida': dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid}">
@@ -310,8 +329,9 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="codigoPostal" name="codigoPostal"
-                        spellcheck="false" [(ngModel)]="cliente.endereco.codigoPostal"
-                        (input)="realizaTratamentoCodigoPostal()" maxlength="8"
+                        spellcheck="false" [(ngModel)]="cliente.endereco.codigoPostal" #codigoPostal
+                        (input)="realizaTratamentoCodigoPostal()" maxlength="8" tabindex="14"
+                        (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon
@@ -331,7 +351,7 @@
                 </div>
 
                 <!-- ESTADO -->
-                <div class="row col-xl-4 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+                <div class="row col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
                             [ngClass]="{'label_invalida': dadosEndereco.controls['estado'].touched && dadosEndereco.controls['estado'].invalid}">
@@ -339,14 +359,15 @@
                         </label>
                     </div>
                     <select formControlName="estado" name="estado" [(ngModel)]="cliente.endereco.estado" (change)="obtemTodosMunicipiosPorEstado()"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                    class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="15">
                         <option value=""></option>
                         <option *ngFor="let estado of estadosResponse" [value]="estado.sigla">{{ estado.sigla + ' - ' + estado.nome | uppercase}}</option>
                     </select>
                 </div>  
 
                 <!-- CIDADE -->
-                <div class="row col-xl-4 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+                <div class="row col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
                             [ngClass]="{'label_invalida': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}">
@@ -357,7 +378,8 @@
                         <input type="text" autocomplete="off" formControlName="cidade" name="cidade" style="text-transform:uppercase"
                         spellcheck="false" [(ngModel)]="cliente.endereco.cidade" list="municipiosEstado" maxlength="50" (input)="atualizaValidatorsEndereco()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}"
-                        class="input input_cidade col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                        class="input input_cidade col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="16">
                         <mat-icon
                         *ngIf="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].value != ''"
                         [fontIcon]="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid 
@@ -379,7 +401,7 @@
                 </div>              
 
                 <!-- LOGRADOURO -->
-                <div class="row col-xl-10 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+                <div class="row col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
                         [ngClass]="{'label_invalida': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}">
@@ -389,8 +411,9 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="logradouro" name="logradouro" style="text-transform:uppercase"
                         spellcheck="false" [(ngModel)]="cliente.endereco.logradouro" maxlength="50" (input)="atualizaValidatorsEndereco()"
+                        (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="17">
                         <mat-icon *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].value != ''"
                         [fontIcon]="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid 
                             ? 'error' 
@@ -402,12 +425,12 @@
 
                     <div *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
+                        <h6 class="error_message">{{ 'Este campo não pode ser vazio' }}</h6>
                     </div>
                 </div>
 
                 <!-- NUMERO -->
-                <div class="row col-xl-2 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+                <div class="row col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
                             [ngClass]="{'label_invalida': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}">
@@ -415,10 +438,11 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="numero" name="numero"
+                        <input type="text" autocomplete="off" formControlName="numero" name="numero" maxlength="5"
                         spellcheck="false"[(ngModel)]="cliente.endereco.numero" (input)="atualizaValidatorsEndereco()" #numeroEndereco
                         [ngClass]="{'input_invalida': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
                         <mat-icon *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].value != ''"
                         [fontIcon]="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid 
                             ? 'error' 
@@ -430,12 +454,12 @@
 
                     <div *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
+                        <h6 class="error_message">{{ 'Este campo deve possuir um valor entre 1 e 99999' }}</h6>
                     </div>
                 </div>                
 
                 <!-- BAIRRO -->
-                <div class="row col-xl-6 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
                             [ngClass]="{'label_invalida': dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid}">
@@ -445,8 +469,9 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="bairro" name="bairro" style="text-transform:uppercase"
                         spellcheck="false"[(ngModel)]="cliente.endereco.bairro" maxlength="50" (input)="atualizaValidatorsEndereco()"
+                        (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid}"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="19">
                         <mat-icon *ngIf="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].value != ''"
                         [fontIcon]="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid 
                             ? 'error' 
@@ -463,7 +488,7 @@
                 </div>         
 
                 <!-- COMPLEMENTO -->
-                <div class="row col-xl-6 col-lg-3 col-md-3 col-sm-3 col-3 input_group">
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label" 
                             [ngClass]="{'label_invalida': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}">
@@ -473,8 +498,9 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="complemento" name="complemento" style="text-transform:uppercase"
                         spellcheck="false"[(ngModel)]="cliente.endereco.complemento" maxlength="50" (input)="atualizaValidatorsEndereco()"
+                        (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="20">
                         <mat-icon *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].value != ''"
                         [fontIcon]="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid 
                             ? 'error' 
@@ -491,9 +517,11 @@
                 </div>                    
 
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button class="button botaoHabilitado" mat-button matStepperPrevious>Voltar</button>
-                    <button (click)="enviarFormulario()" 
-                    class="button" [ngClass]="{'botaoHabilitado': dadosEndereco.valid, 'botaoDesabilitado': !dadosEndereco.valid}"mat-button>
+                    <button (click)="avancaSegundaEtapa()" #botaoVoltarTerceiraEtapa class="button botaoHabilitado" mat-button matStepperPrevious tabindex="21">
+                        Voltar
+                    </button>
+                    <button (click)="enviarFormulario()" #botaoEnviarFormulario type="button" tabindex="22" class="button" 
+                    [ngClass]="{'botaoHabilitado': dadosEndereco.valid, 'botaoDesabilitado': !dadosEndereco.valid}" mat-button>
                         Enviar
                     </button>
                 </div>

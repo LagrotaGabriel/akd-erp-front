@@ -20,7 +20,34 @@ export class ClienteService {
     })
   }
 
+  private realizaTratamentoDeAtributosNulos(cliente: ClienteNovo): ClienteNovo {
+
+    // DADOS
+    if (cliente.cpfCnpj == '') cliente.cpfCnpj = null;
+    if (cliente.inscricaoEstadual == '') cliente.inscricaoEstadual = null;
+    if (cliente.email == '') cliente.email = null;
+    if (cliente.dataNascimento == '') cliente.dataNascimento = null;
+
+    // TELEFONE
+    if (cliente.telefone != null) {
+      if (cliente.telefone.tipoTelefone == '' || cliente.telefone.tipoTelefone == null ||
+        cliente.telefone.prefixo == '' || cliente.telefone.prefixo == null ||
+        cliente.telefone.numero == '' || cliente.telefone.numero == null) cliente.telefone = null;
+    }
+
+    // ENDERECO
+    if (cliente.endereco != null) {
+      if (cliente.endereco.estado == '') cliente.endereco.estado = null;
+      if (cliente.endereco.logradouro == '' || cliente.endereco.logradouro == null ||
+        cliente.endereco.numero == null) cliente.endereco = null;
+    }
+
+    return cliente;
+
+  }
+
   public novoCliente(clienteNovo: ClienteNovo): any {
+    clienteNovo = this.realizaTratamentoDeAtributosNulos(clienteNovo);
     return this.http.post<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
       res => res,
       error => error

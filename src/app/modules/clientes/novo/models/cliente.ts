@@ -8,7 +8,7 @@ export class Cliente {
     inscricaoEstadual?: string;
     email?: string;
     dataNascimento?: string;
-    status: string;
+    statusCliente: string;
     telefone?: Telefone;
     endereco?: Endereco; 
 }

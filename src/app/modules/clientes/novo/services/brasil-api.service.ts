@@ -1,3 +1,4 @@
+import { map, Observable, catchError, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
@@ -10,35 +11,58 @@ import { MunicipiosResponse } from '../../../../shared/models/brasil-api/municip
 })
 export class BrasilApiService {
 
-  constructor(private http: HttpClient) {}
+  cnpjResponse: CnpjResponse;
+
+  constructor(private http: HttpClient) { }
 
   urlBrasilApi: string = 'https://brasilapi.com.br/api';
 
-  public getEnderecoPeloCep(cep: string): any {
+  public getEnderecoPeloCep(cep: string): Observable<ConsultaCepResponse> {
     return this.http.get<ConsultaCepResponse>(`${this.urlBrasilApi}/cep/v1/${cep}`).pipe(
-      res => res,
-      error => error
+      map(resposta => new ConsultaCepResponse(resposta)),
+      catchError(erro => {
+        return throwError(() => new Error("Nenhum endereço foi encontrado com o cep digitado").toString().replace("Error:", ""))
+      })
     )
   }
 
-  public getTodosEstados(): any {
+  public getTodosEstados(): Observable<EstadosResponse[]> {
     return this.http.get<EstadosResponse[]>(`${this.urlBrasilApi}/ibge/uf/v1`).pipe(
-      res => res,
-      error => error
+      map(estados => this.abstraiResponseApiEmObjetoEstadosResponse(estados)),
+      catchError(erro => {
+        return throwError(() => new Error("Ocorreu um erro de conexão com o servidor. Favor entrar em contato com o suporte").toString().replace("Error:", ""))
+      })
     )
   }
 
-  public obtemTodosMunicipiosPorEstado(estado: string): any{
+  private abstraiResponseApiEmObjetoEstadosResponse(estados: any[]) {
+    var estadosConvertidos: EstadosResponse[] = [];
+    estados.forEach(estado => {
+      estadosConvertidos.push(new EstadosResponse(estado));
+    })
+    return estadosConvertidos;
+  }
+
+  public obtemTodosMunicipiosPorEstado(estado: string): Observable<MunicipiosResponse[]> {
     return this.http.get<MunicipiosResponse[]>(`${this.urlBrasilApi}/ibge/municipios/v1/${estado}?providers=dados-abertos-br,gov,wikipedia`).pipe(
-      res => res,
-      error => error
+      map((resposta) => this.abstraiResponseApiEmObjetoMunicipiosResponse(resposta)),
+      catchError(erro => {
+        return throwError(() => new Error("Ocorreu um erro na obtenção automatizada dos municípios. Favor contatar o suporte").toString().replace("Error:", ""))
+      })
     )
   }
 
-  public obtemDadosClientePeloCnpj(cnpj: string): any {
+  private abstraiResponseApiEmObjetoMunicipiosResponse(municipios: any[]) {
+    var municipiosConvertidos: MunicipiosResponse[] = [];
+    municipios.forEach(municipio => {
+      municipiosConvertidos.push(new MunicipiosResponse(municipio));
+    })
+    return municipiosConvertidos;
+  }
+
+  public obtemDadosClientePeloCnpj(cnpj: string): Observable<CnpjResponse> {
     return this.http.get<CnpjResponse>(`${this.urlBrasilApi}/cnpj/v1/${cnpj}`).pipe(
-      res => res,
-      error => error
+      map(resposta => new CnpjResponse(resposta))
     )
   }
 

@@ -1,8 +1,15 @@
 export class ConsultaCepResponse {
-    cep: string;
-    state: string;
-    city: string;
-    neighborhood: string;
-    street: string;
-    service: string;
+    logradouro: string;
+    bairro: string;
+    codigoPostal: string;
+    cidade: string;
+    estado: string;
+
+    constructor(item) {
+        this.codigoPostal = item?.cep;
+        this.estado = item?.state;
+        this.cidade = item?.city;
+        this.bairro = item?.neighborhood;
+        this.logradouro = item?.street;
+    }
 }

@@ -1,23 +1,32 @@
 import { ClienteService } from './../../services/cliente.service';
 import { CnpjResponse } from './../../../../shared/models/brasil-api/cnpj-response';
 import { ConsultaCepResponse } from '../../../../shared/models/brasil-api/consulta-cep-response';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../models/cliente';
-import { HttpErrorResponse } from '@angular/common/http';
 import { BrasilApiService } from '../services/brasil-api.service';
 import { EstadosResponse } from '../../../../shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from '../../../../shared/models/brasil-api/municipios-response';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-novo',
   templateUrl: './novo.component.html',
   styleUrls: ['./novo.component.scss']
 })
-export class NovoComponent implements OnInit {
+export class NovoComponent implements OnInit, OnDestroy {
+
+  // Subscriptions
+  validaDuplicidadeCpfCnpjSubscription$: Subscription;
+  obtemDadosClientePeloCnpjSubscription$: Subscription;
+  validaDuplicidadeInscricaoEstadualSubscription$: Subscription;
+  obtemTodosEstadosBrasileirosSubscription$: Subscription;
+  getEnderecoPeloCepSubscription$: Subscription;
+  obtemTodosMunicipiosPorEstadoSubscription$: Subscription;
+  novoClienteSubscription$: Subscription;
 
   // Form groups
   dadosCliente: FormGroup;
@@ -38,7 +47,7 @@ export class NovoComponent implements OnInit {
   inputLengthTelefone: number;
   inputTelefonePattern: any;
 
-  cliente: Cliente = new Cliente();
+  cliente: Cliente;
 
   // Variaveis endereço
   estadosResponse: EstadosResponse[];
@@ -64,6 +73,16 @@ export class NovoComponent implements OnInit {
     setTimeout(() => {
       this.inputNome.nativeElement.focus();
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    if (this.validaDuplicidadeCpfCnpjSubscription$ != undefined) this.validaDuplicidadeCpfCnpjSubscription$.unsubscribe();
+    if (this.obtemDadosClientePeloCnpjSubscription$ != undefined) this.obtemDadosClientePeloCnpjSubscription$.unsubscribe();
+    if (this.validaDuplicidadeInscricaoEstadualSubscription$ != undefined) this.validaDuplicidadeInscricaoEstadualSubscription$.unsubscribe();
+    if (this.obtemTodosEstadosBrasileirosSubscription$ != undefined) this.obtemTodosEstadosBrasileirosSubscription$.unsubscribe();
+    if (this.getEnderecoPeloCepSubscription$ != undefined) this.getEnderecoPeloCepSubscription$.unsubscribe();
+    if (this.obtemTodosMunicipiosPorEstadoSubscription$ != undefined) this.obtemTodosMunicipiosPorEstadoSubscription$.unsubscribe();
+    if (this.novoClienteSubscription$ != undefined) this.novoClienteSubscription$.unsubscribe();
   }
 
   inicializarCliente() {
@@ -219,27 +238,57 @@ export class NovoComponent implements OnInit {
 
   // DADOS
   realizaTratamentoCpfCnpj() {
-
     this.cliente.cpfCnpj = this.cliente.cpfCnpj
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
-    if (this.cliente.tipoPessoa == 'JURIDICA' && this.cliente.cpfCnpj.length == 14 && this.dadosCliente.controls['cpfCnpj'].valid) {
-      this.brasilApiService.obtemDadosClientePeloCnpj(this.cliente.cpfCnpj).subscribe(
-        (res: CnpjResponse) => {
-          this.setaClienteComInformacoesObtidasPeloCnpj(res);
+    this.invocaValidacaoDuplicidadeCpfCnpj();
+  }
+
+  invocaValidacaoDuplicidadeCpfCnpj() {
+
+    if (this.cliente.tipoPessoa == 'JURIDICA' && this.cliente.cpfCnpj.length == 14 && this.dadosCliente.controls['cpfCnpj'].valid ||
+      this.cliente.tipoPessoa == 'FISICA' && this.cliente.cpfCnpj.length == 11 && this.dadosCliente.controls['cpfCnpj'].valid) {
+
+      this.validaDuplicidadeCpfCnpjSubscription$ = this.clienteService.validaDuplicidadeCpfCnpj(this.cliente.cpfCnpj).subscribe({
+        error: error => {
+          this.cliente.cpfCnpj = '';
+          this.dadosCliente.controls['cpfCnpj'].reset();
+          this._snackBar.open(error, "Fechar", {
+            duration: 3500
+          });
         },
-        (error: HttpErrorResponse) => {
-          console.log(error);
+        complete: () => {
+          if (this.cliente.tipoPessoa == 'JURIDICA') this.obtemDadosDoClientePeloCnpj();
+          console.log('Validação de duplicidade de Cpf/Cnpj finalizada com sucesso')
         }
-      )
+      });
+
     }
+
+  }
+
+  obtemDadosDoClientePeloCnpj() {
+    this.obtemDadosClientePeloCnpjSubscription$ = this.brasilApiService.obtemDadosClientePeloCnpj(this.cliente.cpfCnpj).subscribe({
+      next: retornoApi => this.setaClienteComInformacoesObtidasPeloCnpj(retornoApi),
+      error: error => {
+        this._snackBar.open('Ocorreu um erro na obtenção automatizada das informações do CNPJ', "Fechar", {
+          duration: 3500
+        })
+      },
+      complete: () => {
+        console.log('Informações do CNPJ digitado obtidas com sucesso');
+        this._snackBar.open('Informações do CNPJ obtidas', "Fechar", {
+          duration: 3500
+        });
+      }
+    })
   }
 
   setaClienteComInformacoesObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     // Dados
-    if (cnpjResponse.nome_fantasia != null && cnpjResponse.nome_fantasia != '') {
-      this.cliente.nome = cnpjResponse.nome_fantasia;
+    if (cnpjResponse.nomeFantasia != null && cnpjResponse.nomeFantasia != '') {
+      this.cliente.nome = cnpjResponse.nomeFantasia;
       this.dadosCliente.controls['nome'].markAsTouched();
     }
 
@@ -249,8 +298,8 @@ export class NovoComponent implements OnInit {
     }
 
     // Telefone
-    if (cnpjResponse.ddd_telefone_1 != null && cnpjResponse.ddd_telefone_1 != '') {
-      if (cnpjResponse.ddd_telefone_1.length == 10) {
+    if (cnpjResponse.telefonePrincipal != null && cnpjResponse.telefonePrincipal != '') {
+      if (cnpjResponse.telefonePrincipal.length == 10) {
         this.cliente.telefone.tipoTelefone = 'FIXO';
       }
       else {
@@ -259,8 +308,8 @@ export class NovoComponent implements OnInit {
       this.atualizaValidatorsTelefone();
       this.dadosTelefone.controls['tipoTelefone'].markAsTouched();
 
-      this.cliente.telefone.prefixo = cnpjResponse.ddd_telefone_1.slice(0, 2);
-      this.cliente.telefone.numero = cnpjResponse.ddd_telefone_1.slice(2);
+      this.cliente.telefone.prefixo = cnpjResponse.telefonePrincipal.slice(0, 2);
+      this.cliente.telefone.numero = cnpjResponse.telefonePrincipal.slice(2);
       this.dadosTelefone.controls['prefixo'].markAsTouched();
       this.dadosTelefone.controls['numero'].markAsTouched();
     }
@@ -294,6 +343,7 @@ export class NovoComponent implements OnInit {
     if (cnpjResponse.uf != null && cnpjResponse.uf != '') {
       this.cliente.endereco.estado = cnpjResponse.uf;
       this.dadosEndereco.controls['estado'].markAsTouched();
+      this.obtemTodosMunicipiosPorEstado();
     }
 
     if (cnpjResponse.complemento != null && cnpjResponse.complemento != '') {
@@ -308,6 +358,23 @@ export class NovoComponent implements OnInit {
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
+    this.invocaValidacaoDuplicidadeInscricaoEstadual();
+  }
+
+  invocaValidacaoDuplicidadeInscricaoEstadual() {
+    if (this.cliente.inscricaoEstadual.length == 11 && this.dadosCliente.controls['inscricaoEstadual'].valid) {
+      this.validaDuplicidadeInscricaoEstadualSubscription$ =
+        this.clienteService.validaDuplicidadeInscricaoEstadual(this.cliente.inscricaoEstadual).subscribe({
+          error: error => {
+            this.cliente.inscricaoEstadual = '';
+            this.dadosCliente.controls['inscricaoEstadual'].reset();
+            this._snackBar.open(error, "Fechar", {
+              duration: 3500
+            });
+          },
+          complete: () => console.log('Validação de duplicidade de inscrição estadual completada com sucesso')
+        })
+    }
   }
 
   // TELEFONE
@@ -334,6 +401,7 @@ export class NovoComponent implements OnInit {
       this.cliente.endereco.estado != null && this.cliente.endereco.estado != '' ||
       this.cliente.endereco.codigoPostal != null && this.cliente.endereco.codigoPostal != '' ||
       this.cliente.endereco.complemento != null && this.cliente.endereco.complemento != '') {
+      this.cliente.endereco.cidade = this.cliente.endereco.cidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       this.dadosEndereco.controls['logradouro'].addValidators([Validators.required, Validators.maxLength(50), Validators.minLength(1)]);
       this.dadosEndereco.controls['numero'].addValidators([Validators.required, Validators.max(99999), Validators.min(1), Validators.pattern(/^[0-9]{1,5}$/)]);
     }
@@ -348,41 +416,53 @@ export class NovoComponent implements OnInit {
   }
 
   obtemTodosEstadosBrasileiros() {
-    this.brasilApiService.getTodosEstados().subscribe(
-      (res: EstadosResponse[]) => {
-        res.sort((x, y) => x.sigla.localeCompare(y.sigla))
-        this.estadosResponse = res;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error);
-      }
-    );
+    this.obtemTodosEstadosBrasileirosSubscription$ =
+      this.brasilApiService.getTodosEstados().subscribe({
+        next: response => {
+          response.sort((x, y) => x.sigla.localeCompare(y.sigla))
+          this.estadosResponse = response;
+        },
+        error: error => {
+          this.router.navigate(['/clientes'])
+          this._snackBar.open(error, "Fechar", {
+            duration: 3500
+          });
+        },
+        complete: () => {
+          console.log("Estados carregados com sucesso");
+        }
+      });
   }
 
   realizaTratamentoCodigoPostal() {
+
     this.atualizaValidatorsEndereco();
+
     this.cliente.endereco.codigoPostal = this.cliente.endereco.codigoPostal
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
+
     if (this.dadosEndereco.controls['codigoPostal'].valid && this.cliente.endereco.codigoPostal.length == 8) {
-      this.brasilApiService.getEnderecoPeloCep(this.cliente.endereco.codigoPostal).subscribe(
-        (res: ConsultaCepResponse) => {
-          this.setaEnderecoComInformacoesObtidasPeloCep(res);
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error);
-        }
-      );
+      this.getEnderecoPeloCepSubscription$ =
+        this.brasilApiService.getEnderecoPeloCep(this.cliente.endereco.codigoPostal).subscribe({
+          next: resposta => this.setaEnderecoComInformacoesObtidasPeloCep(resposta),
+          error: error => {
+            this._snackBar.open(error, "Fechar", {
+              duration: 3500
+            })
+          },
+          complete: () => console.log('Busca de endereço por cep realizada com sucesso')
+        });
     }
   }
 
   setaEnderecoComInformacoesObtidasPeloCep(consultaCepResponse: ConsultaCepResponse) {
-    this.cliente.endereco.logradouro = consultaCepResponse.street;
+    this.cliente.endereco.logradouro = consultaCepResponse.logradouro;
     this.cliente.endereco.numero = null;
-    this.cliente.endereco.bairro = consultaCepResponse.neighborhood;
-    this.cliente.endereco.estado = consultaCepResponse.state;
-    this.cliente.endereco.cidade = consultaCepResponse.city;
+    this.cliente.endereco.bairro = consultaCepResponse.bairro;
+    this.cliente.endereco.estado = consultaCepResponse.estado;
+    this.cliente.endereco.cidade = consultaCepResponse.cidade;
     this.cliente.endereco.complemento = null;
 
     this.dadosEndereco.controls['codigoPostal'].markAsTouched();
@@ -399,14 +479,16 @@ export class NovoComponent implements OnInit {
   public obtemTodosMunicipiosPorEstado() {
     this.atualizaValidatorsEndereco();
     if (this.cliente.endereco.estado != null && this.cliente.endereco.estado != '') {
-      this.brasilApiService.obtemTodosMunicipiosPorEstado(this.cliente.endereco.estado).subscribe(
-        (res: MunicipiosResponse[]) => {
-          this.municipiosResponse = res;
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error);
-        }
-      )
+      this.obtemTodosMunicipiosPorEstadoSubscription$ =
+        this.brasilApiService.obtemTodosMunicipiosPorEstado(this.cliente.endereco.estado).subscribe({
+          next: resposta => this.municipiosResponse = resposta,
+          error: error => {
+            this._snackBar.open(error, 'Fechar', {
+              duration: 3500
+            })
+          },
+          complete: () => console.log('Obtenção de municípios por estado realizada com sucesso')
+        })
     }
   }
 
@@ -416,17 +498,21 @@ export class NovoComponent implements OnInit {
     if (this.cliente.dataNascimento != null && this.cliente.dataNascimento != '')
       this.cliente.dataNascimento = this.datePipe.transform(this.cliente.dataNascimento, "yyyy-MM-dd");
 
-    this.router.navigate(['/clientes'])
-    this.clienteService.novoCliente(this.cliente).subscribe(
-      (res: Cliente) => {
-        this._snackBar.open("Cliente cadastrado com sucesso", "Fechar", {
-          duration: 3500
-        });
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error);
-      }
-    );
+    this.novoClienteSubscription$ =
+      this.clienteService.novoCliente(this.cliente).subscribe({
+        error: error => {
+          this._snackBar.open("Ocorreu um erro ao cadastrar o cliente", "Fechar", {
+            duration: 3500
+          })
+        },
+        complete: () => {
+          this.router.navigate(['/clientes'])
+          console.log("Cliente cadastrado com sucesso");
+          this._snackBar.open("Cliente cadastrado com sucesso", "Fechar", {
+            duration: 3500
+          });
+        }
+      });
   }
 
 }

@@ -5,6 +5,7 @@ import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado
 import { Pageable, PageObject } from '../../../shared/models/PageObject';
 import { Cliente as ClienteNovo } from '../novo/models/cliente';
 import { Cliente } from '../models/Cliente';
+import { catchError, map, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class ClienteService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2ODAyNzk1MzF9.02lW0gkD_eL_WGu4Z13o_S0KPAmqIbIVy7C-chkrviJHK32Jir9mqJuJiCH2h1SnH9pACP5CurCxyJFnIta79A'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2ODA4Nzc0Mzh9.Ml4rLLgrdm7OgK54ikHULn4fBKAmUHXJDsNA2wm1jwsJcE4ombaX60Zgu1-UMQ3IoWAXrjhcxKjyJW3ZhP4LCQ'
     })
   }
 
@@ -38,19 +39,37 @@ export class ClienteService {
     // ENDERECO
     if (cliente.endereco != null) {
       if (cliente.endereco.estado == '') cliente.endereco.estado = null;
-      if (cliente.endereco.logradouro == '' || cliente.endereco.logradouro == null ||
-        cliente.endereco.numero == null) cliente.endereco = null;
+      if (cliente.endereco.cidade == '') cliente.endereco.cidade = null;
+      if (cliente.endereco.complemento == '') cliente.endereco.complemento = null;
+      if (cliente.endereco.codigoPostal == '') cliente.endereco.codigoPostal = null;
+      if (cliente.endereco.bairro == '') cliente.endereco.bairro = null;
+      if (cliente.endereco.logradouro == '' || cliente.endereco.logradouro == null || cliente.endereco.numero == null) cliente.endereco = null;
     }
 
     return cliente;
 
   }
 
-  public novoCliente(clienteNovo: ClienteNovo): any {
+  public validaDuplicidadeInscricaoEstadual(inscricaoEstadual: string): Observable<string> {
+    return this.http.post<string>(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-ie`, inscricaoEstadual, this.httpOptions).pipe(
+      catchError(erro => {
+        return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
+      })
+    )
+  }
+
+  public validaDuplicidadeCpfCnpj(cpfCnpj: string): Observable<string> {
+    return this.http.post<string>(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, cpfCnpj, this.httpOptions).pipe(
+      catchError(erro => {
+        return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
+      })
+    )
+  }
+
+  public novoCliente(clienteNovo: ClienteNovo): Observable<ClienteNovo> {
     clienteNovo = this.realizaTratamentoDeAtributosNulos(clienteNovo);
     return this.http.post<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
-      res => res,
-      error => error
+      map(resposta => new ClienteNovo(resposta)),
     )
   }
 

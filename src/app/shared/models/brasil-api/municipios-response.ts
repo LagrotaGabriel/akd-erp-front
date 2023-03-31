@@ -1,4 +1,7 @@
 export class MunicipiosResponse {
     nome: string;
-    codigo_ibge: string;
+
+    constructor(item) {
+        this.nome = item?.nome;
+    }
 }

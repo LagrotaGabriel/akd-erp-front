@@ -67,7 +67,7 @@
                 <!-- INPUT GROUP TIPO -->
                 <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Tipo</label>
+                        <label class="label">Tipo pessoa</label>
                     </div>
                     <select formControlName="tipoPessoa" name="tipoPessoa" autocomplete="off" tabindex="2"
                     (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
@@ -377,6 +377,7 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="cidade" name="cidade" style="text-transform:uppercase"
                         spellcheck="false" [(ngModel)]="cliente.endereco.cidade" list="municipiosEstado" maxlength="50" (input)="atualizaValidatorsEndereco()"
+                        (change)="atualizaValidatorsEndereco()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}"
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         class="input input_cidade col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="16">
@@ -454,7 +455,7 @@
 
                     <div *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir um valor entre 1 e 99999' }}</h6>
+                        <h6 class="error_message">{{ 'Campo obrigatório' }}</h6>
                     </div>
                 </div>                
 

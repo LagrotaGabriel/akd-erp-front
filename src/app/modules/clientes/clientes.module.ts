@@ -30,7 +30,7 @@ import { BuscaComponent } from './visualizacao/busca/busca.component';
 
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
-import { NovoComponent } from './novo/novo/novo.component';
+import { NovoComponent } from './criacao/novo/novo.component';
 
 registerLocaleData(ptBr);
 

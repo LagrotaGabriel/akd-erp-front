@@ -1,7 +1,7 @@
 
 import { Component } from '@angular/core';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
-import { Cliente } from '../../models/Cliente';
+import { Cliente } from '../models/Cliente';
 
 @Component({
   selector: 'app-view',

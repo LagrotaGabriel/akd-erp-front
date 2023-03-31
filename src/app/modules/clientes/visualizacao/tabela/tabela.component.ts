@@ -1,4 +1,4 @@
-import { Cliente } from '../../models/Cliente';
+import { Cliente } from '../models/Cliente';
 import { Pageable, PageObject } from '../../../../shared/models/PageObject';
 import { Component, Input, OnChanges, AfterViewInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';

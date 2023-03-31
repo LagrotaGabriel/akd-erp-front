@@ -1,10 +1,10 @@
-import { ClienteService } from './../../services/cliente.service';
-import { CnpjResponse } from './../../../../shared/models/brasil-api/cnpj-response';
+import { ClienteService } from '../../services/cliente.service';
+import { CnpjResponse } from '../../../../shared/models/brasil-api/cnpj-response';
 import { ConsultaCepResponse } from '../../../../shared/models/brasil-api/consulta-cep-response';
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../models/cliente';
-import { BrasilApiService } from '../services/brasil-api.service';
+import { BrasilApiService } from '../../../../shared/services/brasil-api.service';
 import { EstadosResponse } from '../../../../shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from '../../../../shared/models/brasil-api/municipios-response';
 import { Router } from '@angular/router';

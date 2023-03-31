@@ -1,4 +1,4 @@
-import { MetaDadosCliente } from '../../models/MetaDadosCliente';
+import { MetaDadosCliente } from '../models/MetaDadosCliente';
 import { Component, Input, OnChanges, DoCheck, SimpleChanges } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
 import { HttpErrorResponse } from '@angular/common/http';

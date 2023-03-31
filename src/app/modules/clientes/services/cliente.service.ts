@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
 import { Pageable, PageObject } from '../../../shared/models/PageObject';
-import { Cliente as ClienteNovo } from '../novo/models/cliente';
-import { Cliente } from '../models/Cliente';
+import { Cliente as ClienteNovo } from '../criacao/models/cliente';
+import { Cliente } from '../visualizacao/models/Cliente';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 @Injectable({

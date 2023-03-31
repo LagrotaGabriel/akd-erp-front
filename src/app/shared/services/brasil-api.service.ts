@@ -2,9 +2,9 @@ import { map, Observable, catchError, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
-import { ConsultaCepResponse } from '../../../../shared/models/brasil-api/consulta-cep-response';
-import { EstadosResponse } from '../../../../shared/models/brasil-api/estados-response';
-import { MunicipiosResponse } from '../../../../shared/models/brasil-api/municipios-response';
+import { ConsultaCepResponse } from '../models/brasil-api/consulta-cep-response';
+import { EstadosResponse } from '../models/brasil-api/estados-response';
+import { MunicipiosResponse } from '../models/brasil-api/municipios-response';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NovoComponent } from './novo/novo/novo.component';
+import { NovoComponent } from './criacao/novo/novo.component';
 import { ViewComponent } from './visualizacao/view/view.component';
 
 const routes: Routes = [

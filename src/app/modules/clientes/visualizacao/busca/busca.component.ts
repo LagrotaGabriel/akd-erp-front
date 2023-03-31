@@ -8,7 +8,7 @@ import { Chips } from 'src/app/shared/models/filtros/Chips';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClienteService } from '../../services/cliente.service';
-import { MetaDadosCliente } from '../../models/MetaDadosCliente';
+import { MetaDadosCliente } from '../models/MetaDadosCliente';
 
 @Component({
   selector: 'app-busca',

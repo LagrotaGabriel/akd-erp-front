@@ -415,7 +415,11 @@
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="17">
-                        <mat-icon *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].value != ''"
+                        <mat-icon *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid 
+                        || dadosEndereco.controls['logradouro'].valid 
+                            && dadosEndereco.controls['logradouro'].touched 
+                            && dadosEndereco.controls['logradouro'].value != '' 
+                            && dadosEndereco.controls['logradouro'].value != null"
                         [fontIcon]="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid 
                             ? 'error' 
                             : 'check'"
@@ -444,7 +448,11 @@
                         [ngClass]="{'input_invalida': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}"
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
-                        <mat-icon *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].value != ''"
+                        <mat-icon *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid 
+                        || dadosEndereco.controls['logradouro'].valid 
+                            && dadosEndereco.controls['numero'].touched 
+                            && dadosEndereco.controls['numero'].value != '' 
+                            && dadosEndereco.controls['numero'].value != null"
                         [fontIcon]="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid 
                             ? 'error' 
                             : 'check'"
@@ -455,7 +463,7 @@
 
                     <div *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Campo obrigatório' }}</h6>
+                        <h6 class="error_message">{{ 'Campo numérico obrigatório' }}</h6>
                     </div>
                 </div>                
 
@@ -521,7 +529,8 @@
                     <button (click)="avancaSegundaEtapa()" #botaoVoltarTerceiraEtapa class="button botaoHabilitado" mat-button matStepperPrevious tabindex="21">
                         Voltar
                     </button>
-                    <button (click)="enviarFormulario()" #botaoEnviarFormulario type="button" tabindex="22" class="button" 
+                    <button (click)="enviarFormulario()" #botaoEnviarFormulario type="button" tabindex="22" class="button"
+                    [disabled]="dadosEndereco.invalid"
                     [ngClass]="{'botaoHabilitado': dadosEndereco.valid, 'botaoDesabilitado': !dadosEndereco.valid}" mat-button>
                         Enviar
                     </button>

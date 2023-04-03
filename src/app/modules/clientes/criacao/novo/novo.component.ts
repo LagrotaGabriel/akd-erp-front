@@ -394,8 +394,9 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   // ENDEREÇO
   atualizaValidatorsEndereco() {
+    console.log(this.cliente.endereco.numero);
     if (this.cliente.endereco.logradouro != null && this.cliente.endereco.logradouro != '' ||
-      this.cliente.endereco.numero != null ||
+      this.cliente.endereco.numero != null && this.cliente.endereco.numero.toString() != '' ||
       this.cliente.endereco.bairro != null && this.cliente.endereco.bairro != '' ||
       this.cliente.endereco.cidade != null && this.cliente.endereco.cidade != '' ||
       this.cliente.endereco.estado != null && this.cliente.endereco.estado != '' ||
@@ -489,6 +490,9 @@ export class NovoComponent implements OnInit, OnDestroy {
           },
           complete: () => console.log('Obtenção de municípios por estado realizada com sucesso')
         })
+    }
+    else {
+      this.municipiosResponse = [];
     }
   }
 

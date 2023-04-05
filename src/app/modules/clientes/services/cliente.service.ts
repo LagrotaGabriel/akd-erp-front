@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
-import { Pageable, PageObject } from '../../../shared/models/PageObject';
+import { PageObject } from '../../../shared/models/PageObject';
 import { Cliente as ClienteNovo } from '../criacao/models/cliente';
 import { Cliente } from '../visualizacao/models/Cliente';
 import { catchError, map, Observable, throwError } from 'rxjs';
@@ -73,7 +73,7 @@ export class ClienteService {
     )
   }
 
-  public getClientes(filtrosAdicionados: FiltroAdicionado[], pageableInfo: Pageable): any {
+  public getClientes(filtrosAdicionados: FiltroAdicionado[], pageableInfo: PageObject): any {
     var requestParams = this.buildRequestParams(filtrosAdicionados, "&");
     var pageableParams = this.buildPageableParams(pageableInfo);
     return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente${pageableParams}${requestParams}`, this.httpOptions).pipe(
@@ -108,7 +108,7 @@ export class ClienteService {
     return requestParamSintax;
   }
 
-  private buildPageableParams(pageableInfo: Pageable): string {
+  private buildPageableParams(pageableInfo: PageObject): string {
     var requestParamSintax = "?";
     if (pageableInfo != null) {
       requestParamSintax += "page=" + pageableInfo.pageNumber;
@@ -117,8 +117,8 @@ export class ClienteService {
     }
     else {
       requestParamSintax += "page=" + 0;
-      requestParamSintax += "&size=" + 20;
-      requestParamSintax += "&sort=dataCadastro,desc&horaCadastro,desc";
+      requestParamSintax += "&size=" + 10;
+      requestParamSintax += "&sort=dataCadastro,DESC&horaCadastro,DESC";
     }
     return requestParamSintax;
   }

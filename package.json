@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^15.1.0",
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
+    "bootstrap-icons": "^1.10.3",
     "chart.js": "^4.2.1",
     "rfs": "^9.0.6",
     "rxjs": "~7.8.0",

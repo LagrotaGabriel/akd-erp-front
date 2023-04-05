@@ -510,7 +510,7 @@ export class NovoComponent implements OnInit, OnDestroy {
           })
         },
         complete: () => {
-          this.router.navigate(['/clientes'])
+          this.router.navigate(['/clientes']);
           console.log("Cliente cadastrado com sucesso");
           this._snackBar.open("Cliente cadastrado com sucesso", "Fechar", {
             duration: 3500

@@ -4,6 +4,7 @@
 /* ======= GLOBAL ======= */
 
 .container,
+.botoes_filtro_container,
 .icone_filtro,
 .texto_filtro,
 .busca_block,
@@ -31,10 +32,31 @@
 }
 
 .container {
-    display: flex;
+    display: table;
     align-items: center;
-    margin-bottom: 1rem;
+    margin: 1.5rem 0;
     justify-content: center;
+    table-layout: auto;
+}
+
+.sub_container {
+    display: flex;
+    justify-content: center;
+}
+
+.botoes_filtro_container {
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+.botoes_filtro_subcontainer {
+    justify-content: left;
+    margin-right: 1rem;
+}
+
+.select_filtro_subcontainer {
+    justify-content: right;
+    margin-left: 1rem;
 }
 
 hr {
@@ -101,6 +123,7 @@ hr {
 .busca_block {
     background-color: $primary-color;
     padding: 0.1rem 0.5rem;
+    margin-right: 1rem;
     border: none;
     border-radius: 5px;
     color: $light-white;
@@ -248,14 +271,18 @@ hr {
 /* ======= INPUT BUSCA ======= */
 
 .input_filtro_container {
-    display: flex;
-    align-items: baseline;
+    display: table-cell;
+    vertical-align: bottom;
+    width: inherit;
+}
+
+.input_filtro_subcontainer {
+    display: block;
 }
 
 .input_block {
     display: flex;
     border: 1px solid $dark-grey;
-    margin-left: 1rem;
     background-color: transparent;
     padding: 0.2rem 0.5rem;
     border-radius: 3px;
@@ -265,7 +292,7 @@ hr {
 .input_busca {
     border: none;
     padding: 0rem 0.5rem;
-    width: 40rem;
+    width: 100%;
     background-color: transparent;
     color: $secondary-color;
 }
@@ -284,23 +311,23 @@ hr {
 /* ======= ITENS POR PÁGINA ======= */
 
 .select_filtro_container {
-    display: flex;
+    display: table-cell;
     margin: 0;
     padding: 0;
-    align-items: center;
-    right: 0;
+    vertical-align: bottom;
 }
 
 .select_block {
-    display: flex;
     border: 1px solid $primary-color;
-    margin-left: 1rem;
     background-color: transparent;
     padding: 0.2rem 0.5rem;
     border-radius: 3px;
-    align-items: center;
     cursor: pointer;
     background-color: $primary-color;
+}
+
+.select_block_apaga {
+    margin-left: 1rem;
 }
 
 .iconeDesabilitado {
@@ -329,28 +356,9 @@ hr {
 
 // XL
 @media (max-width: 1400px) {
-    .chip_text  {
-        font-size: 0.90rem;
-    }
     .input_busca {
-        width: 30rem;
+        width: 100%;
         font-size: 0.90rem;
-    }
-
-    .texto_filtro {
-        font-size: 0.90rem;
-    }
-}
-
-// XL
-@media (max-width: 1300px) {
-    .input_busca {
-        width: 25rem;
-        font-size: 0.85rem;
-    }
-
-    .texto_filtro {
-        font-size: 0.85rem;
     }
 }
 
@@ -360,7 +368,7 @@ hr {
         font-size: 0.85rem;
     }
     .input_busca {
-        width: 25rem;
+        width: 100%;
         font-size: 0.85rem;
     }
 
@@ -375,17 +383,10 @@ hr {
         font-size: 0.80rem;
     }
     .input_busca {
-        width: 25rem;
         font-size: 0.80rem;
     }
     .texto_filtro {
         font-size: 0.80rem;
-    }
-    .select_block {
-        padding: 0rem 0.3rem;
-    }
-    .busca_block {
-        padding: 0 0.4rem;
     }
 }
 // MD
@@ -394,7 +395,6 @@ hr {
         padding: 0.1rem 0.3rem;
     }
     .input_busca {
-        width: 25rem;
         font-size: 0.75rem;
     }
     .texto_filtro {
@@ -406,13 +406,6 @@ hr {
     .busca_block {
         padding: 0rem 0.5rem;
         padding-top: 0.1rem;
-    }
-}
-
-// SM
-@media (max-width: 820px) {
-    .input_busca {
-        width: 25rem;
     }
 }
 
@@ -425,7 +418,7 @@ hr {
         padding: 0.1rem 0.5rem;
     }
     .input_busca {
-        width: 20rem;
+        width: 100%;
         font-size: 0.70rem;
     }
     .texto_filtro {
@@ -434,41 +427,47 @@ hr {
     .select_block {
         padding: 0.1rem 0.4rem;
     }
-    .busca_block {
-        padding: 0.1rem 0.5rem;
-        padding-top: 0.1rem;
-    }
 }
 
 @media (max-width: 700px) {
     .input_busca {
-        width: 18rem;
+        width: 100%;
     }
 }
 
 @media (max-width: 650px) {
     .input_busca {
-        width: 16rem;
+        width: 100%;
     }
 }
 
 @media (max-width: 620px) {
+    .select_filtro_subcontainer {
+        margin-left: 0;
+    }
+    .botoes_filtro_subcontainer  {
+        margin-right: 0;
+    }
+    .select_block_olho {
+        margin-left: 0 !important;
+        margin-right: 0.7rem;
+    }
+    .busca_block_filtro {
+        margin-right: 0.7rem;
+    }
     .chip_text  {
         font-size: 0.70rem;
     }
     .input_block   {
         padding: 0rem 0.5rem;
-        padding-top: 0.1rem;
     }
     .input_busca {
-        width: 14rem;
         font-size: 0.70rem;
     }
     .texto_filtro {
         font-size: 0.70rem;
     }
     .select_block {
-        padding: 0rem 0.4rem;
         margin-left: 0.7rem;
     }
     .busca_block {
@@ -487,6 +486,10 @@ hr {
     }
     .container {
         justify-content: left;
+        display: flex;
+    }
+    .select_block_baixa {
+        margin-left: 0;
     }
     .input_filtro_container {
         display: none;
@@ -495,7 +498,7 @@ hr {
         font-size: 0.70rem;
     }
     .select_block {
-        padding: 0rem 0.4rem;
+        padding: 0.1rem 0.4rem;
     }
     .busca_block {
         padding: 0rem 0.5rem;

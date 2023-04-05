@@ -1,16 +1,35 @@
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table_container">
 
-  <table class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table table-dark table-hover">
+  <table class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table table-dark"
+    [ngClass]="{'mat-elevation-z8': clientesEncontrados.length > 0}">
 
-    <thead class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 thead">
-      <tr class="tr_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <thead class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 thead">
 
-        <th class="th th_expande">
-          <mat-icon (click)="alteraOrdenacao()" class="icon_expand_all" fontIcon="unfold_more"></mat-icon>
-        </th>
+      <div class="row thead_info col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <h5 *ngIf="pageableInfo != null && clientesEncontrados.length > 0" class="quantidade_exibida">{{
+          pageableInfo.totalElements }} Clientes
+          encontrados</h5>
+        <div class="row thead_info_icon_container">
+          <select *ngIf="clientesEncontrados.length > 0" class="row bt_header ">
+            <option class="bt_header_option">5</option>
+            <option class="bt_header_option">10</option>
+            <option class="bt_header_option">20</option>
+            <option class="bt_header_option">50</option>
+          </select>
+          <div class="row bt_header bt_header_novo" routerLink="/clientes/novo">
+            <h5 class="text_novo">Novo</h5>
+          </div>
+        </div>
+      </div>
+
+      <tr *ngIf="clientesEncontrados.length > 0" class="tr_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
         <th class="th th_checkbox">
           <input (click)="checkAll()" [checked]="botaoCheckAllHabilitado" type="checkbox" id="customCheck"
             name="example1">
+        </th>
+        <th class="th th_expande">
+          <mat-icon (click)="alteraOrdenacao()" class="icon_expand_all" fontIcon="unfold_more"></mat-icon>
         </th>
         <th class="th th_nome">
           NOME
@@ -28,29 +47,32 @@
           GIRO
         </th>
         <th class="th th_acoes">
-          AÇÕES
+
         </th>
+
       </tr>
+
     </thead>
 
-    <tbody *ngIf="pageObject != null; else: loadBarTabela" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <tbody *ngIf="pageableInfo != null; else: loadBarTabela" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
       <div *ngIf="clientesEncontrados.length > 0; else: tabelaVazia"
         class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela_container">
         <div *ngFor="let cliente of clientesEncontrados; let i = index"
+          [ngClass]="{'linha_tabela_expandida': cliente.expanded}"
           class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela">
 
           <tr class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+            <td class="td td_checkbox">
+              <input (click)="alteraEstadoCheckTabela(i)" [checked]="cliente.checked" type="checkbox" class="checkbox">
+            </td>
 
             <td class="td td_expande">
               <i (click)="alteraEstadoExpansaoTabela(i)"
                 [ngClass]="{'fa-chevron-right': !cliente.expanded, 'fa-chevron-down': cliente.expanded}"
                 class="icone icone_expand fas fa-solid" id="{{ 'linha-' + i }}" data-toggle="collapse"
                 [attr.href]="'#collapse-' + i"></i>
-            </td>
-
-            <td class="td td_checkbox">
-              <input (click)="alteraEstadoCheckTabela(i)" [checked]="cliente.checked" type="checkbox" class="checkbox">
             </td>
 
             <td class="td td_nome">
@@ -68,7 +90,7 @@
             </td>
 
             <td class="td td_status">
-              <span class="status_comum" [ngClass]="{
+              <span class="status_comum mat-elevation-z2" [ngClass]="{
                   'status_vip': cliente.statusCliente == 'VIP', 
                   'status_debito': cliente.statusCliente == 'DEVEDOR',
                   'status_comum': cliente.statusCliente == 'COMUM',
@@ -112,7 +134,7 @@
 
               <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_linha_principal">
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
                   <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Responsável pelo
@@ -126,7 +148,7 @@
                   </div>
                 </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
                   <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data do cadastro:</h3>
@@ -139,7 +161,7 @@
                   </div>
                 </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
                   <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">E-mail:</h3>
@@ -154,7 +176,7 @@
                   </div>
                 </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
                   <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data de nascimento:
@@ -170,7 +192,7 @@
                   </div>
                 </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
                   <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Inscrição estadual:
@@ -184,7 +206,7 @@
                   </div>
                 </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 accordion_bloco">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
                   <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Giro total:</h3>
@@ -206,7 +228,7 @@
                   </div>
                 </div>
 
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 accordion_bloco">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_bloco">
                   <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                       <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Endereço:</h3>
@@ -225,6 +247,7 @@
           </div>
 
         </div>
+
       </div>
 
       <ng-template #tabelaVazia>
@@ -239,27 +262,29 @@
       <mat-progress-bar class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9 load-bar-tabela"
         mode="indeterminate"></mat-progress-bar>
     </ng-template>
+
+    <div *ngIf="pageableInfo != null && clientesEncontrados.length > 0"
+      class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
+      <ul *ngIf="pageableInfo.totalPages > 1" class="pagination pagination-sm justify-content-end">
+        <li (click)="voltarPagina()" [ngClass]="{'disabled': pageableInfo.pageNumber == 0}" class="page-item"><a
+            class="page-link">{{ geraBotaoVoltarPaginacao() }}</a></li>
+        <ng-container *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageableInfo.totalPages); let i = index">
+          <li *ngIf="(pageableInfo.pageNumber - i) <= 3 && (pageableInfo.pageNumber - i) >= 0
+          || (i - pageableInfo.pageNumber) <= 3 && (i - pageableInfo.pageNumber) >= 0
+          || pageableInfo.pageNumber == 0 && (i - pageableInfo.pageNumber) <= 6 && (i - pageableInfo.pageNumber) >= 0
+          || pageableInfo.pageNumber == 1 && (i - pageableInfo.pageNumber) <= 5 && (i - pageableInfo.pageNumber) >= 0
+          || pageableInfo.pageNumber == 2 && (i - pageableInfo.pageNumber) <= 4 && (i - pageableInfo.pageNumber) >= 0
+          || (pageableInfo.pageNumber == (pageableInfo.totalPages-1)) && (pageableInfo.pageNumber - i) <= 6
+          || (pageableInfo.pageNumber == (pageableInfo.totalPages-2)) && (pageableInfo.pageNumber - i) <= 5
+          || (pageableInfo.pageNumber == (pageableInfo.totalPages-3)) && (pageableInfo.pageNumber - i) <= 4"
+            (click)="selecionarPagina(i)" [ngClass]="{'active': pageableInfo.pageNumber == i}" class="page-item">
+            <a class="page-link">{{ i+1 }}</a>
+          </li>
+        </ng-container>
+        <li (click)="avancarPagina()" [ngClass]="{'disabled': pageableInfo.pageNumber == pageableInfo.totalPages-1}"
+          class="page-item"><a class="page-link">{{ geraBotaoAvancarPaginacao() }}</a></li>
+      </ul>
+    </div>
   </table>
 
-  <div *ngIf="pageObject != null" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
-    <ul *ngIf="pageObject.totalPages > 1" class="pagination pagination-sm justify-content-end">
-      <li (click)="voltarPagina()" [ngClass]="{'disabled': pageObject.pageable.pageNumber == 0}" class="page-item"><a
-          class="page-link">Anterior</a></li>
-      <ng-container *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageObject.totalPages); let i = index">
-        <li *ngIf="(pageObject.pageable.pageNumber - i) <= 3 && (pageObject.pageable.pageNumber - i) >= 0
-        || (i - pageObject.pageable.pageNumber) <= 3 && (i - pageObject.pageable.pageNumber) >= 0
-        || pageObject.pageable.pageNumber == 0 && (i - pageObject.pageable.pageNumber) <= 6 && (i - pageObject.pageable.pageNumber) >= 0
-        || pageObject.pageable.pageNumber == 1 && (i - pageObject.pageable.pageNumber) <= 5 && (i - pageObject.pageable.pageNumber) >= 0
-        || pageObject.pageable.pageNumber == 2 && (i - pageObject.pageable.pageNumber) <= 4 && (i - pageObject.pageable.pageNumber) >= 0
-        || (pageObject.pageable.pageNumber == (pageObject.totalPages-1)) && (pageObject.pageable.pageNumber - i) <= 6
-        || (pageObject.pageable.pageNumber == (pageObject.totalPages-2)) && (pageObject.pageable.pageNumber - i) <= 5
-        || (pageObject.pageable.pageNumber == (pageObject.totalPages-3)) && (pageObject.pageable.pageNumber - i) <= 4"
-          (click)="selecionarPagina(i)" [ngClass]="{'active': pageObject.pageable.pageNumber == i}" class="page-item">
-          <a class="page-link">{{ i+1 }}</a>
-        </li>
-      </ng-container>
-      <li (click)="avancarPagina()" [ngClass]="{'disabled': pageObject.pageable.pageNumber == pageObject.totalPages-1}"
-        class="page-item"><a class="page-link">Próximo</a></li>
-    </ul>
-  </div>
 </div>

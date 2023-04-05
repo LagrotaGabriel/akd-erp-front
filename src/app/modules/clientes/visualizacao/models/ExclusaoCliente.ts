@@ -1,5 +1,5 @@
-export interface ExclusaoCliente {
-    dataExclusao: string,
-    horaExclusao: string,
-    excluido: boolean,
+export class ExclusaoCliente {
+    dataExclusao: string;
+    horaExclusao: string;
+    excluido: boolean;
 }

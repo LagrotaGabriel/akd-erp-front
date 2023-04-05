@@ -1,7 +1,7 @@
+import { Subscription } from 'rxjs';
 import { MetaDadosCliente } from '../models/MetaDadosCliente';
-import { Component, Input, OnChanges, DoCheck, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, DoCheck, SimpleChanges, OnDestroy } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -9,7 +9,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './informativos.component.html',
   styleUrls: ['./informativos.component.scss']
 })
-export class InformativosComponent implements OnChanges, DoCheck {
+export class InformativosComponent implements OnChanges, DoCheck, OnDestroy {
+
+  obtemDadosMeta$: Subscription;
 
   constructor(private clienteService: ClienteService, private _snackBar: MatSnackBar) { }
 
@@ -21,26 +23,27 @@ export class InformativosComponent implements OnChanges, DoCheck {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(!changes['filtrosAdicionados'].isFirstChange()) {
+    if (!changes['filtrosAdicionados'].isFirstChange()) {
       this.obtemMetaDados();
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.obtemDadosMeta$ != undefined) this.obtemDadosMeta$.unsubscribe();
+  }
+
   obtemMetaDados() {
-    this.clienteService.getMetaDados(this.filtrosAdicionados).subscribe(
-      (res: MetaDadosCliente) => {
-        this.metaDados = res;
-        this.metaDados.totalClientesCadastrados = this.transformaQuantidadeDeClientesEmString(res.totalClientesCadastrados);
-      },
-      (error: HttpErrorResponse) => {
-        if (error.status == 403) {
-          //TODO Encerrar sessão e redirecionar usuário para página de login. Aplicar NG GUARD (Se necessário)
-        }
-        else if (error.status == 0)
+    this.obtemDadosMeta$ = this.clienteService.getMetaDados(this.filtrosAdicionados).subscribe(
+      {
+        next: (resposta: MetaDadosCliente) => {
+          this.metaDados = resposta;
+          this.metaDados.totalClientesCadastrados = this.transformaQuantidadeDeClientesEmString(resposta.totalClientesCadastrados);
+        },
+        error: () => {
           this.metaDados = null;
-          this._snackBar.open("Houve uma falha de comunicação com o servidor", "x");
+        }
       }
-      )
+    )
   }
 
   transformaQuantidadeDeClientesEmString(qtdeClientes: any): string {

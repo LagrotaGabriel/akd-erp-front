@@ -1,20 +1,24 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
 import { PageObject } from '../../../shared/models/PageObject';
 import { Cliente as ClienteNovo } from '../criacao/models/cliente';
 import { Cliente } from '../visualizacao/models/Cliente';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, retry, throwError, timer } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MetaDadosCliente } from '../visualizacao/models/MetaDadosCliente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
 
   private httpOptions = {
+    params: new HttpParams({
+    }),
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2ODA4Nzc0Mzh9.Ml4rLLgrdm7OgK54ikHULn4fBKAmUHXJDsNA2wm1jwsJcE4ombaX60Zgu1-UMQ3IoWAXrjhcxKjyJW3ZhP4LCQ'
@@ -73,55 +77,102 @@ export class ClienteService {
     )
   }
 
-  public getClientes(filtrosAdicionados: FiltroAdicionado[], pageableInfo: PageObject): any {
-    var requestParams = this.buildRequestParams(filtrosAdicionados, "&");
-    var pageableParams = this.buildPageableParams(pageableInfo);
-    return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente${pageableParams}${requestParams}`, this.httpOptions).pipe(
-      res => res,
-      error => error
+  public getClientes(filtrosAdicionados: FiltroAdicionado[], pageableInfo: PageObject): Observable<PageObject> {
+    this.buildRequestParams(filtrosAdicionados);
+    this.buildPageableParams(pageableInfo);
+    return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
+      map(resposta => new PageObject(resposta)),
+      catchError((error: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        return throwError(() => new HttpErrorResponse(error));
+      })
     )
   }
 
-  public getMetaDados(filtrosAdicionados: FiltroAdicionado[]): any {
-    var requestParams = this.buildRequestParams(filtrosAdicionados, "?");
-    return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente/meta${requestParams}`, this.httpOptions).pipe(
-      res => res,
-      error => error
+  public getMetaDados(filtrosAdicionados: FiltroAdicionado[]): Observable<MetaDadosCliente> {
+    this.buildRequestParams(filtrosAdicionados);
+    return this.http.get<MetaDadosCliente>(`${API_URL.baseUrl}api/sistema/v1/cliente/meta`, this.httpOptions).pipe(
+      map(resposta => new MetaDadosCliente(resposta)),
+      catchError((error: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        return throwError(() => new HttpErrorResponse(error));
+      })
     )
   }
 
-  public removeCliente(id: number): any {
+  public removeCliente(id: number): Observable<Cliente> {
     return this.http.delete<Cliente>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
-      res => res,
-      error => error
+      map(resposta => new Cliente(resposta)),
+      catchError((httpErrorResponse: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
+        return throwError(() => new HttpErrorResponse(httpErrorResponse));
+      })
     )
   }
 
-  private buildRequestParams(filtrosAdicionados: FiltroAdicionado[], requestParamType: string): string {
-    var requestParamSintax = "";
-    var requestParams: string[] = [];
-    filtrosAdicionados.forEach(filtro => {
-      if (requestParamSintax == "") requestParamSintax += (requestParamType + "busca=")
-      requestParams.push(filtro.tipoFiltro + "=" + filtro.valor);
-    })
-    requestParamSintax += requestParams.toString();
-    return requestParamSintax;
-  }
-
-  private buildPageableParams(pageableInfo: PageObject): string {
-    var requestParamSintax = "?";
-    if (pageableInfo != null) {
-      requestParamSintax += "page=" + pageableInfo.pageNumber;
-      requestParamSintax += "&size=" + pageableInfo.pageSize;
-      requestParamSintax += "&sort=dataCadastro," + pageableInfo.sortDirection + "&sort=horaCadastro," + pageableInfo.sortDirection;
+  private implementaLogicaDeCapturaDeErroNaListagemDeItens(error) {
+    if (error.status == 403) {
+      /*  Quando implantar ng-guard, implementar meio de não permitir duplicidade de acesso nesse método,
+       pois o de metadados e o de obtenção paginada irão acessa-lo em caso de erro de servidor. Uma boa
+       ideia para resolver esse problema, seria verificar se existe algum token ativo no localstorage para
+       acessar a condição do método */
+      console.log('Sem autorização, elaborar lógica de logout e redirect no método');
     }
     else {
-      requestParamSintax += "page=" + 0;
-      requestParamSintax += "&size=" + 10;
-      requestParamSintax += "&sort=dataCadastro,DESC&horaCadastro,DESC";
+      this._snackBar.open("Houve uma falha de comunicação com o servidor", "Fechar", {
+        duration: 3500
+      });
     }
-    return requestParamSintax;
   }
 
+  private implementaLogicaDeCapturaDeErroNaExclusaoDeItens(error: HttpErrorResponse) {
+    if (error.status == 403) {
+      /*  Quando implantar ng-guard, implementar meio de não permitir duplicidade de acesso nesse método,
+       pois o de metadados e o de obtenção paginada irão acessa-lo em caso de erro de servidor. Uma boa
+       ideia para resolver esse problema, seria verificar se existe algum token ativo no localstorage para
+       acessar a condição do método */
+      console.log('Sem autorização, elaborar lógica de logout e redirect no método');
+    }
+    else if (error.status == 400) {
+      this._snackBar.open(error.error.error, "Fechar", {
+        duration: 3500
+      });
+    }
+    else {
+      this._snackBar.open("Houve uma falha de comunicação com o servidor", "Fechar", {
+        duration: 3500
+      });
+    }
+  }
+
+  private buildRequestParams(filtrosAdicionados: FiltroAdicionado[]) {
+    this.httpOptions.params = new HttpParams();
+    var paramsList: string[] = []
+    if (filtrosAdicionados.length > 0) {
+      filtrosAdicionados.forEach(filtro => {
+        paramsList.push(filtro.tipoFiltro + ":" + filtro.valor);
+      })
+      this.httpOptions.params = this.httpOptions.params.set('busca', paramsList.toString())
+    }
+    else {
+      this.httpOptions.params = new HttpParams();
+    }
+  }
+
+  private buildPageableParams(pageableInfo: PageObject) {
+    this.httpOptions.params = new HttpParams();
+    if (pageableInfo != null) {
+      this.httpOptions.params = this.httpOptions.params.set('page', pageableInfo.pageNumber);
+      this.httpOptions.params = this.httpOptions.params.set('size', pageableInfo.pageSize);
+      this.httpOptions.params = this.httpOptions.params.set('sort', 'dataCadastro,' + pageableInfo.sortDirection);
+      this.httpOptions.params = this.httpOptions.params.append('sort', 'horaCadastro,' + pageableInfo.sortDirection);
+    }
+    else {
+      this.httpOptions.params = this.httpOptions.params.set('page', 0);
+      this.httpOptions.params = this.httpOptions.params.set('size', 10);
+      this.httpOptions.params = this.httpOptions.params.set('sort', 'dataCadastro,DESC');
+      this.httpOptions.params = this.httpOptions.params.append('sort', 'horaCadastro,DESC');
+    }
+  }
 
 }

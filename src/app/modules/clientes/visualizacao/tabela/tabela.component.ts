@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs';
 import { Cliente } from '../models/Cliente';
 import { PageObject } from '../../../../shared/models/PageObject';
-import { Component, Input, OnChanges, AfterViewInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, AfterViewInit, Output, EventEmitter, SimpleChanges, OnDestroy } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
 import { Endereco } from 'src/app/shared/models/Endereco';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,12 +12,15 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './tabela.component.html',
   styleUrls: ['./tabela.component.scss']
 })
-export class TabelaComponent implements OnChanges, AfterViewInit {
+export class TabelaComponent implements OnChanges, AfterViewInit, OnDestroy {
+
+  getClientes$: Subscription;
+  removeCliente$: Subscription;
 
   clientesEncontrados: Cliente[] = [];
 
   @Output() clientesSelecionadosNaTabelaExportados = new EventEmitter();
-  clientesSelecionadosNaTabela: Cliente[] = JSON.parse(localStorage.getItem("clientesSelecionados") || '[]');
+  clientesSelecionadosNaTabela: Cliente[] = JSON.parse(localStorage.getItem("itensSelecionadosNaTabela") || '[]');
   pageableInfo: PageObject = JSON.parse(localStorage.getItem("pageable") || 'null');
 
   botaoCheckAllHabilitado: boolean = JSON.parse(localStorage.getItem("checkAll") || 'false');
@@ -28,7 +32,7 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
   ngDoCheck(): void {
     localStorage.setItem('pageable', JSON.stringify(this.pageableInfo));
     localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
-    localStorage.setItem('clientesSelecionados', JSON.stringify(this.clientesSelecionadosNaTabela));
+    localStorage.setItem('itensSelecionadosNaTabela', JSON.stringify(this.clientesSelecionadosNaTabela));
     this.checkObjetosQueEstaoNoLocalStorageDeObjetosSelecionados();
   }
 
@@ -44,25 +48,31 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.getClientes$ != undefined) this.getClientes$.unsubscribe();
+    if (this.removeCliente$ != undefined) this.removeCliente$.unsubscribe();
+  }
+
   invocaRequisicaoHttpGetParaAtualizarObjetos() {
-    this.clienteService.getClientes(this.filtrosAdicionados, this.pageableInfo).subscribe(
-      (res: PageObject) => {
-        this.pageableInfo = res;
-        if (this.pageableInfo.sortDirection == undefined) this.pageableInfo.sortDirection = 'DESC';
-        this.clientesEncontrados = this.pageableInfo.content;
-        this.clientesEncontrados.forEach(cliente => {
-          if (cliente.checked == null) cliente.checked = false;
-          if (cliente.expanded == null) cliente.expanded = false;
-        })
-      },
-      (error: HttpErrorResponse) => {
-        if (error.status == 403) {
-          //TODO Encerrar sessão e redirecionar usuário para página de login. Aplicar NG GUARD (Se necessário)
+    this.getClientes$ = this.clienteService.getClientes(this.filtrosAdicionados, this.pageableInfo).subscribe(
+      {
+        next: (response: PageObject) => {
+          var sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
+          this.pageableInfo = response;
+          this.pageableInfo.sortDirection = sortDirection;
+          if (this.pageableInfo.sortDirection == undefined) this.pageableInfo.sortDirection = 'DESC';
+          this.clientesEncontrados = this.pageableInfo.content;
+
+          this.clientesEncontrados.forEach(cliente => {
+            if (cliente.checked == null) cliente.checked = false;
+            if (cliente.expanded == null) cliente.expanded = false;
+          })
+
+        },
+        error: () => {
+          this.pageableInfo = null;
         }
-        else if (error.status == 0)
-          this._snackBar.open("Houve uma falha de comunicação com o servidor", "Fechar");
-      }
-    );
+      });
   }
 
   checkObjetosQueEstaoNoLocalStorageDeObjetosSelecionados() {
@@ -120,18 +130,23 @@ export class TabelaComponent implements OnChanges, AfterViewInit {
   }
 
   excluiCliente(id: number) {
-    this.clienteService.removeCliente(id).subscribe(
-      (res: Cliente) => {
-        console.log(res.nome + ' Excluído com sucesso');
-        this.invocaRequisicaoHttpGetParaAtualizarObjetos();
-        this._snackBar.open("Cliente Excluído com sucesso", "Fechar", {
-          duration: 3000
-        });
-      },
-      (error: any) => {
-        console.log(error);
+    this.removeCliente$ = this.clienteService.removeCliente(id).subscribe(
+      {
+        next: (response: Cliente) => {
+          this._snackBar.open("Cliente Excluído com sucesso", "Fechar", {
+            duration: 3000
+          });
+        },
+        error: (httpErrorResponse: HttpErrorResponse) => {
+          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+        },
+        complete: () => this.invocaRequisicaoHttpGetParaAtualizarObjetos()
       }
     );
+  }
+
+  alteraQuantidadeItensExibidosPorPagina() {
+    this.invocaRequisicaoHttpGetParaAtualizarObjetos();
   }
 
   GeraNumerosParaNavegarNaPaginacao(n: number): Array<number> {

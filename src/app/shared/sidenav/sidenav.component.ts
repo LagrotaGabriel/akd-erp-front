@@ -48,6 +48,16 @@ export class SidenavComponent implements OnInit {
     }
   }
 
+  limpaLocalStorage() {
+    localStorage.removeItem('checkAll');
+    localStorage.removeItem('metaDados');
+    localStorage.removeItem('pageable');
+    localStorage.removeItem('chips');
+    localStorage.removeItem('filtros');
+    localStorage.removeItem('tiposBuscaHabilitados');
+    localStorage.removeItem('itensSelecionadosNaTabela');
+  }
+
   setaSideBarParaDesktop(): void {
     this.sideNavDetails = {
       sidebarDesktop: true,

@@ -1,10 +1,16 @@
 import { PageObject } from "src/app/shared/models/PageObject";
 import { Cliente } from "./Cliente";
 
-export interface MetaDadosCliente {
+export class MetaDadosCliente {
     totalClientesCadastrados: any;
     clienteComMaiorGiro: Cliente;
     clienteComMaisOrdens: Cliente;
     bairroComMaisClientes: string;
-    page: PageObject;
+
+    constructor(item) {
+        this.totalClientesCadastrados = item?.totalClientesCadastrados;
+        this.clienteComMaiorGiro = item?.clienteComMaiorGiro;
+        this.clienteComMaisOrdens = item?.clienteComMaisOrdens;
+        this.bairroComMaisClientes = item?.bairroComMaisClientes;
+    }
 }

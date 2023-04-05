@@ -18,77 +18,91 @@
 
     <h1 class="titulo_menu">MENU</h1>
 
-    <div #inicio="routerLinkActive" class="sidenav_item" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive tabindex="-1" matRipple>
+    <div #inicio="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()" [routerLink]="['/']"
+      [routerLinkActiveOptions]="{ exact: true }" routerLinkActive tabindex="-1" matRipple>
       <mat-icon fontIcon="home" class="sidenav_icon" [ngClass]="{'icone_ativo': inicio.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': inicio.isActive }">
         Página inicial
       </p>
     </div>
 
-    <div #cliente="routerLinkActive" class="sidenav_item" [routerLink]="['/clientes']" routerLinkActive tabindex="-1" matRipple>
+    <div #cliente="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()" [routerLink]="['/clientes']"
+      routerLinkActive tabindex="-1" matRipple>
       <mat-icon fontIcon="person" class="sidenav_icon" [ngClass]="{'icone_ativo': cliente.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': cliente.isActive }">
         Clientes
       </p>
     </div>
 
-    <div #vendas="routerLinkActive" class="sidenav_item" [routerLink]="['/vendas']" routerLinkActive tabindex="-1" matRipple>
+    <div #vendas="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()" [routerLink]="['/vendas']"
+      routerLinkActive tabindex="-1" matRipple>
       <mat-icon fontIcon="storefront" class="sidenav_icon" [ngClass]="{'icone_ativo': vendas.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': vendas.isActive }">
         Vendas
       </p>
     </div>
 
-    <div #estoque="routerLinkActive" class="sidenav_item" [routerLink]="['/estoque']" routerLinkActive tabindex="-1" matRipple>
+    <div #estoque="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()" [routerLink]="['/estoque']"
+      routerLinkActive tabindex="-1" matRipple>
       <mat-icon fontIcon="trolley" class="sidenav_icon" [ngClass]="{'icone_ativo': estoque.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': estoque.isActive }">
         Estoque
       </p>
     </div>
 
-    <div #despesas="routerLinkActive" class="sidenav_item" [routerLink]="['/despesas']" routerLinkActive tabindex="-1" matRipple>
+    <div #despesas="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()" [routerLink]="['/despesas']"
+      routerLinkActive tabindex="-1" matRipple>
       <mat-icon fontIcon="money_off" class="sidenav_icon" [ngClass]="{'icone_ativo': despesas.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': despesas.isActive }">
         Despesas
       </p>
     </div>
 
-    <div #fechamentos="routerLinkActive" class="sidenav_item" [routerLink]="['/fechamentos']" routerLinkActive tabindex="-1" matRipple>
-      <mat-icon fontIcon="auto_graph" class="sidenav_icon" [ngClass]="{'icone_ativo': fechamentos.isActive }"></mat-icon>
+    <div #fechamentos="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()"
+      [routerLink]="['/fechamentos']" routerLinkActive tabindex="-1" matRipple>
+      <mat-icon fontIcon="auto_graph" class="sidenav_icon"
+        [ngClass]="{'icone_ativo': fechamentos.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': fechamentos.isActive }">
         Fechamentos
       </p>
     </div>
 
-    <div #patrimonios="routerLinkActive" class="sidenav_item" [routerLink]="['/patrimonios']" routerLinkActive tabindex="-1" matRipple>
-      <mat-icon fontIcon="account_balance" class="sidenav_icon" [ngClass]="{'icone_ativo': patrimonios.isActive }"></mat-icon>
+    <div #patrimonios="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()"
+      [routerLink]="['/patrimonios']" routerLinkActive tabindex="-1" matRipple>
+      <mat-icon fontIcon="account_balance" class="sidenav_icon"
+        [ngClass]="{'icone_ativo': patrimonios.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': patrimonios.isActive }">
         Patrimônios
       </p>
     </div>
 
-    <div #fornecedores="routerLinkActive" class="sidenav_item" [routerLink]="['/fornecedores']" routerLinkActive tabindex="-1" matRipple>
-      <mat-icon fontIcon="local_shipping" class="sidenav_icon" [ngClass]="{'icone_ativo': fornecedores.isActive }"></mat-icon>
+    <div #fornecedores="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()"
+      [routerLink]="['/fornecedores']" routerLinkActive tabindex="-1" matRipple>
+      <mat-icon fontIcon="local_shipping" class="sidenav_icon"
+        [ngClass]="{'icone_ativo': fornecedores.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': fornecedores.isActive }">
         Fornecedores
       </p>
     </div>
 
-    <div #compras="routerLinkActive" class="sidenav_item" [routerLink]="['/compras']" routerLinkActive tabindex="-1" matRipple>
+    <div #compras="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()" [routerLink]="['/compras']"
+      routerLinkActive tabindex="-1" matRipple>
       <mat-icon fontIcon="shopping_cart" class="sidenav_icon" [ngClass]="{'icone_ativo': compras.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': compras.isActive }">
         Compras
       </p>
     </div>
 
-    <div #colaboradores="routerLinkActive" class="sidenav_item" [routerLink]="['/colaboradores']" routerLinkActive tabindex="-1" matRipple>
+    <div #colaboradores="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()"
+      [routerLink]="['/colaboradores']" routerLinkActive tabindex="-1" matRipple>
       <mat-icon fontIcon="badge" class="sidenav_icon" [ngClass]="{'icone_ativo': colaboradores.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': colaboradores.isActive }">
         Colaboradores
       </p>
     </div>
 
-    <div #precos="routerLinkActive" class="sidenav_item" [routerLink]="['/precos']" routerLinkActive tabindex="-1" matRipple>
+    <div #precos="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()" [routerLink]="['/precos']"
+      routerLinkActive tabindex="-1" matRipple>
       <mat-icon fontIcon="paid" class="sidenav_icon" [ngClass]="{'icone_ativo': precos.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': precos.isActive }">
         Preços

@@ -10,11 +10,15 @@
           pageableInfo.totalElements }} Clientes
           encontrados</h5>
         <div class="row thead_info_icon_container">
-          <select *ngIf="clientesEncontrados.length > 0" class="row bt_header ">
-            <option class="bt_header_option">5</option>
-            <option class="bt_header_option">10</option>
-            <option class="bt_header_option">20</option>
-            <option class="bt_header_option">50</option>
+          <select [(ngModel)]="pageableInfo.pageSize" *ngIf="pageableInfo != null && clientesEncontrados.length > 0"
+            class="row bt_header" (change)="alteraQuantidadeItensExibidosPorPagina()">
+            <option value="5" class="bt_header_option">5</option>
+            <option value="10" class="bt_header_option" [disabled]="pageableInfo.totalElements >= 10 ? false : true">10
+            </option>
+            <option value="20" class="bt_header_option" [disabled]="pageableInfo.totalElements >= 20 ? false : true">20
+            </option>
+            <option value="50" class="bt_header_option" [disabled]="pageableInfo.totalElements >= 50 ? false : true">50
+            </option>
           </select>
           <div class="row bt_header bt_header_novo" routerLink="/clientes/novo">
             <h5 class="text_novo">Novo</h5>

@@ -171,8 +171,8 @@ tbody {
 }
 
 .load-bar-tabela {
-    margin: 0 auto;
-    margin-top: 3rem;
+    margin: 2rem auto;
+    margin-bottom: 1.5rem;
 }
 
 .icon_container {
@@ -655,6 +655,12 @@ input[type='checkbox'] {
 
     .bt_header_novo {
         padding: 0rem 0.5rem;
+    }
+
+    .load-bar-tabela {
+        margin: 0 auto;
+        margin-top: 3rem;
+        margin-bottom: 1.8rem;
     }
 
 }

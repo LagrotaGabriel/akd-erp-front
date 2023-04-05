@@ -13,11 +13,11 @@
           <select [(ngModel)]="pageableInfo.pageSize" *ngIf="pageableInfo != null && clientesEncontrados.length > 0"
             class="row bt_header" (change)="alteraQuantidadeItensExibidosPorPagina()">
             <option value="5" class="bt_header_option">5</option>
-            <option value="10" class="bt_header_option" [disabled]="pageableInfo.totalElements >= 10 ? false : true">10
+            <option value="10" class="bt_header_option" [disabled]="pageableInfo.totalElements > 5 ? false : true">10
             </option>
-            <option value="20" class="bt_header_option" [disabled]="pageableInfo.totalElements >= 20 ? false : true">20
+            <option value="20" class="bt_header_option" [disabled]="pageableInfo.totalElements > 10 ? false : true">20
             </option>
-            <option value="50" class="bt_header_option" [disabled]="pageableInfo.totalElements >= 50 ? false : true">50
+            <option value="50" class="bt_header_option" [disabled]="pageableInfo.totalElements > 20 ? false : true">50
             </option>
           </select>
           <div class="row bt_header bt_header_novo" routerLink="/clientes/novo">
@@ -131,7 +131,7 @@
           </tr>
 
           <!-- ACCORDION -->
-          <div id="{{ 'collapse-' + i }}" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 collapse collapsed"
+          <div [@fadeInOut] *ngIf="cliente.expanded" id="{{ 'collapse-' + i }}" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 "
             [attr.href]="'#linha-' + i" [attr.data-parent]="'#linha-' + i">
 
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 card-body accordion_container">

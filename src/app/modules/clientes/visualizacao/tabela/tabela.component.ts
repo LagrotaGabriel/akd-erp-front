@@ -1,3 +1,4 @@
+import { trigger, transition, style, animate } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { Cliente } from '../models/Cliente';
 import { PageObject } from '../../../../shared/models/PageObject';
@@ -10,7 +11,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-tabela',
   templateUrl: './tabela.component.html',
-  styleUrls: ['./tabela.component.scss']
+  styleUrls: ['./tabela.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [   // :enter is alias to 'void => *'
+        style({ opacity: 0 }),
+        animate(300, style({ opacity: 1 }))
+      ]),
+      transition(':leave', [   // :leave is alias to '* => void'
+        animate(300, style({ opacity: 0 }))
+      ])
+    ]),
+  ]
 })
 export class TabelaComponent implements OnChanges, AfterViewInit, OnDestroy {
 
@@ -146,6 +158,7 @@ export class TabelaComponent implements OnChanges, AfterViewInit, OnDestroy {
   }
 
   alteraQuantidadeItensExibidosPorPagina() {
+    this.pageableInfo.pageNumber = 0;
     this.invocaRequisicaoHttpGetParaAtualizarObjetos();
   }
 

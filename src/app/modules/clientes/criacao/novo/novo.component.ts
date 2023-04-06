@@ -394,7 +394,6 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   // ENDEREÇO
   atualizaValidatorsEndereco() {
-    console.log(this.cliente.endereco.numero);
     if (this.cliente.endereco.logradouro != null && this.cliente.endereco.logradouro != '' ||
       this.cliente.endereco.numero != null && this.cliente.endereco.numero.toString() != '' ||
       this.cliente.endereco.bairro != null && this.cliente.endereco.bairro != '' ||

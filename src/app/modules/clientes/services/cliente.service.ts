@@ -54,19 +54,17 @@ export class ClienteService {
 
   }
 
-  public validaDuplicidadeInscricaoEstadual(inscricaoEstadual: string): Observable<string> {
-    return this.http.post<string>(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-ie`, inscricaoEstadual, this.httpOptions).pipe(
+  public validaDuplicidadeInscricaoEstadual(inscricaoEstadual: string) {
+    return this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-ie`, inscricaoEstadual, this.httpOptions).pipe(
       catchError(erro => {
         return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
       })
     )
   }
 
-  public validaDuplicidadeCpfCnpj(cpfCnpj: string): Observable<string> {
-    return this.http.post<string>(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, ' ' + cpfCnpj, this.httpOptions).pipe(
-      tap((resposta) => console.log(resposta)),
+  public validaDuplicidadeCpfCnpj(cpfCnpj: string) {
+    return this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, cpfCnpj, this.httpOptions).pipe(
       catchError((erro: HttpErrorResponse) => {
-        console.log(erro)
         return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
       })
     )

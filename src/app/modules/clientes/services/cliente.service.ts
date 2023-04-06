@@ -5,7 +5,7 @@ import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado
 import { PageObject } from '../../../shared/models/PageObject';
 import { Cliente as ClienteNovo } from '../criacao/models/cliente';
 import { Cliente } from '../visualizacao/models/Cliente';
-import { catchError, map, Observable, retry, throwError, timer } from 'rxjs';
+import { catchError, map, Observable, retry, throwError, timer, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MetaDadosCliente } from '../visualizacao/models/MetaDadosCliente';
 
@@ -63,8 +63,10 @@ export class ClienteService {
   }
 
   public validaDuplicidadeCpfCnpj(cpfCnpj: string): Observable<string> {
-    return this.http.post<string>(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, cpfCnpj, this.httpOptions).pipe(
-      catchError(erro => {
+    return this.http.post<string>(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, ' ' + cpfCnpj, this.httpOptions).pipe(
+      tap((resposta) => console.log(resposta)),
+      catchError((erro: HttpErrorResponse) => {
+        console.log(erro)
         return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
       })
     )

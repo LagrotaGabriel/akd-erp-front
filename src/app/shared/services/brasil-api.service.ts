@@ -1,4 +1,4 @@
-import { map, Observable, catchError, throwError } from 'rxjs';
+import { map, Observable, catchError, throwError, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
@@ -61,8 +61,9 @@ export class BrasilApiService {
   }
 
   public obtemDadosClientePeloCnpj(cnpj: string): Observable<CnpjResponse> {
+    console.log(cnpj);
     return this.http.get<CnpjResponse>(`${this.urlBrasilApi}/cnpj/v1/${cnpj}`).pipe(
-      map(resposta => new CnpjResponse(resposta))
+      map(resposta => new CnpjResponse(resposta)),
     )
   }
 

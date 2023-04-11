@@ -18,8 +18,8 @@ export class Cliente {
     endereco: Endereco;
     telefone: Telefone;
     nomeColaboradorResponsavel: string;
-    checked?: boolean;
-    expanded?: boolean;
+    checked: boolean;
+    expanded: boolean;
 
     constructor(item) {
         this.id = item?.id;
@@ -37,7 +37,9 @@ export class Cliente {
         this.endereco = item?.endereco;
         this.telefone = item?.telefone;
         this.nomeColaboradorResponsavel = item?.nomeColaboradorResponsavel;
-        this.checked = item?.checked;
-        this.expanded = item?.expanded;
+    }
+
+    isChecked(): boolean {
+        return this.checked;
     }
 }

@@ -1,15 +1,12 @@
 <app-menu></app-menu>
-<!--<app-menu></app-menu>-->
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 container">
 
-  <app-informativos [filtrosAdicionados]="filtrosAdicionados"></app-informativos>
+  <!--<app-busca
+  (clientesLocalizadosNoTypeAheadExportados)="clientesLocalizadosNoTypeAheadExportados($event)"
+  [clientesSelecionadosNaTabela]="clientesSelecionados"></app-busca>-->
 
-  <hr>
-
-  <app-busca (filtrosAdicionadosExportados)="filtrosExportados($event)" [clientesSelecionadosNaTabela]="clientesSelecionados"></app-busca>
-
-  <app-tabela (clientesSelecionadosNaTabelaExportados)="clientesSelecionadosExportados($event)"
-    [filtrosAdicionados]="filtrosAdicionados"></app-tabela>
+  <app-tabela 
+  (clientesSelecionadosNaTabelaExportados)="clientesSelecionadosExportados($event)"></app-tabela>
 
 </div>

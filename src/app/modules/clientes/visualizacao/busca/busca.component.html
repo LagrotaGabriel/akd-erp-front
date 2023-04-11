@@ -14,8 +14,9 @@
 
   <div class="botoes_filtro_container">
     <div class="sub_container botoes_filtro_subcontainer">
-      <div class="row busca_block busca_block_filtro mat-elevation-z6" [matBadge]="filtrosAdicionados.length" matBadgePosition="before"
-        matBadgeSize="medium" matBadgeColor="accent" matTooltip='Adicionar filtros de busca' matTooltipPosition="below">
+      <div class="row busca_block busca_block_filtro mat-elevation-z6" [matBadge]="filtrosAdicionados.length"
+        matBadgePosition="before" matBadgeSize="medium" matBadgeColor="accent" matTooltip='Adicionar filtros de busca'
+        matTooltipPosition="below">
         <div class="filtro_container" (click)="abrePopupFiltro()">
           <div class="icone_filtro_container">
             <mat-icon fontIcon="filter_alt" class="icone icone_filtro"></mat-icon>
@@ -88,15 +89,16 @@
         <div class="input_icon">
           <mat-icon fontIcon="search" class="icone icone_filtro"></mat-icon>
         </div>
-        <input class="input_busca" type="search" placeholder="Realizar busca rápida por clientes exibidos na tabela"
-          autocomplete="off" spellcheck="false" />
+        <input class="input_busca" type="search" [formControl]="campoBuscaFormControl"
+          placeholder="Realizar busca rápida por clientes exibidos na tabela" autocomplete="off" spellcheck="false" />
       </div>
     </div>
   </div>
 
   <div class="select_filtro_container">
     <div class="sub_container select_filtro_subcontainer">
-      <div class="select_block select_block_baixa mat-elevation-z6" [ngClass]="{ 'iconeDesabilitado': clientesSelecionadosNaTabela.length == 0 }"
+      <div class="select_block select_block_baixa mat-elevation-z6"
+        [ngClass]="{ 'iconeDesabilitado': clientesSelecionadosNaTabela.length == 0 }"
         [matBadge]="clientesSelecionadosNaTabela.length" matBadgePosition="before" matBadgeSize="medium"
         [matBadgeHidden]="clientesSelecionadosNaTabela.length == 0 ? true : false" matBadgeColor="accent"
         matTooltip='Baixar relatório dos clientes selecionados' matTooltipPosition="below">
@@ -105,7 +107,8 @@
         </div>
       </div>
 
-      <div class="select_block select_block_apaga mat-elevation-z6" [ngClass]="{ 'iconeDesabilitado': clientesSelecionadosNaTabela.length == 0 }"
+      <div class="select_block select_block_apaga mat-elevation-z6"
+        [ngClass]="{ 'iconeDesabilitado': clientesSelecionadosNaTabela.length == 0 }"
         [matBadge]="clientesSelecionadosNaTabela.length" matBadgePosition="before" matBadgeSize="medium"
         [matBadgeHidden]="clientesSelecionadosNaTabela.length == 0 ? true : false" matBadgeColor="accent"
         matTooltip='Excluir clientes selecionados' matTooltipPosition="below">

@@ -1,3 +1,4 @@
+import { ClienteService } from './../../services/cliente.service';
 import { FiltrosService } from '../../../../shared/services/filtros.service';
 import { Component, EventEmitter, Input, Output, DoCheck, OnInit } from '@angular/core';
 import { Filtro } from 'src/app/shared/models/filtros/Filtro';
@@ -7,7 +8,9 @@ import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado
 import { Chips } from 'src/app/shared/models/filtros/Chips';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MetaDadosCliente } from '../models/MetaDadosCliente';
+import { FormControl } from '@angular/forms';
+import { Subscription, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs';
+import { PageObject } from 'src/app/shared/models/PageObject';
 
 @Component({
   selector: 'app-busca',
@@ -27,8 +30,37 @@ import { MetaDadosCliente } from '../models/MetaDadosCliente';
 })
 export class BuscaComponent implements OnInit, DoCheck {
 
+  public campoBuscaFormControl: FormControl = new FormControl();
+
+  @Output() clientesLocalizadosNoTypeAheadExportados = new EventEmitter();
+  public pageableInfo: PageObject = JSON.parse(localStorage.getItem("pageable") || 'null');
+
+  getClientes$: Subscription;
+
+/*   campoBuscaTypeAhead$ = this.campoBuscaFormControl.valueChanges
+    .pipe(
+      tap(() => console.log('iniciando campo busca type ahead')),
+      debounceTime(700),
+      distinctUntilChanged(),
+      map((valorDigitado) => valorDigitado != undefined ? valorDigitado.trim() : undefined),
+      filter((valorDigitado) => valorDigitado != undefined ? valorDigitado.length > 1 : undefined),
+      switchMap((valorDigitado) => this.clienteService.getClientes(valorDigitado, this.filtrosAdicionados, this.pageableInfo)),
+    ).subscribe({
+      next: (response) => {
+        this.pageableInfo = response;
+        this.exportaPageableInfoAtualizado()
+      }
+    }) */
+
+  exportaPageableInfoAtualizado() {
+    setTimeout(() => {
+      this.clientesLocalizadosNoTypeAheadExportados.emit(this.pageableInfo);
+    }, 0);
+  }
+
   constructor(
     private filtrosService: FiltrosService,
+    private clienteService: ClienteService,
     public datepipe: DatePipe,
     private _snackBar: MatSnackBar) { }
 
@@ -39,13 +71,13 @@ export class BuscaComponent implements OnInit, DoCheck {
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
-    }, 0);
-    if (this.tiposBusca.length == 0) this.tiposBusca = this.filtrosService.setaTiposFiltro(this.tiposFiltroBusca);
+    //if (this.tiposBusca.length == 0) this.tiposBusca = this.filtrosService.setaTiposFiltro(this.tiposFiltroBusca);
   }
 
-  metaDados: MetaDadosCliente; // Meta dados obtido através de requisição HTTP
+/*   ngOnDestroy(): void {
+    if (this.campoBuscaTypeAhead$ != null && this.campoBuscaTypeAhead$ != undefined) this.campoBuscaTypeAhead$.unsubscribe();
+  } */
+
   popupFiltro: boolean = false;  // Verificação do estado do popup de adição de novos filtros
 
   // Estado atual dos chips
@@ -58,7 +90,6 @@ export class BuscaComponent implements OnInit, DoCheck {
   inputBusca: string = ""; // Input com valor atualizado de um novo filtro
   tipoBuscaAtual: Filtro; // Objeto Filtro indicando qual é o tipo atual de filtro que está selecionado no popup
 
-  @Output() filtrosAdicionadosExportados = new EventEmitter();
   public filtrosAdicionados: FiltroAdicionado[] = JSON.parse(localStorage.getItem("filtros") || '[]'); // Lista de filtros de busca ativos
 
   // Iniciando listagem de tipos de filtros que serão utilizados no módulo
@@ -81,13 +112,11 @@ export class BuscaComponent implements OnInit, DoCheck {
   adicionaFiltroDeBusca() {
     if (!this.validarFiltroDeBusca()) return;
     if (this.tipoBuscaAtual.tipoFiltro == TiposFiltro.DATA) {
-      //var dataConvertidaParaPadraoBr = this.datepipe.transform(new Date(this.inputBusca), 'dd-MM-yyyy')
       this.filtrosAdicionados = this.filtrosAdicionados.concat(
         [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: this.inputBusca }]
       )
     }
     else if (this.tipoBuscaAtual.tipoFiltro == TiposFiltro.MES_ANO) {
-      //var mesAnoConvertidoParaPadraoBr = this.datepipe.transform(new Date(this.inputBusca), 'MM-yyyy');
       this.filtrosAdicionados = this.filtrosAdicionados.concat(
         [{ tipoFiltro: this.tipoBuscaAtual.tipoFiltro, descricaoChip: this.tipoBuscaAtual.descricaoChip, valor: this.inputBusca }]
       );
@@ -107,9 +136,47 @@ export class BuscaComponent implements OnInit, DoCheck {
     })
 
     this.abrePopupFiltro();
-    this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
+    this.invocaRequisicaoParaObtencaoDosClientes();
     if (!this.chips.chipsExibidos && this.filtrosAdicionados.length == 1) this.alteraEstadoChips();
   }
+
+  invocaRequisicaoParaObtencaoDosClientes() {
+    this.getClientes$ = this.clienteService.getClientes(null, this.pageableInfo).subscribe(
+      {
+        next: (response: PageObject) => {
+          var sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
+          this.pageableInfo = response;
+          this.pageableInfo.sortDirection = sortDirection;
+          if (this.pageableInfo.sortDirection == undefined) this.pageableInfo.sortDirection = 'DESC';
+        },
+        error: () => {
+          this.pageableInfo = null;
+        },
+        complete: () => {
+          this.exportaPageableInfoAtualizado();
+        }
+      });
+  }
+
+/*   this.getClientes$ = this.clienteService.getClientes(null, this.filtrosAdicionados, this.pageableInfo).subscribe(
+    {
+      next: (response: PageObject) => {
+        var sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
+        this.pageableInfo = response;
+        this.pageableInfo.sortDirection = sortDirection;
+        if (this.pageableInfo.sortDirection == undefined) this.pageableInfo.sortDirection = 'DESC';
+        this.clientesEncontrados = this.pageableInfo.content;
+
+        this.clientesEncontrados.forEach(cliente => {
+          if (cliente.checked == null) cliente.checked = false;
+          if (cliente.expanded == null) cliente.expanded = false;
+        })
+
+      },
+      error: () => {
+        this.pageableInfo = null;
+      }
+    }); */
 
   // Método executado pelo método adicionaFiltroDeBusca. Tem como objetivo validar as entradas de busca na adição de filtros
   validarFiltroDeBusca(): boolean {
@@ -130,14 +197,14 @@ export class BuscaComponent implements OnInit, DoCheck {
   removeFiltro(index: number) {
     this.tiposBusca.forEach(tipoBusca => {
       if (tipoBusca.tipoFiltro.toString() == this.filtrosAdicionados[index].tipoFiltro.toString()
-      || tipoBusca.tipoFiltro == TiposFiltro.DATA && this.filtrosAdicionados[index].tipoFiltro == TiposFiltro.MES_ANO
-      || tipoBusca.tipoFiltro == TiposFiltro.MES_ANO && this.filtrosAdicionados[index].tipoFiltro == TiposFiltro.DATA) {
+        || tipoBusca.tipoFiltro == TiposFiltro.DATA && this.filtrosAdicionados[index].tipoFiltro == TiposFiltro.MES_ANO
+        || tipoBusca.tipoFiltro == TiposFiltro.MES_ANO && this.filtrosAdicionados[index].tipoFiltro == TiposFiltro.DATA) {
         this.tiposBusca[this.tiposBusca.indexOf(tipoBusca)].disabled = false;
       }
     })
     this.filtrosAdicionados = this.filtrosAdicionados.filter((_, item) => item < index || item >= index + 1);
     if (this.chips.chipsExibidos && this.filtrosAdicionados.length == 0) this.alteraEstadoChips();
-    this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
+    this.invocaRequisicaoParaObtencaoDosClientes();
   }
 
   // Método responsável pela remoção de todos os filtros adicionados
@@ -156,7 +223,7 @@ export class BuscaComponent implements OnInit, DoCheck {
     this._snackBar.open("Todos os filtros de busca foram removidos com sucesso!", "x", {
       duration: 3000
     });
-    this.filtrosAdicionadosExportados.emit(this.filtrosAdicionados);
+    this.invocaRequisicaoParaObtencaoDosClientes();
   }
 
   // Método responsável por exibir um pop up na parte inferior da tela ao remover todos os filtros

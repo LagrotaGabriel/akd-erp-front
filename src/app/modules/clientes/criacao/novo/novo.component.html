@@ -222,7 +222,8 @@
                         <label class="label">Tipo do telefone</label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <select *ngIf="cliente.telefone != null" formControlName="tipoTelefone" name="tipoTelefone" [(ngModel)]="cliente.telefone.tipoTelefone" tabindex="10"
+                        <select *ngIf="cliente.telefone != null" formControlName="tipoTelefone" name="tipoTelefone" 
+                        [(ngModel)]="cliente.telefone.tipoTelefone" tabindex="10"
                         (keydown.enter)="botaoProximoSegundaEtapa.click();" (keydown.esc)="botaoVoltarSegundaEtapa.click();" 
                         (change)="atualizaValidatorsTelefone()" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" #inputTipoTelefone>
                             <option value="" selected>Sem telefone</option>

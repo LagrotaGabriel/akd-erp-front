@@ -1,32 +1,92 @@
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table_container">
 
   <table class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table table-dark"
-    [ngClass]="{'mat-elevation-z8': clientesEncontrados.length > 0}">
+    [ngClass]="{'mat-elevation-z8': pageableInfo.content.length > 0}">
 
     <thead class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 thead">
 
       <div class="row thead_info col-xl-12 col-lg-12 col-md-12 col-sm-12">
-        <h5 *ngIf="pageableInfo != null && clientesEncontrados.length > 0" class="quantidade_exibida">{{
-          pageableInfo.totalElements }} Clientes
-          encontrados</h5>
-        <div class="row thead_info_icon_container">
-          <select [(ngModel)]="pageableInfo.pageSize" *ngIf="pageableInfo != null && clientesEncontrados.length > 0"
-            class="row bt_header" (change)="alteraQuantidadeItensExibidosPorPagina()">
-            <option value="5" class="bt_header_option">5</option>
-            <option value="10" class="bt_header_option" [disabled]="pageableInfo.totalElements > 5 ? false : true">10
-            </option>
-            <option value="20" class="bt_header_option" [disabled]="pageableInfo.totalElements > 10 ? false : true">20
-            </option>
-            <option value="50" class="bt_header_option" [disabled]="pageableInfo.totalElements > 20 ? false : true">50
-            </option>
-          </select>
-          <div class="row bt_header bt_header_novo" routerLink="/clientes/novo">
-            <h5 class="text_novo">Novo</h5>
+
+        <div class="row thead_info_icon_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+
+
+          <div class="row bt_header_upper_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+            <div class="bt_header_container page_size_container">
+              <select [(ngModel)]="pageableInfo.pageSize" *ngIf="pageableInfo != null && pageableInfo.content.length > 0"
+                class="bt_header bt_header_select col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                (change)="alteraQuantidadeItensExibidosPorPagina()">
+                <option value="5" class="bt_header_option">5</option>
+                <option value="10" class="bt_header_option" [disabled]="pageableInfo.totalElements > 5 ? false : true">
+                  10
+                </option>
+                <option value="20" class="bt_header_option" [disabled]="pageableInfo.totalElements > 10 ? false : true">
+                  20
+                </option>
+                <option value="50" class="bt_header_option" [disabled]="pageableInfo.totalElements > 20 ? false : true">
+                  50
+                </option>
+              </select>
+            </div>
+
+            <div class="bt_header_container">
+              <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                matTooltip='Adicionar novo item' matTooltipPosition="above" routerLink="/clientes/novo">
+                <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <i class="bi bi-file-earmark-plus-fill header_icon"></i>
+                </h5>
+              </div>
+            </div>
+
+            <div class="bt_header_container">
+              <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                [matBadge]="clientesSelecionadosNaTabela.length" matBadgePosition="after" matBadgeSize="medium"
+                matBadgeColor="accent" matTooltip='Remover itens' matTooltipPosition="above"
+                routerLink="/clientes/novo">
+                <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <i class="bi bi-file-earmark-x-fill header_icon"></i>
+                </h5>
+              </div>
+            </div>
+
+            <div class="bt_header_container">
+              <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                [matBadge]="clientesSelecionadosNaTabela.length" matBadgePosition="after" matBadgeSize="medium"
+                matBadgeColor="accent" matTooltip='Gerar relatório em PDF' matTooltipPosition="above"
+                routerLink="/clientes/novo">
+                <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <i class="bi bi-file-pdf-fill header_icon"></i>
+                </h5>
+              </div>
+            </div>
           </div>
+
+          <div class="input_filtro_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="sub_container input_filtro_subcontainer col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="input_block col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="input_icon">
+                  <mat-icon fontIcon="search" class="icone icone_filtro"></mat-icon>
+                </div>
+                <input class="input_busca" type="search" placeholder="Busca por nome, e-mail, cpf, etc..."
+                  autocomplete="off" spellcheck="false" [formControl]="buscaClientes" />
+              </div>
+            </div>
+          </div>
+
+          <h5 *ngIf="pageableInfo != null && pageableInfo.content.length > 0"
+            class="quantidade_exibida col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Página {{ pageableInfo.pageNumber+1 }} de {{ pageableInfo.totalPages }} | {{ pageableInfo.totalElements }}
+            Clientes encontrados
+          </h5>
+
         </div>
+
       </div>
 
-      <tr *ngIf="clientesEncontrados.length > 0" class="tr_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <hr class="hr_thead">
+
+      <tr *ngIf="pageableInfo.content.length > 0" class="tr_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
         <th class="th th_checkbox">
           <input (click)="checkAll()" [checked]="botaoCheckAllHabilitado" type="checkbox" id="customCheck"
@@ -60,9 +120,9 @@
 
     <tbody *ngIf="pageableInfo != null; else: loadBarTabela" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-      <div *ngIf="clientesEncontrados.length > 0; else: tabelaVazia"
+      <div *ngIf="pageableInfo.content.length > 0; else: tabelaVazia"
         class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela_container">
-        <div *ngFor="let cliente of clientesEncontrados; let i = index"
+        <div *ngFor="let cliente of pageableInfo.content; let i = index"
           [ngClass]="{'linha_tabela_expandida': cliente.expanded}"
           class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela">
 
@@ -131,8 +191,9 @@
           </tr>
 
           <!-- ACCORDION -->
-          <div [@fadeInOut] *ngIf="cliente.expanded" id="{{ 'collapse-' + i }}" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 "
-            [attr.href]="'#linha-' + i" [attr.data-parent]="'#linha-' + i">
+          <div [@fadeInOut] *ngIf="cliente.expanded" id="{{ 'collapse-' + i }}"
+            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 " [attr.href]="'#linha-' + i"
+            [attr.data-parent]="'#linha-' + i">
 
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 card-body accordion_container">
 
@@ -267,7 +328,7 @@
         mode="indeterminate"></mat-progress-bar>
     </ng-template>
 
-    <div *ngIf="pageableInfo != null && clientesEncontrados.length > 0"
+    <div *ngIf="pageableInfo != null && pageableInfo.content.length > 0"
       class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
       <ul *ngIf="pageableInfo.totalPages > 1" class="pagination pagination-sm justify-content-end">
         <li (click)="voltarPagina()" [ngClass]="{'disabled': pageableInfo.pageNumber == 0}" class="page-item"><a

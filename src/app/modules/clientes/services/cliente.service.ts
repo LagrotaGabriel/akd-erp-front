@@ -5,7 +5,7 @@ import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado
 import { PageObject } from '../../../shared/models/PageObject';
 import { Cliente as ClienteNovo } from '../criacao/models/cliente';
 import { Cliente } from '../visualizacao/models/Cliente';
-import { catchError, map, Observable, retry, throwError, timer, tap } from 'rxjs';
+import { catchError, map, Observable, retry, throwError, timer, tap, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MetaDadosCliente } from '../visualizacao/models/MetaDadosCliente';
 
@@ -21,7 +21,7 @@ export class ClienteService {
     }),
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2ODA4Nzc0Mzh9.Ml4rLLgrdm7OgK54ikHULn4fBKAmUHXJDsNA2wm1jwsJcE4ombaX60Zgu1-UMQ3IoWAXrjhcxKjyJW3ZhP4LCQ'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2ODE1ODE4NzR9.lPgCqWy8-6D6n9YACG63OPwqdfV-z3ziVgMlyvcg0ysRp19epUyhB69q8tXieJHmnAGgjgYnkvVnp0TKwHjfgw'
     })
   }
 
@@ -77,23 +77,17 @@ export class ClienteService {
     )
   }
 
-  public getClientes(filtrosAdicionados: FiltroAdicionado[], pageableInfo: PageObject): Observable<PageObject> {
-    this.buildRequestParams(filtrosAdicionados);
+  public getClientes(valorBusca: string, pageableInfo: PageObject): Observable<PageObject> {
+    this.httpOptions.params = new HttpParams();
+    this.buildRequestParams(valorBusca);
     this.buildPageableParams(pageableInfo);
+    console.log(pageableInfo);
+    console.log('Valor busca: ' + valorBusca);
     return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
+      //tap(() => console.log(pageableInfo.sortDirection)),
       map(resposta => new PageObject(resposta)),
       catchError((error: HttpErrorResponse) => {
-        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
-        return throwError(() => new HttpErrorResponse(error));
-      })
-    )
-  }
-
-  public getMetaDados(filtrosAdicionados: FiltroAdicionado[]): Observable<MetaDadosCliente> {
-    this.buildRequestParams(filtrosAdicionados);
-    return this.http.get<MetaDadosCliente>(`${API_URL.baseUrl}api/sistema/v1/cliente/meta`, this.httpOptions).pipe(
-      map(resposta => new MetaDadosCliente(resposta)),
-      catchError((error: HttpErrorResponse) => {
+        console.log(error);
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
         return throwError(() => new HttpErrorResponse(error));
       })
@@ -145,22 +139,13 @@ export class ClienteService {
     }
   }
 
-  private buildRequestParams(filtrosAdicionados: FiltroAdicionado[]) {
-    this.httpOptions.params = new HttpParams();
-    var paramsList: string[] = []
-    if (filtrosAdicionados.length > 0) {
-      filtrosAdicionados.forEach(filtro => {
-        paramsList.push(filtro.tipoFiltro + ":" + filtro.valor);
-      })
-      this.httpOptions.params = this.httpOptions.params.set('busca', paramsList.toString())
-    }
-    else {
-      this.httpOptions.params = new HttpParams();
+  private buildRequestParams(busca: string) {
+    if (busca != null && busca != undefined && busca != '') {
+      this.httpOptions.params = this.httpOptions.params.set('busca', busca)
     }
   }
 
   private buildPageableParams(pageableInfo: PageObject) {
-    this.httpOptions.params = new HttpParams();
     if (pageableInfo != null) {
       this.httpOptions.params = this.httpOptions.params.set('page', pageableInfo.pageNumber);
       this.httpOptions.params = this.httpOptions.params.set('size', pageableInfo.pageSize);

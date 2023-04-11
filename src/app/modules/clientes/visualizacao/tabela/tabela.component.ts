@@ -1,12 +1,14 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs';
 import { Cliente } from '../models/Cliente';
 import { PageObject } from '../../../../shared/models/PageObject';
-import { Component, Input, OnChanges, AfterViewInit, Output, EventEmitter, SimpleChanges, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
 import { Endereco } from 'src/app/shared/models/Endereco';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-tabela',
@@ -24,73 +26,118 @@ import { HttpErrorResponse } from '@angular/common/http';
     ]),
   ]
 })
-export class TabelaComponent implements OnChanges, AfterViewInit, OnDestroy {
+export class TabelaComponent implements OnDestroy, AfterViewInit {
 
   getClientes$: Subscription;
   removeCliente$: Subscription;
 
-  clientesEncontrados: Cliente[] = [];
+  buscaClientes: FormControl = new FormControl();
 
-  @Output() clientesSelecionadosNaTabelaExportados = new EventEmitter();
+  buscaClientesSubscribe$ = this.buscaClientes.valueChanges
+    .pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      map((valorDigitado) => valorDigitado != undefined ? valorDigitado.trim() : undefined),
+      tap(() => {
+        this.pageableInfo.pageNumber = 0;
+      }),
+      switchMap((valorDigitado) => this.clienteService.getClientes(valorDigitado, this.pageableInfo)),
+    ).subscribe({
+      next: (response: PageObject) => {
+        var sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
+        this.pageableInfo = response;
+        this.pageableInfo.sortDirection = sortDirection;
+        if (this.pageableInfo.sortDirection == undefined) this.pageableInfo.sortDirection = 'DESC';
+        this.pageableInfo.content.forEach(cliente => {
+          if (cliente.checked == null) cliente.checked = false;
+          if (cliente.expanded == null) cliente.expanded = false;
+        })
+      },
+      error: () => {
+        this.pageableInfo = null;
+      }
+    })
+
   clientesSelecionadosNaTabela: Cliente[] = JSON.parse(localStorage.getItem("itensSelecionadosNaTabela") || '[]');
   pageableInfo: PageObject = JSON.parse(localStorage.getItem("pageable") || 'null');
+  filtrosAdicionados: FiltroAdicionado[] = JSON.parse(localStorage.getItem("filtros") || '[]');
 
   botaoCheckAllHabilitado: boolean = JSON.parse(localStorage.getItem("checkAll") || 'false');
-
-  @Input() public filtrosAdicionados;
 
   constructor(private clienteService: ClienteService, private _snackBar: MatSnackBar) { }
 
   ngDoCheck(): void {
-    localStorage.setItem('pageable', JSON.stringify(this.pageableInfo));
-    localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
     localStorage.setItem('itensSelecionadosNaTabela', JSON.stringify(this.clientesSelecionadosNaTabela));
+    localStorage.setItem('pageable', JSON.stringify(this.pageableInfo));
     this.checkObjetosQueEstaoNoLocalStorageDeObjetosSelecionados();
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.clientesSelecionadosNaTabelaExportados.emit(this.clientesSelecionadosNaTabela);
-    }, 0);
+  ngOnInit(): void {
+    this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+    if (this.pageableInfo != null && this.pageableInfo != undefined) this.pageableInfo.pageNumber = 0;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (!changes['filtrosAdicionados'].isFirstChange()) {
-      this.invocaRequisicaoHttpGetParaAtualizarObjetos();
-    }
+  ngAfterViewChecked(): void {
+
+    //this.ajustaCheckDeObjetosNaTabelaComBaseNoCheckAll();
+  }
+
+  ngAfterContentChecked(): void {
+    //Called after every check of the component's or directive's content.
+    //Add 'implements AfterContentChecked' to the class.
+
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
   ngOnDestroy(): void {
     if (this.getClientes$ != undefined) this.getClientes$.unsubscribe();
     if (this.removeCliente$ != undefined) this.removeCliente$.unsubscribe();
+    if (this.buscaClientesSubscribe$ != undefined) this.buscaClientesSubscribe$.unsubscribe();
   }
 
   invocaRequisicaoHttpGetParaAtualizarObjetos() {
-    this.getClientes$ = this.clienteService.getClientes(this.filtrosAdicionados, this.pageableInfo).subscribe(
+    var buscaClientesParam = this.buscaClientes.value != null && this.buscaClientes.value != '' ? this.buscaClientes.value : null;
+    this.getClientes$ = this.clienteService.getClientes(buscaClientesParam, this.pageableInfo).subscribe(
       {
         next: (response: PageObject) => {
           var sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
           this.pageableInfo = response;
           this.pageableInfo.sortDirection = sortDirection;
           if (this.pageableInfo.sortDirection == undefined) this.pageableInfo.sortDirection = 'DESC';
-          this.clientesEncontrados = this.pageableInfo.content;
 
-          this.clientesEncontrados.forEach(cliente => {
-            if (cliente.checked == null) cliente.checked = false;
-            if (cliente.expanded == null) cliente.expanded = false;
+          this.pageableInfo.content.forEach(cliente => {
+            if (cliente.checked == null || cliente.checked == undefined) cliente.checked = false;
+            if (cliente.expanded == null || cliente.expanded == undefined) cliente.expanded = false;
           })
 
         },
         error: () => {
           this.pageableInfo = null;
+        },
+        complete: () => {
+          setTimeout(() => {
+            this.ajustaCheckDeObjetosNaTabelaComBaseNoCheckAll();
+          }, 0);
         }
       });
   }
 
+  ajustaCheckDeObjetosNaTabelaComBaseNoCheckAll() {
+    if (this.pageableInfo.content.filter(e => e.checked === false).length > 0) {
+      this.botaoCheckAllHabilitado = false;
+    }
+    else if (this.pageableInfo.content.filter(e => e.checked == true).length == this.pageableInfo.content.length) {
+      this.botaoCheckAllHabilitado = true;
+    }
+  }
+
   checkObjetosQueEstaoNoLocalStorageDeObjetosSelecionados() {
     this.clientesSelecionadosNaTabela.forEach(clienteSelecionado => {
-      var index: number = this.clientesEncontrados.findIndex(clienteEncontrado => clienteEncontrado.id === clienteSelecionado.id);
-      if (index != -1) this.clientesEncontrados[index].checked = true;
+      var index: number = this.pageableInfo.content.findIndex(clienteEncontrado => clienteEncontrado.id === clienteSelecionado.id);
+      if (index != -1) this.pageableInfo.content[index].checked = true;
     })
   }
 
@@ -101,31 +148,50 @@ export class TabelaComponent implements OnChanges, AfterViewInit, OnDestroy {
   }
 
   alteraEstadoExpansaoTabela(indice: number) {
-    this.clientesEncontrados[indice].expanded = !this.clientesEncontrados[indice].expanded;
+    this.pageableInfo.content[indice].expanded = !this.pageableInfo.content[indice].expanded;
   }
 
   alteraEstadoCheckTabela(indice: number) {
-    if (this.clientesEncontrados[indice].checked) {
+    if (this.pageableInfo.content[indice].checked) {
       let indiceNaListaDeSelecionados: number =
-        this.clientesSelecionadosNaTabela.findIndex(clienteSelecionado => clienteSelecionado.id === this.clientesEncontrados[indice].id);
+        this.clientesSelecionadosNaTabela.findIndex(clienteSelecionado => clienteSelecionado.id === this.pageableInfo.content[indice].id);
       this.clientesSelecionadosNaTabela =
         this.clientesSelecionadosNaTabela.filter((_, item) => item < indiceNaListaDeSelecionados || item >= indiceNaListaDeSelecionados + 1);
     }
     else {
-      this.clientesSelecionadosNaTabela = this.clientesSelecionadosNaTabela.concat(this.clientesEncontrados[indice]);
+      this.clientesSelecionadosNaTabela = this.clientesSelecionadosNaTabela.concat(this.pageableInfo.content[indice]);
     }
-    this.clientesEncontrados[indice].checked = !this.clientesEncontrados[indice].checked;
-    this.clientesSelecionadosNaTabelaExportados.emit(this.clientesSelecionadosNaTabela);
+    this.pageableInfo.content[indice].checked = !this.pageableInfo.content[indice].checked;
+
+    this.ajustaCheckDeObjetosNaTabelaComBaseNoCheckAll();
   }
 
   checkAll() {
+    console.log(this.pageableInfo.content);
+
+    if (!this.botaoCheckAllHabilitado) {
+      this.pageableInfo.content.forEach(itemTabela => {
+        if (!itemTabela.checked) {
+          itemTabela.checked = true;
+          this.clientesSelecionadosNaTabela.push(itemTabela);
+        }
+      })
+    }
+    else {
+      this.pageableInfo.content.forEach(itemTabela => {
+        if (itemTabela.checked) {
+          var clienteListaTabela: Cliente[] = this.clientesSelecionadosNaTabela.filter(item => item.id == itemTabela.id)
+          if(clienteListaTabela.length == 1) {
+          this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteListaTabela[0]), 1);
+          itemTabela.checked = false;
+          }
+        }
+      })
+    }
+
     this.botaoCheckAllHabilitado = !this.botaoCheckAllHabilitado;
-    if (this.botaoCheckAllHabilitado) this.clientesSelecionadosNaTabela = this.clientesEncontrados;
-    else this.clientesSelecionadosNaTabela = [];
-    this.clientesEncontrados.forEach(cliente => {
-      cliente.checked = this.botaoCheckAllHabilitado;
-    })
-    this.clientesSelecionadosNaTabelaExportados.emit(this.clientesSelecionadosNaTabela);
+
+    localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
   }
 
   trataEnderecoTabela(endereco: Endereco): string {

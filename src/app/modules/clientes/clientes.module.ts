@@ -24,7 +24,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MenuComponent } from './visualizacao/menu/menu.component';
 import { ViewComponent } from './visualizacao/view/view.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { InformativosComponent } from './visualizacao/informativos/informativos.component';
 import { TabelaComponent } from './visualizacao/tabela/tabela.component';
 import { BuscaComponent } from './visualizacao/busca/busca.component';
 
@@ -35,7 +34,7 @@ import { NovoComponent } from './criacao/novo/novo.component';
 registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, InformativosComponent, TabelaComponent, BuscaComponent, NovoComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, BuscaComponent, NovoComponent],
   exports: [MenuComponent, ViewComponent],
   imports: [
     CommonModule,

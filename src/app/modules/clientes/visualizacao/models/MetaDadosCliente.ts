@@ -1,4 +1,3 @@
-import { PageObject } from "src/app/shared/models/PageObject";
 import { Cliente } from "./Cliente";
 
 export class MetaDadosCliente {

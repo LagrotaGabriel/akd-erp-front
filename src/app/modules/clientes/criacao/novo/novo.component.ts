@@ -378,6 +378,24 @@ export class NovoComponent implements OnInit, OnDestroy {
   }
 
   // TELEFONE
+  verificaSePrefixoTelefoneNuloOuVazio(): boolean {
+    if (this.cliente.telefone != null) {
+      if (this.cliente.telefone.prefixo != null && this.cliente.telefone.prefixo != undefined && this.cliente.telefone.prefixo != '') {
+        return true;
+      }
+    }
+    return false;    
+  }
+
+  verificaSeTipoTelefoneNuloOuVazio(): boolean {
+    if (this.cliente.telefone != null) {
+      if (this.cliente.telefone.tipoTelefone != null && this.cliente.telefone.tipoTelefone != undefined && this.cliente.telefone.tipoTelefone != '') {
+        return true;
+      }
+    }
+    return false;
+  }
+
   realizaTratamentoPrefixo() {
     this.cliente.telefone.prefixo = this.cliente.telefone.prefixo
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
@@ -510,7 +528,6 @@ export class NovoComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           this.router.navigate(['/clientes']);
-          console.log("Cliente cadastrado com sucesso");
           this._snackBar.open("Cliente cadastrado com sucesso", "Fechar", {
             duration: 3500
           });

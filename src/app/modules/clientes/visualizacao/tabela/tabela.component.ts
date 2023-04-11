@@ -26,7 +26,7 @@ import { FormControl } from '@angular/forms';
     ]),
   ]
 })
-export class TabelaComponent implements OnDestroy, AfterViewInit {
+export class TabelaComponent implements OnDestroy {
 
   getClientes$: Subscription;
   removeCliente$: Subscription;
@@ -69,6 +69,7 @@ export class TabelaComponent implements OnDestroy, AfterViewInit {
   ngDoCheck(): void {
     localStorage.setItem('itensSelecionadosNaTabela', JSON.stringify(this.clientesSelecionadosNaTabela));
     localStorage.setItem('pageable', JSON.stringify(this.pageableInfo));
+    this.ajustaCheckDeObjetosNaTabelaComBaseNoCheckAll();
     this.checkObjetosQueEstaoNoLocalStorageDeObjetosSelecionados();
   }
 
@@ -77,25 +78,19 @@ export class TabelaComponent implements OnDestroy, AfterViewInit {
     if (this.pageableInfo != null && this.pageableInfo != undefined) this.pageableInfo.pageNumber = 0;
   }
 
-  ngAfterViewChecked(): void {
-
-    //this.ajustaCheckDeObjetosNaTabelaComBaseNoCheckAll();
-  }
-
-  ngAfterContentChecked(): void {
-    //Called after every check of the component's or directive's content.
-    //Add 'implements AfterContentChecked' to the class.
-
-  }
-
-  ngAfterViewInit(): void {
-
-  }
-
   ngOnDestroy(): void {
     if (this.getClientes$ != undefined) this.getClientes$.unsubscribe();
     if (this.removeCliente$ != undefined) this.removeCliente$.unsubscribe();
     if (this.buscaClientesSubscribe$ != undefined) this.buscaClientesSubscribe$.unsubscribe();
+  }
+
+  verificaSeConteudoMaiorQueZero(): boolean {
+    if (this.pageableInfo != null) {
+      if (this.pageableInfo.content != null) {
+        if (this.pageableInfo.content.length > 0) return true;
+      }
+    }
+    return false;
   }
 
   invocaRequisicaoHttpGetParaAtualizarObjetos() {
@@ -116,21 +111,18 @@ export class TabelaComponent implements OnDestroy, AfterViewInit {
         },
         error: () => {
           this.pageableInfo = null;
-        },
-        complete: () => {
-          setTimeout(() => {
-            this.ajustaCheckDeObjetosNaTabelaComBaseNoCheckAll();
-          }, 0);
         }
       });
   }
 
   ajustaCheckDeObjetosNaTabelaComBaseNoCheckAll() {
-    if (this.pageableInfo.content.filter(e => e.checked === false).length > 0) {
-      this.botaoCheckAllHabilitado = false;
-    }
-    else if (this.pageableInfo.content.filter(e => e.checked == true).length == this.pageableInfo.content.length) {
-      this.botaoCheckAllHabilitado = true;
+    if (this.verificaSeConteudoMaiorQueZero()) {
+      if (this.pageableInfo.content.filter(e => e.checked === false).length > 0) {
+        this.botaoCheckAllHabilitado = false;
+      }
+      else if (this.pageableInfo.content.filter(e => e.checked == true).length == this.pageableInfo.content.length) {
+        this.botaoCheckAllHabilitado = true;
+      }
     }
   }
 
@@ -167,8 +159,6 @@ export class TabelaComponent implements OnDestroy, AfterViewInit {
   }
 
   checkAll() {
-    console.log(this.pageableInfo.content);
-
     if (!this.botaoCheckAllHabilitado) {
       this.pageableInfo.content.forEach(itemTabela => {
         if (!itemTabela.checked) {
@@ -181,9 +171,9 @@ export class TabelaComponent implements OnDestroy, AfterViewInit {
       this.pageableInfo.content.forEach(itemTabela => {
         if (itemTabela.checked) {
           var clienteListaTabela: Cliente[] = this.clientesSelecionadosNaTabela.filter(item => item.id == itemTabela.id)
-          if(clienteListaTabela.length == 1) {
-          this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteListaTabela[0]), 1);
-          itemTabela.checked = false;
+          if (clienteListaTabela.length == 1) {
+            this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteListaTabela[0]), 1);
+            itemTabela.checked = false;
           }
         }
       })
@@ -218,7 +208,16 @@ export class TabelaComponent implements OnDestroy, AfterViewInit {
         error: (httpErrorResponse: HttpErrorResponse) => {
           this.invocaRequisicaoHttpGetParaAtualizarObjetos()
         },
-        complete: () => this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+        complete: () => {
+          console.log(this.clientesSelecionadosNaTabela);
+          var clienteRemovido: Cliente[] = this.clientesSelecionadosNaTabela.filter(cliente => cliente.id == id);
+
+          if(clienteRemovido.length == 1) this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteRemovido[0]), 1);
+
+          console.log(this.clientesSelecionadosNaTabela);
+
+          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+        }
       }
     );
   }

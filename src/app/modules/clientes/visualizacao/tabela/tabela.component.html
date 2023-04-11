@@ -1,7 +1,7 @@
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table_container">
 
   <table class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table table-dark"
-    [ngClass]="{'mat-elevation-z8': pageableInfo.content.length > 0}">
+    [ngClass]="{'mat-elevation-z8': verificaSeConteudoMaiorQueZero()}">
 
     <thead class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 thead">
 
@@ -13,8 +13,8 @@
 
           <div class="row bt_header_upper_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-            <div class="bt_header_container page_size_container">
-              <select [(ngModel)]="pageableInfo.pageSize" *ngIf="pageableInfo != null && pageableInfo.content.length > 0"
+            <div *ngIf="pageableInfo != null" class="bt_header_container page_size_container">
+              <select [(ngModel)]="pageableInfo.pageSize" *ngIf="verificaSeConteudoMaiorQueZero()"
                 class="bt_header bt_header_select col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                 (change)="alteraQuantidadeItensExibidosPorPagina()">
                 <option value="5" class="bt_header_option">5</option>
@@ -74,19 +74,18 @@
             </div>
           </div>
 
-          <h5 *ngIf="pageableInfo != null && pageableInfo.content.length > 0"
+          <h5 *ngIf="verificaSeConteudoMaiorQueZero()"
             class="quantidade_exibida col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             Página {{ pageableInfo.pageNumber+1 }} de {{ pageableInfo.totalPages }} | {{ pageableInfo.totalElements }}
             Clientes encontrados
           </h5>
-
         </div>
 
       </div>
 
       <hr class="hr_thead">
 
-      <tr *ngIf="pageableInfo.content.length > 0" class="tr_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <tr *ngIf="verificaSeConteudoMaiorQueZero()" class="tr_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
         <th class="th th_checkbox">
           <input (click)="checkAll()" [checked]="botaoCheckAllHabilitado" type="checkbox" id="customCheck"
@@ -120,7 +119,7 @@
 
     <tbody *ngIf="pageableInfo != null; else: loadBarTabela" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-      <div *ngIf="pageableInfo.content.length > 0; else: tabelaVazia"
+      <div *ngIf="verificaSeConteudoMaiorQueZero(); else: tabelaVazia"
         class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela_container">
         <div *ngFor="let cliente of pageableInfo.content; let i = index"
           [ngClass]="{'linha_tabela_expandida': cliente.expanded}"
@@ -328,9 +327,9 @@
         mode="indeterminate"></mat-progress-bar>
     </ng-template>
 
-    <div *ngIf="pageableInfo != null && pageableInfo.content.length > 0"
-      class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
-      <ul *ngIf="pageableInfo.totalPages > 1" class="pagination pagination-sm justify-content-end">
+    <div *ngIf="verificaSeConteudoMaiorQueZero()" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
+      <ul *ngIf="pageableInfo.totalPages > 1"
+        class="pagination pagination-sm justify-content-end">
         <li (click)="voltarPagina()" [ngClass]="{'disabled': pageableInfo.pageNumber == 0}" class="page-item"><a
             class="page-link">{{ geraBotaoVoltarPaginacao() }}</a></li>
         <ng-container *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageableInfo.totalPages); let i = index">

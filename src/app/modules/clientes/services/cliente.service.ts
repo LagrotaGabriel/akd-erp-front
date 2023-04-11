@@ -81,10 +81,7 @@ export class ClienteService {
     this.httpOptions.params = new HttpParams();
     this.buildRequestParams(valorBusca);
     this.buildPageableParams(pageableInfo);
-    console.log(pageableInfo);
-    console.log('Valor busca: ' + valorBusca);
     return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
-      //tap(() => console.log(pageableInfo.sortDirection)),
       map(resposta => new PageObject(resposta)),
       catchError((error: HttpErrorResponse) => {
         console.log(error);

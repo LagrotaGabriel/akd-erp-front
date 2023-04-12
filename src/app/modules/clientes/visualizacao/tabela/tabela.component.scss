@@ -152,6 +152,10 @@
     cursor: auto;
 }
 
+.btHeaderComPaddingAjustado {
+    padding: 0.3rem 0.6rem;
+}
+
 .matBadgeInactive:hover {
     background-color: $light-grey;
     border: 1px solid $light-grey;

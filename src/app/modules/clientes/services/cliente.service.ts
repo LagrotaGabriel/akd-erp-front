@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
@@ -7,7 +7,7 @@ import { Cliente as ClienteNovo } from '../criacao/models/cliente';
 import { Cliente } from '../visualizacao/models/Cliente';
 import { catchError, map, Observable, retry, throwError, timer, tap, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MetaDadosCliente } from '../visualizacao/models/MetaDadosCliente';
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -99,7 +99,6 @@ export class ClienteService {
   public removeClienteEmMassa(listaDeIds: number[]) {
     this.httpOptions.body = listaDeIds;
     return this.http.delete(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
-      map(resposta => new Cliente(resposta)),
       catchError((httpErrorResponse: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
         return throwError(() => new HttpErrorResponse(httpErrorResponse));
@@ -116,6 +115,16 @@ export class ClienteService {
         return throwError(() => new HttpErrorResponse(httpErrorResponse));
       })
     )
+  }
+
+  public obtemRelatorioClientes(listaDeIds: number[]): any {
+    this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
+      .subscribe(
+        ((response) => {
+          var blob = new Blob([response], { type: 'mediaType' });
+          saveAs(blob, 'akadion-clientes-' + new Date().getTime().toString() + '.pdf');
+        })
+      );
   }
 
   private implementaLogicaDeCapturaDeErroNaListagemDeItens(error) {

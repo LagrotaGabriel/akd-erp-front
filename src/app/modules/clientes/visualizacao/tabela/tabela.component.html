@@ -32,15 +32,30 @@
 
             <div class="bt_header_container">
               <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                matTooltip='Adicionar novo item' matTooltipPosition="above" routerLink="/clientes/novo">
+                [ngClass]="{ 'btHeaderComPaddingAjustado': pageableInfo == null }" matTooltip='Adicionar novo item'
+                matTooltipPosition="above" routerLink="/clientes/novo">
                 <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <i class="bi bi-file-earmark-plus-fill header_icon"></i>
                 </h5>
               </div>
             </div>
 
-            <div class="bt_header_container">
+            <div *ngIf="pageableInfo != null" class="bt_header_container">
               <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                [ngClass]="{ 'btHeaderComPaddingAjustado': pageableInfo == null }"
+                [ngClass]="{ 'matBadgeInactive': pageableInfo == null }" (click)="geraRelatorio()"
+                [matBadge]="clientesSelecionadosNaTabela.length > 0 ? clientesSelecionadosNaTabela.length : null"
+                [matTooltip]="clientesSelecionadosNaTabela.length > 0 ? 'Gerar relatório em PDF' : 'Gerar relatório geral em PDF'"
+                matBadgePosition="after" matBadgeSize="medium" matBadgeColor="accent" matTooltipPosition="above">
+                <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  <i class="bi bi-file-pdf-fill header_icon"></i>
+                </h5>
+              </div>
+            </div>
+
+            <div *ngIf="pageableInfo != null" class="bt_header_container">
+              <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                [ngClass]="{ 'btHeaderComPaddingAjustado': pageableInfo == null }"
                 [ngClass]="{'matBadgeInactive': clientesSelecionadosNaTabela.length == 0}"
                 [matBadge]="clientesSelecionadosNaTabela.length > 0 ? clientesSelecionadosNaTabela.length : null"
                 [matTooltip]="clientesSelecionadosNaTabela.length > 0 ? 'Remover itens' : null" matBadgePosition="after"
@@ -52,17 +67,6 @@
               </div>
             </div>
 
-            <div class="bt_header_container">
-              <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                [ngClass]="{'matBadgeInactive': clientesSelecionadosNaTabela.length == 0}"
-                [matBadge]="clientesSelecionadosNaTabela.length > 0 ? clientesSelecionadosNaTabela.length : null"
-                [matTooltip]="clientesSelecionadosNaTabela.length > 0 ? 'Gerar relatório em PDF' : null"
-                matBadgePosition="after" matBadgeSize="medium" matBadgeColor="accent" matTooltipPosition="above">
-                <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                  <i class="bi bi-file-pdf-fill header_icon"></i>
-                </h5>
-              </div>
-            </div>
           </div>
 
           <div class="input_filtro_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

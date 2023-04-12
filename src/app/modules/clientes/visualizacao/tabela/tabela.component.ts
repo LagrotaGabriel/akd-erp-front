@@ -30,6 +30,8 @@ export class TabelaComponent implements OnDestroy {
 
   getClientes$: Subscription;
   removeCliente$: Subscription;
+  removeClienteEmMassa$: Subscription;
+  geraRelatorio$: Subscription;
 
   buscaClientes: FormControl = new FormControl();
 
@@ -81,6 +83,8 @@ export class TabelaComponent implements OnDestroy {
   ngOnDestroy(): void {
     if (this.getClientes$ != undefined) this.getClientes$.unsubscribe();
     if (this.removeCliente$ != undefined) this.removeCliente$.unsubscribe();
+    if (this.removeClienteEmMassa$ != undefined) this.removeClienteEmMassa$.unsubscribe();
+    if (this.geraRelatorio$ != undefined) this.geraRelatorio$.unsubscribe();
     if (this.buscaClientesSubscribe$ != undefined) this.buscaClientesSubscribe$.unsubscribe();
   }
 
@@ -203,7 +207,7 @@ export class TabelaComponent implements OnDestroy {
 
     if (this.clientesSelecionadosNaTabela.length == 0) return;
 
-    this.removeCliente$ = this.clienteService.removeClienteEmMassa(listaDeIdsDeClientesSelecionadosNaTabela).subscribe(
+    this.removeClienteEmMassa$ = this.clienteService.removeClienteEmMassa(listaDeIdsDeClientesSelecionadosNaTabela).subscribe(
       {
         next: () => {
           this._snackBar.open("Clientes Excluídos com sucesso", "Fechar", {
@@ -234,7 +238,7 @@ export class TabelaComponent implements OnDestroy {
       {
         next: (response: Cliente) => {
           this._snackBar.open("Cliente Excluído com sucesso", "Fechar", {
-            duration: 3000
+            duration: 3500
           });
         },
         error: (httpErrorResponse: HttpErrorResponse) => {
@@ -247,6 +251,13 @@ export class TabelaComponent implements OnDestroy {
         }
       }
     );
+  }
+
+  geraRelatorio() {
+    var listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
+    this.clientesSelecionadosNaTabela.forEach(cliente => { listaDeIdsDeClientesSelecionadosNaTabela.push(cliente.id) })
+    if (this.clientesSelecionadosNaTabela.length == 0) listaDeIdsDeClientesSelecionadosNaTabela = [];
+    this.geraRelatorio$ = this.clienteService.obtemRelatorioClientes(listaDeIdsDeClientesSelecionadosNaTabela);
   }
 
   alteraQuantidadeItensExibidosPorPagina() {

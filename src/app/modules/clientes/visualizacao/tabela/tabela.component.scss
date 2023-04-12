@@ -146,6 +146,18 @@
     font-weight: 500;
 }
 
+.matBadgeInactive {
+    background-color: $light-grey;
+    border: 1px solid $light-grey;
+    cursor: auto;
+}
+
+.matBadgeInactive:hover {
+    background-color: $light-grey;
+    border: 1px solid $light-grey;
+    color: $dark-white;
+}
+
 /* TABLE */
 
 th {

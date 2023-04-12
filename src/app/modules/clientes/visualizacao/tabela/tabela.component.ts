@@ -200,6 +200,9 @@ export class TabelaComponent implements OnDestroy {
   excluiClientesEmMassa() {
     var listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
     this.clientesSelecionadosNaTabela.forEach(cliente => { listaDeIdsDeClientesSelecionadosNaTabela.push(cliente.id) })
+
+    if (this.clientesSelecionadosNaTabela.length == 0) return;
+
     this.removeCliente$ = this.clienteService.removeClienteEmMassa(listaDeIdsDeClientesSelecionadosNaTabela).subscribe(
       {
         next: () => {
@@ -215,8 +218,12 @@ export class TabelaComponent implements OnDestroy {
             var clienteRemovido: Cliente[] = this.clientesSelecionadosNaTabela.filter(cliente => cliente.id == idSelecionadoNaTabela);
             if (clienteRemovido.length == 1) this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteRemovido[0]), 1);
           })
-
           this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+          this._snackBar.open(listaDeIdsDeClientesSelecionadosNaTabela.length > 1
+            ? "Clientes removidos com sucesso"
+            : "Cliente removido com sucesso", "Fechar", {
+            duration: 3500
+          })
         }
       }
     );

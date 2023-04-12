@@ -41,8 +41,11 @@
 
             <div class="bt_header_container">
               <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                [matBadge]="clientesSelecionadosNaTabela.length" matBadgePosition="after" matBadgeSize="medium"
-                matBadgeColor="accent" matTooltip='Remover itens' matTooltipPosition="above" (click)="excluiClientesEmMassa()">
+                [ngClass]="{'matBadgeInactive': clientesSelecionadosNaTabela.length == 0}"
+                [matBadge]="clientesSelecionadosNaTabela.length > 0 ? clientesSelecionadosNaTabela.length : null"
+                [matTooltip]="clientesSelecionadosNaTabela.length > 0 ? 'Remover itens' : null" matBadgePosition="after"
+                matBadgeSize="medium" matBadgeColor="accent" matTooltipPosition="above"
+                (click)="excluiClientesEmMassa()">
                 <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <i class="bi bi-file-earmark-x-fill header_icon"></i>
                 </h5>
@@ -51,9 +54,10 @@
 
             <div class="bt_header_container">
               <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                [matBadge]="clientesSelecionadosNaTabela.length" matBadgePosition="after" matBadgeSize="medium"
-                matBadgeColor="accent" matTooltip='Gerar relatório em PDF' matTooltipPosition="above"
-                routerLink="/clientes/novo">
+                [ngClass]="{'matBadgeInactive': clientesSelecionadosNaTabela.length == 0}"
+                [matBadge]="clientesSelecionadosNaTabela.length > 0 ? clientesSelecionadosNaTabela.length : null"
+                [matTooltip]="clientesSelecionadosNaTabela.length > 0 ? 'Gerar relatório em PDF' : null"
+                matBadgePosition="after" matBadgeSize="medium" matBadgeColor="accent" matTooltipPosition="above">
                 <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <i class="bi bi-file-pdf-fill header_icon"></i>
                 </h5>
@@ -326,9 +330,9 @@
         mode="indeterminate"></mat-progress-bar>
     </ng-template>
 
-    <div *ngIf="verificaSeConteudoMaiorQueZero()" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
-      <ul *ngIf="pageableInfo.totalPages > 1"
-        class="pagination pagination-sm justify-content-end">
+    <div *ngIf="verificaSeConteudoMaiorQueZero()"
+      class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container">
+      <ul *ngIf="pageableInfo.totalPages > 1" class="pagination pagination-sm justify-content-end">
         <li (click)="voltarPagina()" [ngClass]="{'disabled': pageableInfo.pageNumber == 0}" class="page-item"><a
             class="page-link">{{ geraBotaoVoltarPaginacao() }}</a></li>
         <ng-container *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageableInfo.totalPages); let i = index">

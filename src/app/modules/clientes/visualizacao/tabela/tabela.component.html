@@ -42,8 +42,7 @@
             <div class="bt_header_container">
               <div class="row bt_header bt_header_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                 [matBadge]="clientesSelecionadosNaTabela.length" matBadgePosition="after" matBadgeSize="medium"
-                matBadgeColor="accent" matTooltip='Remover itens' matTooltipPosition="above"
-                routerLink="/clientes/novo">
+                matBadgeColor="accent" matTooltip='Remover itens' matTooltipPosition="above" (click)="excluiClientesEmMassa()">
                 <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <i class="bi bi-file-earmark-x-fill header_icon"></i>
                 </h5>

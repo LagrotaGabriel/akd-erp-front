@@ -22,7 +22,8 @@ export class ClienteService {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MDI0NDkiLCJleHAiOjE2ODE1ODE4NzR9.lPgCqWy8-6D6n9YACG63OPwqdfV-z3ziVgMlyvcg0ysRp19epUyhB69q8tXieJHmnAGgjgYnkvVnp0TKwHjfgw'
-    })
+    }),
+    body: null
   }
 
   private realizaTratamentoDeAtributosNulos(cliente: ClienteNovo): ClienteNovo {
@@ -55,6 +56,7 @@ export class ClienteService {
   }
 
   public validaDuplicidadeInscricaoEstadual(inscricaoEstadual: string) {
+    this.httpOptions.body = null;
     return this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-ie`, inscricaoEstadual, this.httpOptions).pipe(
       catchError(erro => {
         return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
@@ -63,6 +65,7 @@ export class ClienteService {
   }
 
   public validaDuplicidadeCpfCnpj(cpfCnpj: string) {
+    this.httpOptions.body = null;
     return this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, cpfCnpj, this.httpOptions).pipe(
       catchError((erro: HttpErrorResponse) => {
         return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
@@ -72,6 +75,7 @@ export class ClienteService {
 
   public novoCliente(clienteNovo: ClienteNovo): Observable<ClienteNovo> {
     clienteNovo = this.realizaTratamentoDeAtributosNulos(clienteNovo);
+    this.httpOptions.body = null;
     return this.http.post<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
       map(resposta => new ClienteNovo(resposta)),
     )
@@ -79,6 +83,7 @@ export class ClienteService {
 
   public getClientes(valorBusca: string, pageableInfo: PageObject): Observable<PageObject> {
     this.httpOptions.params = new HttpParams();
+    this.httpOptions.body = null;
     this.buildRequestParams(valorBusca);
     this.buildPageableParams(pageableInfo);
     return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
@@ -91,7 +96,19 @@ export class ClienteService {
     )
   }
 
+  public removeClienteEmMassa(listaDeIds: number[]) {
+    this.httpOptions.body = listaDeIds;
+    return this.http.delete(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
+      map(resposta => new Cliente(resposta)),
+      catchError((httpErrorResponse: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
+        return throwError(() => new HttpErrorResponse(httpErrorResponse));
+      })
+    )
+  }
+
   public removeCliente(id: number): Observable<Cliente> {
+    this.httpOptions.body = null;
     return this.http.delete<Cliente>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
       map(resposta => new Cliente(resposta)),
       catchError((httpErrorResponse: HttpErrorResponse) => {

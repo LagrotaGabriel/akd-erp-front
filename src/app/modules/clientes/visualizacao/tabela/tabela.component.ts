@@ -197,6 +197,31 @@ export class TabelaComponent implements OnDestroy {
     else return '-';
   }
 
+  excluiClientesEmMassa() {
+    var listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
+    this.clientesSelecionadosNaTabela.forEach(cliente => { listaDeIdsDeClientesSelecionadosNaTabela.push(cliente.id) })
+    this.removeCliente$ = this.clienteService.removeClienteEmMassa(listaDeIdsDeClientesSelecionadosNaTabela).subscribe(
+      {
+        next: () => {
+          this._snackBar.open("Clientes Excluídos com sucesso", "Fechar", {
+            duration: 3000
+          });
+        },
+        error: (httpErrorResponse: HttpErrorResponse) => {
+          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+        },
+        complete: () => {
+          listaDeIdsDeClientesSelecionadosNaTabela.forEach(idSelecionadoNaTabela => {
+            var clienteRemovido: Cliente[] = this.clientesSelecionadosNaTabela.filter(cliente => cliente.id == idSelecionadoNaTabela);
+            if (clienteRemovido.length == 1) this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteRemovido[0]), 1);
+          })
+
+          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+        }
+      }
+    );
+  }
+
   excluiCliente(id: number) {
     this.removeCliente$ = this.clienteService.removeCliente(id).subscribe(
       {
@@ -209,13 +234,8 @@ export class TabelaComponent implements OnDestroy {
           this.invocaRequisicaoHttpGetParaAtualizarObjetos()
         },
         complete: () => {
-          console.log(this.clientesSelecionadosNaTabela);
           var clienteRemovido: Cliente[] = this.clientesSelecionadosNaTabela.filter(cliente => cliente.id == id);
-
-          if(clienteRemovido.length == 1) this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteRemovido[0]), 1);
-
-          console.log(this.clientesSelecionadosNaTabela);
-
+          if (clienteRemovido.length == 1) this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteRemovido[0]), 1);
           this.invocaRequisicaoHttpGetParaAtualizarObjetos()
         }
       }

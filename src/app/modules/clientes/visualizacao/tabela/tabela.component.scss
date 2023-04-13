@@ -52,6 +52,10 @@
     margin: 0;
 }
 
+.thead_info_empty {
+    margin: 0;
+}
+
 .hr_thead {
     width: 95%;
     margin: 0.5rem auto;
@@ -625,9 +629,32 @@ input[type='checkbox'] {
         display: none;
     }
 
+    .thead_info_icon_container  {
+        padding: 0 0.8rem;
+    }
+
     .page-link {
         padding: 0.2rem 0.6rem !important;
         font-size: 0.8rem;
+    }
+
+    .bt_header {
+        border-radius: 5px;
+    }
+
+    .header_icon {
+        font-size: 1.3rem;
+    }
+
+    .input_busca {
+        font-size: 0.8rem;
+    }
+
+    .tabela_vazia_container {
+        margin: 0;
+        margin-top: 0.3rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem
     }
 
 }
@@ -663,11 +690,40 @@ input[type='checkbox'] {
     }
 
     .quantidade_exibida {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
     
     .pagination_container {
         margin-top: 0;
+    }
+
+    .input_busca {
+        font-size: 0.7rem;
+    }
+
+    .tabela_vazia_container {
+        margin: 0;
+        margin-top: 0.3rem;
+        margin-bottom: 1rem;
+        font-size: 0.8rem
+    }
+
+    .input_filtro_container  {
+        margin-top: 0.5rem;
+    }
+
+    .bt_header_select  {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .bt_header_container {
+        padding-left: 0.5rem;
+    }
+
+    .hr_thead {
+        margin-top: 0.5rem;
+        margin-bottom: 0;
     }
 
 }
@@ -693,6 +749,10 @@ input[type='checkbox'] {
         display: none;
     }
 
+    .thead_info_icon_container  {
+        padding: 0 0.5rem;
+    }
+
     .pagination_container {
         align-items: center;
     }
@@ -702,13 +762,29 @@ input[type='checkbox'] {
         font-size: 0.7rem;
     }
 
-    .quantidade_exibida {
+    .input_busca {
         font-size: 0.7rem;
     }
 
-    .bt_header {
-        font-size: 0.8rem;
-        border-radius: 2px;
+    .tabela_vazia_container {
+        margin: 0;
+        margin-top: 0.3rem;
+        margin-bottom: 1rem;
+        font-size: 0.7rem
+    }
+
+    .quantidade_exibida {
+        margin-top: 0.1rem;
+        font-size: 0.7rem;
+    }
+
+    .header_icon {
+        font-size: 1.1rem;
+    }
+
+    .bt_header_select  {
+        padding: 0.2rem 0.8rem;
+        font-size: 0.7rem;
     }
 
 }
@@ -721,11 +797,11 @@ input[type='checkbox'] {
 
     .thead_info  {
         margin-top: 0.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 0rem;
     }
 
-    .quantidade_exibida {
-        font-size: 0.7rem;
+    .thead_info_empty {
+        margin-bottom: 0;
     }
 
     .bt_header {
@@ -733,17 +809,41 @@ input[type='checkbox'] {
         font-size: 0.8rem;
         margin-left: 0;
         margin-right: 0.5rem;
-        border-radius: 2px;
+        border-radius: 3px;
+    }
+
+    .input_filtro_container {
+        margin-top: 0.5rem;
+    }
+
+    .input_busca {
+        font-size: 0.7rem;
+    }
+
+    .header_icon {
+        font-size: 1.1rem;
     }
 
     .bt_header_novo {
-        padding: 0rem 0.5rem;
+        padding: 0.1rem 0.2rem;
     }
 
     .load-bar-tabela {
         margin: 0 auto;
-        margin-top: 3rem;
-        margin-bottom: 1.8rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .tabela_vazia_container {
+        margin: 0;
+        margin-top: 0.3rem;
+        margin-bottom: 1rem;
+        font-size: 0.7rem
+    }
+
+    .hr_thead {
+        margin-top: 0.5rem;
+        margin-bottom: 0;
     }
 
 }

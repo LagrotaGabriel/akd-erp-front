@@ -8,6 +8,7 @@ import { Cliente } from '../visualizacao/models/Cliente';
 import { catchError, map, Observable, retry, throwError, timer, tap, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
+import { TabelaComponent } from '../visualizacao/tabela/tabela.component';
 
 @Injectable({
   providedIn: 'root'
@@ -89,10 +90,11 @@ export class ClienteService {
     return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
       map(resposta => new PageObject(resposta)),
       catchError((error: HttpErrorResponse) => {
-        console.log(error);
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        console.log(error);
         return throwError(() => new HttpErrorResponse(error));
-      })
+      }),
+      retry({ count: 10, delay: 5000 })
     )
   }
 
@@ -137,7 +139,7 @@ export class ClienteService {
     }
     else {
       this._snackBar.open("Houve uma falha de comunicação com o servidor", "Fechar", {
-        duration: 3500
+        duration: 5000
       });
     }
   }

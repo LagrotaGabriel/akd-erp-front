@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NovoComponent } from './criacao/novo/novo.component';
 import { ViewComponent } from './visualizacao/view/view.component';
+import { AtualizacaoComponent } from './atualizacao/atualizacao/atualizacao.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'novo',
     component: NovoComponent
+  },
+  {
+    path: ':id',
+    component: AtualizacaoComponent
   }
 ];
 

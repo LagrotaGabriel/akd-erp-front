@@ -74,11 +74,29 @@ export class ClienteService {
     )
   }
 
+  public atualizaCliente(idCliente: number, clienteNovo: ClienteNovo): Observable<ClienteNovo> {
+    clienteNovo = this.realizaTratamentoDeAtributosNulos(clienteNovo);
+    this.httpOptions.body = null;
+    return this.http.put<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${idCliente}`, clienteNovo, this.httpOptions).pipe(
+      map(resposta => new ClienteNovo(resposta)),
+    )
+  }
+
   public novoCliente(clienteNovo: ClienteNovo): Observable<ClienteNovo> {
     clienteNovo = this.realizaTratamentoDeAtributosNulos(clienteNovo);
     this.httpOptions.body = null;
     return this.http.post<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
       map(resposta => new ClienteNovo(resposta)),
+    )
+  }
+
+  public obtemClientePorId(id: number): Observable<ClienteNovo> {
+    this.httpOptions.params = new HttpParams();
+    this.httpOptions.body = null;
+    return this.http.get<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
+      tap((resposta) => console.log(resposta)),
+      map(resposta => new ClienteNovo(resposta)),
+      tap((resposta) => console.log(resposta))
     )
   }
 
@@ -94,7 +112,7 @@ export class ClienteService {
         console.log(error);
         return throwError(() => new HttpErrorResponse(error));
       }),
-      retry({ count: 10, delay: 5000 })
+      retry({ count: 20, delay: 10000 })
     )
   }
 
@@ -139,7 +157,7 @@ export class ClienteService {
     }
     else {
       this._snackBar.open("Houve uma falha de comunicação com o servidor", "Fechar", {
-        duration: 5000
+        duration: 12000
       });
     }
   }

@@ -3,6 +3,8 @@
   <table class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table table-dark"
     [ngClass]="{'mat-elevation-z8': verificaSeConteudoMaiorQueZero()}">
 
+    <caption></caption>
+
     <thead class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 thead">
 
       <div [ngClass]="{ 'thead_info_empty': pageableInfo == null || pageableInfo.content.length == 0 }"
@@ -162,7 +164,7 @@
 
             <td class="td td_status">
               <span class="status_comum mat-elevation-z2" [ngClass]="{
-                  'status_vip': cliente.statusCliente == 'VIP', 
+                  'status_vip': cliente.statusCliente == 'VIP',
                   'status_debito': cliente.statusCliente == 'DEVEDOR',
                   'status_comum': cliente.statusCliente == 'COMUM',
                   'status_atencao': cliente.statusCliente == 'ATENCAO'}">

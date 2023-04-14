@@ -29,7 +29,6 @@
     border-collapse: inherit;
     padding: 0;
     border-spacing: 0;
-    background-color: transparent;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
@@ -317,11 +316,6 @@ tbody {
     width: 30%;
 }
 
-.th_acoes,
-.td_acoes {
-    width: 10%;
-}
-
 .nome_cliente {
     padding: 0;
     margin: 0;
@@ -341,9 +335,6 @@ input[type='checkbox'] {
 }
 
 .status_vip {
-    border: 1px solid #008000;
-    color: #008000;
-    background-color: #b1f1ce;
     border: 1px solid #663874;
     color: #663874;
     background-color: #e2b1f1;
@@ -369,6 +360,7 @@ input[type='checkbox'] {
 
 .td_acoes,
 .th_acoes {
+    width: 10%;
     display: flex;
     justify-content: center !important;
     text-align: center;
@@ -676,10 +668,6 @@ input[type='checkbox'] {
         display: none;
     }
 
-    .pagination_container {
-        align-items: center;
-    }
-
     .page-link {
         padding: 0.2rem 0.4rem !important;
         font-size: 0.7rem;
@@ -692,8 +680,9 @@ input[type='checkbox'] {
     .quantidade_exibida {
         font-size: 0.7rem;
     }
-    
+
     .pagination_container {
+        align-items: center;
         margin-top: 0;
     }
 

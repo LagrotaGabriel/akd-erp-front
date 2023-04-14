@@ -2,7 +2,7 @@ import { SideNavDetails } from './../models/SideNavDetails';
 import { ConfirmaLogoutComponent } from './confirma-logout/confirma-logout.component';
 
 import { MatDialog } from '@angular/material/dialog';
-import { Component, EventEmitter, OnInit, OnChanges, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-header',

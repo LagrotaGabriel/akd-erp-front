@@ -1,14 +1,12 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
-import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
 import { PageObject } from '../../../shared/models/PageObject';
 import { Cliente as ClienteNovo } from '../criacao/models/cliente';
 import { Cliente } from '../visualizacao/models/Cliente';
-import { catchError, map, Observable, retry, throwError, timer, tap, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { catchError, map, Observable, retry, throwError, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
-import { TabelaComponent } from '../visualizacao/tabela/tabela.component';
 
 @Injectable({
   providedIn: 'root'
@@ -141,7 +139,7 @@ export class ClienteService {
     this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
       .subscribe(
         ((response) => {
-          var blob = new Blob([response], { type: 'mediaType' });
+          let blob = new Blob([response], { type: 'mediaType' });
           saveAs(blob, 'akadion-clientes-' + new Date().getTime().toString() + '.pdf');
         })
       );

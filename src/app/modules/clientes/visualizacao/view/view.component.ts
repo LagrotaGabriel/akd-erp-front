@@ -1,10 +1,7 @@
 
-import { Component } from '@angular/core';
-import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Cliente } from '../models/Cliente';
 import { PageObject } from 'src/app/shared/models/PageObject';
-import { ChangeDetectorRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view',
@@ -13,7 +10,7 @@ import { FormControl } from '@angular/forms';
 })
 export class ViewComponent{
 
-  constructor( private cdref: ChangeDetectorRef ) {}   
+  constructor( private cdref: ChangeDetectorRef ) {}
 
   public clientesSelecionados: Cliente[] = [];
   public clientesLocalizadosNoTypeAhead: PageObject;

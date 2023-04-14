@@ -42,11 +42,11 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
 
   // Validations cliente
   inputLengthCpfCnpj: number = 11;
-  inputPatternCpfCnpj: any = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
+  inputPatternCpfCnpj: any = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
 
   // Validations telefone
   inputLengthPrefixo: number = 2;
-  inputPrefixoPattern: any = /^[0-9]{2}/;
+  inputPrefixoPattern: any = /^\d{2}/;
   inputLengthTelefone: number;
   inputTelefonePattern: any;
 
@@ -92,7 +92,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
   }
 
   realizaValidacaoDoIdCliente() {
-    var id = this.activatedRoute.snapshot.paramMap.get('id')
+    let id = this.activatedRoute.snapshot.paramMap.get('id')
     if (/^\d+$/.test(id)) this.idCliente = parseInt(id);
     else {
       this.router.navigate(['/clientes']);
@@ -161,7 +161,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
       nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       tipoPessoa: ['', Validators.required],
       cpfCnpj: ['', [Validators.pattern(this.inputPatternCpfCnpj), Validators.maxLength(this.inputLengthCpfCnpj), Validators.minLength(this.inputLengthCpfCnpj)]],
-      inscricaoEstadual: ['', [Validators.pattern(/^[0-9]{12}/), Validators.maxLength(12), Validators.minLength(12)]],
+      inscricaoEstadual: ['', [Validators.pattern(/^\d{12}/), Validators.maxLength(12), Validators.minLength(12)]],
       email: ['', [Validators.email, Validators.maxLength(50)]],
       dataNascimento: [''],
       statusCliente: ['', Validators.required]
@@ -175,7 +175,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
       logradouro: [''],
       numero: [''],
       bairro: ['', Validators.maxLength(50)],
-      codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^[0-9]{5}[0-9]{3}/)]],
+      codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^\d{5}\d{3}/)]],
       cidade: ['', Validators.maxLength(50)],
       complemento: ['', Validators.maxLength(50)],
       estado: ['', Validators.maxLength(50)]
@@ -216,13 +216,13 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
 
     if (this.cliente.tipoPessoa == 'FISICA') {
       this.inputLengthCpfCnpj = 11;
-      this.inputPatternCpfCnpj = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/;
+      this.inputPatternCpfCnpj = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
       this.dadosCliente.controls['inscricaoEstadual'].disable();
       this.dadosCliente.controls['dataNascimento'].enable();
     }
     else if (this.cliente.tipoPessoa == 'JURIDICA') {
       this.inputLengthCpfCnpj = 14;
-      this.inputPatternCpfCnpj = /^[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}[0-9]{2}/
+      this.inputPatternCpfCnpj = /^\d{2}\d{3}\d{3}\d{4}\d{2}/
       this.dadosCliente.controls['inscricaoEstadual'].enable();
       this.dadosCliente.controls['dataNascimento'].disable();
     }
@@ -256,12 +256,12 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
 
       if (this.cliente.telefone.tipoTelefone == 'FIXO') {
         this.inputLengthTelefone = 8;
-        this.inputTelefonePattern = /^[0-9]{4}[0-9]{4}/;
+        this.inputTelefonePattern = /^\d{4}\d{4}/;
       }
 
       else if (this.cliente.telefone.tipoTelefone == 'MOVEL' || this.cliente.telefone.tipoTelefone == 'MOVEL_WHATSAPP') {
         this.inputLengthTelefone = 9;
-        this.inputTelefonePattern = /^[0-9][0-9]{4}[0-9]{4}/;
+        this.inputTelefonePattern = /^\d\d{4}\d{4}/;
       }
 
       this.dadosTelefone.controls['prefixo'].addValidators(Validators.required);
@@ -285,7 +285,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
   // DADOS
   realizaTratamentoCpfCnpj() {
     this.cliente.cpfCnpj = this.cliente.cpfCnpj
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
+      .replace(/[&\/\\#,+@=!_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
     this.invocaValidacaoDuplicidadeCpfCnpj();
@@ -406,7 +406,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
 
   realizaTratamentoInscricaoEstadual() {
     this.cliente.inscricaoEstadual = this.cliente.inscricaoEstadual
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
+      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
     this.invocaValidacaoDuplicidadeInscricaoEstadual();
@@ -449,14 +449,14 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
 
   realizaTratamentoPrefixo() {
     this.cliente.telefone.prefixo = this.cliente.telefone.prefixo
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
+      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
   }
 
   realizaTratamentoNumeroTelefone() {
     this.cliente.telefone.numero = this.cliente.telefone.numero
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
+      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
   }
@@ -472,7 +472,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
       this.cliente.endereco.complemento != null && this.cliente.endereco.complemento != '') {
       this.cliente.endereco.cidade = this.cliente.endereco.cidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       this.dadosEndereco.controls['logradouro'].addValidators([Validators.required, Validators.maxLength(50), Validators.minLength(1)]);
-      this.dadosEndereco.controls['numero'].addValidators([Validators.required, Validators.max(99999), Validators.min(1), Validators.pattern(/^[0-9]{1,5}$/)]);
+      this.dadosEndereco.controls['numero'].addValidators([Validators.required, Validators.max(99999), Validators.min(1), Validators.pattern(/^\d{1,5}$/)]);
     }
     else {
       this.dadosEndereco.controls['logradouro'].clearValidators();
@@ -508,7 +508,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
     this.atualizaValidatorsEndereco();
 
     this.cliente.endereco.codigoPostal = this.cliente.endereco.codigoPostal
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;'":*?<>{}-]/g, "")
+      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
 

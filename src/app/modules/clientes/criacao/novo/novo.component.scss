@@ -190,10 +190,6 @@ input:focus {
     fill: $primary-color !important;
 }
 
-::ng-deep .mat-mdc-icon-button {
-    color: $primary-color !important;
-}
-
 ::ng-deep .mat-calendar-body-cell {
     outline: none !important;
     --mat-mdc-button-ripple-color: transparent !important;
@@ -220,7 +216,7 @@ input:focus {
 }
 
 ::ng-deep .mat-mdc-icon-button {
-    color: $primary-color ;
+    color: $primary-color !important;
     --mat-mdc-button-ripple-color: transparent !important;
     --mat-mdc-button-persistent-ripple-color: transparent !important;
 }

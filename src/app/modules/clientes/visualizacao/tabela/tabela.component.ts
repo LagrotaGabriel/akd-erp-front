@@ -1,8 +1,8 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Subscription, debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import { Cliente } from '../models/Cliente';
 import { PageObject } from '../../../../shared/models/PageObject';
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
 import { Endereco } from 'src/app/shared/models/Endereco';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -46,7 +46,7 @@ export class TabelaComponent implements OnDestroy {
       switchMap((valorDigitado) => this.clienteService.getClientes(valorDigitado, this.pageableInfo)),
     ).subscribe({
       next: (response: PageObject) => {
-        var sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
+        let sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
         this.pageableInfo = response;
         this.pageableInfo.sortDirection = sortDirection;
         if (this.pageableInfo.sortDirection == undefined) this.pageableInfo.sortDirection = 'DESC';
@@ -98,11 +98,11 @@ export class TabelaComponent implements OnDestroy {
   }
 
   invocaRequisicaoHttpGetParaAtualizarObjetos() {
-    var buscaClientesParam = this.buscaClientes.value != null && this.buscaClientes.value != '' ? this.buscaClientes.value : null;
+    let buscaClientesParam = this.buscaClientes.value != null && this.buscaClientes.value != '' ? this.buscaClientes.value : null;
     this.getClientes$ = this.clienteService.getClientes(buscaClientesParam, this.pageableInfo).subscribe(
       {
         next: (response: PageObject) => {
-          var sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
+          let sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
           this.pageableInfo = response;
           this.pageableInfo.sortDirection = sortDirection;
           if (this.pageableInfo.sortDirection == undefined) this.pageableInfo.sortDirection = 'DESC';
@@ -124,7 +124,7 @@ export class TabelaComponent implements OnDestroy {
       if (this.pageableInfo.content.filter(e => e.checked === false).length > 0) {
         this.botaoCheckAllHabilitado = false;
       }
-      else if (this.pageableInfo.content.filter(e => e.checked == true).length == this.pageableInfo.content.length) {
+      else if (this.pageableInfo.content.filter(e => e.checked).length == this.pageableInfo.content.length) {
         this.botaoCheckAllHabilitado = true;
       }
     }
@@ -132,7 +132,7 @@ export class TabelaComponent implements OnDestroy {
 
   checkObjetosQueEstaoNoLocalStorageDeObjetosSelecionados() {
     this.clientesSelecionadosNaTabela.forEach(clienteSelecionado => {
-      var index: number = this.pageableInfo.content.findIndex(clienteEncontrado => clienteEncontrado.id === clienteSelecionado.id);
+      let index: number = this.pageableInfo.content.findIndex(clienteEncontrado => clienteEncontrado.id === clienteSelecionado.id);
       if (index != -1) this.pageableInfo.content[index].checked = true;
     })
   }
@@ -174,7 +174,7 @@ export class TabelaComponent implements OnDestroy {
     else {
       this.pageableInfo.content.forEach(itemTabela => {
         if (itemTabela.checked) {
-          var clienteListaTabela: Cliente[] = this.clientesSelecionadosNaTabela.filter(item => item.id == itemTabela.id)
+          let clienteListaTabela: Cliente[] = this.clientesSelecionadosNaTabela.filter(item => item.id == itemTabela.id)
           if (clienteListaTabela.length == 1) {
             this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteListaTabela[0]), 1);
             itemTabela.checked = false;
@@ -189,7 +189,7 @@ export class TabelaComponent implements OnDestroy {
   }
 
   trataEnderecoTabela(endereco: Endereco): string {
-    var enderecoCompleto = ""
+    let enderecoCompleto = ""
     if (endereco != null) {
       enderecoCompleto += (endereco.logradouro + ', ' + endereco.numero);
       if (endereco.bairro != null && endereco.cidade != null && endereco.estado != null)
@@ -202,7 +202,7 @@ export class TabelaComponent implements OnDestroy {
   }
 
   excluiClientesEmMassa() {
-    var listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
+    let listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
     this.clientesSelecionadosNaTabela.forEach(cliente => { listaDeIdsDeClientesSelecionadosNaTabela.push(cliente.id) })
 
     if (this.clientesSelecionadosNaTabela.length == 0) return;
@@ -219,7 +219,7 @@ export class TabelaComponent implements OnDestroy {
         },
         complete: () => {
           listaDeIdsDeClientesSelecionadosNaTabela.forEach(idSelecionadoNaTabela => {
-            var clienteRemovido: Cliente[] = this.clientesSelecionadosNaTabela.filter(cliente => cliente.id == idSelecionadoNaTabela);
+            let clienteRemovido: Cliente[] = this.clientesSelecionadosNaTabela.filter(cliente => cliente.id == idSelecionadoNaTabela);
             if (clienteRemovido.length == 1) this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteRemovido[0]), 1);
           })
           this.invocaRequisicaoHttpGetParaAtualizarObjetos()
@@ -245,7 +245,7 @@ export class TabelaComponent implements OnDestroy {
           this.invocaRequisicaoHttpGetParaAtualizarObjetos()
         },
         complete: () => {
-          var clienteRemovido: Cliente[] = this.clientesSelecionadosNaTabela.filter(cliente => cliente.id == id);
+          let clienteRemovido: Cliente[] = this.clientesSelecionadosNaTabela.filter(cliente => cliente.id == id);
           if (clienteRemovido.length == 1) this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteRemovido[0]), 1);
           this.invocaRequisicaoHttpGetParaAtualizarObjetos()
         }
@@ -254,7 +254,7 @@ export class TabelaComponent implements OnDestroy {
   }
 
   geraRelatorio() {
-    var listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
+    let listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
     this.clientesSelecionadosNaTabela.forEach(cliente => { listaDeIdsDeClientesSelecionadosNaTabela.push(cliente.id) })
     if (this.clientesSelecionadosNaTabela.length == 0) listaDeIdsDeClientesSelecionadosNaTabela = [];
     this.geraRelatorio$ = this.clienteService.obtemRelatorioClientes(listaDeIdsDeClientesSelecionadosNaTabela);

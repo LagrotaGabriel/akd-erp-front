@@ -1,4 +1,4 @@
-import { map, Observable, catchError, throwError, tap } from 'rxjs';
+import { map, Observable, catchError, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
@@ -36,7 +36,7 @@ export class BrasilApiService {
   }
 
   private abstraiResponseApiEmObjetoEstadosResponse(estados: any[]) {
-    var estadosConvertidos: EstadosResponse[] = [];
+    let estadosConvertidos: EstadosResponse[] = [];
     estados.forEach(estado => {
       estadosConvertidos.push(new EstadosResponse(estado));
     })
@@ -53,7 +53,7 @@ export class BrasilApiService {
   }
 
   private abstraiResponseApiEmObjetoMunicipiosResponse(municipios: any[]) {
-    var municipiosConvertidos: MunicipiosResponse[] = [];
+    let municipiosConvertidos: MunicipiosResponse[] = [];
     municipios.forEach(municipio => {
       municipiosConvertidos.push(new MunicipiosResponse(municipio));
     })

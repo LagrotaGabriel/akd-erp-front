@@ -205,7 +205,7 @@ input:focus {
     color: $dark-grey !important;
 }
 
-::ng-deep .mat-mdc-icon-button.mat-mdc-button-base {
+::ng-deep .icone_data .mat-mdc-icon-button .mat-mdc-button-base {
     padding: 0 !important;
 }
 
@@ -216,19 +216,19 @@ input:focus {
     padding: 0;
 }
 
-::ng-deep .mat-mdc-icon-button {
+::ng-deep .icone_data  .mat-mdc-icon-button {
     color: $primary-color !important;
     --mat-mdc-button-ripple-color: transparent !important;
     --mat-mdc-button-persistent-ripple-color: transparent !important;
 }
 
-::ng-deep .mat-mdc-icon-button:focus {
+::ng-deep .icone_data  .mat-mdc-icon-button:focus {
     outline: none !important;
     --mat-mdc-button-ripple-color: transparent !important;
     --mat-mdc-button-persistent-ripple-color: transparent !important;
 }
 
-::ng-deep .mat-mdc-icon-button:hover {
+::ng-deep .icone_data  .mat-mdc-icon-button:hover {
     background-color: transparent !important;
     --mat-mdc-button-ripple-color: transparent !important;
     --mat-mdc-button-persistent-ripple-color: transparent !important;

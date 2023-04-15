@@ -502,7 +502,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="complemento" name="complemento" style="text-transform:uppercase"
-                        spellcheck="false"[(ngModel)]="cliente.endereco.complemento" maxlength="50" (input)="atualizaValidatorsEndereco()"
+                        spellcheck="false"[(ngModel)]="cliente.endereco.complemento" maxlength="80" (input)="atualizaValidatorsEndereco()"
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="21" *ngIf="cliente.endereco != null" >
@@ -517,7 +517,7 @@
 
                     <div *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
+                        <h6 class="error_message">{{ 'Este campo deve possuir no máximo 80 caracteres' }}</h6>
                     </div>
                 </div>                    
 

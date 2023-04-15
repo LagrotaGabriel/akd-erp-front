@@ -132,7 +132,7 @@ export class NovoComponent implements OnInit, OnDestroy {
       bairro: ['', Validators.maxLength(50)],
       codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^\d{5}\d{3}/)]],
       cidade: ['', Validators.maxLength(50)],
-      complemento: ['', Validators.maxLength(50)],
+      complemento: ['', Validators.maxLength(80)],
       estado: ['', Validators.maxLength(50)]
     });
   }
@@ -272,7 +272,7 @@ export class NovoComponent implements OnInit, OnDestroy {
     this.obtemDadosClientePeloCnpjSubscription$ = this.brasilApiService.obtemDadosClientePeloCnpj(this.cliente.cpfCnpj).subscribe({
       next: retornoApi => this.setaClienteComInformacoesObtidasPeloCnpj(retornoApi),
       error: error => {
-        this._snackBar.open('Ocorreu um erro na obtenção automatizada das informações do CNPJ', "Fechar", {
+        this._snackBar.open('Ocorreu um erro na obtenção das informações do CNPJ', "Fechar", {
           duration: 3500
         })
       },

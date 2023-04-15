@@ -177,7 +177,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
       bairro: ['', Validators.maxLength(50)],
       codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^\d{5}\d{3}/)]],
       cidade: ['', Validators.maxLength(50)],
-      complemento: ['', Validators.maxLength(50)],
+      complemento: ['', Validators.maxLength(80)],
       estado: ['', Validators.maxLength(50)]
     });
   }

@@ -26,21 +26,30 @@ export class ClienteService {
   }
 
   private realizaTratamentoDeAtributosNulos(cliente: ClienteNovo): ClienteNovo {
+    cliente = this.realizaTratamentoDosDadosPessoaisNulosDoCliente(cliente);
+    cliente = this.realizaTratamentoDosDadosDeTelefoneNulosDoCliente(cliente);
+    cliente = this.realizaTratamentoDosDadosDeEnderecoNulosDoCliente(cliente);
+    return cliente;
+  }
 
-    // DADOS
+  private realizaTratamentoDosDadosPessoaisNulosDoCliente(cliente: ClienteNovo): ClienteNovo {
     if (cliente.cpfCnpj == '') cliente.cpfCnpj = null;
     if (cliente.inscricaoEstadual == '') cliente.inscricaoEstadual = null;
     if (cliente.email == '') cliente.email = null;
     if (cliente.dataNascimento == '') cliente.dataNascimento = null;
+    return cliente;
+  }
 
-    // TELEFONE
+  private realizaTratamentoDosDadosDeTelefoneNulosDoCliente(cliente: ClienteNovo): ClienteNovo {
     if (cliente.telefone != null) {
       if (cliente.telefone.tipoTelefone == '' || cliente.telefone.tipoTelefone == null ||
         cliente.telefone.prefixo == '' || cliente.telefone.prefixo == null ||
         cliente.telefone.numero == '' || cliente.telefone.numero == null) cliente.telefone = null;
     }
+    return cliente;
+  }
 
-    // ENDERECO
+  private realizaTratamentoDosDadosDeEnderecoNulosDoCliente(cliente: ClienteNovo): ClienteNovo {
     if (cliente.endereco != null) {
       if (cliente.endereco.estado == '') cliente.endereco.estado = null;
       if (cliente.endereco.cidade == '') cliente.endereco.cidade = null;
@@ -49,9 +58,7 @@ export class ClienteService {
       if (cliente.endereco.bairro == '') cliente.endereco.bairro = null;
       if (cliente.endereco.logradouro == '' || cliente.endereco.logradouro == null || cliente.endereco.numero == null) cliente.endereco = null;
     }
-
     return cliente;
-
   }
 
   public validaDuplicidadeInscricaoEstadual(inscricaoEstadual: string) {

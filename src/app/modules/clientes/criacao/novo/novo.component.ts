@@ -286,7 +286,12 @@ export class NovoComponent implements OnInit, OnDestroy {
   }
 
   setaClienteComInformacoesObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    // Dados
+    this.setaClienteComInformacoesPessoaisObtidasPeloCnpj(cnpjResponse);
+    this.setaClienteComInformacoesDeTelefoneObtidasPeloCnpj(cnpjResponse);
+    this.setaClienteComInformacoesDeEnderecoObtidasPeloCnpj(cnpjResponse);
+  }
+
+  private setaClienteComInformacoesPessoaisObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (cnpjResponse.nomeFantasia != null && cnpjResponse.nomeFantasia != '') {
       this.cliente.nome = cnpjResponse.nomeFantasia;
       this.dadosCliente.controls['nome'].markAsTouched();
@@ -296,8 +301,9 @@ export class NovoComponent implements OnInit, OnDestroy {
       this.cliente.email = cnpjResponse.email;
       this.dadosCliente.controls['email'].markAsTouched();
     }
+  }
 
-    // Telefone
+  private setaClienteComInformacoesDeTelefoneObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (cnpjResponse.telefonePrincipal != null && cnpjResponse.telefonePrincipal != '') {
       if (cnpjResponse.telefonePrincipal.length == 10) {
         this.cliente.telefone.tipoTelefone = 'FIXO';
@@ -313,8 +319,9 @@ export class NovoComponent implements OnInit, OnDestroy {
       this.dadosTelefone.controls['prefixo'].markAsTouched();
       this.dadosTelefone.controls['numero'].markAsTouched();
     }
+  }
 
-    // Endereço
+  private setaClienteComInformacoesDeEnderecoObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (cnpjResponse.logradouro != null && cnpjResponse.logradouro != '') {
       this.cliente.endereco.logradouro = cnpjResponse.logradouro;
       this.dadosEndereco.controls['logradouro'].markAsTouched();
@@ -350,7 +357,6 @@ export class NovoComponent implements OnInit, OnDestroy {
       this.cliente.endereco.complemento = cnpjResponse.complemento;
       this.dadosEndereco.controls['complemento'].markAsTouched();
     }
-
   }
 
   realizaTratamentoInscricaoEstadual() {

@@ -12,13 +12,27 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-atualizacao',
   templateUrl: './atualizacao.component.html',
-  styleUrls: ['./atualizacao.component.scss']
+  styleUrls: ['./atualizacao.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [   // :enter is alias to 'void => *'
+        style({ opacity: 0 }),
+        animate(300, style({ opacity: 1 }))
+      ]),
+      transition(':leave', [   // :leave is alias to '* => void'
+        animate(300, style({ opacity: 0 }))
+      ])
+    ]),
+  ]
 })
 export class AtualizacaoComponent implements OnInit, OnDestroy {
+
+  dataNascimentoAparente: boolean = false;
 
   idCliente: number;
 
@@ -61,6 +75,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
   @ViewChild('inputTipoTelefone') inputTipoTelefone: ElementRef;
   @ViewChild('codigoPostal') codigoPostal: ElementRef;
   @ViewChild('inputNome') inputNome: ElementRef;
+  @ViewChild('inputDataNascimento') inputDataNascimento: ElementRef;
 
   ngOnInit(): void {
     this.realizaValidacaoDoIdCliente();
@@ -223,6 +238,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
     else if (this.cliente.tipoPessoa == 'JURIDICA') {
       this.inputLengthCpfCnpj = 14;
       this.inputPatternCpfCnpj = /^\d{2}\d{3}\d{3}\d{4}\d{2}/
+      this.dataNascimentoAparente = false;
       this.dadosCliente.controls['inscricaoEstadual'].enable();
       this.dadosCliente.controls['dataNascimento'].disable();
     }
@@ -431,6 +447,32 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
           },
           complete: () => console.log('Validação de duplicidade de inscrição estadual completada com sucesso')
         })
+    }
+  }
+
+  habilitaDataNascimento() {
+    if (this.cliente.tipoPessoa != 'JURIDICA') {
+      this.inputDataNascimento.nativeElement.focus();
+      this.dataNascimentoAparente = true;
+    }
+  }
+
+  validaDataNascimento() {
+    if (this.cliente.dataNascimento == '') {
+      this.dataNascimentoAparente = false;
+      return;
+    }
+
+    let dataNascimentoSplitada = this.cliente.dataNascimento.split("-");
+    if (dataNascimentoSplitada.length == 3) {
+      if (parseInt(dataNascimentoSplitada[0]) > 2023 || parseInt(dataNascimentoSplitada[0]) < 1900) {
+        this.cliente.dataNascimento = '';
+        this.dataNascimentoAparente = false;
+        this._snackBar.open("Data de nascimento inválida", "Fechar", {
+          duration: 3500
+        })
+        return;
+      }
     }
   }
 

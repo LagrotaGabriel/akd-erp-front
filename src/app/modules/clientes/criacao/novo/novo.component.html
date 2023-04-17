@@ -184,16 +184,17 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input placeholder="--/--/----" [min]="minDate" [max]="maxDate" matInput spellcheck="false" (focus)="picker.open()" 
-                        (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
-                        (click)="picker.open()" style="cursor: pointer" tabindex="7" [matDatepicker]="picker" readonly autocomplete="off" type="text"
-                        formControlName="dataNascimento" name="dataNascimento" formControlName="dataNascimento" name="dataNascimento"
-                        [(ngModel)]="cliente.dataNascimento" class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-datepicker-toggle *ngIf="cliente.tipoPessoa == 'FISICA'" [disableRipple]="true" class="icone_data"
-                            [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker startView="month" color="primary" touchUi></mat-datepicker>
+                        <input min="1900-01-01" max="2023-04-17" (keydown.enter)="botaoProximoPrimeiraEtapa.click()" 
+                        [ngClass]="{'emptyDate': cliente.dataNascimento == null || cliente.dataNascimento == ''}"
+                        (keydown.esc)="retornaParaVisualizacaoDeClientes()" type="date" formControlName="dataNascimento" 
+                        (focusout)="validaDataNascimento()" #inputDataNascimento
+                        name="dataNascimento" formControlName="dataNascimento" name="dataNascimento" [(ngModel)]="cliente.dataNascimento" 
+                        class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="input_data_placeholder" *ngIf="!dataNascimentoAparente" [@fadeInOut] tabindex="7"
+                        (focus)="habilitaDataNascimento()" (click)="habilitaDataNascimento()" 
+                        [ngStyle]="{'cursor': cliente.tipoPessoa == 'FISICA' ? 'text' : 'default' }">
+                        </div>
                     </div>
-
                 </div>
 
                 <!-- PRIMEIRO CONTAINER DE BOTÃO -->

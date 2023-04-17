@@ -407,6 +407,7 @@ export class NovoComponent implements OnInit, OnDestroy {
   }
 
   validaDataNascimento() {
+
     if (this.cliente.dataNascimento == '') {
       this.dataNascimentoAparente = false;
       return;
@@ -567,20 +568,22 @@ export class NovoComponent implements OnInit, OnDestroy {
     if (this.cliente.dataNascimento != null && this.cliente.dataNascimento != '')
       this.cliente.dataNascimento = this.datePipe.transform(this.cliente.dataNascimento, "yyyy-MM-dd");
 
-    this.novoClienteSubscription$ =
-      this.clienteService.novoCliente(this.cliente).subscribe({
-        error: error => {
-          this._snackBar.open("Ocorreu um erro ao cadastrar o cliente", "Fechar", {
-            duration: 3500
-          })
-        },
-        complete: () => {
-          this.router.navigate(['/clientes']);
-          this._snackBar.open("Cliente cadastrado com sucesso", "Fechar", {
-            duration: 3500
-          });
-        }
-      });
+    if (this.dadosCliente.valid && this.dadosTelefone.valid && this.dadosEndereco.valid) {
+      this.novoClienteSubscription$ =
+        this.clienteService.novoCliente(this.cliente).subscribe({
+          error: error => {
+            this._snackBar.open("Ocorreu um erro ao cadastrar o cliente", "Fechar", {
+              duration: 3500
+            })
+          },
+          complete: () => {
+            this.router.navigate(['/clientes']);
+            this._snackBar.open("Cliente cadastrado com sucesso", "Fechar", {
+              duration: 3500
+            });
+          }
+        });
+    }
   }
 
 }

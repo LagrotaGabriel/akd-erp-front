@@ -44,6 +44,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
   getEnderecoPeloCepSubscription$: Subscription;
   obtemTodosMunicipiosPorEstadoSubscription$: Subscription;
   atualizaClienteSubscription$: Subscription;
+  obtemClientePorIdSubscription$: Subscription;
 
   // Form groups
   dadosCliente: FormGroup;
@@ -87,10 +88,6 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
     this.minDate = new Date(1920, 0, 1);
     this.maxDate = new Date(currentYear, 0, 1);
 
-    this.atualizaTipoPessoa();
-    this.atualizaValidatorsTelefone();
-    this.obtemTodosEstadosBrasileiros();
-
     setTimeout(() => {
       this.inputNome.nativeElement.focus();
     }, 100);
@@ -104,6 +101,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
     if (this.getEnderecoPeloCepSubscription$ != undefined) this.getEnderecoPeloCepSubscription$.unsubscribe();
     if (this.obtemTodosMunicipiosPorEstadoSubscription$ != undefined) this.obtemTodosMunicipiosPorEstadoSubscription$.unsubscribe();
     if (this.atualizaClienteSubscription$ != undefined) this.atualizaClienteSubscription$.unsubscribe();
+    if (this.obtemClientePorIdSubscription$ != undefined) this.obtemClientePorIdSubscription$.unsubscribe();
   }
 
   realizaValidacaoDoIdCliente() {
@@ -118,9 +116,9 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
   }
 
   inicializarCliente() {
-
     this.clienteService.obtemClientePorId(this.idCliente).subscribe({
       next: (cliente: Cliente) => {
+        console.log(cliente);
         this.clientePreAtualizacao = cliente;
         this.cliente = this.clientePreAtualizacao;
         if (this.cliente.telefone == null) this.cliente.telefone = {
@@ -138,11 +136,14 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
           estado: ''
         }
       },
-      error: (erro: HttpErrorResponse) => {
-
-      },
       complete: () => {
-
+        this.setupTipoPessoa();
+        this.atualizaValidatorsEndereco();
+        this.setupTelefone();
+        this.obtemTodosEstadosBrasileiros();
+        if (this.cliente.dataNascimento != null && this.cliente.dataNascimento != undefined && this.cliente.dataNascimento != '') {
+          this.dataNascimentoAparente = true;
+        }
       }
     })
 
@@ -227,6 +228,24 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
     }, 400);
   }
 
+  setupTipoPessoa() {
+    if (this.cliente.tipoPessoa == 'FISICA') {
+      this.inputLengthCpfCnpj = 11;
+      this.inputPatternCpfCnpj = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
+      this.dadosCliente.controls['inscricaoEstadual'].disable();
+      this.dadosCliente.controls['dataNascimento'].enable();
+    }
+    else if (this.cliente.tipoPessoa == 'JURIDICA') {
+      this.inputLengthCpfCnpj = 14;
+      this.inputPatternCpfCnpj = /^\d{2}\d{3}\d{3}\d{4}\d{2}/
+      this.dataNascimentoAparente = false;
+      this.dadosCliente.controls['inscricaoEstadual'].enable();
+      this.dadosCliente.controls['dataNascimento'].disable();
+    }
+    this.dadosCliente.controls['cpfCnpj'].setValidators([Validators.maxLength(this.inputLengthCpfCnpj),
+    Validators.minLength(this.inputLengthCpfCnpj), Validators.pattern(this.inputPatternCpfCnpj)]);
+  }
+
   atualizaTipoPessoa() {
 
     if (this.cliente.tipoPessoa == 'FISICA') {
@@ -253,6 +272,44 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
 
     this.cliente.cpfCnpj = '';
     this.dadosCliente.controls['cpfCnpj'].reset();
+  }
+
+  setupTelefone() {
+    this.dadosTelefone.controls['prefixo'].clearValidators();
+    this.dadosTelefone.controls['numero'].clearValidators();
+
+    if (this.cliente.telefone.tipoTelefone != '' && this.cliente.telefone.tipoTelefone != null) {
+
+      this.dadosTelefone.controls['prefixo'].enable();
+      this.dadosTelefone.controls['numero'].enable();
+
+      if (this.cliente.telefone.tipoTelefone == 'FIXO') {
+        this.inputLengthTelefone = 8;
+        this.inputTelefonePattern = /^\d{4}\d{4}/;
+      }
+
+      else if (this.cliente.telefone.tipoTelefone == 'MOVEL' || this.cliente.telefone.tipoTelefone == 'MOVEL_WHATSAPP') {
+        this.inputLengthTelefone = 9;
+        this.inputTelefonePattern = /^\d\d{4}\d{4}/;
+      }
+
+      this.dadosTelefone.controls['prefixo'].addValidators(Validators.required);
+      this.dadosTelefone.controls['prefixo'].addValidators([Validators.maxLength(this.inputLengthPrefixo), Validators.minLength(this.inputLengthPrefixo)]);
+      this.dadosTelefone.controls['prefixo'].addValidators(Validators.pattern(this.inputPrefixoPattern));
+
+      this.dadosTelefone.controls['numero'].addValidators(Validators.required);
+      this.dadosTelefone.controls['numero'].addValidators([Validators.maxLength(this.inputLengthTelefone), Validators.minLength(this.inputLengthTelefone)]);
+      this.dadosTelefone.controls['numero'].addValidators(Validators.pattern(this.inputTelefonePattern));
+    }
+
+    else {
+      this.dadosTelefone.controls['prefixo'].disable();
+      this.dadosTelefone.controls['numero'].disable();
+    }
+
+    this.atualizaValidatorsTelefoneEdicao();
+    this.dadosTelefone.controls['prefixo'].updateValueAndValidity();
+    this.dadosTelefone.controls['numero'].updateValueAndValidity();
   }
 
   atualizaValidatorsTelefone() {
@@ -294,8 +351,16 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
       this.dadosTelefone.controls['numero'].disable();
     }
 
+    this.atualizaValidatorsTelefoneEdicao();
     this.dadosTelefone.controls['prefixo'].updateValueAndValidity();
     this.dadosTelefone.controls['numero'].updateValueAndValidity();
+  }
+
+  atualizaValidatorsTelefoneEdicao() {
+    if (this.cliente.telefone.tipoTelefone != "" && this.cliente.telefone.tipoTelefone != null && this.cliente.telefone.tipoTelefone != undefined) {
+      this.cliente.telefone.prefixo = this.clientePreAtualizacao.telefone.prefixo;
+      this.cliente.telefone.numero = this.clientePreAtualizacao.telefone.numero;
+    }
   }
 
   // DADOS
@@ -618,20 +683,22 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
     if (this.cliente.dataNascimento != null && this.cliente.dataNascimento != '')
       this.cliente.dataNascimento = this.datePipe.transform(this.cliente.dataNascimento, "yyyy-MM-dd");
 
-    this.atualizaClienteSubscription$ =
-      this.clienteService.atualizaCliente(this.idCliente, this.cliente).subscribe({
-        error: error => {
-          this._snackBar.open("Ocorreu um erro ao atualizar o cliente", "Fechar", {
-            duration: 3500
-          })
-        },
-        complete: () => {
-          this.router.navigate(['/clientes']);
-          this._snackBar.open("Cliente atualizado com sucesso", "Fechar", {
-            duration: 3500
-          });
-        }
-      });
+    if (this.dadosCliente.valid && this.dadosTelefone.valid && this.dadosEndereco.valid) {
+      this.atualizaClienteSubscription$ =
+        this.clienteService.atualizaCliente(this.idCliente, this.cliente).subscribe({
+          error: error => {
+            this._snackBar.open("Ocorreu um erro ao atualizar o cliente", "Fechar", {
+              duration: 3500
+            })
+          },
+          complete: () => {
+            this.router.navigate(['/clientes']);
+            this._snackBar.open("Cliente atualizado com sucesso", "Fechar", {
+              duration: 3500
+            });
+          }
+        });
+    }
   }
 
 }

@@ -42,13 +42,13 @@
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon *ngIf="dadosCliente.controls['nome'].touched" [fontIcon]="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid 
                             ? 'error' 
-                            : 'check'"
+                            : 'check'" [@fadeInOut]
                             [ngClass]="{'icone_ok': !dadosCliente.controls['nome'].invalid,
                                         'icone_error': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
                             class="icone"></mat-icon>
                     </div>
 
-                    <div *ngIf="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid"
                         class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 class="error_message">{{ dadosCliente.controls['nome'].errors['minlength']
                             ? 'A quantidade mínima para este campo é de 3 caracteres'
@@ -99,7 +99,7 @@
                             [(ngModel)]="cliente.cpfCnpj" [maxlength]="inputLengthCpfCnpj"
                             [ngClass]="{'input_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon
+                        <mat-icon [@fadeInOut]
                             *ngIf="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].value != ''"
                             [fontIcon]="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid 
                             ? 'error' 
@@ -109,7 +109,7 @@
                             class="icone"></mat-icon>
                     </div>
 
-                    <div *ngIf="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid"
                         class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 class="error_message">{{ 'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos numéricos' }}</h6>
                     </div>
@@ -131,7 +131,7 @@
                             [ngClass]="{'input_invalida': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
                             (input)="realizaTratamentoInscricaoEstadual()" [(ngModel)]="cliente.inscricaoEstadual"
                             maxlength="12" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon
+                        <mat-icon [@fadeInOut]
                             *ngIf="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].value != ''"
                             [fontIcon]="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid 
                             ? 'error' 
@@ -140,7 +140,7 @@
                                     'icone_error': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
                             class="icone"></mat-icon>
                     </div>
-                    <div class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid"
                             class="error_message">{{ 'Este campo deve possuir 12 dígitos numéricos' }}</h6>
                     </div>
@@ -160,7 +160,7 @@
                             formControlName="email" name="email" [(ngModel)]="cliente.email"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacaoDeClientes()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon
+                        <mat-icon [@fadeInOut]
                             *ngIf="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].value != ''"
                             [fontIcon]="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid 
                             ? 'error' 
@@ -169,7 +169,7 @@
                                     'icone_error': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}"
                             class="icone"></mat-icon>
                     </div>
-                    <div class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid"
                             class="error_message">{{ 'O e-mail digitado é inválido' }}</h6>
                     </div>
@@ -190,6 +190,14 @@
                         (focusout)="validaDataNascimento()" #inputDataNascimento
                         name="dataNascimento" formControlName="dataNascimento" name="dataNascimento" [(ngModel)]="cliente.dataNascimento" 
                         class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon [@fadeInOut]
+                        *ngIf="dadosCliente.controls['dataNascimento'].value != null && dadosCliente.controls['dataNascimento'].value != ''"
+                        [fontIcon]="dadosCliente.controls['dataNascimento'].value != null && dadosCliente.controls['dataNascimento'].invalid 
+                        ? 'error' 
+                        : 'check'"
+                        [ngClass]="{'icone_ok': !dadosCliente.controls['dataNascimento'].invalid,
+                                'icone_error': dadosCliente.controls['dataNascimento'].value != null && dadosCliente.controls['dataNascimento'].invalid}"
+                        class="icone"></mat-icon>
                         <div class="input_data_placeholder" *ngIf="!dataNascimentoAparente" [@fadeInOut] tabindex="7"
                         (focus)="habilitaDataNascimento()" (click)="habilitaDataNascimento()" 
                         [ngStyle]="{'cursor': cliente.tipoPessoa == 'FISICA' ? 'text' : 'default' }">
@@ -250,7 +258,7 @@
                             formControlName="prefixo" name="prefixo" [(ngModel)]="cliente.telefone.prefixo"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" (keydown.enter)="botaoProximoSegundaEtapa.click();" 
                             (keydown.esc)="botaoVoltarSegundaEtapa.click();" >
-                        <mat-icon
+                        <mat-icon [@fadeInOut]
                             *ngIf="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].value != ''"
                             [fontIcon]="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid 
                             ? 'error' 
@@ -259,7 +267,7 @@
                                     'icone_error': dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid}"
                             class="icone"></mat-icon>
                     </div>
-                    <div class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid"
                             class="error_message">{{ 'O prefixo deve ser composto por dois caracteres numéricos' }}</h6>
                     </div>
@@ -280,7 +288,7 @@
                             (keydown.esc)="botaoVoltarSegundaEtapa.click();" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                             [ngClass]="{'input_invalida': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
                             formControlName="numero" name="numero" [(ngModel)]="cliente.telefone.numero">
-                        <mat-icon
+                        <mat-icon [@fadeInOut]
                             *ngIf="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].value != ''"
                             [fontIcon]="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid 
                             ? 'error' 
@@ -289,7 +297,7 @@
                                     'icone_error': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
                             class="icone"></mat-icon>
                     </div>
-                    <div class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid"
                             class="error_message">{{ 'O número deve ser composto por ' + inputLengthTelefone + ' caracteres numéricos' }}</h6>
                     </div>
@@ -331,7 +339,7 @@
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon
+                        <mat-icon [@fadeInOut]
                         *ngIf="dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].value != ''"
                         [fontIcon]="dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid 
                         ? 'error' 
@@ -341,7 +349,7 @@
                         class="icone"></mat-icon>
                     </div>
 
-                    <div *ngIf="dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
                     </div>
@@ -378,7 +386,7 @@
                         [ngClass]="{'input_invalida': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}"
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         class="input input_cidade col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="17">
-                        <mat-icon
+                        <mat-icon [@fadeInOut]
                         *ngIf="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].value != ''"
                         [fontIcon]="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid 
                         ? 'error' 
@@ -392,7 +400,7 @@
                         <option *ngFor="let municipio of municipiosResponse" [value]="municipio.nome | uppercase"></option>
                     </datalist>
 
-                    <div *ngIf="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
                     </div>
@@ -412,7 +420,7 @@
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()" *ngIf="cliente.endereco != null" 
                         [ngClass]="{'input_invalida': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
-                        <mat-icon *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid 
+                        <mat-icon [@fadeInOut] *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid 
                         || dadosEndereco.controls['logradouro'].valid 
                             && dadosEndereco.controls['logradouro'].touched 
                             && dadosEndereco.controls['logradouro'].value != '' 
@@ -425,7 +433,7 @@
                         class="icone"></mat-icon>
                     </div>
 
-                    <div *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 class="error_message">{{ 'Este campo não pode ser vazio' }}</h6>
                     </div>
@@ -445,7 +453,7 @@
                         [ngClass]="{'input_invalida': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}"
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()" *ngIf="cliente.endereco != null" 
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="19">
-                        <mat-icon *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid 
+                        <mat-icon [@fadeInOut] *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid 
                         || dadosEndereco.controls['logradouro'].valid 
                             && dadosEndereco.controls['numero'].touched 
                             && dadosEndereco.controls['numero'].value != '' 
@@ -458,7 +466,7 @@
                         class="icone"></mat-icon>
                     </div>
 
-                    <div *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 class="error_message">{{ 'Campo numérico obrigatório' }}</h6>
                     </div>
@@ -478,7 +486,7 @@
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="20" *ngIf="cliente.endereco != null" >
-                        <mat-icon *ngIf="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].value != ''"
+                        <mat-icon [@fadeInOut] *ngIf="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].value != ''"
                         [fontIcon]="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid 
                             ? 'error' 
                             : 'check'"
@@ -487,7 +495,7 @@
                         class="icone"></mat-icon>
                     </div>
 
-                    <div *ngIf="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
                     </div>
@@ -507,7 +515,7 @@
                         (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         [ngClass]="{'input_invalida': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="21" *ngIf="cliente.endereco != null" >
-                        <mat-icon *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].value != ''"
+                        <mat-icon [@fadeInOut] *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].value != ''"
                         [fontIcon]="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid 
                             ? 'error' 
                             : 'check'"
@@ -516,7 +524,7 @@
                         class="icone"></mat-icon>
                     </div>
 
-                    <div *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid"
                     class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 class="error_message">{{ 'Este campo deve possuir no máximo 80 caracteres' }}</h6>
                     </div>
@@ -527,8 +535,9 @@
                         Voltar
                     </button>
                     <button (click)="enviarFormulario()" #botaoEnviarFormulario type="button" tabindex="23" class="button"
-                    [disabled]="dadosEndereco.invalid"
-                    [ngClass]="{'botaoHabilitado': dadosEndereco.valid, 'botaoDesabilitado': !dadosEndereco.valid}" mat-button>
+                    [disabled]="dadosCliente.invalid || dadosTelefone.invalid || dadosEndereco.invalid"
+                    [ngClass]="{'botaoHabilitado': dadosCliente.valid && dadosEndereco.valid && dadosEndereco.valid, 
+                    'botaoDesabilitado': !dadosCliente.valid || !dadosEndereco.valid || !dadosTelefone.valid}" mat-button>
                         Enviar
                     </button>
                 </div>

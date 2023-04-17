@@ -99,9 +99,7 @@ export class ClienteService {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
     return this.http.get<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
-      tap((resposta) => console.log(resposta)),
-      map(resposta => new ClienteNovo(resposta)),
-      tap((resposta) => console.log(resposta))
+      map((resposta) => new ClienteNovo(resposta))
     )
   }
 

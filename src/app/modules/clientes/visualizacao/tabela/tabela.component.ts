@@ -196,6 +196,8 @@ export class TabelaComponent implements OnDestroy {
         enderecoCompleto += (' - ' + endereco.bairro + ', ' + endereco.cidade + ' - ' + endereco.estado);
       if (endereco.codigoPostal != null)
         enderecoCompleto += (' - ' + endereco.codigoPostal);
+      if (endereco.complemento != null)
+        enderecoCompleto += (' - ' + endereco.complemento);
       return enderecoCompleto;
     }
     else return '-';

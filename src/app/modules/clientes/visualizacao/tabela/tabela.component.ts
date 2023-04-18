@@ -13,7 +13,7 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-tabela',
   templateUrl: './tabela.component.html',
-  styleUrls: ['./tabela.component.scss'],
+  styleUrls: ['../../../../../dist/table.scss', './tabela.component.scss'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [   // :enter is alias to 'void => *'

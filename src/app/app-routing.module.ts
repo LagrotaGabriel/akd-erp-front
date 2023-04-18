@@ -10,12 +10,16 @@ const routes: Routes = [
       {
         path: 'clientes', 
         loadChildren: () => import('./modules/clientes/clientes-routing.module').then( m => m.ClientesRoutingModule)
+      },
+      {
+        path: 'colaboradores',
+        loadChildren: () => import('./modules/colaboradores/colaboradores-routing.module').then( m => m.ColaboradoresRoutingModule)
       }
     ]
   },
   {
     path: '**',
-    redirectTo: '/inicio'
+    redirectTo: '/'
   }
 ];
 

@@ -11,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -116,7 +115,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
   }
 
   inicializarCliente() {
-    this.clienteService.obtemClientePorId(this.idCliente).subscribe({
+    this.obtemClientePorIdSubscription$ = this.clienteService.obtemClientePorId(this.idCliente).subscribe({
       next: (cliente: Cliente) => {
         console.log(cliente);
         this.clientePreAtualizacao = cliente;
@@ -583,7 +582,7 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
       this.cliente.endereco.estado != null && this.cliente.endereco.estado != '' ||
       this.cliente.endereco.codigoPostal != null && this.cliente.endereco.codigoPostal != '' ||
       this.cliente.endereco.complemento != null && this.cliente.endereco.complemento != '') {
-      this.cliente.endereco.cidade = this.cliente.endereco.cidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      if (this.cliente.endereco.cidade != null) this.cliente.endereco.cidade = this.cliente.endereco.cidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       this.dadosEndereco.controls['logradouro'].addValidators([Validators.required, Validators.maxLength(50), Validators.minLength(1)]);
       this.dadosEndereco.controls['numero'].addValidators([Validators.required, Validators.max(99999), Validators.min(1), Validators.pattern(/^\d{1,5}$/)]);
     }

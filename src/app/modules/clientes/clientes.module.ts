@@ -18,7 +18,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { MenuComponent } from './visualizacao/menu/menu.component';
 import { ViewComponent } from './visualizacao/view/view.component';
@@ -32,8 +31,8 @@ import { AtualizacaoComponent } from './atualizacao/atualizacao/atualizacao.comp
 registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent],
-  exports: [MenuComponent, ViewComponent],
+  declarations: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent ],
+  exports: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent ],
   imports: [
     CommonModule,
     ClientesRoutingModule,
@@ -53,7 +52,6 @@ registerLocaleData(ptBr);
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatStepperModule,
-    MatDatepickerModule,
     MatNativeDateModule,
     FormsModule,
     ReactiveFormsModule

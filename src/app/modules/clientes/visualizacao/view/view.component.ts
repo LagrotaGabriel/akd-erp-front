@@ -10,7 +10,7 @@ import { PageObject } from 'src/app/shared/models/PageObject';
 })
 export class ViewComponent{
 
-  constructor( private cdref: ChangeDetectorRef ) {}
+/*   constructor( private cdref: ChangeDetectorRef ) {}
 
   public clientesSelecionados: Cliente[] = [];
   public clientesLocalizadosNoTypeAhead: PageObject;
@@ -27,6 +27,6 @@ export class ViewComponent{
 
   clientesSelecionadosExportados(dados) {
     this.clientesSelecionados = dados;
-  }
+  } */
 
 }

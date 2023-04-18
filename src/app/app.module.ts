@@ -26,6 +26,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { ClientesModule } from './modules/clientes/clientes.module';
 import { DatePipe } from '@angular/common';
+import { ColaboradoresModule } from './modules/colaboradores/colaboradores.module';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { DatePipe } from '@angular/common';
     MatTreeModule,
     MatExpansionModule,
     ClientesModule,
+    ColaboradoresModule,
     HttpClientModule,
   ],
   providers: [DatePipe],

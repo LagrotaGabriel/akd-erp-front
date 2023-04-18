@@ -1,9 +1,9 @@
+import { Colaborador } from './../visualizacao/models/Colaborador';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 import { PageObject } from '../../../shared/models/PageObject';
-import { Cliente as ClienteNovo } from '../criacao/models/cliente';
-import { Cliente } from '../visualizacao/models/Cliente';
+// import { Colaborador as ColaboradorNovo } from '../criacao/models/colaborador';
 import { catchError, map, Observable, retry, throwError, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
@@ -11,7 +11,7 @@ import { saveAs } from 'file-saver';
 @Injectable({
   providedIn: 'root'
 })
-export class ClienteService {
+export class ColaboradorService {
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
 
@@ -25,7 +25,7 @@ export class ClienteService {
     body: null
   }
 
-  private realizaTratamentoDeAtributosNulos(cliente: ClienteNovo): ClienteNovo {
+/*   private realizaTratamentoDeAtributosNulos(cliente: ClienteNovo): ClienteNovo {
     cliente = this.realizaTratamentoDosDadosPessoaisNulosDoCliente(cliente);
     cliente = this.realizaTratamentoDosDadosDeTelefoneNulosDoCliente(cliente);
     cliente = this.realizaTratamentoDosDadosDeEnderecoNulosDoCliente(cliente);
@@ -101,14 +101,14 @@ export class ClienteService {
     return this.http.get<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
       map((resposta) => new ClienteNovo(resposta))
     )
-  }
+  } */
 
-  public getClientes(valorBusca: string, pageableInfo: PageObject): Observable<PageObject> {
+  public getColaboradores(valorBusca: string, pageableInfo: PageObject): Observable<PageObject> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
     this.buildRequestParams(valorBusca);
     this.buildPageableParams(pageableInfo);
-    return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
+    return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/colaborador`, this.httpOptions).pipe(
       map(resposta => new PageObject(resposta)),
       catchError((error: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
@@ -119,9 +119,9 @@ export class ClienteService {
     )
   }
 
-  public removeClienteEmMassa(listaDeIds: number[]) {
+  public removeColaboradoresEmMassa(listaDeIds: number[]) {
     this.httpOptions.body = listaDeIds;
-    return this.http.delete(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
+    return this.http.delete(`${API_URL.baseUrl}api/sistema/v1/colaborador`, this.httpOptions).pipe(
       catchError((httpErrorResponse: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
         return throwError(() => new HttpErrorResponse(httpErrorResponse));
@@ -129,10 +129,10 @@ export class ClienteService {
     )
   }
 
-  public removeCliente(id: number): Observable<Cliente> {
+  public removeColaborador(id: number): Observable<Colaborador> {
     this.httpOptions.body = null;
-    return this.http.delete<Cliente>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
-      map(resposta => new Cliente(resposta)),
+    return this.http.delete<Colaborador>(`${API_URL.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
+      map(resposta => new Colaborador(resposta)),
       catchError((httpErrorResponse: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
         return throwError(() => new HttpErrorResponse(httpErrorResponse));
@@ -140,12 +140,12 @@ export class ClienteService {
     )
   }
 
-  public obtemRelatorioClientes(listaDeIds: number[]): any {
-    this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
+  public obtemRelatorioColaboradores(listaDeIds: number[]): any {
+    this.http.post(`${API_URL.baseUrl}api/sistema/v1/colaborador/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
       .subscribe(
         ((response) => {
           let blob = new Blob([response], { type: 'mediaType' });
-          saveAs(blob, 'akadion-clientes-' + new Date().getTime().toString() + '.pdf');
+          saveAs(blob, 'akadion-colaboradores-' + new Date().getTime().toString() + '.pdf');
         })
       );
   }

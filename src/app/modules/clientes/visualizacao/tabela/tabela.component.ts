@@ -1,7 +1,7 @@
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Subscription, debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import { Cliente } from '../models/Cliente';
-import { PageObject } from '../../../../shared/models/PageObject';
+import { PageObject } from '../models/PageObject';
 import { Component, OnDestroy } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
 import { Endereco } from 'src/app/shared/models/Endereco';

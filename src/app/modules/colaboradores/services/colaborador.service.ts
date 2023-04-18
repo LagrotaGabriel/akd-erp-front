@@ -2,11 +2,12 @@ import { Colaborador } from './../visualizacao/models/Colaborador';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
-import { PageObject } from '../../../shared/models/PageObject';
+
 // import { Colaborador as ColaboradorNovo } from '../criacao/models/colaborador';
 import { catchError, map, Observable, retry, throwError, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
+import { PageObject } from '../visualizacao/models/PageObject';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ColaboradorService {
     }),
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': '	Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4NDg4MTgiLCJleHAiOjE2ODI0MzMwOTN9.WCgRKI3dsbqFoFvy8H8PZ-C3FX3uav7uziIgEH2UaxW6vOEd3bX1K0E8Yh9BhTFMgKM4FKZqBe6nKQtFKU113Q'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1Nzg3ODkiLCJleHAiOjE2ODI0NTYwNDF9.NhO9eLn3OfAtm1EFrmXONkRjhakBnfjT7m6FFEk7QYpSnUz0b5Mq_QJHae7rlCumQGpUBNSk1Sq83e-6rbluyQ'
     }),
     body: null
   }

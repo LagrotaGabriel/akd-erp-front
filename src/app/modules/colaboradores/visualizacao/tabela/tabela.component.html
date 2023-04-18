@@ -122,10 +122,10 @@
                     STATUS
                 </th>
                 <th class="th th_telefone">
-                    TELEFONE
+                    MATRICULA
                 </th>
                 <th class="th th_giro">
-                    GIRO
+                    CARGO
                 </th>
                 <th class="th th_acoes">
 
@@ -161,34 +161,28 @@
                             <div class="nome_colaborador">
                                 {{
                                 (colaborador.nome.length > 14)
-                                ? (colaborador.nome | slice:0:14 | titlecase)+'...'
-                                : (colaborador.nome | titlecase)
+                                ? (colaborador.nome | slice:0:14)+'...'
+                                : (colaborador.nome)
                                 }}
                             </div>
                         </td>
 
                         <td class="td td_cpfCnpj">
-                            {{ colaborador.cpfCnpj != null && colaborador.cpfCnpj != '' ? colaborador.cpfCnpj : '-'}}
+                            Teste
                         </td>
 
                         <td class="td td_status">
-                            <span class="status_comum mat-elevation-z2" [ngClass]="{
-                    'status_vip': colaborador.statusCliente == 'VIP',
-                    'status_debito': colaborador.statusCliente == 'DEVEDOR',
-                    'status_comum': colaborador.statusCliente == 'COMUM',
-                    'status_atencao': colaborador.statusCliente == 'ATENCAO'}">
-                                {{ colaborador.statusCliente }}
+                            <span class="status_comum mat-elevation-z2">
+                                Teste
                             </span>
                         </td>
 
                         <td class="td td_telefone">
-                            {{ colaborador.telefone != null ? '(' + colaborador.telefone.prefixo + ') ' +
-                            colaborador.telefone.numero : '-'}}
+                            {{ colaborador.matricula }}
                         </td>
 
                         <td class="td td_giro">
-                            {{ colaborador.giroTotal | currency : 'BRL' }}
-                            <mat-icon fontIcon="arrow_outward" class="icone icone_tabela icone_tabela_giro"></mat-icon>
+                            {{ (colaborador.ocupacao | slice:0:14) }}
                         </td>
 
                         <td class="td td_acoes">
@@ -229,7 +223,7 @@
                                         <div
                                             class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                                             <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                                                {{ colaborador.nomeColaboradorResponsavel | titlecase }}
+                                                Teste
                                             </p>
                                         </div>
                                     </div>
@@ -301,8 +295,7 @@
                                         <div
                                             class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                                             <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                                                {{ colaborador.inscricaoEstadual != null ? colaborador.inscricaoEstadual
-                                                : '-' }}
+                                                Teste
                                             </p>
                                         </div>
                                     </div>
@@ -317,19 +310,9 @@
                                         </div>
                                         <div
                                             class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                                            <p *ngIf="colaborador.giroTotal > 0; else colaboradorSemGiro"
-                                                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                                                {{ colaborador.giroTotal | currency : 'BRL' }}
-                                                {{ colaborador.qtdOrdensRealizadas == 1
-                                                ? '(' + colaborador.qtdOrdensRealizadas + ' Ordem)'
-                                                : '(' + colaborador.qtdOrdensRealizadas + ' Ordens)' }}
+                                            <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                                                Teste
                                             </p>
-                                            <ng-template #colaboradorSemGiro>
-                                                <p
-                                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                                                    {{ colaborador.giroTotal | currency : 'BRL' }}
-                                                </p>
-                                            </ng-template>
                                         </div>
                                     </div>
                                 </div>

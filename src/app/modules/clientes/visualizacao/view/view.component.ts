@@ -1,7 +1,7 @@
 
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { Cliente } from '../models/Cliente';
-import { PageObject } from 'src/app/shared/models/PageObject';
+import { PageObject } from 'src/app/modules/clientes/visualizacao/models/PageObject';
 
 @Component({
   selector: 'app-view',

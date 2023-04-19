@@ -12,9 +12,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent],
   imports: [
     CommonModule,
     BrowserModule,

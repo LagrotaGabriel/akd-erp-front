@@ -267,37 +267,9 @@ export class TabelaComponent implements OnDestroy {
     this.invocaRequisicaoHttpGetParaAtualizarObjetos();
   }
 
-  GeraNumerosParaNavegarNaPaginacao(n: number): Array<number> {
-    return Array(n);
-  }
-
-  selecionarPagina(numeroPagina: number) {
-    this.pageableInfo.pageNumber = numeroPagina;
+  recebePageNumberAtualizado(paginaAtualizada: number) {
+    this.pageableInfo.pageNumber = paginaAtualizada;
     this.invocaRequisicaoHttpGetParaAtualizarObjetos();
-  }
-
-  geraBotaoVoltarPaginacao(): string {
-    if (window.innerWidth > 340) return 'Voltar'
-    else return '<';
-  }
-
-  geraBotaoAvancarPaginacao(): string {
-    if (window.innerWidth > 340) return 'Próximo'
-    else return '>';
-  }
-
-  voltarPagina() {
-    if (this.pageableInfo.pageNumber > 0) {
-      this.pageableInfo.pageNumber--;
-      this.invocaRequisicaoHttpGetParaAtualizarObjetos();
-    }
-  }
-
-  avancarPagina() {
-    if (this.pageableInfo.pageNumber < this.pageableInfo.totalPages - 1) {
-      this.pageableInfo.pageNumber++;
-      this.invocaRequisicaoHttpGetParaAtualizarObjetos();
-    }
   }
 
 }

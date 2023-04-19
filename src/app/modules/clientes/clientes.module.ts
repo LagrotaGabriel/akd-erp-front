@@ -28,11 +28,12 @@ import ptBr from '@angular/common/locales/pt';
 import { NovoComponent } from './criacao/novo/novo.component';
 import { AtualizacaoComponent } from './atualizacao/atualizacao/atualizacao.component';
 import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.component';
+import { AcordeaoComponent } from './visualizacao/tabela/acordeao/acordeao.component';
 
 registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent, PaginacaoComponent ],
+  declarations: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent, PaginacaoComponent, AcordeaoComponent ],
   exports: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent ],
   imports: [
     CommonModule,

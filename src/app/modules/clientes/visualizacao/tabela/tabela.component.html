@@ -12,8 +12,6 @@
 
         <div class="row thead_info_icon_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-
-
           <div class="row bt_header_upper_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
             <div *ngIf="pageableInfo != null" class="bt_header_container page_size_container">
@@ -72,7 +70,8 @@
 
           </div>
 
-          <div *ngIf="pageableInfo != null" class="input_filtro_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div *ngIf="pageableInfo != null"
+            class="input_filtro_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="sub_container input_filtro_subcontainer col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div class="input_block col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="input_icon">
@@ -120,7 +119,6 @@
           GIRO
         </th>
         <th class="th th_acoes">
-
         </th>
 
       </tr>
@@ -131,6 +129,7 @@
 
       <div *ngIf="verificaSeConteudoMaiorQueZero(); else: tabelaVazia"
         class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela_container">
+
         <div *ngFor="let cliente of pageableInfo.content; let i = index"
           [ngClass]="{'linha_tabela_expandida': cliente.expanded}"
           class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela">
@@ -199,125 +198,9 @@
 
           </tr>
 
-          <!-- ACCORDION -->
-          <div [@fadeInOut] *ngIf="cliente.expanded" id="{{ 'collapse-' + i }}"
-            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 " [attr.href]="'#linha-' + i"
-            [attr.data-parent]="'#linha-' + i">
-
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 card-body accordion_container">
-
-              <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_linha_principal">
-
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Responsável pelo
-                        cadastro:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ cliente.nomeColaboradorResponsavel | titlecase }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data do cadastro:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ cliente.dataCadastro | date: 'dd/MM/yyyy' }} às {{ cliente.horaCadastro | slice:0:5}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">E-mail:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ (cliente.email != null && cliente.email != '')
-                        ? (cliente.email)
-                        : '-'}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data de nascimento:
-                      </h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ (cliente.dataNascimento != null && cliente.dataNascimento != '')
-                        ? (cliente.dataNascimento | date: 'dd/MM/yyyy')
-                        : '-'}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Inscrição estadual:
-                      </h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ cliente.inscricaoEstadual != null ? cliente.inscricaoEstadual : '-' }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Giro total:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p *ngIf="cliente.giroTotal > 0; else ClienteSemGiro"
-                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ cliente.giroTotal | currency : 'BRL' }}
-                        {{ cliente.qtdOrdensRealizadas == 1
-                        ? '(' + cliente.qtdOrdensRealizadas + ' Ordem)'
-                        : '(' + cliente.qtdOrdensRealizadas + ' Ordens)' }}
-                      </p>
-                      <ng-template #ClienteSemGiro>
-                        <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                          {{ cliente.giroTotal | currency : 'BRL' }}
-                        </p>
-                      </ng-template>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_bloco">
-                  <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                      <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Endereço:</h3>
-                    </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                      <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ trataEnderecoTabela(cliente.endereco) }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [attr.href]="'#linha-' + i"
+            [attr.data-parent]="'#linha-' + i" [@fadeInOut] *ngIf="cliente.expanded" id="{{ 'collapse-' + i }}">
+            <app-acordeao [cliente]="cliente"></app-acordeao>
           </div>
 
         </div>
@@ -338,8 +221,8 @@
     </ng-template>
 
     <app-paginacao *ngIf="verificaSeConteudoMaiorQueZero()"
-    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container" [pageableInfo]="pageableInfo"
-    (emissorDePageNumberAtualizado)="recebePageNumberAtualizado($event)"></app-paginacao>
+      class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pagination_container" [pageableInfo]="pageableInfo"
+      (emissorDePageNumberAtualizado)="recebePageNumberAtualizado($event)"></app-paginacao>
 
   </table>
 </div>

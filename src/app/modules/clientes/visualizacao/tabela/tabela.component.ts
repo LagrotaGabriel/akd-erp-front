@@ -4,7 +4,6 @@ import { Cliente } from '../models/Cliente';
 import { PageObject } from '../models/PageObject';
 import { Component, OnDestroy } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
-import { Endereco } from 'src/app/shared/models/Endereco';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
@@ -186,21 +185,6 @@ export class TabelaComponent implements OnDestroy {
     this.botaoCheckAllHabilitado = !this.botaoCheckAllHabilitado;
 
     localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
-  }
-
-  trataEnderecoTabela(endereco: Endereco): string {
-    let enderecoCompleto = ""
-    if (endereco != null) {
-      enderecoCompleto += (endereco.logradouro + ', ' + endereco.numero);
-      if (endereco.bairro != null && endereco.cidade != null && endereco.estado != null)
-        enderecoCompleto += (' - ' + endereco.bairro + ', ' + endereco.cidade + ' - ' + endereco.estado);
-      if (endereco.codigoPostal != null)
-        enderecoCompleto += (' - ' + endereco.codigoPostal);
-      if (endereco.complemento != null)
-        enderecoCompleto += (' - ' + endereco.complemento);
-      return enderecoCompleto;
-    }
-    else return '-';
   }
 
   excluiClientesEmMassa() {

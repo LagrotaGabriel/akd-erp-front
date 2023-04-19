@@ -28,5 +28,22 @@ $online-green: #00ff2a;
 $red: rgb(179, 51, 51);
 $strong-red: rgb(206, 35, 35);
 
+$common: #b1bdf1;
+$strong-common: #0a35aa;
+
+$success: rgb(198, 248, 157);
+$strong-success:  #00ff2a;
+
+$warn: rgb(221, 207, 84);
+$strong-warn: rgb(245, 222, 16);
+
+$error: rgb(179, 51, 51);
+$strong-error: rgb(206, 35, 35);
+
 $font-poppins: 'Poppins', sans-serif;
-$font-roboto:  'Roboto Flex', sans-serif;;
+$font-roboto:  'Roboto Flex', sans-serif;
+
+.success_text { color: $strong-success;}
+.warn_text { color: $strong-warn; }
+.error_text { color: $strong-error; }
+.common_text { color: $strong-common; }

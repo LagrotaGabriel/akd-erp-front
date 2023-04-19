@@ -393,7 +393,7 @@ input[type='checkbox'] {
 }
 
 .dropdown-menu, .dropdown-item {
-    background-color: $light-black;
+    background-color: $light-black !important;
     color: $dark-white;
     font-family: $font-poppins;
     font-size: 0.9rem;

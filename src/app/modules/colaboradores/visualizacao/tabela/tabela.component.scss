@@ -16,13 +16,13 @@
     width: 30%;
 }
 
-.th_telefone,
-.td_telefone {
+.th_matricula,
+.td_matricula {
     width: 30%;
 }
 
-.th_giro,
-.td_giro {
+.th_ocupacao,
+.td_ocupacao {
     width: 30%;
 }
 
@@ -30,38 +30,6 @@
     padding: 0;
     margin: 0;
     color: $light-white;
-}
-
-.status_comum {
-    border: 1px solid #1c3475;
-    color: #1c3475;
-    background-color: #b1bdf1;
-    padding: 0 0.5rem;
-    font-weight: 400;
-}
-
-.status_vip {
-    border: 1px solid #663874;
-    color: #663874;
-    background-color: #e2b1f1;
-    padding: 0 1.5rem;
-    font-weight: 400;
-}
-
-.status_debito {
-    border: 1px solid #581212;
-    color: #581212;
-    background-color: #f1b1b1;
-    padding: 0 0.5rem;
-    font-weight: 400;
-}
-
-.status_atencao {
-    border: 1px solid #75681d;
-    color: #75681d;
-    background-color: #f1e7b1;
-    padding: 0 0.5rem;
-    font-weight: 400;
 }
 
 .dropdown-item {
@@ -113,7 +81,7 @@
 }
 
 @media (max-width: 1200px) {
-    .th_giro, .td_giro {
+    .th_ocupacao, .td_ocupacao {
         width: 35%;
     }
 
@@ -136,7 +104,7 @@
 }
 
 @media (max-width: 992px) {
-    .th_giro, .td_giro {
+    .th_ocupacao, .td_ocupacao {
         width: 30%;
     }
 
@@ -154,15 +122,15 @@
 }
 
 @media (max-width: 768px) {
-    .th_giro,
-    .td_giro {
+    .th_ocupacao,
+    .td_ocupacao {
         display: none;
     }
 }
 
 @media (max-width: 576px) {
-    .th_giro,
-    .td_giro {
+    .th_ocupacao,
+    .td_ocupacao {
         display: none;
     }
 
@@ -173,8 +141,8 @@
 }
 
 @media (max-width: 470px) {
-    .th_giro,
-    .td_giro {
+    .th_ocupacao,
+    .td_ocupacao {
         display: none;
     }
 
@@ -183,8 +151,8 @@
         display: none;
     }
 
-    .th_telefone,
-    .td_telefone {
+    .th_matricula,
+    .td_matricula {
         display: none;
     }
 }

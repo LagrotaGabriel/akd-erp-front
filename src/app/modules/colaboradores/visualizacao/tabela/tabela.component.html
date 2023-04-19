@@ -121,10 +121,10 @@
                 <th class="th th_status">
                     STATUS
                 </th>
-                <th class="th th_telefone">
+                <th class="th th_matricula">
                     MATRICULA
                 </th>
-                <th class="th th_giro">
+                <th class="th th_ocupacao">
                     CARGO
                 </th>
                 <th class="th th_acoes">
@@ -168,20 +168,23 @@
                         </td>
 
                         <td class="td td_cpfCnpj">
-                            Teste
+                            {{ (colaborador.cpfCnpj != null ? colaborador.cpfCnpj : '-' ) }}
                         </td>
 
                         <td class="td td_status">
-                            <span class="status_comum mat-elevation-z2">
-                                Teste
+                            <span [ngClass]="{'success_text': colaborador.statusColaboradorEnum == 'ATIVO', 
+                                'warn_text': colaborador.statusColaboradorEnum == 'AFASTADO' || colaborador.statusColaboradorEnum == 'FERIAS',
+                                'error_text': colaborador.statusColaboradorEnum == 'DISPENSADO' || colaborador.statusColaboradorEnum == 'EXCLUIDO',
+                                'common_text': colaborador.statusColaboradorEnum == 'FREELANCER'}">
+                                {{ colaborador.statusColaboradorEnum | titlecase }}
                             </span>
                         </td>
 
-                        <td class="td td_telefone">
+                        <td class="td td_matricula">
                             {{ colaborador.matricula }}
                         </td>
 
-                        <td class="td td_giro">
+                        <td class="td td_ocupacao">
                             {{ (colaborador.ocupacao | slice:0:14) }}
                         </td>
 
@@ -380,6 +383,7 @@
                         class="page-link">{{ geraBotaoAvancarPaginacao() }}</a></li>
             </ul>
         </div>
+        
     </table>
 
 </div>

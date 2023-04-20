@@ -29,12 +29,12 @@ export class TabelaComponent implements OnDestroy {
 
   getClientes$: Subscription;
   removeCliente$: Subscription;
-  removeClienteEmMassa$: Subscription;
-  geraRelatorio$: Subscription;
+  // removeClienteEmMassa$: Subscription;
+  //geraRelatorio$: Subscription;
 
   buscaClientes: FormControl = new FormControl();
 
-  buscaClientesSubscribe$ = this.buscaClientes.valueChanges
+/*   buscaClientesSubscribe$ = this.buscaClientes.valueChanges
     .pipe(
       debounceTime(400),
       distinctUntilChanged(),
@@ -57,7 +57,7 @@ export class TabelaComponent implements OnDestroy {
       error: () => {
         this.pageableInfo = null;
       }
-    })
+    }) */
 
   clientesSelecionadosNaTabela: Cliente[] = JSON.parse(localStorage.getItem("itensSelecionadosNaTabela") || '[]');
   pageableInfo: PageObject = JSON.parse(localStorage.getItem("pageable") || 'null');
@@ -82,9 +82,9 @@ export class TabelaComponent implements OnDestroy {
   ngOnDestroy(): void {
     if (this.getClientes$ != undefined) this.getClientes$.unsubscribe();
     if (this.removeCliente$ != undefined) this.removeCliente$.unsubscribe();
-    if (this.removeClienteEmMassa$ != undefined) this.removeClienteEmMassa$.unsubscribe();
-    if (this.geraRelatorio$ != undefined) this.geraRelatorio$.unsubscribe();
-    if (this.buscaClientesSubscribe$ != undefined) this.buscaClientesSubscribe$.unsubscribe();
+    // if (this.removeClienteEmMassa$ != undefined) this.removeClienteEmMassa$.unsubscribe();
+    //if (this.geraRelatorio$ != undefined) this.geraRelatorio$.unsubscribe();
+    // if (this.buscaClientesSubscribe$ != undefined) this.buscaClientesSubscribe$.unsubscribe();
   }
 
   verificaSeConteudoMaiorQueZero(): boolean {
@@ -187,7 +187,7 @@ export class TabelaComponent implements OnDestroy {
     localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
   }
 
-  excluiClientesEmMassa() {
+/*   excluiClientesEmMassa() {
     let listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
     this.clientesSelecionadosNaTabela.forEach(cliente => { listaDeIdsDeClientesSelecionadosNaTabela.push(cliente.id) })
 
@@ -217,7 +217,7 @@ export class TabelaComponent implements OnDestroy {
         }
       }
     );
-  }
+  } */
 
   excluiCliente(id: number) {
     this.removeCliente$ = this.clienteService.removeCliente(id).subscribe(
@@ -239,21 +239,39 @@ export class TabelaComponent implements OnDestroy {
     );
   }
 
-  geraRelatorio() {
+/*   geraRelatorio() {
     let listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
     this.clientesSelecionadosNaTabela.forEach(cliente => { listaDeIdsDeClientesSelecionadosNaTabela.push(cliente.id) })
     if (this.clientesSelecionadosNaTabela.length == 0) listaDeIdsDeClientesSelecionadosNaTabela = [];
     this.geraRelatorio$ = this.clienteService.obtemRelatorioClientes(listaDeIdsDeClientesSelecionadosNaTabela);
-  }
+  } */
 
-  alteraQuantidadeItensExibidosPorPagina() {
+/*   alteraQuantidadeItensExibidosPorPagina() {
     this.pageableInfo.pageNumber = 0;
+    this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+  } */
+
+  recebeQtdItensPorPaginaAlterada(pageSize: number) {
+    this.pageableInfo.pageNumber = 0;
+    this.pageableInfo.pageSize = pageSize;
     this.invocaRequisicaoHttpGetParaAtualizarObjetos();
   }
 
   recebePageNumberAtualizado(paginaAtualizada: number) {
     this.pageableInfo.pageNumber = paginaAtualizada;
     this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+  }
+
+  recebeBuscaClientesFormControl(buscaClientes: FormControl) {
+    this.buscaClientes = buscaClientes;
+  }
+
+  recebeSolicitacaoDeAtualizacaoDaTabela() {
+    this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+  }
+
+  recebeObjetoPageableInfoAtualizadoPosTypeAhead(pageableInfo: PageObject) {
+    this.pageableInfo = pageableInfo;
   }
 
 }

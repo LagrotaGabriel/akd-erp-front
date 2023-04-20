@@ -48,7 +48,9 @@ tr,
 
 .thead_info {
     display: flex;
+    justify-content: center;
     margin: 0;
+    padding: 0;
 }
 
 .thead_info_empty {
@@ -60,110 +62,7 @@ tr,
     margin: 0.5rem auto;
     margin-top: 1rem;
 }
-
-.quantidade_exibida {
-    font-family: $font-poppins;
-    padding: 0;
-    font-size: 0.8rem;
-    font-weight: 400;
-    color: $light-grey;
-    text-align: right;
-    margin-top: 0.2rem;
-    padding-right: 0.1rem;
-}
-
-.thead_info_icon_container {
-    display: flex;
-    justify-content: center;
-    padding: 0 1.3rem;
-}
-
-.thead_info_icon_container select {
-    display: flex;
-    align-items: center;
-}
-
-.bt_header_upper_container  {
-    padding: 0;
-    display: flex;
-    justify-content: right;
-}
-
-.bt_header_container {
-    padding-left: 0.8rem;
-}
-
-.page_size_container {
-    padding-left: 0;
-}
-
-.bt_header {
-    border: 1px solid $dark-grey;
-    color: $light-grey;
-    height: 100%;
-    background-color: transparent;
-    border-radius: 5px;
-    padding: 0.3rem 0.5rem;
-    cursor: pointer;
-}
-
-.bt_header_novo {
-    padding: 0rem 0.6rem;
-    border: 1px solid $primary-color;
-    background-color: $primary-color;
-    color: $dark-white;
-    animation: pulse 1.5s infinite;
-}
-
-.bt_header_select {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-.bt_header:focus {
-    outline: none;
-}
-
-.bt_header_novo:hover {
-    border: 1px solid $primary-color;
-    background-color: $primary-color;
-    color: $light-white;
-    transition: 0.3s;
-}
-
-.header_icon {
-    font-size: 1.5rem;
-}
-
-.bt_header_option {
-    background-color: $light-black;
-    color: $light-grey;
-}
-
-.text_novo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: $font-poppins;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.matBadgeInactive {
-    background-color: $light-grey;
-    border: 1px solid $light-grey;
-    cursor: auto;
-}
-
-.btHeaderComPaddingAjustado {
-    padding: 0.3rem 0.6rem;
-}
-
-.matBadgeInactive:hover {
-    background-color: $light-grey;
-    border: 1px solid $light-grey;
-    color: $dark-white;
-}
+//
 
 th {
     border: none !important;
@@ -301,48 +200,6 @@ app-paginacao {
     margin: 1rem 0;
 }
 
-/* ======= INPUT BUSCA ======= */
-
-.input_filtro_container {
-    display: flex;
-    padding: 0;
-    margin: 0;
-    margin-top: 0.8rem;
-}
-
-.input_filtro_subcontainer {
-    display: block;
-    padding: 0;
-}
-
-.input_block {
-    display: flex;
-    border: 1px solid $dark-grey;
-    background-color: transparent;
-    padding: 0.2rem 0.5rem;
-    border-radius: 3px;
-    align-items: center;
-}
-
-.input_busca {
-    border: none;
-    padding: 0rem 0.5rem;
-    width: 100%;
-    background-color: transparent;
-    color: $primary-color;
-}
-
-.input_busca:focus {
-    outline: none;
-}
-
-.input_icon {
-    display: flex;
-    align-items: center;
-    background-color: transparent;
-    color: $dark-white;
-}
-
 .dropdown-menu, .dropdown-item {
     background-color: $light-black !important;
     color: $dark-white;
@@ -369,46 +226,25 @@ app-paginacao {
     td {
         font-size: 0.8rem;
     }
-
     td {
         padding: 0.4rem 0 !important;
     }
 }
 
 @media (max-width: 768px) {
-
     th,
     td {
         font-size: 0.75rem;
     }
-
-    .thead_info_icon_container  {
-        padding: 0 0.8rem;
-    }
-
-    .bt_header {
-        border-radius: 5px;
-    }
-
-    .header_icon {
-        font-size: 1.3rem;
-    }
-
-    .input_busca {
-        font-size: 0.8rem;
-    }
-
     .tabela_vazia_container {
         margin: 0;
         margin-top: 0.3rem;
         margin-bottom: 1rem;
         font-size: 0.9rem
     }
-
 }
 
 @media (max-width: 576px) {
-
     th,
     td {
         font-size: 0.7rem;
@@ -416,40 +252,19 @@ app-paginacao {
     .table_container {
         margin-bottom: 1rem;
     }
-
-    .quantidade_exibida {
-        font-size: 0.7rem;
-    }
-
     .input_busca {
         font-size: 0.7rem;
     }
-
     .tabela_vazia_container {
         margin: 0;
         margin-top: 0.3rem;
         margin-bottom: 1rem;
         font-size: 0.8rem
     }
-
-    .input_filtro_container  {
-        margin-top: 0.5rem;
-    }
-
-    .bt_header_select  {
-        padding: 0.3rem 0.8rem;
-        font-size: 0.8rem;
-    }
-
-    .bt_header_container {
-        padding-left: 0.5rem;
-    }
-
     .hr_thead {
         margin-top: 0.5rem;
         margin-bottom: 0;
     }
-
 }
 
 @media (max-width: 470px) {
@@ -457,36 +272,15 @@ app-paginacao {
     td {
         font-size: 0.7rem;
     }
-
-    .thead_info_icon_container  {
-        padding: 0 0.5rem;
-    }
-    
     .input_busca {
         font-size: 0.7rem;
     }
-
     .tabela_vazia_container {
         margin: 0;
         margin-top: 0.3rem;
         margin-bottom: 1rem;
         font-size: 0.7rem
     }
-
-    .quantidade_exibida {
-        margin-top: 0.1rem;
-        font-size: 0.7rem;
-    }
-
-    .header_icon {
-        font-size: 1.1rem;
-    }
-
-    .bt_header_select  {
-        padding: 0.2rem 0.8rem;
-        font-size: 0.7rem;
-    }
-
 }
 
 @media (max-width: 390px) {
@@ -494,7 +288,6 @@ app-paginacao {
     td {
         font-size: 0.6rem;
     }
-
     .thead_info  {
         margin-top: 0.5rem;
         margin-bottom: 0rem;
@@ -503,47 +296,19 @@ app-paginacao {
     .thead_info_empty {
         margin-bottom: 0;
     }
-
-    .bt_header {
-        padding: 0rem 0.2rem;
-        font-size: 0.8rem;
-        margin-left: 0;
-        margin-right: 0.5rem;
-        border-radius: 3px;
-    }
-
-    .input_filtro_container {
-        margin-top: 0.5rem;
-    }
-
-    .input_busca {
-        font-size: 0.7rem;
-    }
-
-    .header_icon {
-        font-size: 1.1rem;
-    }
-
-    .bt_header_novo {
-        padding: 0.1rem 0.2rem;
-    }
-
     .load-bar-tabela {
         margin: 0 auto;
         margin-top: 0.5rem;
         margin-bottom: 1rem;
     }
-
     .tabela_vazia_container {
         margin: 0;
         margin-top: 0.3rem;
         margin-bottom: 1rem;
         font-size: 0.7rem
     }
-
     .hr_thead {
         margin-top: 0.5rem;
         margin-bottom: 0;
     }
-
 }

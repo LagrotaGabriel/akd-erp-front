@@ -1,0 +1,218 @@
+@import '../../../../../../dist/variables.scss';
+@import "../../../../../../../node_modules/rfs/scss";
+
+.quantidade_exibida {
+    font-family: $font-poppins;
+    padding: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: $light-grey;
+    text-align: right;
+    margin-top: 0.2rem;
+    padding-right: 0.1rem;
+}
+
+.thead_info_icon_container {
+    display: flex;
+    justify-content: right;
+    padding: 0 1.3rem;
+}
+
+.thead_info_icon_container select {
+    display: flex;
+    align-items: center;
+}
+
+.bt_header_upper_container  {
+    padding: 0;
+    display: flex;
+    justify-content: right;
+}
+
+.bt_header_container {
+    padding-left: 0.8rem;
+}
+
+.page_size_container {
+    padding-left: 0;
+    padding-right: 1rem;
+}
+
+.icon_container {
+    justify-content: center;
+}
+
+.icone {
+    color: $dark-white;
+    padding: 0;
+    cursor: pointer;
+}
+
+.bt_header {
+    border: 1px solid $dark-grey;
+    color: $light-grey;
+    height: 100%;
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bt_header_novo {
+    padding: 0rem 0.6rem;
+    border: 1px solid $primary-color;
+    background-color: $primary-color;
+    color: $dark-white;
+    animation: pulse 1.5s infinite;
+}
+
+.bt_header_select {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.bt_header:focus {
+    outline: none;
+}
+
+.bt_header_novo:hover {
+    border: 1px solid $primary-color;
+    background-color: $primary-color;
+    color: $light-white;
+    transition: 0.3s;
+}
+
+.header_icon {
+    font-size: 1.5rem;
+}
+
+.bt_header_option {
+    background-color: $light-black;
+    color: $light-grey;
+}
+
+.text_novo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-poppins;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.matBadgeInactive {
+    background-color: $light-grey;
+    border: 1px solid $light-grey;
+    cursor: auto;
+}
+
+.btHeaderComPaddingAjustado {
+    padding: 0.2rem 0.6rem;
+    padding-bottom: 0.3rem;
+}
+
+.matBadgeInactive:hover {
+    background-color: $light-grey;
+    border: 1px solid $light-grey;
+    color: $dark-white;
+}
+
+/* ======= INPUT BUSCA ======= */
+
+.input_filtro_container {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    margin-top: 0.8rem;
+}
+
+.input_filtro_subcontainer {
+    display: block;
+    padding: 0;
+}
+
+.input_block {
+    display: flex;
+    border: 1px solid $dark-grey;
+    background-color: transparent;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    align-items: center;
+}
+
+.input_busca {
+    border: none;
+    padding: 0rem 0.5rem;
+    width: 100%;
+    background-color: transparent;
+    color: $primary-color;
+}
+
+.input_busca:focus {
+    outline: none;
+}
+
+.input_icon {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    color: $dark-white;
+}
+
+@media (max-width: 768px) {
+    .thead_info_icon_container  {
+        padding: 0 0.8rem;
+    }
+    .bt_header {
+        border-radius: 5px;
+    }
+    .header_icon {
+        font-size: 1.3rem;
+    }
+    .input_busca {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .quantidade_exibida {
+        font-size: 0.7rem;
+    }
+    .input_busca {
+        font-size: 0.7rem;
+    }
+    .input_filtro_container  {
+        margin-top: 0.5rem;
+    }
+    .bt_header_select  {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    .bt_header_container {
+        padding-left: 0.5rem;
+    }
+}
+
+@media (max-width: 470px) {
+    .thead_info_icon_container  {
+        padding: 0 0.5rem;
+    }
+    .input_busca {
+        font-size: 0.7rem;
+    }
+    .quantidade_exibida {
+        margin-top: 0.1rem;
+        font-size: 0.7rem;
+    }
+    .header_icon {
+        font-size: 1.1rem;
+    }
+    .bt_header_select  {
+        padding: 0.2rem 0.8rem;
+        font-size: 0.7rem;
+    }
+}

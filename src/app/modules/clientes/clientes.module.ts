@@ -29,11 +29,12 @@ import { NovoComponent } from './criacao/novo/novo.component';
 import { AtualizacaoComponent } from './atualizacao/atualizacao/atualizacao.component';
 import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.component';
 import { AcordeaoComponent } from './visualizacao/tabela/acordeao/acordeao.component';
+import { CabecalhoComponent } from './visualizacao/tabela/cabecalho/cabecalho.component';
 
 registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent, PaginacaoComponent, AcordeaoComponent ],
+  declarations: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent, PaginacaoComponent, AcordeaoComponent, CabecalhoComponent ],
   exports: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent ],
   imports: [
     CommonModule,

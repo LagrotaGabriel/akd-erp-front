@@ -14,9 +14,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.component';
 import { CabecalhoComponent } from './visualizacao/tabela/cabecalho/cabecalho.component';
+import { AcordeaoComponent } from './visualizacao/tabela/acordeao/acordeao.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent],
   imports: [
     CommonModule,
     BrowserModule,

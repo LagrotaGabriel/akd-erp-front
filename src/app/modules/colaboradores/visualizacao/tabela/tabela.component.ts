@@ -183,21 +183,6 @@ export class TabelaComponent implements OnDestroy {
     localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
   }
 
-  trataEnderecoTabela(endereco: Endereco): string {
-    let enderecoCompleto = ""
-    if (endereco != null) {
-      enderecoCompleto += (endereco.logradouro + ', ' + endereco.numero);
-      if (endereco.bairro != null && endereco.cidade != null && endereco.estado != null)
-        enderecoCompleto += (' - ' + endereco.bairro + ', ' + endereco.cidade + ' - ' + endereco.estado);
-      if (endereco.codigoPostal != null)
-        enderecoCompleto += (' - ' + endereco.codigoPostal);
-      if (endereco.complemento != null)
-        enderecoCompleto += (' - ' + endereco.complemento);
-      return enderecoCompleto;
-    }
-    else return '-';
-  }
-
   excluiColaborador(id: number) {
     this.removeColaborador$ = this.colaboradorService.removeColaborador(id).subscribe(
       {

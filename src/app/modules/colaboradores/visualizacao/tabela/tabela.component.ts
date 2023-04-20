@@ -30,8 +30,6 @@ export class TabelaComponent implements OnDestroy {
 
   getColaboradores$: Subscription;
   removeColaborador$: Subscription;
-  removeColaboradorEmMassa$: Subscription;
-  geraRelatorio$: Subscription;
 
   buscaColaboradores: FormControl = new FormControl();
 
@@ -83,9 +81,6 @@ export class TabelaComponent implements OnDestroy {
   ngOnDestroy(): void {
     if (this.getColaboradores$ != undefined) this.getColaboradores$.unsubscribe();
     if (this.removeColaborador$ != undefined) this.removeColaborador$.unsubscribe();
-    if (this.removeColaboradorEmMassa$ != undefined) this.removeColaboradorEmMassa$.unsubscribe();
-    if (this.geraRelatorio$ != undefined) this.geraRelatorio$.unsubscribe();
-    if (this.buscaColaboradoresSubscribe$ != undefined) this.buscaColaboradoresSubscribe$.unsubscribe();
   }
 
   verificaSeConteudoMaiorQueZero(): boolean {
@@ -203,38 +198,6 @@ export class TabelaComponent implements OnDestroy {
     else return '-';
   }
 
-  excluiColaboradoresEmMassa() {
-    let listaDeIdsDeColaboradoresSelecionadosNaTabela: number[] = [];
-    this.colaboradoresSelecionadosNaTabela.forEach(colaborador => { listaDeIdsDeColaboradoresSelecionadosNaTabela.push(colaborador.id) })
-
-    if (this.colaboradoresSelecionadosNaTabela.length == 0) return;
-
-    this.removeColaboradorEmMassa$ = this.colaboradorService.removeColaboradoresEmMassa(listaDeIdsDeColaboradoresSelecionadosNaTabela).subscribe(
-      {
-        next: () => {
-          this._snackBar.open("Colaboradores Excluídos com sucesso", "Fechar", {
-            duration: 3000
-          });
-        },
-        error: (httpErrorResponse: HttpErrorResponse) => {
-          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
-        },
-        complete: () => {
-          listaDeIdsDeColaboradoresSelecionadosNaTabela.forEach(idSelecionadoNaTabela => {
-            let colaboradorRemovido: Colaborador[] = this.colaboradoresSelecionadosNaTabela.filter(colaborador => colaborador.id == idSelecionadoNaTabela);
-            if (colaboradorRemovido.length == 1) this.colaboradoresSelecionadosNaTabela.splice(this.colaboradoresSelecionadosNaTabela.indexOf(colaboradorRemovido[0]), 1);
-          })
-          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
-          this._snackBar.open(listaDeIdsDeColaboradoresSelecionadosNaTabela.length > 1
-            ? "Colaboradores removidos com sucesso"
-            : "Colaborador removido com sucesso", "Fechar", {
-            duration: 3500
-          })
-        }
-      }
-    );
-  }
-
   excluiColaborador(id: number) {
     this.removeColaborador$ = this.colaboradorService.removeColaborador(id).subscribe(
       {
@@ -255,13 +218,6 @@ export class TabelaComponent implements OnDestroy {
     );
   }
 
-  geraRelatorio() {
-    let listaDeIdsDeColaboradoresSelecionadosNaTabela: number[] = [];
-    this.colaboradoresSelecionadosNaTabela.forEach(colaborador => { listaDeIdsDeColaboradoresSelecionadosNaTabela.push(colaborador.id) })
-    if (this.colaboradoresSelecionadosNaTabela.length == 0) listaDeIdsDeColaboradoresSelecionadosNaTabela = [];
-    this.geraRelatorio$ = this.colaboradorService.obtemRelatorioColaboradores(listaDeIdsDeColaboradoresSelecionadosNaTabela);
-  }
-
   alteraQuantidadeItensExibidosPorPagina() {
     this.pageableInfo.pageNumber = 0;
     this.invocaRequisicaoHttpGetParaAtualizarObjetos();
@@ -272,4 +228,22 @@ export class TabelaComponent implements OnDestroy {
     this.invocaRequisicaoHttpGetParaAtualizarObjetos();
   }
   
+  recebeBuscaColaboradoresFormControl(buscaColaboradores: FormControl) {
+    this.buscaColaboradores = buscaColaboradores;
+  }
+
+  recebeSolicitacaoDeAtualizacaoDaTabela() {
+    this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+  }
+
+  recebeObjetoPageableInfoAtualizadoPosTypeAhead(pageableInfo: PageObject) {
+    this.pageableInfo = pageableInfo;
+  }
+
+  recebeQtdItensPorPaginaAlterada(pageSize: number) {
+    this.pageableInfo.pageNumber = 0;
+    this.pageableInfo.pageSize = pageSize;
+    this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+  }
+
 }

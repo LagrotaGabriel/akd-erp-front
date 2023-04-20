@@ -29,35 +29,8 @@ export class TabelaComponent implements OnDestroy {
 
   getClientes$: Subscription;
   removeCliente$: Subscription;
-  // removeClienteEmMassa$: Subscription;
-  //geraRelatorio$: Subscription;
 
   buscaClientes: FormControl = new FormControl();
-
-/*   buscaClientesSubscribe$ = this.buscaClientes.valueChanges
-    .pipe(
-      debounceTime(400),
-      distinctUntilChanged(),
-      map((valorDigitado) => valorDigitado != undefined ? valorDigitado.trim() : undefined),
-      tap(() => {
-        this.pageableInfo.pageNumber = 0;
-      }),
-      switchMap((valorDigitado) => this.clienteService.getClientes(valorDigitado, this.pageableInfo)),
-    ).subscribe({
-      next: (response: PageObject) => {
-        let sortDirection = this.pageableInfo == null ? this.pageableInfo = undefined : this.pageableInfo.sortDirection;
-        this.pageableInfo = response;
-        this.pageableInfo.sortDirection = sortDirection;
-        if (this.pageableInfo.sortDirection == undefined) this.pageableInfo.sortDirection = 'DESC';
-        this.pageableInfo.content.forEach(cliente => {
-          if (cliente.checked == null) cliente.checked = false;
-          if (cliente.expanded == null) cliente.expanded = false;
-        })
-      },
-      error: () => {
-        this.pageableInfo = null;
-      }
-    }) */
 
   clientesSelecionadosNaTabela: Cliente[] = JSON.parse(localStorage.getItem("itensSelecionadosNaTabela") || '[]');
   pageableInfo: PageObject = JSON.parse(localStorage.getItem("pageable") || 'null');
@@ -82,9 +55,6 @@ export class TabelaComponent implements OnDestroy {
   ngOnDestroy(): void {
     if (this.getClientes$ != undefined) this.getClientes$.unsubscribe();
     if (this.removeCliente$ != undefined) this.removeCliente$.unsubscribe();
-    // if (this.removeClienteEmMassa$ != undefined) this.removeClienteEmMassa$.unsubscribe();
-    //if (this.geraRelatorio$ != undefined) this.geraRelatorio$.unsubscribe();
-    // if (this.buscaClientesSubscribe$ != undefined) this.buscaClientesSubscribe$.unsubscribe();
   }
 
   verificaSeConteudoMaiorQueZero(): boolean {
@@ -187,38 +157,6 @@ export class TabelaComponent implements OnDestroy {
     localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
   }
 
-/*   excluiClientesEmMassa() {
-    let listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
-    this.clientesSelecionadosNaTabela.forEach(cliente => { listaDeIdsDeClientesSelecionadosNaTabela.push(cliente.id) })
-
-    if (this.clientesSelecionadosNaTabela.length == 0) return;
-
-    this.removeClienteEmMassa$ = this.clienteService.removeClienteEmMassa(listaDeIdsDeClientesSelecionadosNaTabela).subscribe(
-      {
-        next: () => {
-          this._snackBar.open("Clientes Excluídos com sucesso", "Fechar", {
-            duration: 3000
-          });
-        },
-        error: (httpErrorResponse: HttpErrorResponse) => {
-          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
-        },
-        complete: () => {
-          listaDeIdsDeClientesSelecionadosNaTabela.forEach(idSelecionadoNaTabela => {
-            let clienteRemovido: Cliente[] = this.clientesSelecionadosNaTabela.filter(cliente => cliente.id == idSelecionadoNaTabela);
-            if (clienteRemovido.length == 1) this.clientesSelecionadosNaTabela.splice(this.clientesSelecionadosNaTabela.indexOf(clienteRemovido[0]), 1);
-          })
-          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
-          this._snackBar.open(listaDeIdsDeClientesSelecionadosNaTabela.length > 1
-            ? "Clientes removidos com sucesso"
-            : "Cliente removido com sucesso", "Fechar", {
-            duration: 3500
-          })
-        }
-      }
-    );
-  } */
-
   excluiCliente(id: number) {
     this.removeCliente$ = this.clienteService.removeCliente(id).subscribe(
       {
@@ -238,18 +176,6 @@ export class TabelaComponent implements OnDestroy {
       }
     );
   }
-
-/*   geraRelatorio() {
-    let listaDeIdsDeClientesSelecionadosNaTabela: number[] = [];
-    this.clientesSelecionadosNaTabela.forEach(cliente => { listaDeIdsDeClientesSelecionadosNaTabela.push(cliente.id) })
-    if (this.clientesSelecionadosNaTabela.length == 0) listaDeIdsDeClientesSelecionadosNaTabela = [];
-    this.geraRelatorio$ = this.clienteService.obtemRelatorioClientes(listaDeIdsDeClientesSelecionadosNaTabela);
-  } */
-
-/*   alteraQuantidadeItensExibidosPorPagina() {
-    this.pageableInfo.pageNumber = 0;
-    this.invocaRequisicaoHttpGetParaAtualizarObjetos();
-  } */
 
   recebeQtdItensPorPaginaAlterada(pageSize: number) {
     this.pageableInfo.pageNumber = 0;

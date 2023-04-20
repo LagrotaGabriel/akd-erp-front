@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-cabecalho',
   templateUrl: './cabecalho.component.html',
-  styleUrls: ['./cabecalho.component.scss']
+  styleUrls: ['../../../../../../dist/cabecalho.scss'],
 })
 export class CabecalhoComponent {
 

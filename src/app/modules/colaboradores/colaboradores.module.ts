@@ -13,9 +13,10 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.component';
+import { CabecalhoComponent } from './visualizacao/tabela/cabecalho/cabecalho.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent],
   imports: [
     CommonModule,
     BrowserModule,

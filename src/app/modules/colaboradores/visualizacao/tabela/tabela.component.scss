@@ -1,6 +1,19 @@
 @import '../../../../../dist/variables.scss';
 @import "../../../../../../node_modules/rfs/scss";
 
+.nome_text {
+    margin: 0;
+    padding: 0;
+}
+
+.td_checkbox, .th_checkbox {
+    width: 5%;
+}
+
+.td_expande, .th_expande {
+    width: 5%;
+}
+
 .th_nome,
 .td_nome {
     width: 35%;
@@ -45,79 +58,35 @@
     margin-left: 0.3rem;
 }
 
-/* TABLE ACCORDION */
-
-.accordion_container,
-.accordion_linha_principal,
-.accordion_bloco,
-.accordion_subbloco,
-.accordion_subbloco_titulo,
-.accordion_subbloco_texto,
-.accordion_titulo,
-.accordion_texto {
-    margin: 0;
+.accordion-container, app-acordeao {
     padding: 0;
 }
 
-.accordion_container {
-    padding: 0;
-    padding-bottom: 0.5rem;
+.avatar_icone{
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    border-radius: 50%;
+    margin-left: 0;
+    background-image: url('https://avatars.githubusercontent.com/u/95034068?v=4');
+    background-size: cover;
 }
 
-.accordion_subbloco {
-    padding: 0.2rem;
-}
-
-.accordion_titulo {
-    font-size: 0.80rem;
-    font-weight: 500;
-    height: 1.2rem;
-    color: $light-white;
-}
-
-.accordion_texto {
-    font-size: 0.70rem;
-    color: $dark-white;
+.nome_text {
+    display: flex;
+    align-items: center;
+    padding-left: 1rem
 }
 
 @media (max-width: 1200px) {
     .th_ocupacao, .td_ocupacao {
         width: 35%;
     }
-
-    .accordion_container {
-        padding: 0;
-        padding-bottom: 0.3rem;
-    }
-
-    .accordion_subbloco {
-        padding: 0 0.5rem;
-    }
-
-    .accordion_titulo {
-        font-size: 0.8rem;
-    }
-
-    .accordion_texto {
-        font-size: 0.7rem;
-    }
 }
 
 @media (max-width: 992px) {
     .th_ocupacao, .td_ocupacao {
         width: 30%;
-    }
-
-    .accordion_container {
-        padding-bottom: 0.3rem;
-    }
-
-    .accordion_titulo {
-        font-size: 0.7rem;
-    }
-
-    .accordion_texto {
-        font-size: 0.6rem;
     }
 }
 

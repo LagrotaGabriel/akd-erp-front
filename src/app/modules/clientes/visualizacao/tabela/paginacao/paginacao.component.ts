@@ -4,7 +4,7 @@ import { PageObject } from '../../models/PageObject';
 @Component({
   selector: 'app-paginacao',
   templateUrl: './paginacao.component.html',
-  styleUrls: ['../../../../../../dist/paginacao.scss'],
+  styleUrls: ['../../../../../../dist/styles/paginacao.scss'],
 })
 export class PaginacaoComponent {
   

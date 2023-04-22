@@ -13,7 +13,7 @@ import { PageObject } from '../models/PageObject';
 @Component({
   selector: 'app-tabela',
   templateUrl: './tabela.component.html',
-  styleUrls: ['../../../../../dist/table.scss', './tabela.component.scss'],
+  styleUrls: ['../../../../../dist/styles/table.scss', './tabela.component.scss'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [   // :enter is alias to 'void => *'

@@ -1,42 +1,49 @@
-<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 card-body accordion_container">
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_container">
 
     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_linha_principal">
 
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-            <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+        <h2 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao">Dados pessoais</h2>
+
+        <div class="row block col-xl-11">
+
+            <div class="row col-xl-3 accordion_subbloco">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">
-                        Responsável pelo
-                        cadastro:</h3>
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Nome completo:</h3>
                 </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                     <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        Teste
+                        {{ colaborador.nome | titlecase }}
                     </p>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-            <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="row col-xl-3 accordion_subbloco">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">
-                        Data do cadastro:</h3>
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data do cadastro:</h3>
                 </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                     <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ colaborador.dataCadastro | date: 'dd/MM/yyyy' }} às {{
-                        colaborador.horaCadastro | slice:0:5}}
+                        {{ colaborador.dataCadastro | date: 'dd/MM/yyyy' }} às {{ colaborador.horaCadastro | slice:0:5}}
                     </p>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-            <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="row col-xl-3 accordion_subbloco">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">
-                        E-mail:</h3>
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Data de nascimento:</h3>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                    <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                        {{ (colaborador.dataNascimento != null && colaborador.dataNascimento != '')
+                        ? (colaborador.dataNascimento | date: 'dd/MM/yyyy')
+                        : '-'}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="row col-xl-3 accordion_subbloco">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">E-mail:</h3>
                 </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                     <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
@@ -46,66 +53,141 @@
                     </p>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-            <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="row col-xl-3 accordion_subbloco">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">
-                        Data de nascimento:
-                    </h3>
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Telefone:</h3>
                 </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                     <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        {{ (colaborador.dataNascimento != null && colaborador.dataNascimento !=
-                        '')
-                        ? (colaborador.dataNascimento | date: 'dd/MM/yyyy')
-                        : '-'}}
+                        {{ colaborador.telefone != null ? '(' + colaborador.telefone.prefixo + ') ' +
+                        colaborador.telefone.numero : '-'}}
                     </p>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-            <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="row col-xl-3 accordion_subbloco">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">
-                        Inscrição estadual:
-                    </h3>
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Matrícula:</h3>
                 </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                     <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        Teste
+                        {{ colaborador.matricula }}
                     </p>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 accordion_bloco">
-            <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="row col-xl-3 accordion_subbloco">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">
-                        Giro total:</h3>
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">CPF:</h3>
                 </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                     <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                        Teste
+                        {{ colaborador.cpfCnpj != null ? colaborador.cpfCnpj : '-' }}
                     </p>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_bloco">
             <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">
-                        Endereço:</h3>
+                    <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Endereço:</h3>
                 </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                     <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
                         {{ trataEnderecoTabela(colaborador.endereco) }}
                     </p>
                 </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row block col-xl-12">
+
+        <h2 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao titulo_sessao_inferior">Dados profissionais</h2>
+
+        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Permanência empresa:</h3>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                <!-- AJUSTAR LÓGICA CASO ENTRADA E SAÍDA SEJAM VAZIOS -->
+                <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                    {{ colaborador.entradaEmpresa != null ? (colaborador.entradaEmpresa | date: 'dd/MM/yyyy') : '-' }} -
+                    {{ colaborador.saidaEmpresa != null ? (colaborador.saidaEmpresa | date: 'dd/MM/yyyy') :
+                    'Atualmente'}}
+                </p>
+            </div>
+        </div>
+
+        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Modelo de contratação:</h3>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                    {{ colaborador.modeloContratacaoEnum != null ? (colaborador.modeloContratacaoEnum | uppercase) : '-'
+                    }}
+                </p>
+            </div>
+        </div>
+
+        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Modelo de trabalho:</h3>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                <!-- AJUSTAR EXIBIÇÃO DO TEXTO DO ENUM -->
+                <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                    {{ colaborador.modeloTrabalhoEnum != null ? (colaborador.modeloTrabalhoEnum | titlecase) : '-' }}
+                </p>
+            </div>
+        </div>
+
+        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Salário:</h3>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                    {{ colaborador.salario != null ? (colaborador.salario | currency : 'BRL') : '-' }}
+                </p>
+            </div>
+        </div>
+
+        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Atuação:</h3>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                    {{ colaborador.tipoOcupacaoEnum != null ? (colaborador.tipoOcupacaoEnum | uppercase) : '-' }}
+                </p>
+            </div>
+        </div>
+
+        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Acesso ao sistema:</h3>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                    {{ colaborador.acessoSistema != null
+                    ? (colaborador.acessoSistema.acessoSistemaAtivo ? 'ATIVO' : 'INATIVO')
+                    : '-' }}
+                </p>
+            </div>
+        </div>
+
+        <div class="row col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Expediente:</h3> <!-- CRIAR LÓGICA DE EXPEDIENTE -->
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
+                <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
+                    Das 09:00 às 18:00 com 1 hora de almoço
+                </p>
             </div>
         </div>
 

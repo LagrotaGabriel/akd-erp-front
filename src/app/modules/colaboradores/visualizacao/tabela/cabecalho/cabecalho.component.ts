@@ -9,7 +9,7 @@ import { Subscription, debounceTime, distinctUntilChanged, map, switchMap, tap }
 @Component({
   selector: 'app-cabecalho',
   templateUrl: './cabecalho.component.html',
-  styleUrls: ['../../../../../../dist/cabecalho.scss'],
+  styleUrls: ['../../../../../../dist/styles/cabecalho.scss'],
 })
 export class CabecalhoComponent {
 

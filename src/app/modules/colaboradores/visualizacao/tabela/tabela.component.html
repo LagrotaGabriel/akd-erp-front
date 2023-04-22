@@ -73,12 +73,15 @@
                         </td>
 
                         <td class="td td_nome">
-                            <div class="nome_colaborador">
-                                {{
-                                (colaborador.nome.length > 14)
-                                ? (colaborador.nome | slice:0:14)+'...'
-                                : (colaborador.nome)
-                                }}
+                            <div class="row nome_colaborador">
+                                <div class="avatar_icone"></div>
+                                <div class="nome_text">
+                                    {{
+                                    (colaborador.nome.length > 14)
+                                    ? (colaborador.nome | slice:0:14)+'...'
+                                    : (colaborador.nome)
+                                    }}
+                                </div>
                             </div>
                         </td>
 
@@ -87,7 +90,7 @@
                         </td>
 
                         <td class="td td_status">
-                            <span [ngClass]="{'success_text': colaborador.statusColaboradorEnum == 'ATIVO', 
+                            <span class="status_comum mat-elevation-z2" [ngClass]="{'success_text': colaborador.statusColaboradorEnum == 'ATIVO', 
                                 'warn_text': colaborador.statusColaboradorEnum == 'AFASTADO' || colaborador.statusColaboradorEnum == 'FERIAS',
                                 'error_text': colaborador.statusColaboradorEnum == 'DISPENSADO' || colaborador.statusColaboradorEnum == 'EXCLUIDO',
                                 'common_text': colaborador.statusColaboradorEnum == 'FREELANCER'}">
@@ -121,9 +124,9 @@
 
                     </tr>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [attr.href]="'#linha-' + i"
-                        [attr.data-parent]="'#linha-' + i" [@fadeInOut] *ngIf="colaborador.expanded"
-                        id="{{ 'collapse-' + i }}">
+                    <div class="accordion-container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                        [attr.href]="'#linha-' + i" [attr.data-parent]="'#linha-' + i" [@fadeInOut]
+                        *ngIf="colaborador.expanded" id="{{ 'collapse-' + i }}">
                         <app-acordeao [colaborador]="colaborador"></app-acordeao>
                     </div>
 

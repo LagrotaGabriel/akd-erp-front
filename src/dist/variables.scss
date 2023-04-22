@@ -31,11 +31,11 @@ $strong-red: rgb(206, 35, 35);
 $common: #b1bdf1;
 $strong-common: #0b40d4;
 
-$success: rgb(198, 248, 157);
+$success: #c6f89d;
 $strong-success:  #00ff2a;
 
-$warn: rgb(221, 207, 84);
-$strong-warn: rgb(245, 222, 16);
+$warn: #ddcf54;
+$strong-warn: #f5de10;
 
 $error: rgb(179, 51, 51);
 $strong-error: rgb(221, 28, 28);
@@ -43,7 +43,34 @@ $strong-error: rgb(221, 28, 28);
 $font-poppins: 'Poppins', sans-serif;
 $font-roboto:  'Roboto Flex', sans-serif;
 
-.success_text { color: $strong-success;}
-.warn_text { color: $strong-warn; }
-.error_text { color: $strong-error; }
-.common_text { color: $strong-common; }
+.success_text { 
+    border: 1px solid #1d852e;
+    color: #1d852e;
+    padding: 0.1rem 0.4rem;
+    font-weight: 400;
+    background-color: #e1ffc8;
+}
+
+.warn_text { 
+    border: 1px solid #70681a;
+    color: #70681a;
+    padding: 0.1rem 0.4rem;
+    font-weight: 400;
+    background-color: #fdf6b7;
+}
+
+.error_text { 
+    border: 1px solid #922828;
+    color: #922828;
+    padding: 0.1rem 0.4rem;
+    font-weight: 400;
+    background-color: #ffd2d2;
+}
+
+.common_text { 
+    border: 1px solid #1c3475;
+    color: #1c3475;
+    padding: 0.1rem 0.4rem;
+    font-weight: 400;
+    background-color: #bec9fc;
+}

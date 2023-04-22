@@ -5,24 +5,49 @@
 
 .accordion_container,
 .accordion_linha_principal,
-.accordion_bloco,
+.avatar_block,
+.avatar_container,
+.avatar_icone,
+.block,
 .accordion_subbloco,
 .accordion_subbloco_titulo,
-.accordion_subbloco_texto,
 .accordion_titulo,
-.accordion_texto {
+.accordion_subbloco_texto,
+.accordion_texto,
+.titulo_sessao,
+table,
+thead,
+tbody,
+tr,
+th,
+td,
+.button_container,
+.button_subcontainer,
+.btn {
     margin: 0;
     padding: 0;
 }
 
-.accordion_container {
-    padding: 0;
-    padding-bottom: 0.5rem;
+.titulo_sessao {
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: $font-poppins;
+    color: $primary-color;
 }
 
-.accordion_subbloco {
-    padding: 0.2rem;
+/* LINHA DA IMAGEM */
+
+.accordion_container {
+    padding: 0 3rem;
+    padding-bottom: 1rem;
 }
+
+
+.avatar_icone {
+    width: 100%;
+}
+
+/* BLOCO DA DIREITA DA LINHA DA IMAGEM */
 
 .accordion_titulo {
     font-size: 0.80rem;
@@ -36,35 +61,43 @@
     color: $dark-white;
 }
 
+.second_block {
+    margin-top: 0.3rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @media (max-width: 1200px) {
     .accordion_container {
         padding: 0;
         padding-bottom: 0.3rem;
-    }
-
-    .accordion_subbloco {
-        padding: 0 0.5rem;
-    }
-
-    .accordion_titulo {
-        font-size: 0.8rem;
-    }
-
-    .accordion_texto {
-        font-size: 0.7rem;
     }
 }
 
 @media (max-width: 992px) {
     .accordion_container {
         padding-bottom: 0.3rem;
-    }
-
-    .accordion_titulo {
-        font-size: 0.7rem;
-    }
-
-    .accordion_texto {
-        font-size: 0.6rem;
     }
 }

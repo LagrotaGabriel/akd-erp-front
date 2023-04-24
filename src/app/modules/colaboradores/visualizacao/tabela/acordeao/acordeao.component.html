@@ -103,25 +103,25 @@
 
     </div>
 
+    <hr class="hr first_hr">
+
+    <h2 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao titulo_sessao_inferior">Dados profissionais</h2>
+
     <div class="row block col-xl-12">
 
-        <h2 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao titulo_sessao_inferior">Dados profissionais</h2>
-
-        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+        <div class="row col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                 <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Permanência empresa:</h3>
             </div>
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                <!-- AJUSTAR LÓGICA CASO ENTRADA E SAÍDA SEJAM VAZIOS -->
                 <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
                     {{ colaborador.entradaEmpresa != null ? (colaborador.entradaEmpresa | date: 'dd/MM/yyyy') : '-' }} -
-                    {{ colaborador.saidaEmpresa != null ? (colaborador.saidaEmpresa | date: 'dd/MM/yyyy') :
-                    'Atualmente'}}
+                    {{ colaborador.entradaEmpresa != null && colaborador.saidaEmpresa == null ? 'Atualmente' : (colaborador.saidaEmpresa | date: 'dd/MM/yyyy') }}
                 </p>
             </div>
         </div>
 
-        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+        <div class="row col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                 <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Modelo de contratação:</h3>
             </div>
@@ -133,19 +133,18 @@
             </div>
         </div>
 
-        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+        <div class="row col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                 <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Modelo de trabalho:</h3>
             </div>
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
-                <!-- AJUSTAR EXIBIÇÃO DO TEXTO DO ENUM -->
                 <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                    {{ colaborador.modeloTrabalhoEnum != null ? (colaborador.modeloTrabalhoEnum | titlecase) : '-' }}
+                    {{ (colaborador.modeloTrabalhoEnum == 'HOME_OFFICE' ? 'Remoto' : colaborador.modeloTrabalhoEnum) | titlecase }}
                 </p>
             </div>
         </div>
 
-        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+        <div class="row col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                 <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Salário:</h3>
             </div>
@@ -156,7 +155,7 @@
             </div>
         </div>
 
-        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+        <div class="row col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                 <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Atuação:</h3>
             </div>
@@ -167,7 +166,7 @@
             </div>
         </div>
 
-        <div class="row col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+        <div class="row col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
                 <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Acesso ao sistema:</h3>
             </div>
@@ -180,17 +179,23 @@
             </div>
         </div>
 
-        <div class="row col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_titulo">
-                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Expediente:</h3> <!-- CRIAR LÓGICA DE EXPEDIENTE -->
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_titulo">Expediente:</h3>
             </div>
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_subbloco_texto">
                 <p class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 accordion_texto">
-                    Das 09:00 às 18:00 com 1 hora de almoço
+                    {{ colaborador.expediente != null ? criaExibicaoExpediente(colaborador.expediente) : '-' }}
                 </p>
             </div>
         </div>
 
     </div>
+
+    <hr>
+
+    <button class="btn_opcoes_colaborador mat-elevation-z4">Ver contrato</button>
+    <button class="btn_opcoes_colaborador mat-elevation-z4">Folha de ponto</button>
+    <button class="btn_opcoes_colaborador mat-elevation-z4">Advertências</button>
 
 </div>

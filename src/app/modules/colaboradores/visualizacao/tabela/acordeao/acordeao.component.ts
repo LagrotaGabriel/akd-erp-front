@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Colaborador } from '../../models/Colaborador';
 import { Endereco } from 'src/app/shared/models/Endereco';
+import { Expediente } from '../../models/Expediente';
 
 @Component({
   selector: 'app-acordeao',
@@ -24,6 +25,13 @@ export class AcordeaoComponent {
       return enderecoCompleto;
     }
     else return '-';
+  }
+
+  criaExibicaoExpediente(expediente: Expediente): string {
+    let stringExpediente: string = 'Das ' + expediente.horaEntrada + ' às ' + expediente.horaSaida;
+    if (expediente.horaEntradaAlmoco != null) stringExpediente += ' com pausa das ' + expediente.horaSaidaAlmoco + ' às ' + expediente.horaEntradaAlmoco;
+    else stringExpediente += ' sem horário de pausa';
+    return stringExpediente;
   }
 
 }

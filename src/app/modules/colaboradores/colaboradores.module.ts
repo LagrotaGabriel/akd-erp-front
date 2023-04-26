@@ -12,12 +12,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatStepperModule } from '@angular/material/stepper';
 import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.component';
 import { CabecalhoComponent } from './visualizacao/tabela/cabecalho/cabecalho.component';
 import { AcordeaoComponent } from './visualizacao/tabela/acordeao/acordeao.component';
+import { NovoComponent } from './criacao/novo/novo.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent],
   imports: [
     CommonModule,
     BrowserModule,
@@ -27,7 +29,8 @@ import { AcordeaoComponent } from './visualizacao/tabela/acordeao/acordeao.compo
     MatIconModule,
     MatBadgeModule,
     MatTooltipModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatStepperModule
   ],
   exports: [
     MenuComponent, ViewComponent, TabelaComponent

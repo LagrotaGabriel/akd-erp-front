@@ -494,6 +494,8 @@
                     <span>Profissional</span>
                 </ng-template>
 
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao">Dados</h3>
+
                 <!-- SETOR -->
                 <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
@@ -599,34 +601,120 @@
                     </select>
                 </div>
 
-                <!-- CONTRATO DE TRABALHO -->
-                <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+                <!-- REMUNERAÇÃO -->
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Contrato</label>                                 
-                        <button type="button" class="limpar_file" (click)="limpaInputContrato()">Limpar</button>
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['salario'].invalid}">
+                            Remuneração mensal
+                        </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <label class="input input_file col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" for="contratoContratacaoInput">
-                            {{ colaborador.contratoContratacao != null && contratoContratacaoInput.value != ''
-                                ? (contratoContratacaoInput.value.length > 20 
-                                    ? ((contratoContratacaoInput.value | slice:0:20) + '...')
-                                    : contratoContratacaoInput.value) 
-                                : 'Escolher arquivo (.docx, .pdf, .png, .jpeg)' }}
+                        <input type="number" formControlName="salario" name="salario" max="9999999.00" min="0.00"
+                            [(ngModel)]="colaborador.salario" step="100.00" #inputSalario
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            [ngClass]="{'input_invalida': dadosProfissionais.controls['salario'].invalid}"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="20">
+                        <mat-icon [@fadeInOut] [fontIcon]="'attach_money'" (click)="inputSalario.focus()" [ngClass]="{
+                                'icone_error': dadosProfissionais.controls['salario'].invalid, 
+                                'icone_ok': dadosProfissionais.controls['salario'].valid}" class="icone"></mat-icon>
+
+                    </div>
+
+                    <div [@fadeInOut] *ngIf="dadosProfissionais.controls['salario'].invalid"
+                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 class="error_message">{{ 'Este campo deve possuir valor entre 0,00 e 9.999.000,00' }}</h6>
+                    </div>
+                </div>
+
+                <!-- DATA DE ENTRADA -->
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">
+                            Data de entrada
                         </label>
-                        <input type="file" formControlName="contratoContratacao" name="contratoContratacao" style="display: none;"
-                            [(ngModel)]="colaborador.contratoContratacao" #contratoContratacaoInput id="contratoContratacaoInput"
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input min="1900-01-01" max="2023-04-17" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
+                            [ngClass]="{'emptyDate': colaborador.entradaEmpresa == null || colaborador.entradaEmpresa == ''}"
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()" type="date" formControlName="entradaEmpresa"
+                            (focusout)="validaDataEntradaEmpresa()" #inputDataEntrada name="entradaEmpresa"
+                            formControlName="entradaEmpresa" name="entradaEmpresa"
+                            [(ngModel)]="colaborador.entradaEmpresa"
+                            class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon [@fadeInOut]
+                            *ngIf="dadosProfissionais.controls['entradaEmpresa'].value != null && dadosProfissionais.controls['entradaEmpresa'].value != ''"
+                            [fontIcon]="dadosProfissionais.controls['entradaEmpresa'].value != null && dadosProfissionais.controls['entradaEmpresa'].invalid 
+                                        ? 'error' 
+                                        : 'check'"
+                            [ngClass]="{'icone_ok': !dadosProfissionais.controls['entradaEmpresa'].invalid,
+                                                'icone_error': dadosProfissionais.controls['entradaEmpresa'].value != null && dadosProfissionais.controls['entradaEmpresa'].invalid}"
+                            class="icone"></mat-icon>
+                        <div class="input_data_placeholder" *ngIf="!dataEntradaAparente" [@fadeInOut] tabindex="7"
+                            (focus)="habilitaDataEntradaEmpresa()" (click)="habilitaDataEntradaEmpresa()"
+                            [ngStyle]="{'cursor': 'text'}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DATA DE SAIDA -->
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">
+                            Data de saída
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input min="1900-01-01" max="2023-04-17" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
+                            [ngClass]="{'emptyDate': colaborador.saidaEmpresa == null || colaborador.saidaEmpresa == ''}"
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()" type="date" formControlName="saidaEmpresa"
+                            (focusout)="validaDataSaidaEmpresa()" #inputDataSaida name="saidaEmpresa"
+                            formControlName="saidaEmpresa" name="saidaEmpresa" [(ngModel)]="colaborador.saidaEmpresa"
+                            class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon [@fadeInOut]
+                            *ngIf="dadosProfissionais.controls['saidaEmpresa'].value != null && dadosProfissionais.controls['saidaEmpresa'].value != ''"
+                            [fontIcon]="dadosProfissionais.controls['saidaEmpresa'].value != null && dadosProfissionais.controls['saidaEmpresa'].invalid 
+                                                        ? 'error' 
+                                                        : 'check'"
+                            [ngClass]="{'icone_ok': !dadosProfissionais.controls['saidaEmpresa'].invalid,
+                                                                'icone_error': dadosProfissionais.controls['saidaEmpresa'].value != null && dadosProfissionais.controls['saidaEmpresa'].invalid}"
+                            class="icone"></mat-icon>
+                        <div class="input_data_placeholder" *ngIf="!dataSaidaAparente" [@fadeInOut] tabindex="7"
+                            (focus)="habilitaDataSaidaEmpresa()" (click)="habilitaDataSaidaEmpresa()"
+                            [ngStyle]="{'cursor': 'text'}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTRATO DE TRABALHO -->
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">Contrato de trabalho</label>
+                        <button type="button" class="limpar_file" [@fadeInOut]
+                            *ngIf="colaborador.contratoContratacao != null && contratoContratacaoInput.value != ''"
+                            (click)="limpaInputContrato()">Limpar</button>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <label class="input input_file col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                            for="contratoContratacaoInput">
+                            {{ colaborador.contratoContratacao != null && contratoContratacaoInput.value != ''
+                            ? contratoContratacaoInput.value
+                            : 'Escolher arquivo (.docx, .pdf, .png, .jpeg)' }}
+                            <mat-icon [@fadeInOut] [fontIcon]="colaborador.contratoContratacao != null && contratoContratacaoInput.value != '' 
+                                                            ? 'file_download_done' 
+                                                            : 'add_box'" class="icone icone_ok"></mat-icon>
+                        </label>
+                        <input type="file" formControlName="contratoContratacao" name="contratoContratacao"
+                            style="display: none;" [(ngModel)]="colaborador.contratoContratacao"
+                            #contratoContratacaoInput id="contratoContratacaoInput"
                             (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="20">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].value != ''"
-                            [fontIcon]="dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid 
-                                                            ? 'error' 
-                                                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosProfissionais.controls['contratoContratacao'].invalid,
-                                                            'icone_error': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
-                            class="icone"></mat-icon>
+
                     </div>
 
                     <div [@fadeInOut]
@@ -636,6 +724,146 @@
                     </div>
                 </div>
 
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao">Expediente</h3>
+
+                <!-- HORA DE ENTRADA -->
+                <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid}">
+                            Entrada
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="text" autocomplete="off" formControlName="horaEntrada" name="horaEntrada"
+                            style="text-transform:uppercase" spellcheck="false" type="time"
+                            [(ngModel)]="colaborador.expediente.horaEntrada" #inputHoraEntrada
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            [ngClass]="{'input_invalida': dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid}"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
+                            (click)="inputHoraEntrada.focus()"></mat-icon>
+                    </div>
+
+                </div>
+
+                <!-- HORA DE SAÍDA PARA O ALMOÇO -->
+                <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}">
+                            Saída almoço
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="text" autocomplete="off" formControlName="horaSaidaAlmoco" name="horaSaidaAlmoco"
+                            style="text-transform:uppercase" spellcheck="false" type="time"
+                            [(ngModel)]="colaborador.expediente.horaSaidaAlmoco" #inputHoraSaidaAlmoco
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            [ngClass]="{'input_invalida': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
+                            (click)="inputHoraSaidaAlmoco.focus()"></mat-icon>
+                    </div>
+
+                </div>
+
+                <!-- HORA DE RETORNO DO ALMOÇO -->
+                <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}">
+                            Retorno almoço
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="text" autocomplete="off" formControlName="horaEntradaAlmoco"
+                            name="horaEntradaAlmoco" style="text-transform:uppercase" spellcheck="false" type="time"
+                            [(ngModel)]="colaborador.expediente.horaEntradaAlmoco" #inputHoraEntradaAlmoco
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            [ngClass]="{'input_invalida': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
+                            (click)="inputHoraEntradaAlmoco.focus()"></mat-icon>
+                    </div>
+
+                </div>
+
+                <!-- HORA DE SAÍDA -->
+                <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}">
+                            Saída
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="text" autocomplete="off" formControlName="horaSaida" name="horaSaida"
+                            style="text-transform:uppercase" spellcheck="false" type="time"
+                            [(ngModel)]="colaborador.expediente.horaSaida" #inputHoraSaida
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            [ngClass]="{'input_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
+                            (click)="inputHoraSaida.focus()"></mat-icon>
+                    </div>
+
+                </div>
+
+                <!-- ESCALA -->
+                <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">Escala</label>
+                    </div>
+                    <select formControlName="escalaEnum" name="escalaEnum"
+                        [(ngModel)]="colaborador.expediente.escalaEnum" tabindex="3"
+                        (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                        (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectEscala
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <option value="INDEFINIDA">Indefinida</option>
+                        <option value="SEG_A_SEX">5x2</option>
+                        <option value="SEG_A_SAB">6x1</option>
+                        <option value="DIA_SIM_DIA_NAO">12x36</option>
+                    </select>
+                </div>
+
+                <!-- CARGA HORÁRIA SEMANAL -->
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}">
+                            Carga horária semanal (h)
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="number" formControlName="cargaHorariaSemanal" name="cargaHorariaSemanal" min="0"
+                            max="168" [(ngModel)]="colaborador.expediente.cargaHorariaSemanal" step="1"
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            [ngClass]="{'input_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="20">
+                        <mat-icon [@fadeInOut]
+                            *ngIf="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].value != ''"
+                            [fontIcon]="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid 
+                                                            ? 'error' 
+                                                            : 'check'"
+                            [ngClass]="{'icone_ok': !dadosProfissionais.controls['cargaHorariaSemanal'].invalid,
+                                                            'icone_error': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
+                            class="icone"></mat-icon>
+                    </div>
+
+                    <div [@fadeInOut]
+                        *ngIf="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid"
+                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
+                    </div>
+                </div>
+
+                <!-- BOTÕES DE NAVEGAÇÃO -->
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <button class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button tabindex="8"
                         matStepperPrevious (click)="avancaPrimeiraEtapa()">
@@ -645,15 +873,133 @@
                         [ngClass]="{'botaoHabilitado': dadosColaboradorForm.valid, 'botaoDesabilitado': !dadosColaboradorForm.valid}"
                         mat-button matStepperNext #botaoProximoSegundaEtapa>Próximo</button>
                 </div>
+
             </form>
         </mat-step>
 
-        <mat-step [stepControl]="dadosColaborador" editable="true">
-            <form #dadosColaboradorForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                [formGroup]="dadosColaborador">
+        <mat-step [stepControl]="dadosAcesso" editable="true">
+            <form #dadosAcessoForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                [formGroup]="dadosAcesso">
                 <ng-template matStepLabel>
-                    <span>Dados</span>
+                    <span>Sistema</span>
                 </ng-template>
+
+
+                <!-- ACESSO LIBERADO AO SISTEMA? -->
+                <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">Acesso ao sistema</label>
+                    </div>
+                    <select formControlName="acessoSistemaAtivo" name="acessoSistemaAtivo"
+                        [(ngModel)]="colaborador.acessoSistema.acessoSistemaAtivo" tabindex="3"
+                        (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                        (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectAcessoSistemaAtivo
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <option value=true>Liberado</option>
+                        <option value=false>Bloqueado</option>
+                    </select>
+                </div>
+
+                <!-- SENHA -->
+                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label"
+                            [ngClass]="{'label_invalida': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid}">
+                            Senha
+                        </label>
+                    </div>
+                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <input type="password" autocomplete="off" formControlName="senha" name="senha"
+                            style="text-transform:uppercase" spellcheck="false"
+                            [(ngModel)]="colaborador.acessoSistema.senha" maxlength="30"
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            [ngClass]="{'input_invalida': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid}"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="20">
+                        <mat-icon [@fadeInOut]
+                            *ngIf="dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].value != ''"
+                            [fontIcon]="dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid 
+                                                                            ? 'error' 
+                                                                            : 'check'"
+                            [ngClass]="{'icone_ok': !dadosAcesso.controls['senha'].invalid,
+                                                                            'icone_error': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid}"
+                            class="icone"></mat-icon>
+                    </div>
+
+                    <div [@fadeInOut]
+                        *ngIf="dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid"
+                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
+                    </div>
+
+                </div>
+
+                <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao">Módulos liberados</h3>
+
+                <!-- SETOR -->
+                <div class="row col-xl-6 col-lg-4 col-md-4 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">
+                            Módulo
+                        </label>
+                    </div>
+                    <select formControlName="privilegios" name="privilegios" tabindex="3"
+                        (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                        (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectPrivilegios
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <option value="HOME">Início</option>
+                        <option value="CLIENTES">Clientes</option>
+                        <option value="VENDAS">Vendas</option>
+                        <option value="PDV">Ponto de venda</option>
+                        <option value="ESTOQUE">Estoque</option>
+                        <option value="DESPESAS">Despesas</option>
+                        <option value="FECHAMENTOS">Fechamentos</option>
+                        <option value="PATRIMONIOS">Patrimonios</option>
+                        <option value="FORNECEDORES">Fornecedores</option>
+                        <option value="COMPRAS">Compras</option>
+                        <option value="COLABORADORES">Colaboradores</option>
+                        <option value="PRECOS">Preços</option>
+                    </select>
+                </div>
+
+                <!-- PRIVILÉGIOS -->
+                <div class="row col-xl-6 col-lg-4 col-md-4 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">
+                            Privilégio
+                        </label>
+                    </div>
+                    <select formControlName="privilegios" name="privilegios" tabindex="3"
+                        (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                        (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectPrivilegios
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <option value="HOME">Início</option>
+                        <option value="CLIENTES">Clientes</option>
+                        <option value="VENDAS">Vendas</option>
+                        <option value="PDV">Ponto de venda</option>
+                        <option value="ESTOQUE">Estoque</option>
+                        <option value="DESPESAS">Despesas</option>
+                        <option value="FECHAMENTOS">Fechamentos</option>
+                        <option value="PATRIMONIOS">Patrimonios</option>
+                        <option value="FORNECEDORES">Fornecedores</option>
+                        <option value="COMPRAS">Compras</option>
+                        <option value="COLABORADORES">Colaboradores</option>
+                        <option value="PRECOS">Preços</option>
+                    </select>
+                </div>
+
+                <div class="row col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 input_group">
+                    <button class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao">Resetar</button>
+                </div>
+
+                <div class="row col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 input_group">
+                    <button class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao">Adicionar</button>
+                </div>
+
+                <div class="row col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 input_group">
+                    <button class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao">Acesso total</button>
+                </div>
+
 
             </form>
         </mat-step>

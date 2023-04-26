@@ -21,7 +21,7 @@ export class ColaboradorService {
     }),
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1Nzg3ODkiLCJleHAiOjE2ODI0NTYwNDF9.NhO9eLn3OfAtm1EFrmXONkRjhakBnfjT7m6FFEk7QYpSnUz0b5Mq_QJHae7rlCumQGpUBNSk1Sq83e-6rbluyQ'
+      'Authorization': '	Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MzMzNDgiLCJleHAiOjE2ODMxNDQ4NTR9.5pQ2T1xmp4Jw-PPbCjQRySiYk2jPKvgvNMjAQvRFGuDgdsLnprW-ipdRije8OEInt0p31Sb2qXDujXt8brYbiQ'
     }),
     body: null
   }

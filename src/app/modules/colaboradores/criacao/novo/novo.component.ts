@@ -39,6 +39,8 @@ export class NovoComponent {
     private datePipe: DatePipe) { }
 
   dataNascimentoAparente: boolean = false;
+  dataEntradaAparente: boolean = false;
+  dataSaidaAparente: boolean = false;
 
   // Subscriptions
   validaDuplicidadeCpfCnpjSubscription$: Subscription;
@@ -49,10 +51,11 @@ export class NovoComponent {
   // Form groups
   dadosColaborador: FormGroup;
   dadosProfissionais: FormGroup;
+  dadosAcesso: FormGroup;
 
   colaborador: ColaboradorNovo;
 
-  // Variáveis data de nascimento
+  // Variáveis data
   minDate: Date;
   maxDate: Date;
 
@@ -75,6 +78,8 @@ export class NovoComponent {
   @ViewChild('selectSetor') selectSetor: ElementRef;
   @ViewChild('inputNome') inputNome: ElementRef;
   @ViewChild('inputDataNascimento') inputDataNascimento: ElementRef;
+  @ViewChild('inputDataEntrada') inputDataEntrada: ElementRef;
+  @ViewChild('inputDataSaida') inputDataSaida: ElementRef;
 
   ngOnInit(): void {
     this.inicializarColaborador();
@@ -185,6 +190,22 @@ export class NovoComponent {
       modeloContratacaoEnum: 'CLT',
       modeloTrabalhoEnum: 'PRESENCIAL',
       contratoContratacao: null,
+      salario: 0.0,
+      entradaEmpresa: '',
+      saidaEmpresa: '',
+      expediente: {
+        horaEntrada: '',
+        horaSaida: '',
+        horaSaidaAlmoco: '',
+        horaEntradaAlmoco: '',
+        cargaHorariaSemanal: 0,
+        escalaEnum: 'INDEFINIDA'
+      },
+      acessoSistema: {
+        acessoSistemaAtivo: true,
+        senha: '',
+        privilegios: ['HOME', 'CLIENTES', 'VENDAS', 'PDV', 'ESTOQUE', 'DESPESAS', 'FECHAMENTOS', 'PATRIMONIOS', 'FORNECEDORES', 'COMPRAS', 'COLABORADORES', 'PRECOS']
+      }
     }
   }
 
@@ -211,12 +232,22 @@ export class NovoComponent {
       statusColaboradorEnum: [''],
       modeloContratacaoEnum: [''],
       modeloTrabalhoEnum: [''],
-      contratoContratacao: [null]
+      contratoContratacao: [null],
+      salario: [0.0, [Validators.max(9999999.00), Validators.min(0.00)]],
+      entradaEmpresa: [''],
+      saidaEmpresa: [''],
+      horaEntrada: [''],
+      horaSaida: [''],
+      horaSaidaAlmoco: [''],
+      horaEntradaAlmoco: [''],
+      escalaEnum: ['INDEFINIDA'],
+      cargaHorariaSemanal: [0],
     });
-  }
-
-  limpaInputContrato() {
-    this.colaborador.contratoContratacao = null;
+    this.dadosAcesso = this.formBuilder.group({
+      acessoSistemaAtivo: [true],
+      senha: [''],
+      privilegios: [['HOME', 'CLIENTES', 'VENDAS', 'PDV', 'ESTOQUE', 'DESPESAS', 'FECHAMENTOS', 'PATRIMONIOS', 'FORNECEDORES', 'COMPRAS', 'COLABORADORES', 'PRECOS']]
+    });
   }
 
   validaDataNascimento() {
@@ -240,8 +271,8 @@ export class NovoComponent {
   }
 
   habilitaDataNascimento() {
-      this.inputDataNascimento.nativeElement.focus();
-      this.dataNascimentoAparente = true;
+    this.inputDataNascimento.nativeElement.focus();
+    this.dataNascimentoAparente = true;
   }
 
   realizaTratamentoCodigoPostal() {
@@ -349,6 +380,59 @@ export class NovoComponent {
   realizaTratamentoCpfCnpj() {
   }
 
+  // STEP EMPRESA
+
+  limpaInputContrato() {
+    this.colaborador.contratoContratacao = null;
+  }
+
+  validaDataEntradaEmpresa() {
+    if (this.colaborador.entradaEmpresa == '') {
+      this.dataEntradaAparente = false;
+      return;
+    }
+
+    let dataEntradaSplittada = this.colaborador.entradaEmpresa.split("-");
+    if (dataEntradaSplittada.length == 3) {
+      if (parseInt(dataEntradaSplittada[0]) > 2023 || parseInt(dataEntradaSplittada[0]) < 1900) {
+        this.colaborador.entradaEmpresa = '';
+        this.dataEntradaAparente = false;
+        this._snackBar.open("Data de entrada inválida", "Fechar", {
+          duration: 3500
+        })
+        return;
+      }
+    }
+  }
+
+  validaDataSaidaEmpresa() {
+    if (this.colaborador.saidaEmpresa == '') {
+      this.dataSaidaAparente = false;
+      return;
+    }
+
+    let dataSaidaSplittada = this.colaborador.saidaEmpresa.split("-");
+    if (dataSaidaSplittada.length == 3) {
+      if (parseInt(dataSaidaSplittada[0]) > 2023 || parseInt(dataSaidaSplittada[0]) < 1900) {
+        this.colaborador.saidaEmpresa = '';
+        this.dataEntradaAparente = false;
+        this._snackBar.open("Data de saída inválida", "Fechar", {
+          duration: 3500
+        })
+        return;
+      }
+    }
+  }
+
+  habilitaDataEntradaEmpresa() {
+    this.inputDataEntrada.nativeElement.focus();
+    this.dataEntradaAparente = true;
+  }
+
+  habilitaDataSaidaEmpresa() {
+    this.inputDataSaida.nativeElement.focus();
+    this.dataSaidaAparente = true;
+  }
 
   // NAVEGAÇÃO ENTRE OS STEPS
 

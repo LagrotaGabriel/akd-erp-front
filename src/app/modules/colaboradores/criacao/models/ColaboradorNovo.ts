@@ -10,20 +10,19 @@ export class ColaboradorNovo {
     dataNascimento?: string;               // OK
     email?: string;                        // OK
     cpfCnpj?: string;                      // OK
-    salario?: number;
-    entradaEmpresa?: string;
-    saidaEmpresa?: string;
-    contratoContratacao?: File;
+    salario?: number;                      // OK
+    entradaEmpresa?: string;                                // OK
+    saidaEmpresa?: string;                                  // OK
+    contratoContratacao?: File;                             // OK
     ocupacao?: string;                                      // OK
     tipoOcupacaoEnum?: string;                              // OK
     modeloContratacaoEnum?: string;                         // OK
     modeloTrabalhoEnum?: string;                            // OK
     statusColaboradorEnum?: string;                         // OK
-    acessoSistema?: AcessoSistema;
+    acessoSistema?: AcessoSistema;         // OK
     endereco?: Endereco;                   // OK
     telefone?: Telefone;                   // OK
-    expediente?: Expediente;
-    parentescos?: Parentesco[];
+    expediente?: Expediente;               // OK
 
     constructor(item) {
         this.fotoPerfil = item?.fotoPerfil;
@@ -44,7 +43,6 @@ export class ColaboradorNovo {
         this.endereco = item?.endereco;
         this.telefone = item?.telefone;
         this.expediente = item?.expediente;
-        this.parentescos = item?.parentescos;
     }
 
 }

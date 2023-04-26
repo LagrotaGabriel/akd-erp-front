@@ -1,5 +1,5 @@
 export class AcessoSistema {
     acessoSistemaAtivo: boolean;
-    nomeUsuario: string;
+    senha: string;
     privilegios: string[];
 }

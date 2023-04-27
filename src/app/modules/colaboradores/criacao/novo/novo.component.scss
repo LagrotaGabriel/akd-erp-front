@@ -12,7 +12,9 @@
 .asterisco,
 .input,
 .error_message_container,
-.error_message {
+.error_message,
+.chips_block,
+.block {
     margin: 0;
     padding: 0;
 }
@@ -133,6 +135,12 @@ span {
     font-family: $font-roboto;
     margin-bottom: 0.3rem;
     letter-spacing: 0;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
 }
 
 .error_message {
@@ -247,19 +255,19 @@ input:focus {
     padding: 0;
 }
 
-::ng-deep .icone_data  .mat-mdc-icon-button {
+::ng-deep .icone_data .mat-mdc-icon-button {
     color: $primary-color !important;
     --mat-mdc-button-ripple-color: transparent !important;
     --mat-mdc-button-persistent-ripple-color: transparent !important;
 }
 
-::ng-deep .icone_data  .mat-mdc-icon-button:focus {
+::ng-deep .icone_data .mat-mdc-icon-button:focus {
     outline: none !important;
     --mat-mdc-button-ripple-color: transparent !important;
     --mat-mdc-button-persistent-ripple-color: transparent !important;
 }
 
-::ng-deep .icone_data  .mat-mdc-icon-button:hover {
+::ng-deep .icone_data .mat-mdc-icon-button:hover {
     background-color: transparent !important;
     --mat-mdc-button-ripple-color: transparent !important;
     --mat-mdc-button-persistent-ripple-color: transparent !important;
@@ -344,18 +352,18 @@ input:focus {
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
-  appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .botao {
-    background-color: $primary-color !important;
+    background-color: $primary-color;
     border: 1px solid $primary-color-darker;
     border-radius: 5px;
     padding: 0.5rem 1rem;
@@ -364,9 +372,64 @@ input[type=number] {
     cursor: pointer;
 }
 
+.botao:focus {
+    outline: none;
+}
+
 .botao:hover {
-    background-color: $primary-color-dark !important;
+    background-color: $primary-color-dark;
     transition: 0.2s;
+}
+
+.botaoDesabilitado {
+    background-color: $light-grey;
+    border: 1px solid $dark-grey;
+    color: $dark-grey;
+    cursor: auto;
+}
+
+.botaoDesabilitado:hover {
+    background-color: $light-grey;
+}
+
+.input_group_bt {
+    padding-bottom: 0;
+    padding-right: 0;
+}
+
+.input_group_modulo {
+    padding-bottom: 1rem;
+}
+
+.chips_container {
+    padding-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.chips_block {
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.chip {
+    padding: 0.5rem 1rem;
+    font-family: $font-poppins;
+    font-size: 0.90rem;
+    font-weight: 400;
+    border-radius: 5px;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    cursor: pointer;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.chip:hover {
+    transition: 0.3s;
+    color: $dark-white;
+    border: 1px solid $primary-color-darker;
+    background-color: $primary-color;
 }
 
 @media (max-width: 960px) {
@@ -526,15 +589,17 @@ input[type=number] {
     }
 }
 
-@keyframes pulse{
+@keyframes pulse {
 
-    0%{
+    0% {
         transform: scale(0.90);
     }
-    70%{
+
+    70% {
         transform: scale(1);
     }
-    100%{
+
+    100% {
         transform: scale(0.90);
     }
 

@@ -73,6 +73,10 @@ export class NovoComponent {
   estadosResponse: EstadosResponse[];
   municipiosResponse: MunicipiosResponse[];
 
+  // Variaveis acesso
+  modulosLiberados: string[] = ['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS'];
+  privilegioAtual: string = 'CLIENTES';
+
   @ViewChild('numeroEndereco') inputNumeroEndereco: ElementRef;
   @ViewChild('contratoContratacaoInput') contratoContratacaoInput: ElementRef;
   @ViewChild('selectSetor') selectSetor: ElementRef;
@@ -93,8 +97,10 @@ export class NovoComponent {
     this.obtemTodosEstadosBrasileiros();
 
     setTimeout(() => {
-      // this.inputNome.nativeElement.focus();
+      this.inputNome.nativeElement.focus();
     }, 100);
+
+    this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
   }
 
   atualizaValidatorsTelefone() {
@@ -204,7 +210,8 @@ export class NovoComponent {
       acessoSistema: {
         acessoSistemaAtivo: true,
         senha: '',
-        privilegios: ['HOME', 'CLIENTES', 'VENDAS', 'PDV', 'ESTOQUE', 'DESPESAS', 'FECHAMENTOS', 'PATRIMONIOS', 'FORNECEDORES', 'COMPRAS', 'COLABORADORES', 'PRECOS']
+        permissao: 'LEITURA_BASICA',
+        privilegios: ['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']
       }
     }
   }
@@ -246,7 +253,8 @@ export class NovoComponent {
     this.dadosAcesso = this.formBuilder.group({
       acessoSistemaAtivo: [true],
       senha: [''],
-      privilegios: [['HOME', 'CLIENTES', 'VENDAS', 'PDV', 'ESTOQUE', 'DESPESAS', 'FECHAMENTOS', 'PATRIMONIOS', 'FORNECEDORES', 'COMPRAS', 'COLABORADORES', 'PRECOS']]
+      permissao: ['LEITURA_BASICA'],
+      privilegios: [['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']]
     });
   }
 
@@ -432,6 +440,19 @@ export class NovoComponent {
   habilitaDataSaidaEmpresa() {
     this.inputDataSaida.nativeElement.focus();
     this.dataSaidaAparente = true;
+  }
+
+  // STEP ACESSO
+
+  adicionaModulo(moduloLiberado) {
+    this.colaborador.acessoSistema.privilegios.push(moduloLiberado)
+    this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
+    this.privilegioAtual = '';
+  }
+
+  removeModulo(moduloLiberado) {
+    this.colaborador.acessoSistema.privilegios.splice(moduloLiberado, 1);
+    this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
   }
 
   // NAVEGAÇÃO ENTRE OS STEPS

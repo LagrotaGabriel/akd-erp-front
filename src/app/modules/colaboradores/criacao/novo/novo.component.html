@@ -870,7 +870,7 @@
                         Voltar
                     </button>
                     <button (click)="avancaTerceiraEtapa()" tabindex="9" class="button" matStepperNext
-                        [ngClass]="{'botaoHabilitado': dadosColaboradorForm.valid, 'botaoDesabilitado': !dadosColaboradorForm.valid}"
+                        [ngClass]="{'botaoHabilitado': dadosProfissionais.valid, 'botaoDesabilitado': !dadosProfissionais.valid}"
                         mat-button matStepperNext #botaoProximoSegundaEtapa>Próximo</button>
                 </div>
 
@@ -934,72 +934,100 @@
 
                 </div>
 
+                <!-- PERMISSÕES -->
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
+                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                        <label class="label">
+                            Permissões
+                        </label>
+                    </div>
+                    <select formControlName="privilegios" name="privilegios" tabindex="3"
+                        (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                        (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectPermissoes
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <option value="LEITURA_BASICA">Leitura básica</option>
+                        <option value="LEITURA_AVANCADA">Leitura avançada</option>
+                        <option value="LEITURA_BASICA_ALTERACAO">Leitura básica e alterações</option>
+                        <option value="LEITURA_AVANCADA_ALTERACAO">Leitura avançada e alterações</option>
+                    </select>
+                </div>
+
                 <h3 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao">Módulos liberados</h3>
 
                 <!-- SETOR -->
-                <div class="row col-xl-6 col-lg-4 col-md-4 col-sm-12 col-12 input_group">
+                <div class="row col-xl-12 col-lg-4 col-md-4 col-sm-12 col-12 input_group"
+                    [ngClass]="{'input_group_modulo': modulosLiberados.length > 0}">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label">
                             Módulo
                         </label>
                     </div>
-                    <select formControlName="privilegios" name="privilegios" tabindex="3"
-                        (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                    <select tabindex="3" (change)="(privilegioAtual = selectPrivilegios.value)"
+                        [value]="privilegioAtual" (keydown.enter)="botaoProximoSegundaEtapa.click()"
                         (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectPrivilegios
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <option value="HOME">Início</option>
-                        <option value="CLIENTES">Clientes</option>
-                        <option value="VENDAS">Vendas</option>
-                        <option value="PDV">Ponto de venda</option>
-                        <option value="ESTOQUE">Estoque</option>
-                        <option value="DESPESAS">Despesas</option>
-                        <option value="FECHAMENTOS">Fechamentos</option>
-                        <option value="PATRIMONIOS">Patrimonios</option>
-                        <option value="FORNECEDORES">Fornecedores</option>
-                        <option value="COMPRAS">Compras</option>
-                        <option value="COLABORADORES">Colaboradores</option>
-                        <option value="PRECOS">Preços</option>
+                        class="input col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <option value="HOME" [disabled]="modulosLiberados.includes(opcInicio.value) ? true : false"
+                            #opcInicio>Início</option>
+                        <option value="CLIENTES"
+                            [disabled]="modulosLiberados.includes(opcClientes.value) ? true : false" #opcClientes>
+                            Clientes</option>
+                        <option value="VENDAS" [disabled]="modulosLiberados.includes(opcVendas.value) ? true : false"
+                            #opcVendas>Vendas</option>
+                        <option value="PDV" [disabled]="modulosLiberados.includes(opcPdv.value) ? true : false" #opcPdv>
+                            Ponto de venda</option>
+                        <option value="ESTOQUE" [disabled]="modulosLiberados.includes(opcEstoque.value) ? true : false"
+                            #opcEstoque>Estoque</option>
+                        <option value="DESPESAS"
+                            [disabled]="modulosLiberados.includes(opcDespesas.value) ? true : false" #opcDespesas>
+                            Despesas</option>
+                        <option value="FECHAMENTOS"
+                            [disabled]="modulosLiberados.includes(opcFechamentos.value) ? true : false" #opcFechamentos>
+                            Fechamentos</option>
+                        <option value="PATRIMONIOS"
+                            [disabled]="modulosLiberados.includes(opcPatrimonios.value) ? true : false" #opcPatrimonios>
+                            Patrimonios</option>
+                        <option value="FORNECEDORES"
+                            [disabled]="modulosLiberados.includes(opcFornecedores.value) ? true : false"
+                            #opcFornecedores>
+                            Fornecedores</option>
+                        <option value="COMPRAS" [disabled]="modulosLiberados.includes(opcCompras.value) ? true : false"
+                            #opcCompras>Compras</option>
+                        <option value="COLABORADORES"
+                            [disabled]="modulosLiberados.includes(opcColaboradores.value) ? true : false"
+                            #opcColaboradores>
+                            Colaboradores</option>
+                        <option value="PRECOS" [disabled]="modulosLiberados.includes(opcPrecos.value) ? true : false"
+                            #opcPrecos>Preços</option>
                     </select>
-                </div>
 
-                <!-- PRIVILÉGIOS -->
-                <div class="row col-xl-6 col-lg-4 col-md-4 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">
-                            Privilégio
-                        </label>
+                    <div class="row col-xl-3 col-lg-4 col-md-4 col-sm-4 col-4 input_group input_group_bt">
+                        <button
+                            [ngClass]="{'botaoDesabilitado': selectPrivilegios.value == '' || selectPrivilegios.value == null}"
+                            [disabled]="selectPrivilegios.value == '' || selectPrivilegios.value == null ? true : false"
+                            type="button" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao"
+                            (click)="adicionaModulo(selectPrivilegios.value)">Adicionar</button>
                     </div>
-                    <select formControlName="privilegios" name="privilegios" tabindex="3"
-                        (keydown.enter)="botaoProximoSegundaEtapa.click()"
-                        (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectPrivilegios
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <option value="HOME">Início</option>
-                        <option value="CLIENTES">Clientes</option>
-                        <option value="VENDAS">Vendas</option>
-                        <option value="PDV">Ponto de venda</option>
-                        <option value="ESTOQUE">Estoque</option>
-                        <option value="DESPESAS">Despesas</option>
-                        <option value="FECHAMENTOS">Fechamentos</option>
-                        <option value="PATRIMONIOS">Patrimonios</option>
-                        <option value="FORNECEDORES">Fornecedores</option>
-                        <option value="COMPRAS">Compras</option>
-                        <option value="COLABORADORES">Colaboradores</option>
-                        <option value="PRECOS">Preços</option>
-                    </select>
                 </div>
 
-                <div class="row col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 input_group">
-                    <button class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao">Resetar</button>
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 chips_container">
+                    <div *ngFor="let moduloLiberado of modulosLiberados" class="row chips_block">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 chip mat-elevation-z2"
+                            (click)="removeModulo(moduloLiberado)">
+                            {{ moduloLiberado | titlecase }}
+                        </div>
+                    </div>
                 </div>
 
-                <div class="row col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 input_group">
-                    <button class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao">Adicionar</button>
+                <!-- BOTÕES DE NAVEGAÇÃO -->
+                <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <button class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button tabindex="8"
+                        matStepperPrevious (click)="avancaSegundaEtapa()">
+                        Voltar
+                    </button>
+                    <button (click)="avancaTerceiraEtapa()" tabindex="9" class="button"
+                        [ngClass]="{'botaoHabilitado': dadosAcesso.valid, 'botaoDesabilitado': !dadosAcesso.valid}"
+                        mat-button>Enviar</button>
                 </div>
-
-                <div class="row col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 input_group">
-                    <button class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao">Acesso total</button>
-                </div>
-
 
             </form>
         </mat-step>

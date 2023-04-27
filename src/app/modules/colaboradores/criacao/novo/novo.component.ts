@@ -84,6 +84,7 @@ export class NovoComponent {
   @ViewChild('inputDataNascimento') inputDataNascimento: ElementRef;
   @ViewChild('inputDataEntrada') inputDataEntrada: ElementRef;
   @ViewChild('inputDataSaida') inputDataSaida: ElementRef;
+  @ViewChild('selectAcessoSistemaAtivo') selectAcessoSistemaAtivo: ElementRef;
 
   ngOnInit(): void {
     this.inicializarColaborador();
@@ -101,6 +102,95 @@ export class NovoComponent {
     }, 100);
 
     this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
+  }
+
+  inicializarColaborador() {
+    this.colaborador = {
+      nome: '',
+      cpfCnpj: '',
+      email: '',
+      dataNascimento: '',
+      telefone: {
+        tipoTelefone: '',
+        prefixo: null,
+        numero: null
+      },
+      endereco: {
+        id: null,
+        logradouro: '',
+        numero: null,
+        bairro: '',
+        codigoPostal: '',
+        cidade: '',
+        complemento: '',
+        estado: ''
+      },
+      tipoOcupacaoEnum: 'TECNICO',
+      ocupacao: '',
+      statusColaboradorEnum: 'ATIVO',
+      modeloContratacaoEnum: 'CLT',
+      modeloTrabalhoEnum: 'PRESENCIAL',
+      contratoContratacao: null,
+      salario: 0.0,
+      entradaEmpresa: '',
+      saidaEmpresa: '',
+      expediente: {
+        horaEntrada: '',
+        horaSaida: '',
+        horaSaidaAlmoco: '',
+        horaEntradaAlmoco: '',
+        cargaHorariaSemanal: 0,
+        escalaEnum: 'INDEFINIDA'
+      },
+      acessoSistema: {
+        acessoSistemaAtivo: true,
+        senha: '',
+        permissaoEnum: 'LEITURA_BASICA',
+        privilegios: ['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']
+      }
+    }
+  }
+
+  createForm() {
+    this.dadosColaborador = this.formBuilder.group({
+      nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      cpfCnpj: ['', [Validators.pattern(this.inputPatternCpfCnpj), Validators.maxLength(this.inputLengthCpfCnpj), Validators.minLength(this.inputLengthCpfCnpj)]],
+      email: ['', [Validators.email, Validators.maxLength(50)]],
+      dataNascimento: [''],
+      tipoTelefone: [''],
+      prefixo: ['', [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
+      numeroTelefone: [''],
+      logradouro: [''],
+      numero: [''],
+      bairro: ['', Validators.maxLength(50)],
+      codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^\d{5}\d{3}/)]],
+      cidade: ['', Validators.maxLength(50)],
+      complemento: ['', Validators.maxLength(80)],
+      estado: ['', Validators.maxLength(50)]
+    });
+    this.dadosProfissionais = this.formBuilder.group({
+      tipoOcupacaoEnum: [''],
+      ocupacao: ['', Validators.maxLength(30)],
+      statusColaboradorEnum: [''],
+      modeloContratacaoEnum: [''],
+      modeloTrabalhoEnum: [''],
+      contratoContratacao: [null],
+      salario: [0.0, [Validators.max(9999999.00), Validators.min(0.00)]],
+      entradaEmpresa: [''],
+      saidaEmpresa: [''],
+      horaEntrada: [''],
+      horaSaida: [''],
+      horaSaidaAlmoco: [''],
+      horaEntradaAlmoco: [''],
+      escalaEnum: ['INDEFINIDA'],
+      cargaHorariaSemanal: [0],
+    });
+    this.dadosAcesso = this.formBuilder.group({
+      acessoSistemaAtivo: [true],
+      senha: [''],
+      permissaoEnum: ['LEITURA_BASICA'],
+      privilegios: [['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']]
+    });
   }
 
   atualizaValidatorsTelefone() {
@@ -167,95 +257,6 @@ export class NovoComponent {
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
-  }
-
-  inicializarColaborador() {
-    this.colaborador = {
-      nome: '',
-      cpfCnpj: '',
-      email: '',
-      dataNascimento: '',
-      telefone: {
-        tipoTelefone: '',
-        prefixo: null,
-        numero: null
-      },
-      endereco: {
-        id: null,
-        logradouro: '',
-        numero: null,
-        bairro: '',
-        codigoPostal: '',
-        cidade: '',
-        complemento: '',
-        estado: ''
-      },
-      tipoOcupacaoEnum: 'TECNICO',
-      ocupacao: '',
-      statusColaboradorEnum: 'ATIVO',
-      modeloContratacaoEnum: 'CLT',
-      modeloTrabalhoEnum: 'PRESENCIAL',
-      contratoContratacao: null,
-      salario: 0.0,
-      entradaEmpresa: '',
-      saidaEmpresa: '',
-      expediente: {
-        horaEntrada: '',
-        horaSaida: '',
-        horaSaidaAlmoco: '',
-        horaEntradaAlmoco: '',
-        cargaHorariaSemanal: 0,
-        escalaEnum: 'INDEFINIDA'
-      },
-      acessoSistema: {
-        acessoSistemaAtivo: true,
-        senha: '',
-        permissao: 'LEITURA_BASICA',
-        privilegios: ['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']
-      }
-    }
-  }
-
-  createForm() {
-    this.dadosColaborador = this.formBuilder.group({
-      nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      cpfCnpj: ['', [Validators.pattern(this.inputPatternCpfCnpj), Validators.maxLength(this.inputLengthCpfCnpj), Validators.minLength(this.inputLengthCpfCnpj)]],
-      email: ['', [Validators.email, Validators.maxLength(50)]],
-      dataNascimento: [''],
-      tipoTelefone: [''],
-      prefixo: ['', [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
-      numeroTelefone: [''],
-      logradouro: [''],
-      numero: [''],
-      bairro: ['', Validators.maxLength(50)],
-      codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^\d{5}\d{3}/)]],
-      cidade: ['', Validators.maxLength(50)],
-      complemento: ['', Validators.maxLength(80)],
-      estado: ['', Validators.maxLength(50)]
-    });
-    this.dadosProfissionais = this.formBuilder.group({
-      tipoOcupacaoEnum: [''],
-      ocupacao: ['', Validators.maxLength(30)],
-      statusColaboradorEnum: [''],
-      modeloContratacaoEnum: [''],
-      modeloTrabalhoEnum: [''],
-      contratoContratacao: [null],
-      salario: [0.0, [Validators.max(9999999.00), Validators.min(0.00)]],
-      entradaEmpresa: [''],
-      saidaEmpresa: [''],
-      horaEntrada: [''],
-      horaSaida: [''],
-      horaSaidaAlmoco: [''],
-      horaEntradaAlmoco: [''],
-      escalaEnum: ['INDEFINIDA'],
-      cargaHorariaSemanal: [0],
-    });
-    this.dadosAcesso = this.formBuilder.group({
-      acessoSistemaAtivo: [true],
-      senha: [''],
-      permissao: ['LEITURA_BASICA'],
-      privilegios: [['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']]
-    });
   }
 
   validaDataNascimento() {
@@ -475,7 +476,7 @@ export class NovoComponent {
 
   avancaTerceiraEtapa() {
     setTimeout(() => {
-      // this.codigoPostal.nativeElement.focus();
+      this.selectAcessoSistemaAtivo.nativeElement.focus();
     }, 400);
   }
 

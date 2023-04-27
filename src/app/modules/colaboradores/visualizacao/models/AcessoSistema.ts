@@ -1,6 +1,6 @@
 export class AcessoSistema {
     acessoSistemaAtivo: boolean;
     senha: string;
-    permissao: string;
+    permissaoEnum: string;
     privilegios: string[];
 }

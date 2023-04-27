@@ -374,6 +374,8 @@ input[type=number] {
 
 .botao:focus {
     outline: none;
+    background-color: $primary-color-dark;
+    transition: 0.2s;
 }
 
 .botao:hover {

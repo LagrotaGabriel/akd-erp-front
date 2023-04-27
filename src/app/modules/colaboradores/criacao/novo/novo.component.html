@@ -103,20 +103,15 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="3"
-                            style="text-transform:lowercase"
+                            style="text-transform:lowercase" #inputEmail
                             [ngClass]="{'input_invalida': dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid}"
                             formControlName="email" name="email" [(ngModel)]="colaborador.email"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].value != ''"
-                            [fontIcon]="dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid 
-                                            ? 'error' 
-                                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosColaborador.controls['email'].invalid,
-                                                    'icone_error': dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid}"
-                            class="icone"></mat-icon>
+                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputEmail()" [ngClass]="{ 'icone_ok': defineIconeInputEmail() == 'check' || defineIconeInputEmail() == 'alternate_email',
+                                                    'icone_error': defineIconeInputEmail() == 'error' }"
+                            (click)="inputEmail.focus()" class="icone"></mat-icon>
                     </div>
                     <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid"
@@ -140,13 +135,8 @@
                             formControlName="dataNascimento" name="dataNascimento"
                             [(ngModel)]="colaborador.dataNascimento"
                             class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosColaborador.controls['dataNascimento'].value != null && dadosColaborador.controls['dataNascimento'].value != ''"
-                            [fontIcon]="dadosColaborador.controls['dataNascimento'].value != null && dadosColaborador.controls['dataNascimento'].invalid 
-                                        ? 'error' 
-                                        : 'check'"
-                            [ngClass]="{'icone_ok': !dadosColaborador.controls['dataNascimento'].invalid,
-                                                'icone_error': dadosColaborador.controls['dataNascimento'].value != null && dadosColaborador.controls['dataNascimento'].invalid}"
+                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataNascimento()" [ngClass]="{'icone_ok': defineIconeDataNascimento() == 'calendar_month' || defineIconeDataNascimento() == 'check',
+                                                'icone_error': defineIconeDataNascimento() == 'error' }"
                             class="icone"></mat-icon>
                         <div class="input_data_placeholder" *ngIf="!dataNascimentoAparente" [@fadeInOut] tabindex="4"
                             (focus)="habilitaDataNascimento()" (click)="habilitaDataNascimento()"
@@ -228,13 +218,9 @@
                             formControlName="numeroTelefone" name="numeroTelefone"
                             [(ngModel)]="colaborador.telefone.numero">
                         <mat-icon [@fadeInOut]
-                            *ngIf="dadosColaborador.controls['numeroTelefone'].touched && dadosColaborador.controls['numeroTelefone'].value != ''"
-                            [fontIcon]="dadosColaborador.controls['numeroTelefone'].touched && dadosColaborador.controls['numeroTelefone'].invalid 
-                            ? 'error' 
-                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosColaborador.controls['numeroTelefone'].invalid,
-                                    'icone_error': dadosColaborador.controls['numeroTelefone'].touched && dadosColaborador.controls['numeroTelefone'].invalid}"
-                            class="icone"></mat-icon>
+                            *ngIf="colaborador.telefone.tipoTelefone != '' && colaborador.telefone.tipoTelefone != null"
+                            [fontIcon]="defineIconeInputTelefone()" [ngClass]="{'icone_ok': defineIconeInputTelefone() == 'smartphone' || defineIconeInputTelefone() == 'check' || defineIconeInputTelefone() == 'call' ,
+                                    'icone_error': defineIconeInputTelefone() == 'error'}" class="icone"></mat-icon>
                     </div>
                     <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosColaborador.controls['numeroTelefone'].touched && dadosColaborador.controls['numeroTelefone'].invalid"
@@ -480,7 +466,7 @@
                         (click)="retornaParaVisualizacao()">
                         Voltar
                     </button>
-                    <button (click)="avancaSegundaEtapa()"  class="button"
+                    <button (click)="avancaSegundaEtapa()" class="button"
                         [ngClass]="{'botaoHabilitado': dadosColaboradorForm.valid, 'botaoDesabilitado': !dadosColaboradorForm.valid}"
                         mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
                 </div>
@@ -642,18 +628,13 @@
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()" type="date" formControlName="entradaEmpresa"
                             (focusout)="validaDataEntradaEmpresa()" #inputDataEntrada name="entradaEmpresa"
                             formControlName="entradaEmpresa" name="entradaEmpresa"
-                            [(ngModel)]="colaborador.entradaEmpresa"
+                            [(ngModel)]="colaborador.entradaEmpresa" tabindex="-1"
                             class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosProfissionais.controls['entradaEmpresa'].value != null && dadosProfissionais.controls['entradaEmpresa'].value != ''"
-                            [fontIcon]="dadosProfissionais.controls['entradaEmpresa'].value != null && dadosProfissionais.controls['entradaEmpresa'].invalid 
-                                        ? 'error' 
-                                        : 'check'"
-                            [ngClass]="{'icone_ok': !dadosProfissionais.controls['entradaEmpresa'].invalid,
-                                                'icone_error': dadosProfissionais.controls['entradaEmpresa'].value != null && dadosProfissionais.controls['entradaEmpresa'].invalid}"
+                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataEntradaEmpresa()" [ngClass]="{'icone_ok': defineIconeDataEntradaEmpresa() == 'calendar_month' || defineIconeDataEntradaEmpresa() == 'check',
+                                                'icone_error': defineIconeDataEntradaEmpresa() == 'error' }"
                             class="icone"></mat-icon>
                         <div class="input_data_placeholder" *ngIf="!dataEntradaAparente" [@fadeInOut]
-                            (focus)="habilitaDataEntradaEmpresa()" (click)="habilitaDataEntradaEmpresa()"
+                            (focus)="habilitaDataEntradaEmpresa()" (click)="habilitaDataEntradaEmpresa()" tabindex="23"
                             [ngStyle]="{'cursor': 'text'}">
                         </div>
                     </div>
@@ -662,7 +643,8 @@
                 <!-- DATA DE SAIDA -->
                 <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">
+                        <label class="label"
+                            [ngClass]="{'label_desabilitada': colaborador.statusColaboradorEnum == 'ATIVO'}">
                             Data de saída
                         </label>
                     </div>
@@ -673,16 +655,13 @@
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()" type="date" formControlName="saidaEmpresa"
                             (focusout)="validaDataSaidaEmpresa()" #inputDataSaida name="saidaEmpresa"
                             formControlName="saidaEmpresa" name="saidaEmpresa" [(ngModel)]="colaborador.saidaEmpresa"
+                            [disabled]="colaborador.statusColaboradorEnum == 'ATIVO' ? true : false" tabindex="-1"
                             class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosProfissionais.controls['saidaEmpresa'].value != null && dadosProfissionais.controls['saidaEmpresa'].value != ''"
-                            [fontIcon]="dadosProfissionais.controls['saidaEmpresa'].value != null && dadosProfissionais.controls['saidaEmpresa'].invalid 
-                                                        ? 'error' 
-                                                        : 'check'"
-                            [ngClass]="{'icone_ok': !dadosProfissionais.controls['saidaEmpresa'].invalid,
-                                                                'icone_error': dadosProfissionais.controls['saidaEmpresa'].value != null && dadosProfissionais.controls['saidaEmpresa'].invalid}"
+                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataSaidaEmpresa()" [ngClass]="{'icone_ok': defineIconeDataSaidaEmpresa() == 'calendar_month' || defineIconeDataSaidaEmpresa() == 'check',
+                                                'icone_error': defineIconeDataSaidaEmpresa() == 'error' }"
                             class="icone"></mat-icon>
                         <div class="input_data_placeholder" *ngIf="!dataSaidaAparente" [@fadeInOut]
+                            [tabindex]="colaborador.statusColaboradorEnum != 'ATIVO' ? '24' : '-1'"
                             (focus)="habilitaDataSaidaEmpresa()" (click)="habilitaDataSaidaEmpresa()"
                             [ngStyle]="{'cursor': 'text'}">
                         </div>
@@ -884,7 +863,6 @@
                     <span>Sistema</span>
                 </ng-template>
 
-
                 <!-- ACESSO LIBERADO AO SISTEMA? -->
                 <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
@@ -1006,7 +984,8 @@
                             [ngClass]="{'botaoDesabilitado': selectPrivilegios.value == '' || selectPrivilegios.value == null}"
                             [disabled]="selectPrivilegios.value == '' || selectPrivilegios.value == null ? true : false"
                             type="button" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao"
-                            (click)="adicionaModulo(selectPrivilegios.value); selectPrivilegios.focus()" tabindex="38">Adicionar</button>
+                            (click)="adicionaModulo(selectPrivilegios.value); selectPrivilegios.focus()"
+                            tabindex="38">Adicionar</button>
                     </div>
                 </div>
 

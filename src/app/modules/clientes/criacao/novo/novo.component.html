@@ -166,18 +166,12 @@
                         <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="6"
                             style="text-transform:lowercase"
                             [ngClass]="{'input_invalida': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}"
-                            formControlName="email" name="email" [(ngModel)]="cliente.email"
+                            formControlName="email" name="email" [(ngModel)]="cliente.email" #inputEmail
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacaoDeClientes()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].value != ''"
-                            [fontIcon]="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid 
-                            ? 'error' 
-                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosCliente.controls['email'].invalid,
-                                    'icone_error': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}"
-                            class="icone"></mat-icon>
+                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputEmail()" [ngClass]="{ 'icone_ok': defineIconeInputEmail() == 'check' || defineIconeInputEmail() == 'alternate_email',
+                            'icone_error': defineIconeInputEmail() == 'error' }" class="icone" (click)="inputEmail.focus()"></mat-icon>
                     </div>
                     <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid"
@@ -200,13 +194,10 @@
                             name="dataNascimento" formControlName="dataNascimento" name="dataNascimento"
                             [(ngModel)]="cliente.dataNascimento"
                             class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosCliente.controls['dataNascimento'].value != null && dadosCliente.controls['dataNascimento'].value != ''"
-                            [fontIcon]="dadosCliente.controls['dataNascimento'].value != null && dadosCliente.controls['dataNascimento'].invalid 
-                        ? 'error' 
-                        : 'check'"
-                            [ngClass]="{'icone_ok': !dadosCliente.controls['dataNascimento'].invalid,
-                                'icone_error': dadosCliente.controls['dataNascimento'].value != null && dadosCliente.controls['dataNascimento'].invalid}"
+                            <mat-icon [@fadeInOut]
+                            [fontIcon]="defineIconeDataNascimento()"
+                            [ngClass]="{'icone_ok': defineIconeDataNascimento() == 'calendar_month' || defineIconeDataNascimento() == 'check',
+                                                'icone_error': defineIconeDataNascimento() == 'error' }"
                             class="icone"></mat-icon>
                         <div class="input_data_placeholder" *ngIf="!dataNascimentoAparente" [@fadeInOut] tabindex="7"
                             (focus)="habilitaDataNascimento()" (click)="habilitaDataNascimento()"
@@ -307,13 +298,9 @@
                             [ngClass]="{'input_invalida': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
                             formControlName="numero" name="numero" [(ngModel)]="cliente.telefone.numero">
                         <mat-icon [@fadeInOut]
-                            *ngIf="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].value != ''"
-                            [fontIcon]="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid 
-                            ? 'error' 
-                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosTelefone.controls['numero'].invalid,
-                                    'icone_error': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
-                            class="icone"></mat-icon>
+                            *ngIf="cliente.telefone.tipoTelefone != '' && cliente.telefone.tipoTelefone != null"
+                            [fontIcon]="defineIconeInputTelefone()" [ngClass]="{'icone_ok': defineIconeInputTelefone() == 'smartphone' || defineIconeInputTelefone() == 'check' || defineIconeInputTelefone() == 'call' ,
+                                    'icone_error': defineIconeInputTelefone() == 'error'}" class="icone"></mat-icon>
                     </div>
                     <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid"

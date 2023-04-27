@@ -181,6 +181,17 @@ export class NovoComponent implements OnInit, OnDestroy {
     }, 400);
   }
 
+  // EMAIL
+  defineIconeInputEmail() {
+    if (this.dadosCliente.controls['email'].touched && this.dadosCliente.controls['email'].invalid) {
+      return 'error';
+    }
+    else {
+      if (this.cliente.email == '' || this.cliente.email == null) return 'alternate_email';
+      else return 'check';
+    }
+  }
+
   atualizaTipoPessoa() {
 
     if (this.cliente.tipoPessoa == 'FISICA') {
@@ -426,6 +437,16 @@ export class NovoComponent implements OnInit, OnDestroy {
     }
   }
 
+  defineIconeDataNascimento() {
+    if (this.dadosCliente.controls['dataNascimento'].touched && this.dadosCliente.controls['dataNascimento'].invalid) {
+      return 'error';
+    }
+    else {
+      if (this.cliente.dataNascimento == '' || this.cliente.dataNascimento == null) return 'calendar_month';
+      else return 'check';
+    }
+  }
+
   // TELEFONE
   verificaSePrefixoTelefoneNuloOuVazio(): boolean {
     if (this.cliente.telefone != null) {
@@ -457,6 +478,25 @@ export class NovoComponent implements OnInit, OnDestroy {
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim();
+  }
+
+  defineIconeInputTelefone(): string {
+    if (this.dadosTelefone.controls['numero'].touched && this.dadosTelefone.controls['numero'].invalid) {
+      return 'error';
+    }
+    else {
+      if (
+        this.cliente.telefone.numero == '' && this.cliente.telefone.tipoTelefone == 'MOVEL_WHATSAPP'
+        || this.cliente.telefone.numero == '' && this.cliente.telefone.tipoTelefone == 'MOVEL'
+        || this.cliente.telefone.numero == null && this.cliente.telefone.tipoTelefone == 'MOVEL_WHATSAPP'
+        || this.cliente.telefone.numero == null && this.cliente.telefone.tipoTelefone == 'MOVEL') return 'smartphone';
+
+      else if (
+        this.cliente.telefone.numero == '' && this.cliente.telefone.tipoTelefone == 'FIXO'
+        || this.cliente.telefone.numero == null && this.cliente.telefone.tipoTelefone == 'FIXO') return 'call';
+
+      else return 'check';
+    }
   }
 
   // ENDEREÇO

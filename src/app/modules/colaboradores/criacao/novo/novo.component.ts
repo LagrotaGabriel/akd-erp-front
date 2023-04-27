@@ -193,6 +193,19 @@ export class NovoComponent {
     });
   }
 
+  // EMAIL
+  defineIconeInputEmail() {
+    if (this.dadosColaborador.controls['email'].touched && this.dadosColaborador.controls['email'].invalid) {
+      return 'error';
+    }
+    else {
+      if (this.colaborador.email == '' || this.colaborador.email == null) return 'alternate_email';
+      else return 'check';
+    }
+  }
+
+  // TELEFONE
+
   atualizaValidatorsTelefone() {
     this.colaborador.telefone.prefixo = '';
     this.dadosColaborador.controls['prefixo'].reset();
@@ -259,6 +272,27 @@ export class NovoComponent {
       .trim();
   }
 
+  defineIconeInputTelefone(): string {
+    if (this.dadosColaborador.controls['numeroTelefone'].touched && this.dadosColaborador.controls['numeroTelefone'].invalid) {
+      return 'error';
+    }
+    else {
+      if (
+        this.colaborador.telefone.numero == '' && this.colaborador.telefone.tipoTelefone == 'MOVEL_WHATSAPP'
+        || this.colaborador.telefone.numero == '' && this.colaborador.telefone.tipoTelefone == 'MOVEL'
+        || this.colaborador.telefone.numero == null && this.colaborador.telefone.tipoTelefone == 'MOVEL_WHATSAPP'
+        || this.colaborador.telefone.numero == null && this.colaborador.telefone.tipoTelefone == 'MOVEL') return 'smartphone';
+
+      else if (
+        this.colaborador.telefone.numero == '' && this.colaborador.telefone.tipoTelefone == 'FIXO'
+        || this.colaborador.telefone.numero == null && this.colaborador.telefone.tipoTelefone == 'FIXO') return 'call';
+
+      else return 'check';
+    }
+  }
+
+  // DATA NASCIMENTO
+
   validaDataNascimento() {
 
     if (this.colaborador.dataNascimento == '') {
@@ -283,6 +317,18 @@ export class NovoComponent {
     this.inputDataNascimento.nativeElement.focus();
     this.dataNascimentoAparente = true;
   }
+
+  defineIconeDataNascimento() {
+    if (this.dadosColaborador.controls['dataNascimento'].touched && this.dadosColaborador.controls['dataNascimento'].invalid) {
+      return 'error';
+    }
+    else {
+      if (this.colaborador.dataNascimento == '' || this.colaborador.dataNascimento == null) return 'calendar_month';
+      else return 'check';
+    }
+  }
+
+  // ENDEREÇO
 
   realizaTratamentoCodigoPostal() {
 
@@ -414,6 +460,16 @@ export class NovoComponent {
     }
   }
 
+  defineIconeDataEntradaEmpresa() {
+    if (this.dadosProfissionais.controls['entradaEmpresa'].touched && this.dadosProfissionais.controls['entradaEmpresa'].invalid) {
+      return 'error';
+    }
+    else {
+      if (this.colaborador.entradaEmpresa == '' || this.colaborador.entradaEmpresa == null) return 'calendar_month';
+      else return 'check';
+    }
+  }
+
   validaDataSaidaEmpresa() {
     if (this.colaborador.saidaEmpresa == '') {
       this.dataSaidaAparente = false;
@@ -433,14 +489,27 @@ export class NovoComponent {
     }
   }
 
+  defineIconeDataSaidaEmpresa() {
+    if (this.dadosProfissionais.controls['saidaEmpresa'].touched && this.dadosProfissionais.controls['saidaEmpresa'].invalid) {
+      return 'error';
+    }
+    else {
+      if (this.colaborador.saidaEmpresa == '' || this.colaborador.saidaEmpresa == null) return 'calendar_month';
+      else return 'check';
+    }
+  }
+
+
   habilitaDataEntradaEmpresa() {
     this.inputDataEntrada.nativeElement.focus();
     this.dataEntradaAparente = true;
   }
 
   habilitaDataSaidaEmpresa() {
-    this.inputDataSaida.nativeElement.focus();
-    this.dataSaidaAparente = true;
+    if (this.colaborador.statusColaboradorEnum != 'ATIVO') {
+      this.inputDataSaida.nativeElement.focus();
+      this.dataSaidaAparente = true;
+    }
   }
 
   // STEP ACESSO

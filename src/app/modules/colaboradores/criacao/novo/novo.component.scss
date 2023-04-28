@@ -14,7 +14,12 @@
 .error_message_container,
 .error_message,
 .chips_block,
-.block {
+.block,
+.titulo_sessao_container,
+.titulo_sessao,
+.hr_container,
+.container_imagem_perfil,
+.container_dados_pessoais {
     margin: 0;
     padding: 0;
 }
@@ -157,6 +162,10 @@ span {
     font-weight: 400;
     padding: 0.5rem 1rem;
     padding-right: 2rem;
+}
+
+input[type=text], input[type=password] {
+    height: 100%;
 }
 
 option,
@@ -313,11 +322,41 @@ input:focus {
     box-shadow: none;
 }
 
+.titulo_sessao_container {
+    padding: 0 1rem;
+    margin-top: 0.5rem;
+}
+
+.titulo_sessao_container_primeiro {
+    margin-top: 1.5rem;
+}
+
 .titulo_sessao {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: $primary-color;
+    padding: 0.3rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $dark-white;
+    border: 2px solid $primary-color-darker;
+    background-color: $primary-color;
+    border-radius: 0;
+    opacity: 0.96;
     font-family: $font-poppins;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.hr_container {
+    padding: 0 1rem;
+    margin: 0 auto;
+}
+
+.hr {
+    width: 100%;
+    margin: 0.8rem 0;
 }
 
 .input_file {
@@ -397,6 +436,8 @@ input[type=number] {
 .input_group_bt {
     padding-bottom: 0;
     padding-right: 0;
+    padding-left: 0;
+    margin-top: 1rem;
 }
 
 .input_group_modulo {
@@ -422,9 +463,12 @@ input[type=number] {
     color: $primary-color;
     border: 1px solid $primary-color;
     cursor: pointer;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
 }
 
 .chip:hover {
@@ -433,6 +477,7 @@ input[type=number] {
     border: 1px solid $primary-color-darker;
     background-color: $primary-color;
 }
+
 
 @media (max-width: 960px) {
 

@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
 import { ColaboradorService } from '../../services/colaborador.service';
@@ -36,7 +36,8 @@ export class NovoComponent {
     private colaboradorService: ColaboradorService,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private datePipe: DatePipe) { }
+    private datePipe: DatePipe,
+    private ref: ChangeDetectorRef) { }
 
   dataNascimentoAparente: boolean = false;
   dataEntradaAparente: boolean = false;
@@ -85,6 +86,10 @@ export class NovoComponent {
   @ViewChild('inputDataEntrada') inputDataEntrada: ElementRef;
   @ViewChild('inputDataSaida') inputDataSaida: ElementRef;
   @ViewChild('selectAcessoSistemaAtivo') selectAcessoSistemaAtivo: ElementRef;
+
+  ngAfterViewInit(): void {
+    this.ref.detectChanges();
+  }
 
   ngOnInit(): void {
     this.inicializarColaborador();
@@ -191,6 +196,20 @@ export class NovoComponent {
       permissaoEnum: ['LEITURA_BASICA'],
       privilegios: [['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']]
     });
+
+    this.dadosProfissionais.get('saidaEmpresa').disable();
+
+  }
+
+  // CPFCNPJ
+  defineIconeInputCpfCnpj() {
+    if (this.dadosColaborador.controls['cpfCnpj'].touched && this.dadosColaborador.controls['cpfCnpj'].invalid) {
+      return 'error';
+    }
+    else {
+      if (this.colaborador.cpfCnpj == '' || this.colaborador.cpfCnpj == null) return 'badge';
+      else return 'check';
+    }
   }
 
   // EMAIL
@@ -329,7 +348,6 @@ export class NovoComponent {
   }
 
   // ENDEREÇO
-
   realizaTratamentoCodigoPostal() {
 
     this.atualizaValidatorsEndereco();
@@ -436,6 +454,30 @@ export class NovoComponent {
   }
 
   // STEP EMPRESA
+  alteraStatusColaborador() {
+    if (this.colaborador.statusColaboradorEnum == 'ATIVO'
+      || this.colaborador.statusColaboradorEnum == 'AFASTADO'
+      || this.colaborador.statusColaboradorEnum == 'FERIAS') {
+      this.colaborador.saidaEmpresa = '';
+      this.dataSaidaAparente = false;
+      this.dadosProfissionais.get('saidaEmpresa').disable();
+    }
+    else {
+      this.colaborador.saidaEmpresa = '';
+      this.dataSaidaAparente = false;
+      this.dadosProfissionais.get('saidaEmpresa').enable();
+    }
+
+    if (this.colaborador.statusColaboradorEnum == 'DISPENSADO') {
+      this.colaborador.acessoSistema.acessoSistemaAtivo = false;
+      this.dadosAcesso.get('acessoSistemaAtivo').disable();
+      this.atualizaLiberacaoSistema();
+    }
+    else {
+      this.dadosAcesso.get('acessoSistemaAtivo').enable();
+      this.atualizaLiberacaoSistema();
+    }
+  }
 
   limpaInputContrato() {
     this.colaborador.contratoContratacao = null;
@@ -499,20 +541,34 @@ export class NovoComponent {
     }
   }
 
-
   habilitaDataEntradaEmpresa() {
     this.inputDataEntrada.nativeElement.focus();
     this.dataEntradaAparente = true;
   }
 
   habilitaDataSaidaEmpresa() {
-    if (this.colaborador.statusColaboradorEnum != 'ATIVO') {
+    if (this.colaborador.statusColaboradorEnum != 'ATIVO'
+      && this.colaborador.statusColaboradorEnum != 'AFASTADO'
+      && this.colaborador.statusColaboradorEnum != 'FERIAS') {
       this.inputDataSaida.nativeElement.focus();
       this.dataSaidaAparente = true;
     }
   }
 
   // STEP ACESSO
+  atualizaLiberacaoSistema() {
+    if (this.colaborador.acessoSistema.acessoSistemaAtivo) {
+      this.dadosAcesso.get('senha').enable();
+      this.dadosAcesso.get('permissaoEnum').enable();
+    }
+    else {
+      this.colaborador.acessoSistema.privilegios = [];
+      this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
+      this.dadosAcesso.get('senha').setValue('');
+      this.dadosAcesso.get('senha').disable();
+      this.dadosAcesso.get('permissaoEnum').disable();
+    }
+  }
 
   adicionaModulo(moduloLiberado) {
     this.colaborador.acessoSistema.privilegios.push(moduloLiberado)

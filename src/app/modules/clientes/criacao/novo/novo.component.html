@@ -43,10 +43,9 @@
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon *ngIf="dadosCliente.controls['nome'].touched" [fontIcon]="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid 
                             ? 'error' 
-                            : 'check'" [@fadeInOut]
+                            : 'check'" [@fadeInOut] (click)="inputNome.focus()"
                             [ngClass]="{'icone_ok': !dadosCliente.controls['nome'].invalid,
-                                        'icone_error': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
-                            class="icone"></mat-icon>
+                                        'icone_error': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}" class="icone"></mat-icon>
                     </div>
 
                     <div [@fadeInOut]
@@ -101,14 +100,14 @@
                             spellcheck="false" tabindex="4" (input)="realizaTratamentoCpfCnpj()"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacaoDeClientes()" [(ngModel)]="cliente.cpfCnpj"
-                            [maxlength]="inputLengthCpfCnpj"
+                            [maxlength]="inputLengthCpfCnpj" #inputCpfCnpj
                             [ngClass]="{'input_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].value != ''"
                             [fontIcon]="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid 
                             ? 'error' 
-                            : 'check'"
+                            : 'check'" (click)="inputCpfCnpj.focus()"
                             [ngClass]="{'icone_ok': !dadosCliente.controls['cpfCnpj'].invalid,
                                     'icone_error': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
                             class="icone"></mat-icon>
@@ -134,7 +133,7 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="inscricaoEstadual"
                             name="inscricaoEstadual" spellcheck="false" tabindex="5"
-                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
+                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()" #inputInscricaoEstadual
                             (keydown.esc)="retornaParaVisualizacaoDeClientes()"
                             [ngClass]="{'input_invalida': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
                             (input)="realizaTratamentoInscricaoEstadual()" [(ngModel)]="cliente.inscricaoEstadual"
@@ -144,6 +143,7 @@
                             [fontIcon]="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid 
                             ? 'error' 
                             : 'check'"
+                            (click)="inputInscricaoEstadual.focus()"
                             [ngClass]="{'icone_ok': !dadosCliente.controls['inscricaoEstadual'].invalid,
                                     'icone_error': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
                             class="icone"></mat-icon>
@@ -171,7 +171,8 @@
                             (keydown.esc)="retornaParaVisualizacaoDeClientes()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputEmail()" [ngClass]="{ 'icone_ok': defineIconeInputEmail() == 'check' || defineIconeInputEmail() == 'alternate_email',
-                            'icone_error': defineIconeInputEmail() == 'error' }" class="icone" (click)="inputEmail.focus()"></mat-icon>
+                            'icone_error': defineIconeInputEmail() == 'error' }" class="icone"
+                            (click)="inputEmail.focus()"></mat-icon>
                     </div>
                     <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid"
@@ -191,12 +192,10 @@
                             [ngClass]="{'emptyDate': cliente.dataNascimento == null || cliente.dataNascimento == ''}"
                             (keydown.esc)="retornaParaVisualizacaoDeClientes()" type="date"
                             formControlName="dataNascimento" (focusout)="validaDataNascimento()" #inputDataNascimento
-                            name="dataNascimento" formControlName="dataNascimento" name="dataNascimento"
+                            name="dataNascimento" formControlName="dataNascimento" name="dataNascimento" tabindex="-1"
                             [(ngModel)]="cliente.dataNascimento"
                             class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <mat-icon [@fadeInOut]
-                            [fontIcon]="defineIconeDataNascimento()"
-                            [ngClass]="{'icone_ok': defineIconeDataNascimento() == 'calendar_month' || defineIconeDataNascimento() == 'check',
+                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataNascimento()" [ngClass]="{'icone_ok': defineIconeDataNascimento() == 'calendar_month' || defineIconeDataNascimento() == 'check',
                                                 'icone_error': defineIconeDataNascimento() == 'error' }"
                             class="icone"></mat-icon>
                         <div class="input_data_placeholder" *ngIf="!dataNascimentoAparente" [@fadeInOut] tabindex="7"

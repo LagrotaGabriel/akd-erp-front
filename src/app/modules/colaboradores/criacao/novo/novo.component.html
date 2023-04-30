@@ -845,7 +845,8 @@
                             formControlName="horaSaida" name="horaSaida" [(ngModel)]="colaborador.expediente.horaSaida"
                             #inputHoraSaida (keydown.enter)="botaoProximoSegundaEtapa.click()" tabindex="29"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
-                            (change)="realizaCalculoCargaHorariaSemanal()" (input)="realizaCalculoCargaHorariaSemanal()"
+                            (change)="realizaValidacaoExpedienteHoraSaida()"
+                            (input)="realizaValidacaoExpedienteHoraSaida()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
@@ -864,11 +865,12 @@
                 <!-- ESCALA -->
                 <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Escala</label>
+                        <label class="label"
+                            [ngClass]="{'label_desabilitada': dadosProfissionais.controls['escalaEnum'].disabled}">Escala</label>
                     </div>
                     <select formControlName="escalaEnum" name="escalaEnum"
-                        [(ngModel)]="colaborador.expediente.escalaEnum" tabindex="30"
-                        (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                        (change)="realizaCalculoCargaHorariaSemanal()" [(ngModel)]="colaborador.expediente.escalaEnum"
+                        tabindex="30" (keydown.enter)="botaoProximoSegundaEtapa.click()"
                         (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectEscala
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <option value="INDEFINIDA">Indefinida</option>
@@ -882,15 +884,16 @@
                 <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
-                            [ngClass]="{'label_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}">
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
+                            [ngClass]="{'label_desabilitada': dadosProfissionais.controls['cargaHorariaSemanal'].disabled}">
                             Carga horária semanal (h)
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="number" formControlName="cargaHorariaSemanal" name="cargaHorariaSemanal" min="0"
-                            max="168" [(ngModel)]="colaborador.expediente.cargaHorariaSemanal" step="1"
-                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
-                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                        <input type="text" formControlName="cargaHorariaSemanal" name="cargaHorariaSemanal"
+                            [(ngModel)]="colaborador.expediente.cargaHorariaSemanal" autocomplete="off"
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()" spellcheck="false"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()" readonly
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="31">
                         <mat-icon [@fadeInOut]

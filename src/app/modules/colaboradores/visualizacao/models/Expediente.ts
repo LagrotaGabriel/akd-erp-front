@@ -3,6 +3,6 @@ export class Expediente {
     horaSaidaAlmoco: string;
     horaEntradaAlmoco: string;
     horaSaida: string;
-    cargaHorariaSemanal: number;
+    cargaHorariaSemanal: string;
     escalaEnum: string;
 }

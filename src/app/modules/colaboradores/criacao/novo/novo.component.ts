@@ -144,7 +144,7 @@ export class NovoComponent {
         horaSaida: '',
         horaSaidaAlmoco: '',
         horaEntradaAlmoco: '',
-        cargaHorariaSemanal: 0,
+        cargaHorariaSemanal: '',
         escalaEnum: 'INDEFINIDA'
       },
       acessoSistema: {
@@ -187,8 +187,8 @@ export class NovoComponent {
       horaSaidaAlmoco: [{ value: '', disabled: true }],
       horaEntradaAlmoco: [{ value: '', disabled: true }],
       horaSaida: [{ value: '', disabled: true }],
-      escalaEnum: ['INDEFINIDA'],
-      cargaHorariaSemanal: [0],
+      escalaEnum: [{ value: 'INDEFINIDA', disabled: true }],
+      cargaHorariaSemanal: [{ value: '', disabled: true }],
     });
     this.dadosAcesso = this.formBuilder.group({
       acessoSistemaAtivo: [true],
@@ -555,6 +555,8 @@ export class NovoComponent {
     }
   }
 
+  // EXPEDIENTE
+
   protected realizaValidacaoExpedienteHoraEntrada() {
     if (this.colaborador.expediente.horaEntrada != '' && this.colaborador.expediente.horaEntrada != null) {
       this.dadosProfissionais.controls['horaSaidaAlmoco'].addValidators([Validators.required]);
@@ -575,6 +577,8 @@ export class NovoComponent {
       this.dadosProfissionais.controls['horaSaidaAlmoco'].clearValidators();
       this.dadosProfissionais.controls['horaSaida'].disable();
     }
+
+    this.invocaMetodoCalculoCargaHorariaSemanal();
   }
 
   protected realizaValidacaoExpedienteHoraSaidaAlmoco() {
@@ -588,6 +592,8 @@ export class NovoComponent {
       this.colaborador.expediente.horaSaida = '';
       this.dadosProfissionais.controls['horaSaida'].disable();
     }
+
+    this.invocaMetodoCalculoCargaHorariaSemanal();
   }
 
   protected realizaValidacaoExpedienteHoraEntradaAlmoco() {
@@ -599,11 +605,19 @@ export class NovoComponent {
       this.dadosProfissionais.controls['horaSaida'].disable();
     }
 
-    this.realizaCalculoCargaHorariaSemanal();
+    this.invocaMetodoCalculoCargaHorariaSemanal();
   }
 
   protected realizaValidacaoExpedienteHoraSaida() {
+    this.invocaMetodoCalculoCargaHorariaSemanal();
+  }
 
+  private invocaMetodoCalculoCargaHorariaSemanal() {
+    if (this.colaborador.expediente.horaEntrada != '' && this.colaborador.expediente.horaEntrada != null
+      && this.colaborador.expediente.horaSaidaAlmoco != '' && this.colaborador.expediente.horaSaidaAlmoco != null
+      && this.colaborador.expediente.horaEntradaAlmoco != '' && this.colaborador.expediente.horaEntradaAlmoco != null
+      && this.colaborador.expediente.horaSaida != '' && this.colaborador.expediente.horaSaida != null
+      && this.colaborador.expediente.escalaEnum != 'INDEFINIDA' && this.colaborador.expediente.escalaEnum != null) this.realizaCalculoCargaHorariaSemanal();
   }
 
   realizaCalculoCargaHorariaSemanal() {
@@ -629,14 +643,59 @@ export class NovoComponent {
         : 0;
 
     let TempoHorarioDeAlmoco: number = (horaEntradaAlmocoEmMinutos - horaSaidaAlmocoEmMinutos);
-    console.log('Tempo de almoço: ' + TempoHorarioDeAlmoco);
+    let tempoEntradaSaida: number = (horaSaidaEmMinutos - horaEntradaEmMinutos);
+    let diasEscala: number = this.calculaDiasEscala();
+    let expedienteTotal: number = ((tempoEntradaSaida - TempoHorarioDeAlmoco) * diasEscala) / 60;
+
+
+
+    this.colaborador.expediente.cargaHorariaSemanal = this.converteFloatParaStringNoFormatoTime(expedienteTotal);
   }
 
-  calculaHoraEmMinutos(horaSplitada: string[]): number {
+  private calculaDiasEscala(): number {
+    switch (this.colaborador.expediente.escalaEnum) {
+      case 'SEG_A_SEX': {
+        return 5;
+      }
+      case 'SEG_A_SAB': {
+        return 6;
+      }
+      case 'DIA_SIM_DIA_NAO': {
+        return 4;
+      }
+      default: {
+        return 0;
+      }
+    }
+  }
+
+  private converteFloatParaStringNoFormatoTime(number): string {
+    let sign = (number >= 0) ? 1 : -1;
+
+    number = number * sign;
+
+    let hour = Math.floor(number);
+    let decpart = number - hour;
+
+    let min = 1 / 60;
+
+    decpart = min * Math.round(decpart / min);
+
+    let minute = Math.floor(decpart * 60) + '';
+
+    if (minute.length < 2) {
+      minute = '0' + minute;
+    }
+
+    let time = sign + (hour - 1) + ':' + minute;
+
+    return time;
+  }
+
+  private calculaHoraEmMinutos(horaSplitada: string[]): number {
     if (horaSplitada.length == 2) return (Number((Number(horaSplitada[0]) * 60) + (Number(horaSplitada[1]))));
     else return 0;
   }
-
 
   // STEP ACESSO
   atualizaLiberacaoSistema() {

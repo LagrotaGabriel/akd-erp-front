@@ -60,7 +60,7 @@ export class NovoComponent {
   minDate: Date;
   maxDate: Date;
 
-  // Validations cliente
+  // Validations colaborador
   inputLengthCpfCnpj: number = 11;
   inputPatternCpfCnpj: any = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
 
@@ -184,9 +184,9 @@ export class NovoComponent {
       entradaEmpresa: [''],
       saidaEmpresa: [''],
       horaEntrada: [''],
-      horaSaida: [''],
-      horaSaidaAlmoco: [''],
-      horaEntradaAlmoco: [''],
+      horaSaidaAlmoco: [{ value: '', disabled: true }],
+      horaEntradaAlmoco: [{ value: '', disabled: true }],
+      horaSaida: [{ value: '', disabled: true }],
       escalaEnum: ['INDEFINIDA'],
       cargaHorariaSemanal: [0],
     });
@@ -401,7 +401,7 @@ export class NovoComponent {
           this.estadosResponse = response;
         },
         error: error => {
-          this.router.navigate(['/clientes'])
+          this.router.navigate(['/colaboradores'])
           this._snackBar.open(error, "Fechar", {
             duration: 3500
           });
@@ -555,6 +555,89 @@ export class NovoComponent {
     }
   }
 
+  protected realizaValidacaoExpedienteHoraEntrada() {
+    if (this.colaborador.expediente.horaEntrada != '' && this.colaborador.expediente.horaEntrada != null) {
+      this.dadosProfissionais.controls['horaSaidaAlmoco'].addValidators([Validators.required]);
+      this.dadosProfissionais.controls['horaEntradaAlmoco'].addValidators([Validators.required]);
+      this.dadosProfissionais.controls['horaSaida'].addValidators([Validators.required]);
+      this.dadosProfissionais.controls['horaSaidaAlmoco'].enable();
+    }
+    else {
+      this.colaborador.expediente.horaSaidaAlmoco = '';
+      this.dadosProfissionais.controls['horaSaidaAlmoco'].clearValidators();
+      this.dadosProfissionais.controls['horaSaidaAlmoco'].disable();
+
+      this.colaborador.expediente.horaEntradaAlmoco = '';
+      this.dadosProfissionais.controls['horaSaidaAlmoco'].clearValidators();
+      this.dadosProfissionais.controls['horaEntradaAlmoco'].disable();
+
+      this.colaborador.expediente.horaSaida = '';
+      this.dadosProfissionais.controls['horaSaidaAlmoco'].clearValidators();
+      this.dadosProfissionais.controls['horaSaida'].disable();
+    }
+  }
+
+  protected realizaValidacaoExpedienteHoraSaidaAlmoco() {
+    if (this.colaborador.expediente.horaSaidaAlmoco != '' && this.colaborador.expediente.horaSaidaAlmoco != null) {
+      this.dadosProfissionais.controls['horaEntradaAlmoco'].enable();
+    }
+    else {
+      this.colaborador.expediente.horaEntradaAlmoco = '';
+      this.dadosProfissionais.controls['horaEntradaAlmoco'].disable();
+
+      this.colaborador.expediente.horaSaida = '';
+      this.dadosProfissionais.controls['horaSaida'].disable();
+    }
+  }
+
+  protected realizaValidacaoExpedienteHoraEntradaAlmoco() {
+    if (this.colaborador.expediente.horaEntradaAlmoco != '' && this.colaborador.expediente.horaEntradaAlmoco != null) {
+      this.dadosProfissionais.controls['horaSaida'].enable();
+    }
+    else {
+      this.colaborador.expediente.horaSaida = '';
+      this.dadosProfissionais.controls['horaSaida'].disable();
+    }
+
+    this.realizaCalculoCargaHorariaSemanal();
+  }
+
+  protected realizaValidacaoExpedienteHoraSaida() {
+
+  }
+
+  realizaCalculoCargaHorariaSemanal() {
+
+    let horaEntradaEmMinutos: number =
+      (this.colaborador.expediente.horaEntrada != null && this.colaborador.expediente.horaEntrada != '')
+        ? this.calculaHoraEmMinutos(this.colaborador.expediente.horaEntrada.split(':'))
+        : 0;
+
+    let horaSaidaAlmocoEmMinutos: number =
+      (this.colaborador.expediente.horaSaidaAlmoco != null && this.colaborador.expediente.horaSaidaAlmoco != '')
+        ? this.calculaHoraEmMinutos(this.colaborador.expediente.horaSaidaAlmoco.split(':'))
+        : 0;
+
+    let horaEntradaAlmocoEmMinutos: number =
+      (this.colaborador.expediente.horaEntradaAlmoco != null && this.colaborador.expediente.horaEntradaAlmoco != '')
+        ? this.calculaHoraEmMinutos(this.colaborador.expediente.horaEntradaAlmoco.split(':'))
+        : 0;
+
+    let horaSaidaEmMinutos: number =
+      (this.colaborador.expediente.horaSaida != null && this.colaborador.expediente.horaSaida != '')
+        ? this.calculaHoraEmMinutos(this.colaborador.expediente.horaSaida.split(':'))
+        : 0;
+
+    let TempoHorarioDeAlmoco: number = (horaEntradaAlmocoEmMinutos - horaSaidaAlmocoEmMinutos);
+    console.log('Tempo de almoço: ' + TempoHorarioDeAlmoco);
+  }
+
+  calculaHoraEmMinutos(horaSplitada: string[]): number {
+    if (horaSplitada.length == 2) return (Number((Number(horaSplitada[0]) * 60) + (Number(horaSplitada[1]))));
+    else return 0;
+  }
+
+
   // STEP ACESSO
   atualizaLiberacaoSistema() {
     if (this.colaborador.acessoSistema.acessoSistemaAtivo) {
@@ -577,8 +660,18 @@ export class NovoComponent {
   }
 
   removeModulo(moduloLiberado) {
-    this.colaborador.acessoSistema.privilegios.splice(moduloLiberado, 1);
+    this.colaborador.acessoSistema.privilegios.splice(this.colaborador.acessoSistema.privilegios.indexOf(moduloLiberado), 1);
     this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
+  }
+
+  defineIconeInputSenha() {
+    if (this.dadosAcesso.controls['senha'].touched && this.dadosAcesso.controls['senha'].invalid) {
+      return 'error';
+    }
+    else {
+      if (this.colaborador.acessoSistema.senha == '' || this.colaborador.acessoSistema.senha == null) return 'lock';
+      else return 'check';
+    }
   }
 
   // NAVEGAÇÃO ENTRE OS STEPS

@@ -83,7 +83,8 @@
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputCpfCnpj()"
                             [ngClass]="{ 'icone_ok': defineIconeInputCpfCnpj() == 'check' || defineIconeInputCpfCnpj() == 'badge',
-                                                                    'icone_error': defineIconeInputCpfCnpj() == 'error' }" (click)="inputEmail.focus()" class="icone"></mat-icon>
+                                                                    'icone_error': defineIconeInputCpfCnpj() == 'error' }" (click)="inputCpfCnpj.focus()"
+                            class="icone"></mat-icon>
                     </div>
 
                     <div [@fadeInOut]
@@ -487,6 +488,7 @@
                         Voltar
                     </button>
                     <button (click)="avancaSegundaEtapa()" class="button" tabindex="16"
+                        [disabled]="dadosColaboradorForm.valid ? false : true"
                         [ngClass]="{'botaoHabilitado': dadosColaboradorForm.valid, 'botaoDesabilitado': !dadosColaboradorForm.valid}"
                         mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
                 </div>
@@ -749,11 +751,12 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="horaEntrada" name="horaEntrada"
-                            style="text-transform:uppercase" spellcheck="false" type="time" tabindex="26"
+                        <input formControlName="horaEntrada" name="horaEntrada" type="time" tabindex="26"
                             [(ngModel)]="colaborador.expediente.horaEntrada" #inputHoraEntrada
                             (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            (change)="realizaValidacaoExpedienteHoraEntrada()"
+                            (input)="realizaValidacaoExpedienteHoraEntrada()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
@@ -766,20 +769,31 @@
                 <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
-                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}">
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"
+                            [ngClass]="{'label_desabilitada': dadosProfissionais.controls['horaSaidaAlmoco'].disabled}">
                             Saída almoço
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="horaSaidaAlmoco" name="horaSaidaAlmoco"
-                            style="text-transform:uppercase" spellcheck="false" type="time" tabindex="27"
-                            [(ngModel)]="colaborador.expediente.horaSaidaAlmoco" #inputHoraSaidaAlmoco
+                        <input formControlName="horaSaidaAlmoco" name="horaSaidaAlmoco"
+                            [type]="dadosProfissionais.controls['horaSaidaAlmoco'].disabled ? 'text' : 'time'"
+                            tabindex="27" [(ngModel)]="colaborador.expediente.horaSaidaAlmoco" #inputHoraSaidaAlmoco
                             (keydown.enter)="botaoProximoSegundaEtapa.click()"
-                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()" [attr.disabled]="true"
+                            (change)="realizaValidacaoExpedienteHoraSaidaAlmoco()"
+                            (input)="realizaValidacaoExpedienteHoraSaidaAlmoco()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
-                            (click)="inputHoraSaidaAlmoco.focus()"></mat-icon>
+                            (click)="inputHoraSaidaAlmoco.focus()"
+                            [ngClass]="{'icone_desabilitado': dadosProfissionais.controls['horaSaidaAlmoco'].disabled, 
+                            'icone_error': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"></mat-icon>
+
+                        <div [@fadeInOut]
+                            *ngIf="dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid"
+                            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="error_message">{{ 'Obrigatório' }}</h6>
+                        </div>
                     </div>
 
                 </div>
@@ -788,20 +802,31 @@
                 <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
-                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}">
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"
+                            [ngClass]="{'label_desabilitada': dadosProfissionais.controls['horaEntradaAlmoco'].disabled}">
                             Retorno almoço
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="horaEntradaAlmoco"
-                            name="horaEntradaAlmoco" style="text-transform:uppercase" spellcheck="false" type="time"
+                        <input [type]="dadosProfissionais.controls['horaEntradaAlmoco'].disabled ? 'text' : 'time'"
+                            formControlName="horaEntradaAlmoco" name="horaEntradaAlmoco"
                             [(ngModel)]="colaborador.expediente.horaEntradaAlmoco" #inputHoraEntradaAlmoco
                             (keydown.enter)="botaoProximoSegundaEtapa.click()" tabindex="28"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            (change)="realizaValidacaoExpedienteHoraEntradaAlmoco()"
+                            (input)="realizaValidacaoExpedienteHoraEntradaAlmoco()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
-                            (click)="inputHoraEntradaAlmoco.focus()"></mat-icon>
+                            (click)="inputHoraEntradaAlmoco.focus()"
+                            [ngClass]="{'icone_desabilitado': dadosProfissionais.controls['horaEntradaAlmoco'].disabled, 
+                            'icone_error': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"></mat-icon>
+
+                        <div [@fadeInOut]
+                            *ngIf="dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid"
+                            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="error_message">{{ 'Obrigatório' }}</h6>
+                        </div>
                     </div>
 
                 </div>
@@ -810,20 +835,28 @@
                 <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
-                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}">
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"
+                            [ngClass]="{'label_desabilitada': dadosProfissionais.controls['horaSaida'].disabled}">
                             Saída
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="horaSaida" name="horaSaida"
-                            style="text-transform:uppercase" spellcheck="false" type="time"
-                            [(ngModel)]="colaborador.expediente.horaSaida" #inputHoraSaida
-                            (keydown.enter)="botaoProximoSegundaEtapa.click()" tabindex="29"
+                        <input [type]="dadosProfissionais.controls['horaSaida'].disabled ? 'text' : 'time'"
+                            formControlName="horaSaida" name="horaSaida" [(ngModel)]="colaborador.expediente.horaSaida"
+                            #inputHoraSaida (keydown.enter)="botaoProximoSegundaEtapa.click()" tabindex="29"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            (change)="realizaCalculoCargaHorariaSemanal()" (input)="realizaCalculoCargaHorariaSemanal()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
-                            (click)="inputHoraSaida.focus()"></mat-icon>
+                            (click)="inputHoraSaida.focus()"
+                            [ngClass]="{'icone_desabilitado': dadosProfissionais.controls['horaSaida'].disabled, 
+                            'icone_error': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"></mat-icon>
+                        <div [@fadeInOut]
+                            *ngIf="dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid"
+                            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="error_message">{{ 'Obrigatório' }}</h6>
+                        </div>
                     </div>
 
                 </div>
@@ -884,6 +917,7 @@
                         Voltar
                     </button>
                     <button (click)="avancaTerceiraEtapa()" tabindex="33" class="button" matStepperNext
+                        [disabled]="dadosProfissionais.valid ? false : true"
                         [ngClass]="{'botaoHabilitado': dadosProfissionais.valid, 'botaoDesabilitado': !dadosProfissionais.valid}"
                         mat-button matStepperNext #botaoProximoSegundaEtapa>Próximo</button>
                 </div>
@@ -894,6 +928,7 @@
         <mat-step [stepControl]="dadosAcesso" editable="true">
             <form #dadosAcessoForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                 [formGroup]="dadosAcesso">
+
                 <ng-template matStepLabel>
                     <span>Sistema</span>
                 </ng-template>
@@ -926,19 +961,14 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="password" autocomplete="off" formControlName="senha" name="senha"
-                            style="text-transform:uppercase" spellcheck="false"
+                            style="text-transform:uppercase" spellcheck="false" #inputSenha
                             [(ngModel)]="colaborador.acessoSistema.senha" maxlength="30"
                             (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                             [ngClass]="{'input_invalida': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="35">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].value != ''"
-                            [fontIcon]="dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid 
-                                                                            ? 'error' 
-                                                                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosAcesso.controls['senha'].invalid,
-                                                                            'icone_error': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid}"
-                            class="icone"></mat-icon>
+                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputSenha()"
+                            [ngClass]="{ 'icone_ok': defineIconeInputSenha() == 'check' || defineIconeInputSenha() == 'lock',
+                                                                    'icone_error': defineIconeInputSenha() == 'error' }" (click)="inputSenha.focus()" class="icone"></mat-icon>
                     </div>
 
                     <div [@fadeInOut]
@@ -961,10 +991,18 @@
                         [(ngModel)]="colaborador.acessoSistema.permissaoEnum" (keydown.enter)="submitFormulario.click()"
                         (keydown.esc)="botaoVoltarTerceiraEtapa.click()" #selectPermissoes
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <option value="LEITURA_BASICA">Leitura básica</option>
-                        <option value="LEITURA_AVANCADA">Leitura avançada</option>
-                        <option value="LEITURA_BASICA_ALTERACAO">Leitura básica e alterações</option>
-                        <option value="LEITURA_AVANCADA_ALTERACAO">Leitura avançada e alterações</option>
+                        <option value="LEITURA_BASICA"
+                            title="Permite que o usuário visualize informações não sigilosas nas telas">Leitura básica
+                        </option>
+                        <option value="LEITURA_AVANCADA"
+                            title="Permite que o usuário visualize informações completas das telas">Leitura avançada
+                        </option>
+                        <option value="LEITURA_BASICA_ALTERACAO"
+                            title="Permite que o usuário visualize informações não sigilosas nas telas e realize a criação, alteração, ou exclusão de itens">
+                            Leitura básica e alterações</option>
+                        <option value="LEITURA_AVANCADA_ALTERACAO"
+                            title="Permite que o usuário visualize informações completas das telas e realize a criação, alteração, ou exclusão de itens">
+                            Leitura avançada e alterações</option>
                     </select>
                 </div>
 
@@ -1048,6 +1086,7 @@
                     </button>
                     <button (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         (click)="avancaTerceiraEtapa()" tabindex="40" class="button" #submitFormulario
+                        [disabled]="dadosAcesso.valid ? false : true"
                         [ngClass]="{'botaoHabilitado': dadosAcesso.valid, 'botaoDesabilitado': !dadosAcesso.valid}"
                         mat-button>Enviar</button>
                 </div>

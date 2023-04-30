@@ -30,6 +30,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 input[type="time"]::-webkit-calendar-picker-indicator {
     background: none;
+    display: none;
 }
 
 .emptyDate {
@@ -164,7 +165,8 @@ span {
     padding-right: 2rem;
 }
 
-input[type=text], input[type=password] {
+input[type=text],
+input[type=password] {
     height: 100%;
 }
 
@@ -200,6 +202,11 @@ input:focus {
 
 .icone_error {
     color: $strong-red;
+}
+
+.icone_desabilitado {
+    color: $dark-grey;
+    cursor: auto;
 }
 
 .label_invalida {
@@ -478,6 +485,9 @@ input[type=number] {
     background-color: $primary-color;
 }
 
+::ng-deep .mat-tooltip {
+    white-space: pre-line !important;
+}
 
 @media (max-width: 960px) {
 

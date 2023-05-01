@@ -104,6 +104,12 @@ export class ColaboradorService {
     )
   } */
 
+  public obtemTodasOcupacoes(): Observable<string[]> {
+    this.httpOptions.params = new HttpParams();
+    this.httpOptions.body = null;
+    return this.http.get<string[]>(`${API_URL.baseUrl}api/sistema/v1/colaborador/ocupacoes`, this.httpOptions).pipe()
+  }
+
   public getColaboradores(valorBusca: string, pageableInfo: PageObject): Observable<PageObject> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;

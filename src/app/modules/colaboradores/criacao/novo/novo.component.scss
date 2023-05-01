@@ -231,7 +231,7 @@ input:focus {
     user-select: none;
 }
 
-.input_cidade::-webkit-calendar-picker-indicator {
+.input_ocupacoes::-webkit-calendar-picker-indicator, .input_cidade::-webkit-calendar-picker-indicator {
     display: none !important;
 }
 

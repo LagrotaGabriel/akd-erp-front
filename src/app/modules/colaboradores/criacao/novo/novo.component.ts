@@ -48,6 +48,7 @@ export class NovoComponent {
   obtemTodosEstadosBrasileirosSubscription$: Subscription;
   getEnderecoPeloCepSubscription$: Subscription;
   obtemTodosMunicipiosPorEstadoSubscription$: Subscription;
+  obtemTodasOcupacoesSubscription$: Subscription;
 
   // Form groups
   dadosColaborador: FormGroup;
@@ -78,6 +79,8 @@ export class NovoComponent {
   modulosLiberados: string[] = ['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS'];
   privilegioAtual: string = 'CLIENTES';
 
+  ocupacoesResponse: string[] = [];
+
   @ViewChild('numeroEndereco') inputNumeroEndereco: ElementRef;
   @ViewChild('contratoContratacaoInput') contratoContratacaoInput: ElementRef;
   @ViewChild('selectSetor') selectSetor: ElementRef;
@@ -101,6 +104,7 @@ export class NovoComponent {
     // this.atualizaTipoPessoa();
     this.atualizaValidatorsTelefone();
     this.obtemTodosEstadosBrasileiros();
+    this.obtemTodasOcupacoes();
 
     setTimeout(() => {
       this.inputNome.nativeElement.focus();
@@ -199,6 +203,12 @@ export class NovoComponent {
 
     this.dadosProfissionais.get('saidaEmpresa').disable();
 
+  }
+
+  obtemTodasOcupacoes() {
+    this.obtemTodasOcupacoesSubscription$ = this.colaboradorService.obtemTodasOcupacoes().subscribe({
+      next: (resposta: string[]) => this.ocupacoesResponse = resposta
+    })
   }
 
   // CPFCNPJ

@@ -544,12 +544,12 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="ocupacao" name="ocupacao"
+                        <input list="ocupacoes" type="text" autocomplete="off" formControlName="ocupacao" name="ocupacao"
                             style="text-transform:uppercase" spellcheck="false" [(ngModel)]="colaborador.ocupacao"
                             maxlength="30" (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()" #inputOcupacao
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
+                            class="input input_ocupacoes col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].value != ''"
                             [fontIcon]="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid 
@@ -559,6 +559,11 @@
                                                             'icone_error': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}"
                             class="icone"></mat-icon>
                     </div>
+
+                    <datalist id="ocupacoes">
+                        <option *ngFor="let ocupacao of ocupacoesResponse" [value]="ocupacao | uppercase">
+                        </option>
+                    </datalist>
 
                     <div [@fadeInOut]
                         *ngIf="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid"

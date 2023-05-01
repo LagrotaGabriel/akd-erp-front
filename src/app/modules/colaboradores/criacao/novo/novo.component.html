@@ -483,11 +483,11 @@
                 </div>
 
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button class="button botaoHabilitado" #botaoVoltarVisualizacao mat-button tabindex="15"
+                    <button type="button" class="button botaoHabilitado" #botaoVoltarVisualizacao mat-button tabindex="15"
                         (click)="retornaParaVisualizacao()">
                         Voltar
                     </button>
-                    <button (click)="avancaSegundaEtapa()" class="button" tabindex="16"
+                    <button type="button" (click)="avancaSegundaEtapa()" class="button" tabindex="16"
                         [disabled]="dadosColaboradorForm.valid ? false : true"
                         [ngClass]="{'botaoHabilitado': dadosColaboradorForm.valid, 'botaoDesabilitado': !dadosColaboradorForm.valid}"
                         mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
@@ -914,11 +914,11 @@
 
                 <!-- BOTÕES DE NAVEGAÇÃO -->
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button tabindex="32"
+                    <button type="button" class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button tabindex="32"
                         matStepperPrevious (click)="avancaPrimeiraEtapa()">
                         Voltar
                     </button>
-                    <button (click)="avancaTerceiraEtapa()" tabindex="33" class="button" matStepperNext
+                    <button type="button" (click)="avancaTerceiraEtapa()" tabindex="33" class="button" matStepperNext
                         [disabled]="dadosProfissionais.valid ? false : true"
                         [ngClass]="{'botaoHabilitado': dadosProfissionais.valid, 'botaoDesabilitado': !dadosProfissionais.valid}"
                         mat-button matStepperNext #botaoProximoSegundaEtapa>Próximo</button>
@@ -1081,12 +1081,12 @@
 
                 <!-- BOTÕES DE NAVEGAÇÃO -->
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                    <button type="button" (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         class="button botaoHabilitado" #botaoVoltarTerceiraEtapa mat-button tabindex="39"
                         matStepperPrevious (click)="avancaSegundaEtapa()">
                         Voltar
                     </button>
-                    <button (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                    <button type="button" (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                         (click)="avancaTerceiraEtapa()" tabindex="40" class="button" #submitFormulario
                         [disabled]="dadosAcesso.valid ? false : true"
                         [ngClass]="{'botaoHabilitado': dadosAcesso.valid, 'botaoDesabilitado': !dadosAcesso.valid}"

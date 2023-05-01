@@ -884,8 +884,7 @@
                 <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
-                            [ngClass]="{'label_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
-                            [ngClass]="{'label_desabilitada': dadosProfissionais.controls['cargaHorariaSemanal'].disabled}">
+                            [ngClass]="{'label_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}">
                             Carga horária semanal (h)
                         </label>
                     </div>
@@ -893,9 +892,9 @@
                         <input type="text" formControlName="cargaHorariaSemanal" name="cargaHorariaSemanal"
                             [(ngModel)]="colaborador.expediente.cargaHorariaSemanal" autocomplete="off"
                             (keydown.enter)="botaoProximoSegundaEtapa.click()" spellcheck="false"
-                            (keydown.esc)="botaoVoltarSegundaEtapa.click()" readonly
+                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="31">
+                            class="input input_desabilitada col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="31">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].value != ''"
                             [fontIcon]="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid 

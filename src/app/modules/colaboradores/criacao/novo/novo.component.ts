@@ -144,7 +144,7 @@ export class NovoComponent {
         horaSaida: '',
         horaSaidaAlmoco: '',
         horaEntradaAlmoco: '',
-        cargaHorariaSemanal: '',
+        cargaHorariaSemanal: '0:00',
         escalaEnum: 'INDEFINIDA'
       },
       acessoSistema: {
@@ -188,7 +188,7 @@ export class NovoComponent {
       horaEntradaAlmoco: [{ value: '', disabled: true }],
       horaSaida: [{ value: '', disabled: true }],
       escalaEnum: [{ value: 'INDEFINIDA', disabled: true }],
-      cargaHorariaSemanal: [{ value: '', disabled: true }],
+      cargaHorariaSemanal: [{ value: '0:00', disabled: true }],
     });
     this.dadosAcesso = this.formBuilder.group({
       acessoSistemaAtivo: [true],
@@ -562,6 +562,7 @@ export class NovoComponent {
       this.dadosProfissionais.controls['horaSaidaAlmoco'].addValidators([Validators.required]);
       this.dadosProfissionais.controls['horaEntradaAlmoco'].addValidators([Validators.required]);
       this.dadosProfissionais.controls['horaSaida'].addValidators([Validators.required]);
+      this.dadosProfissionais.controls['escalaEnum'].addValidators([Validators.required]);
       this.dadosProfissionais.controls['horaSaidaAlmoco'].enable();
     }
     else {
@@ -570,12 +571,18 @@ export class NovoComponent {
       this.dadosProfissionais.controls['horaSaidaAlmoco'].disable();
 
       this.colaborador.expediente.horaEntradaAlmoco = '';
-      this.dadosProfissionais.controls['horaSaidaAlmoco'].clearValidators();
+      this.dadosProfissionais.controls['horaEntradaAlmoco'].clearValidators();
       this.dadosProfissionais.controls['horaEntradaAlmoco'].disable();
 
       this.colaborador.expediente.horaSaida = '';
-      this.dadosProfissionais.controls['horaSaidaAlmoco'].clearValidators();
+      this.dadosProfissionais.controls['horaSaida'].clearValidators();
       this.dadosProfissionais.controls['horaSaida'].disable();
+
+      this.colaborador.expediente.escalaEnum = 'INDEFINIDA';
+      this.dadosProfissionais.controls['escalaEnum'].clearValidators();
+      this.dadosProfissionais.controls['escalaEnum'].disable();
+
+      this.colaborador.expediente.cargaHorariaSemanal = '0:00'
     }
 
     this.invocaMetodoCalculoCargaHorariaSemanal();
@@ -591,6 +598,11 @@ export class NovoComponent {
 
       this.colaborador.expediente.horaSaida = '';
       this.dadosProfissionais.controls['horaSaida'].disable();
+
+      this.colaborador.expediente.escalaEnum = 'INDEFINIDA';
+      this.dadosProfissionais.controls['escalaEnum'].disable();
+
+      this.colaborador.expediente.cargaHorariaSemanal = '0:00'
     }
 
     this.invocaMetodoCalculoCargaHorariaSemanal();
@@ -603,12 +615,27 @@ export class NovoComponent {
     else {
       this.colaborador.expediente.horaSaida = '';
       this.dadosProfissionais.controls['horaSaida'].disable();
+
+      this.colaborador.expediente.escalaEnum = 'INDEFINIDA';
+      this.dadosProfissionais.controls['escalaEnum'].disable();
+
+      this.colaborador.expediente.cargaHorariaSemanal = '0:00'
     }
 
     this.invocaMetodoCalculoCargaHorariaSemanal();
   }
 
   protected realizaValidacaoExpedienteHoraSaida() {
+    if (this.colaborador.expediente.horaSaida != '' && this.colaborador.expediente.horaSaida != null) {
+      this.dadosProfissionais.controls['escalaEnum'].enable();
+    }
+    else {
+      this.colaborador.expediente.escalaEnum = 'INDEFINIDA';
+      this.dadosProfissionais.controls['escalaEnum'].disable();
+
+      this.colaborador.expediente.cargaHorariaSemanal = '0:00'
+    }
+
     this.invocaMetodoCalculoCargaHorariaSemanal();
   }
 

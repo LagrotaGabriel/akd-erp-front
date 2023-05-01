@@ -222,6 +222,10 @@ input:focus {
     color: $strong-red !important;
 }
 
+.input_desabilitada {
+    color: $primary-color-disabled !important;
+}
+
 .input_data {
     -ms-user-select: none;
     user-select: none;

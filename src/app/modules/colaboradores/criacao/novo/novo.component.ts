@@ -167,10 +167,10 @@ export class NovoComponent {
       email: ['', [Validators.email, Validators.maxLength(50)]],
       dataNascimento: [''],
       tipoTelefone: [''],
-      prefixo: ['', [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
-      numeroTelefone: [''],
+      prefixo: [null, [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
+      numeroTelefone: [null],
       logradouro: [''],
-      numero: [''],
+      numero: [null],
       bairro: ['', Validators.maxLength(50)],
       codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^\d{5}\d{3}/)]],
       cidade: ['', Validators.maxLength(50)],
@@ -178,11 +178,11 @@ export class NovoComponent {
       estado: ['', Validators.maxLength(50)]
     });
     this.dadosProfissionais = this.formBuilder.group({
-      tipoOcupacaoEnum: [''],
+      tipoOcupacaoEnum: ['TECNICO'],
       ocupacao: ['', Validators.maxLength(30)],
-      statusColaboradorEnum: [''],
-      modeloContratacaoEnum: [''],
-      modeloTrabalhoEnum: [''],
+      statusColaboradorEnum: ['ATIVO'],
+      modeloContratacaoEnum: ['CLT'],
+      modeloTrabalhoEnum: ['PRESENCIAL'],
       contratoContratacao: [null],
       salario: [0.0, [Validators.max(9999999.00), Validators.min(0.00)]],
       entradaEmpresa: [''],
@@ -205,6 +205,10 @@ export class NovoComponent {
 
   }
 
+  getValueAtributoDadosColaborador(atributo: string): any {
+    return this.dadosColaborador.controls[atributo].value;
+  }
+
   obtemTodasOcupacoes() {
     this.obtemTodasOcupacoesSubscription$ = this.colaboradorService.obtemTodasOcupacoes().subscribe({
       next: (resposta: string[]) => this.ocupacoesResponse = resposta
@@ -217,7 +221,7 @@ export class NovoComponent {
       return 'error';
     }
     else {
-      if (this.colaborador.cpfCnpj == '' || this.colaborador.cpfCnpj == null) return 'badge';
+      if (this.dadosColaborador.controls['cpfCnpj'].value == '' || this.dadosColaborador.controls['cpfCnpj'].value == null) return 'badge';
       else return 'check';
     }
   }
@@ -228,7 +232,7 @@ export class NovoComponent {
       return 'error';
     }
     else {
-      if (this.colaborador.email == '' || this.colaborador.email == null) return 'alternate_email';
+      if (this.dadosColaborador.controls['email'].value == '' || this.dadosColaborador.controls['email'].value == null) return 'alternate_email';
       else return 'check';
     }
   }
@@ -236,26 +240,26 @@ export class NovoComponent {
   // TELEFONE
 
   atualizaValidatorsTelefone() {
-    this.colaborador.telefone.prefixo = '';
+    this.dadosColaborador.controls['prefixo'].setValue('');
     this.dadosColaborador.controls['prefixo'].reset();
 
-    this.colaborador.telefone.numero = '';
+    this.dadosColaborador.controls['numeroTelefone'].setValue('');
     this.dadosColaborador.controls['numeroTelefone'].reset();
 
     this.dadosColaborador.controls['prefixo'].clearValidators();
     this.dadosColaborador.controls['numeroTelefone'].clearValidators();
 
-    if (this.colaborador.telefone.tipoTelefone != '' && this.colaborador.telefone.tipoTelefone != null) {
+    if (this.dadosColaborador.controls['tipoTelefone'].value != '' && this.dadosColaborador.controls['tipoTelefone'].value != null) {
 
       this.dadosColaborador.controls['prefixo'].enable();
       this.dadosColaborador.controls['numeroTelefone'].enable();
 
-      if (this.colaborador.telefone.tipoTelefone == 'FIXO') {
+      if (this.dadosColaborador.controls['tipoTelefone'].value == 'FIXO') {
         this.inputLengthTelefone = 8;
         this.inputTelefonePattern = /^\d{4}\d{4}/;
       }
 
-      else if (this.colaborador.telefone.tipoTelefone == 'MOVEL' || this.colaborador.telefone.tipoTelefone == 'MOVEL_WHATSAPP') {
+      else if (this.dadosColaborador.controls['tipoTelefone'].value == 'MOVEL' || this.dadosColaborador.controls['tipoTelefone'].value == 'MOVEL_WHATSAPP') {
         this.inputLengthTelefone = 9;
         this.inputTelefonePattern = /^\d\d{4}\d{4}/;
       }
@@ -280,7 +284,9 @@ export class NovoComponent {
 
   verificaSeTipoTelefoneNuloOuVazio(): boolean {
     if (this.colaborador.telefone != null) {
-      if (this.colaborador.telefone.tipoTelefone != null && this.colaborador.telefone.tipoTelefone != undefined && this.colaborador.telefone.tipoTelefone != '') {
+      if (this.dadosColaborador.controls['tipoTelefone'].value != null
+        && this.dadosColaborador.controls['tipoTelefone'].value != undefined
+        && this.dadosColaborador.controls['tipoTelefone'].value != '') {
         return true;
       }
     }
@@ -288,17 +294,19 @@ export class NovoComponent {
   }
 
   realizaTratamentoPrefixo() {
-    this.colaborador.telefone.prefixo = this.colaborador.telefone.prefixo
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
-      .replace(/[^0-9.]/g, '')
-      .trim();
+    this.dadosColaborador.controls['prefixo']
+      .setValue(this.getValueAtributoDadosColaborador('prefixo')
+        .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
+        .replace(/[^0-9.]/g, '')
+        .trim())
   }
 
   realizaTratamentoNumeroTelefone() {
-    this.colaborador.telefone.numero = this.colaborador.telefone.numero
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
-      .replace(/[^0-9.]/g, '')
-      .trim();
+    this.dadosColaborador.controls['numeroTelefone']
+      .setValue(this.getValueAtributoDadosColaborador('numeroTelefone')
+        .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
+        .replace(/[^0-9.]/g, '')
+        .trim())
   }
 
   defineIconeInputTelefone(): string {
@@ -307,14 +315,14 @@ export class NovoComponent {
     }
     else {
       if (
-        this.colaborador.telefone.numero == '' && this.colaborador.telefone.tipoTelefone == 'MOVEL_WHATSAPP'
-        || this.colaborador.telefone.numero == '' && this.colaborador.telefone.tipoTelefone == 'MOVEL'
-        || this.colaborador.telefone.numero == null && this.colaborador.telefone.tipoTelefone == 'MOVEL_WHATSAPP'
-        || this.colaborador.telefone.numero == null && this.colaborador.telefone.tipoTelefone == 'MOVEL') return 'smartphone';
+        this.dadosColaborador.controls['numeroTelefone'].value == '' && this.dadosColaborador.controls['tipoTelefone'].value == 'MOVEL_WHATSAPP'
+        || this.dadosColaborador.controls['numeroTelefone'].value == '' && this.dadosColaborador.controls['tipoTelefone'].value == 'MOVEL'
+        || this.dadosColaborador.controls['numeroTelefone'].value == null && this.dadosColaborador.controls['tipoTelefone'].value == 'MOVEL_WHATSAPP'
+        || this.dadosColaborador.controls['numeroTelefone'].value == null && this.dadosColaborador.controls['tipoTelefone'].value == 'MOVEL') return 'smartphone';
 
       else if (
-        this.colaborador.telefone.numero == '' && this.colaborador.telefone.tipoTelefone == 'FIXO'
-        || this.colaborador.telefone.numero == null && this.colaborador.telefone.tipoTelefone == 'FIXO') return 'call';
+        this.dadosColaborador.controls['numeroTelefone'].value == '' && this.dadosColaborador.controls['tipoTelefone'].value == 'FIXO'
+        || this.dadosColaborador.controls['numeroTelefone'].value == null && this.dadosColaborador.controls['tipoTelefone'].value == 'FIXO') return 'call';
 
       else return 'check';
     }
@@ -324,15 +332,15 @@ export class NovoComponent {
 
   validaDataNascimento() {
 
-    if (this.colaborador.dataNascimento == '') {
+    if (this.dadosColaborador.controls['dataNascimento'].value == '') {
       this.dataNascimentoAparente = false;
       return;
     }
 
-    let dataNascimentoSplitada = this.colaborador.dataNascimento.split("-");
+    let dataNascimentoSplitada = (this.dadosColaborador.controls['dataNascimento'].value).split("-");
     if (dataNascimentoSplitada.length == 3) {
       if (parseInt(dataNascimentoSplitada[0]) > 2023 || parseInt(dataNascimentoSplitada[0]) < 1900) {
-        this.colaborador.dataNascimento = '';
+        this.dadosColaborador.controls['dataNascimento'].setValue('');
         this.dataNascimentoAparente = false;
         this._snackBar.open("Data de nascimento inválida", "Fechar", {
           duration: 3500
@@ -352,7 +360,7 @@ export class NovoComponent {
       return 'error';
     }
     else {
-      if (this.colaborador.dataNascimento == '' || this.colaborador.dataNascimento == null) return 'calendar_month';
+      if (this.dadosColaborador.controls['dataNascimento'].value == '' || this.dadosColaborador.controls['dataNascimento'].value == null) return 'calendar_month';
       else return 'check';
     }
   }
@@ -362,14 +370,15 @@ export class NovoComponent {
 
     this.atualizaValidatorsEndereco();
 
-    this.colaborador.endereco.codigoPostal = this.colaborador.endereco.codigoPostal
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
-      .replace(/[^0-9.]/g, '')
-      .trim();
+    this.dadosColaborador.controls['codigoPostal']
+      .setValue(this.getValueAtributoDadosColaborador('codigoPostal')
+        .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
+        .replace(/[^0-9.]/g, '')
+        .trim())
 
-    if (this.dadosColaborador.controls['codigoPostal'].valid && this.colaborador.endereco.codigoPostal.length == 8) {
+    if (this.dadosColaborador.controls['codigoPostal'].valid && this.getValueAtributoDadosColaborador('codigoPostal').length == 8) {
       this.getEnderecoPeloCepSubscription$ =
-        this.brasilApiService.getEnderecoPeloCep(this.colaborador.endereco.codigoPostal).subscribe({
+        this.brasilApiService.getEnderecoPeloCep(this.getValueAtributoDadosColaborador('codigoPostal')).subscribe({
           next: resposta => this.setaEnderecoComInformacoesObtidasPeloCep(resposta),
           error: error => {
             this._snackBar.open(error, "Fechar", {
@@ -382,14 +391,15 @@ export class NovoComponent {
   }
 
   atualizaValidatorsEndereco() {
-    if (this.colaborador.endereco.logradouro != null && this.colaborador.endereco.logradouro != '' ||
-      this.colaborador.endereco.numero != null && this.colaborador.endereco.numero.toString() != '' ||
-      this.colaborador.endereco.bairro != null && this.colaborador.endereco.bairro != '' ||
-      this.colaborador.endereco.cidade != null && this.colaborador.endereco.cidade != '' ||
-      this.colaborador.endereco.estado != null && this.colaborador.endereco.estado != '' ||
-      this.colaborador.endereco.codigoPostal != null && this.colaborador.endereco.codigoPostal != '' ||
-      this.colaborador.endereco.complemento != null && this.colaborador.endereco.complemento != '') {
-      this.colaborador.endereco.cidade = this.colaborador.endereco.cidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    if (
+      this.getValueAtributoDadosColaborador('logradouro') != null && this.getValueAtributoDadosColaborador('logradouro') != '' ||
+      this.getValueAtributoDadosColaborador('numero') != null && this.getValueAtributoDadosColaborador('numero').toString() != '' ||
+      this.getValueAtributoDadosColaborador('bairro') != null && this.getValueAtributoDadosColaborador('bairro') != '' ||
+      this.getValueAtributoDadosColaborador('cidade') != null && this.getValueAtributoDadosColaborador('cidade') != '' ||
+      this.getValueAtributoDadosColaborador('estado') != null && this.getValueAtributoDadosColaborador('estado') != '' ||
+      this.getValueAtributoDadosColaborador('codigoPostal') != null && this.getValueAtributoDadosColaborador('codigoPostal') != '' ||
+      this.getValueAtributoDadosColaborador('complemento') != null && this.getValueAtributoDadosColaborador('complemento') != '') {
+      this.dadosColaborador.controls['cidade'].setValue(this.getValueAtributoDadosColaborador('cidade').normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
       this.dadosColaborador.controls['logradouro'].addValidators([Validators.required, Validators.maxLength(50), Validators.minLength(1)]);
       this.dadosColaborador.controls['numero'].addValidators([Validators.required, Validators.max(99999), Validators.min(1), Validators.pattern(/^\d{1,5}$/)]);
     }
@@ -423,12 +433,12 @@ export class NovoComponent {
   }
 
   setaEnderecoComInformacoesObtidasPeloCep(consultaCepResponse: ConsultaCepResponse) {
-    this.colaborador.endereco.logradouro = consultaCepResponse.logradouro;
-    this.colaborador.endereco.numero = null;
-    this.colaborador.endereco.bairro = consultaCepResponse.bairro;
-    this.colaborador.endereco.estado = consultaCepResponse.estado;
-    this.colaborador.endereco.cidade = consultaCepResponse.cidade;
-    this.colaborador.endereco.complemento = null;
+    this.dadosColaborador.controls['logradouro'].setValue(consultaCepResponse.logradouro);
+    this.dadosColaborador.controls['numero'].setValue(null);
+    this.dadosColaborador.controls['bairro'].setValue(consultaCepResponse.bairro);
+    this.dadosColaborador.controls['estado'].setValue(consultaCepResponse.estado);
+    this.dadosColaborador.controls['cidade'].setValue(consultaCepResponse.cidade);
+    this.dadosColaborador.controls['complemento'].setValue(null);
 
     this.dadosColaborador.controls['codigoPostal'].markAsTouched();
     this.dadosColaborador.controls['logradouro'].markAsTouched();
@@ -443,9 +453,9 @@ export class NovoComponent {
 
   public obtemTodosMunicipiosPorEstado() {
     this.atualizaValidatorsEndereco();
-    if (this.colaborador.endereco.estado != null && this.colaborador.endereco.estado != '') {
+    if (this.getValueAtributoDadosColaborador('estado') != null && this.getValueAtributoDadosColaborador('estado') != '') {
       this.obtemTodosMunicipiosPorEstadoSubscription$ =
-        this.brasilApiService.obtemTodosMunicipiosPorEstado(this.colaborador.endereco.estado).subscribe({
+        this.brasilApiService.obtemTodosMunicipiosPorEstado(this.getValueAtributoDadosColaborador('estado')).subscribe({
           next: resposta => this.municipiosResponse = resposta,
           error: error => {
             this._snackBar.open(error, 'Fechar', {

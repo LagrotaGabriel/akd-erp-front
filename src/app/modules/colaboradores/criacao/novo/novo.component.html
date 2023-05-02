@@ -45,8 +45,7 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input matInput formControlName="nome" name="nome" maxlength="50" autocapitalize="words"
                             style="text-transform:uppercase" spellcheck="false" tabindex="1" type="text" autofocus="on"
-                            autocomplete="off" [(ngModel)]="colaborador.nome" #inputNome
-                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
+                            autocomplete="off" #inputNome (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -77,8 +76,7 @@
                         <input type="text" autocomplete="off" formControlName="cpfCnpj" name="cpfCnpj"
                             spellcheck="false" tabindex="2" (input)="realizaTratamentoCpfCnpj()"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            (keydown.esc)="retornaParaVisualizacao()" [(ngModel)]="colaborador.cpfCnpj"
-                            [maxlength]="inputLengthCpfCnpj" #inputCpfCnpj
+                            (keydown.esc)="retornaParaVisualizacao()" [maxlength]="inputLengthCpfCnpj" #inputCpfCnpj
                             [ngClass]="{'input_invalida': dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputCpfCnpj()"
@@ -106,12 +104,13 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input min="1900-01-01" max="2023-04-17" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            [ngClass]="{'emptyDate': colaborador.dataNascimento == null || colaborador.dataNascimento == ''}"
+                            [ngClass]="{'emptyDate': 
+                                dadosColaborador.controls['dataNascimento'].value == null 
+                                || dadosColaborador.controls['dataNascimento'].value == ''}"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()" type="date" formControlName="dataNascimento"
                             (focusout)="validaDataNascimento()" #inputDataNascimento name="dataNascimento" tabindex="-1"
                             formControlName="dataNascimento" name="dataNascimento"
-                            [(ngModel)]="colaborador.dataNascimento"
                             class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataNascimento()"
                             [ngClass]="{'icone_ok': defineIconeDataNascimento() == 'calendar_month' || defineIconeDataNascimento() == 'check',
@@ -135,8 +134,7 @@
                         <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="3"
                             style="text-transform:lowercase" #inputEmail
                             [ngClass]="{'input_invalida': dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid}"
-                            formControlName="email" name="email" [(ngModel)]="colaborador.email"
-                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
+                            formControlName="email" name="email" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputEmail()"
@@ -167,8 +165,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <select *ngIf="colaborador.telefone != null" formControlName="tipoTelefone" name="tipoTelefone"
-                            [(ngModel)]="colaborador.telefone.tipoTelefone" tabindex="5"
-                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
+                            tabindex="5" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()" (change)="atualizaValidatorsTelefone()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" #inputTipoTelefone>
                             <option value="" selected>Sem telefone</option>
@@ -192,7 +189,7 @@
                         <input *ngIf="colaborador.telefone != null" type="text" autocomplete="off" maxlength="2"
                             spellcheck="false" (input)="realizaTratamentoPrefixo()" tabindex="6"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].invalid}"
-                            formControlName="prefixo" name="prefixo" [(ngModel)]="colaborador.telefone.prefixo"
+                            formControlName="prefixo" name="prefixo"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()">
@@ -228,10 +225,9 @@
                             (keydown.esc)="retornaParaVisualizacao()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['numeroTelefone'].touched && dadosColaborador.controls['numeroTelefone'].invalid}"
-                            formControlName="numeroTelefone" name="numeroTelefone"
-                            [(ngModel)]="colaborador.telefone.numero">
+                            formControlName="numeroTelefone" name="numeroTelefone">
                         <mat-icon [@fadeInOut]
-                            *ngIf="colaborador.telefone.tipoTelefone != '' && colaborador.telefone.tipoTelefone != null"
+                            *ngIf="dadosColaborador.controls['tipoTelefone'].value != '' && dadosColaborador.controls['tipoTelefone'].value != null"
                             [fontIcon]="defineIconeInputTelefone()" [ngClass]="{'icone_ok': defineIconeInputTelefone() == 'smartphone' || defineIconeInputTelefone() == 'check' || defineIconeInputTelefone() == 'call' ,
                                     'icone_error': defineIconeInputTelefone() == 'error'}" class="icone"></mat-icon>
                     </div>
@@ -262,8 +258,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input *ngIf="colaborador.endereco != null" type="text" autocomplete="off"
-                            formControlName="codigoPostal" name="codigoPostal" spellcheck="false"
-                            [(ngModel)]="colaborador.endereco.codigoPostal" #codigoPostal
+                            formControlName="codigoPostal" name="codigoPostal" spellcheck="false" #codigoPostal
                             (input)="realizaTratamentoCodigoPostal()" maxlength="8"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()" tabindex="8"
@@ -295,8 +290,8 @@
                         </label>
                     </div>
                     <select *ngIf="colaborador.endereco != null" formControlName="estado" name="estado"
-                        [(ngModel)]="colaborador.endereco.estado" (change)="obtemTodosMunicipiosPorEstado()"
-                        (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacao()"
+                        (change)="obtemTodosMunicipiosPorEstado()" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
+                        (keydown.esc)="retornaParaVisualizacao()"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="9">
                         <option value=""></option>
                         <option *ngFor="let estado of estadosResponse" [value]="estado.sigla">{{ estado.sigla + ' - ' +
@@ -314,8 +309,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="cidade" name="cidade"
-                            style="text-transform:uppercase" spellcheck="false"
-                            [(ngModel)]="colaborador.endereco.cidade" list="municipiosEstado" maxlength="50"
+                            style="text-transform:uppercase" spellcheck="false" list="municipiosEstado" maxlength="50"
                             (input)="atualizaValidatorsEndereco()" (change)="atualizaValidatorsEndereco()"
                             *ngIf="colaborador.endereco != null" tabindex="10"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].invalid}"
@@ -354,8 +348,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="logradouro" name="logradouro"
-                            style="text-transform:uppercase" spellcheck="false" tabindex="11"
-                            [(ngModel)]="colaborador.endereco.logradouro" maxlength="50"
+                            style="text-transform:uppercase" spellcheck="false" tabindex="11" maxlength="50"
                             (input)="atualizaValidatorsEndereco()" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()" *ngIf="colaborador.endereco != null"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['logradouro'].touched && dadosColaborador.controls['logradouro'].invalid}"
@@ -389,8 +382,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="numero" name="numero" maxlength="5"
-                            spellcheck="false" [(ngModel)]="colaborador.endereco.numero"
-                            (input)="atualizaValidatorsEndereco()" #numeroEndereco
+                            spellcheck="false" (input)="atualizaValidatorsEndereco()" #numeroEndereco
                             [ngClass]="{'input_invalida': dadosColaborador.controls['numero'].touched && dadosColaborador.controls['numero'].invalid}"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()" tabindex="12"
                             (keydown.esc)="retornaParaVisualizacao()" *ngIf="colaborador.endereco != null"
@@ -424,8 +416,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="bairro" name="bairro"
-                            style="text-transform:uppercase" spellcheck="false" tabindex="13"
-                            [(ngModel)]="colaborador.endereco.bairro" maxlength="50"
+                            style="text-transform:uppercase" spellcheck="false" tabindex="13" maxlength="50"
                             (input)="atualizaValidatorsEndereco()" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['bairro'].touched && dadosColaborador.controls['bairro'].invalid}"
@@ -458,8 +449,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="complemento" name="complemento"
-                            style="text-transform:uppercase" spellcheck="false" tabindex="14"
-                            [(ngModel)]="colaborador.endereco.complemento" maxlength="80"
+                            style="text-transform:uppercase" spellcheck="false" tabindex="14" maxlength="80"
                             (input)="atualizaValidatorsEndereco()" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['complemento'].touched && dadosColaborador.controls['complemento'].invalid}"
@@ -483,8 +473,8 @@
                 </div>
 
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button type="button" class="button botaoHabilitado" #botaoVoltarVisualizacao mat-button tabindex="15"
-                        (click)="retornaParaVisualizacao()">
+                    <button type="button" class="button botaoHabilitado" #botaoVoltarVisualizacao mat-button
+                        tabindex="15" (click)="retornaParaVisualizacao()">
                         Voltar
                     </button>
                     <button type="button" (click)="avancaSegundaEtapa()" class="button" tabindex="16"
@@ -544,9 +534,10 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input list="ocupacoes" type="text" autocomplete="off" formControlName="ocupacao" name="ocupacao"
-                            style="text-transform:uppercase" spellcheck="false" [(ngModel)]="colaborador.ocupacao"
-                            maxlength="30" (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                        <input list="ocupacoes" type="text" autocomplete="off" formControlName="ocupacao"
+                            name="ocupacao" style="text-transform:uppercase" spellcheck="false"
+                            [(ngModel)]="colaborador.ocupacao" maxlength="30"
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()" #inputOcupacao
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}"
                             class="input input_ocupacoes col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
@@ -899,7 +890,8 @@
                             (keydown.enter)="botaoProximoSegundaEtapa.click()" spellcheck="false"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
-                            class="input input_desabilitada col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="31">
+                            class="input input_desabilitada col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                            tabindex="31">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].value != ''"
                             [fontIcon]="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid 
@@ -919,8 +911,8 @@
 
                 <!-- BOTÕES DE NAVEGAÇÃO -->
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button type="button" class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button tabindex="32"
-                        matStepperPrevious (click)="avancaPrimeiraEtapa()">
+                    <button type="button" class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button
+                        tabindex="32" matStepperPrevious (click)="avancaPrimeiraEtapa()">
                         Voltar
                     </button>
                     <button type="button" (click)="avancaTerceiraEtapa()" tabindex="33" class="button" matStepperNext
@@ -1086,14 +1078,15 @@
 
                 <!-- BOTÕES DE NAVEGAÇÃO -->
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button type="button" (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
-                        class="button botaoHabilitado" #botaoVoltarTerceiraEtapa mat-button tabindex="39"
-                        matStepperPrevious (click)="avancaSegundaEtapa()">
+                    <button type="button" (keydown.enter)="submitFormulario.click()"
+                        (keydown.esc)="botaoVoltarTerceiraEtapa.click()" class="button botaoHabilitado"
+                        #botaoVoltarTerceiraEtapa mat-button tabindex="39" matStepperPrevious
+                        (click)="avancaSegundaEtapa()">
                         Voltar
                     </button>
-                    <button type="button" (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
-                        (click)="avancaTerceiraEtapa()" tabindex="40" class="button" #submitFormulario
-                        [disabled]="dadosAcesso.valid ? false : true"
+                    <button type="button" (keydown.enter)="submitFormulario.click()"
+                        (keydown.esc)="botaoVoltarTerceiraEtapa.click()" (click)="avancaTerceiraEtapa()" tabindex="40"
+                        class="button" #submitFormulario [disabled]="dadosAcesso.valid ? false : true"
                         [ngClass]="{'botaoHabilitado': dadosAcesso.valid, 'botaoDesabilitado': !dadosAcesso.valid}"
                         mat-button>Enviar</button>
                 </div>

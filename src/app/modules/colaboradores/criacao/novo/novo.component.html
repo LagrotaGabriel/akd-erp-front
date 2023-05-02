@@ -164,8 +164,8 @@
                         <label class="label">Tipo do telefone</label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <select *ngIf="colaborador.telefone != null" formControlName="tipoTelefone" name="tipoTelefone"
-                            tabindex="5" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
+                        <select formControlName="tipoTelefone" name="tipoTelefone" tabindex="5"
+                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()" (change)="atualizaValidatorsTelefone()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" #inputTipoTelefone>
                             <option value="" selected>Sem telefone</option>
@@ -186,8 +186,8 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input *ngIf="colaborador.telefone != null" type="text" autocomplete="off" maxlength="2"
-                            spellcheck="false" (input)="realizaTratamentoPrefixo()" tabindex="6"
+                        <input type="text" autocomplete="off" maxlength="2" spellcheck="false"
+                            (input)="realizaTratamentoPrefixo()" tabindex="6"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].invalid}"
                             formControlName="prefixo" name="prefixo"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
@@ -218,8 +218,7 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input *ngIf="colaborador.telefone != null" type="text" autocomplete="off"
-                            [maxlength]="inputLengthTelefone" spellcheck="false"
+                        <input type="text" autocomplete="off" [maxlength]="inputLengthTelefone" spellcheck="false"
                             (input)="realizaTratamentoNumeroTelefone()" tabindex="7"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
@@ -257,9 +256,8 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input *ngIf="colaborador.endereco != null" type="text" autocomplete="off"
-                            formControlName="codigoPostal" name="codigoPostal" spellcheck="false" #codigoPostal
-                            (input)="realizaTratamentoCodigoPostal()" maxlength="8"
+                        <input type="text" autocomplete="off" formControlName="codigoPostal" name="codigoPostal"
+                            spellcheck="false" #codigoPostal (input)="realizaTratamentoCodigoPostal()" maxlength="8"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()" tabindex="8"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['codigoPostal'].touched && dadosColaborador.controls['codigoPostal'].invalid}"
@@ -289,9 +287,8 @@
                             Estado
                         </label>
                     </div>
-                    <select *ngIf="colaborador.endereco != null" formControlName="estado" name="estado"
-                        (change)="obtemTodosMunicipiosPorEstado()" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                        (keydown.esc)="retornaParaVisualizacao()"
+                    <select formControlName="estado" name="estado" (change)="obtemTodosMunicipiosPorEstado()"
+                        (keydown.enter)="botaoProximoPrimeiraEtapa.click()" (keydown.esc)="retornaParaVisualizacao()"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="9">
                         <option value=""></option>
                         <option *ngFor="let estado of estadosResponse" [value]="estado.sigla">{{ estado.sigla + ' - ' +
@@ -310,8 +307,7 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="cidade" name="cidade"
                             style="text-transform:uppercase" spellcheck="false" list="municipiosEstado" maxlength="50"
-                            (input)="atualizaValidatorsEndereco()" (change)="atualizaValidatorsEndereco()"
-                            *ngIf="colaborador.endereco != null" tabindex="10"
+                            (input)="atualizaValidatorsEndereco()" (change)="atualizaValidatorsEndereco()" tabindex="10"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].invalid}"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
@@ -350,7 +346,7 @@
                         <input type="text" autocomplete="off" formControlName="logradouro" name="logradouro"
                             style="text-transform:uppercase" spellcheck="false" tabindex="11" maxlength="50"
                             (input)="atualizaValidatorsEndereco()" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            (keydown.esc)="retornaParaVisualizacao()" *ngIf="colaborador.endereco != null"
+                            (keydown.esc)="retornaParaVisualizacao()"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['logradouro'].touched && dadosColaborador.controls['logradouro'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] *ngIf="dadosColaborador.controls['logradouro'].touched && dadosColaborador.controls['logradouro'].invalid 
@@ -385,7 +381,7 @@
                             spellcheck="false" (input)="atualizaValidatorsEndereco()" #numeroEndereco
                             [ngClass]="{'input_invalida': dadosColaborador.controls['numero'].touched && dadosColaborador.controls['numero'].invalid}"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()" tabindex="12"
-                            (keydown.esc)="retornaParaVisualizacao()" *ngIf="colaborador.endereco != null"
+                            (keydown.esc)="retornaParaVisualizacao()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] *ngIf="dadosColaborador.controls['numero'].touched && dadosColaborador.controls['numero'].invalid 
                                         || dadosColaborador.controls['logradouro'].valid 
@@ -420,8 +416,7 @@
                             (input)="atualizaValidatorsEndereco()" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['bairro'].touched && dadosColaborador.controls['bairro'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                            *ngIf="colaborador.endereco != null">
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosColaborador.controls['bairro'].touched && dadosColaborador.controls['bairro'].value != ''"
                             [fontIcon]="dadosColaborador.controls['bairro'].touched && dadosColaborador.controls['bairro'].invalid 
@@ -453,8 +448,7 @@
                             (input)="atualizaValidatorsEndereco()" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
                             [ngClass]="{'input_invalida': dadosColaborador.controls['complemento'].touched && dadosColaborador.controls['complemento'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                            *ngIf="colaborador.endereco != null">
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosColaborador.controls['complemento'].touched && dadosColaborador.controls['complemento'].value != ''"
                             [fontIcon]="dadosColaborador.controls['complemento'].touched && dadosColaborador.controls['complemento'].invalid 
@@ -507,8 +501,7 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label">Setor</label>
                     </div>
-                    <select formControlName="tipoOcupacaoEnum" name="tipoOcupacaoEnum"
-                        [(ngModel)]="colaborador.tipoOcupacaoEnum" tabindex="17"
+                    <select formControlName="tipoOcupacaoEnum" name="tipoOcupacaoEnum" tabindex="17"
                         (keydown.enter)="botaoProximoSegundaEtapa.click()"
                         (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectSetor
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -535,8 +528,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input list="ocupacoes" type="text" autocomplete="off" formControlName="ocupacao"
-                            name="ocupacao" style="text-transform:uppercase" spellcheck="false"
-                            [(ngModel)]="colaborador.ocupacao" maxlength="30"
+                            name="ocupacao" style="text-transform:uppercase" spellcheck="false" maxlength="30"
                             (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()" #inputOcupacao
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}"
@@ -568,8 +560,7 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label">Status atual</label>
                     </div>
-                    <select formControlName="statusColaboradorEnum" name="statusColaboradorEnum"
-                        [(ngModel)]="colaborador.statusColaboradorEnum" tabindex="19"
+                    <select formControlName="statusColaboradorEnum" name="statusColaboradorEnum" tabindex="19"
                         (keydown.enter)="botaoProximoSegundaEtapa.click()" (change)="alteraStatusColaborador()"
                         (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectSetor
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -586,8 +577,7 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label">Modelo de contratação</label>
                     </div>
-                    <select formControlName="modeloContratacaoEnum" name="modeloContratacaoEnum"
-                        [(ngModel)]="colaborador.modeloContratacaoEnum" tabindex="20"
+                    <select formControlName="modeloContratacaoEnum" name="modeloContratacaoEnum" tabindex="20"
                         (keydown.enter)="botaoProximoSegundaEtapa.click()"
                         (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectSetor
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -602,8 +592,7 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label">Modelo de trabalho</label>
                     </div>
-                    <select formControlName="modeloTrabalhoEnum" name="modeloTrabalhoEnum"
-                        [(ngModel)]="colaborador.modeloTrabalhoEnum" tabindex="21"
+                    <select formControlName="modeloTrabalhoEnum" name="modeloTrabalhoEnum" tabindex="21"
                         (keydown.enter)="botaoProximoSegundaEtapa.click()"
                         (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectSetor
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -623,8 +612,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="number" formControlName="salario" name="salario" max="9999999.00" min="0.00"
-                            [(ngModel)]="colaborador.salario" step="100.00" #inputSalario
-                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            step="100.00" #inputSalario (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['salario'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="22">
@@ -649,12 +637,12 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input min="1900-01-01" max="2023-04-17" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            [ngClass]="{'emptyDate': colaborador.entradaEmpresa == null || colaborador.entradaEmpresa == ''}"
+                            [ngClass]="{'emptyDate': getValueAtributoDadosProfissionais('entradaEmpresa') == null 
+                            || getValueAtributoDadosProfissionais('entradaEmpresa') == ''}"
                             (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()" type="date" formControlName="entradaEmpresa"
                             (focusout)="validaDataEntradaEmpresa()" #inputDataEntrada name="entradaEmpresa"
-                            formControlName="entradaEmpresa" name="entradaEmpresa"
-                            [(ngModel)]="colaborador.entradaEmpresa" tabindex="-1"
+                            formControlName="entradaEmpresa" name="entradaEmpresa" tabindex="-1"
                             class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataEntradaEmpresa()" [ngClass]="{'icone_ok': defineIconeDataEntradaEmpresa() == 'calendar_month' || defineIconeDataEntradaEmpresa() == 'check',
                                                 'icone_error': defineIconeDataEntradaEmpresa() == 'error' }"
@@ -676,17 +664,19 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input min="1900-01-01" max="2023-04-17" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            [ngClass]="{'emptyDate': colaborador.saidaEmpresa == null || colaborador.saidaEmpresa == ''}"
+                            [ngClass]="{'emptyDate': 
+                                getValueAtributoDadosProfissionais('saidaEmpresa') == null || 
+                                getValueAtributoDadosProfissionais('saidaEmpresa') == ''}"
                             (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()" type="date" formControlName="saidaEmpresa"
                             (focusout)="validaDataSaidaEmpresa()" #inputDataSaida name="saidaEmpresa"
-                            formControlName="saidaEmpresa" name="saidaEmpresa" [(ngModel)]="colaborador.saidaEmpresa"
-                            tabindex="-1" class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            formControlName="saidaEmpresa" name="saidaEmpresa" tabindex="-1"
+                            class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataSaidaEmpresa()" [ngClass]="{'icone_ok': defineIconeDataSaidaEmpresa() == 'calendar_month' || defineIconeDataSaidaEmpresa() == 'check',
                                                 'icone_error': defineIconeDataSaidaEmpresa() == 'error' }"
                             class="icone"></mat-icon>
                         <div class="input_data_placeholder" *ngIf="!dataSaidaAparente" [@fadeInOut]
-                            [tabindex]="colaborador.statusColaboradorEnum != 'ATIVO' ? '24' : '-1'"
+                            [tabindex]="getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'ATIVO' ? '24' : '-1'"
                             (focus)="habilitaDataSaidaEmpresa()" (click)="habilitaDataSaidaEmpresa()"
                             [ngStyle]="{'cursor': 'text'}">
                         </div>
@@ -698,22 +688,22 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label">Contrato de trabalho</label>
                         <button type="button" class="limpar_file" [@fadeInOut]
-                            *ngIf="colaborador.contratoContratacao != null && contratoContratacaoInput.value != ''"
+                            *ngIf="getValueAtributoDadosProfissionais('contratoContratacao') != null && contratoContratacaoInput.value != ''"
                             (click)="limpaInputContrato()">Limpar</button>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <label class="input input_file col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                             for="contratoContratacaoInput">
-                            {{ colaborador.contratoContratacao != null && contratoContratacaoInput.value != ''
+                            {{ getValueAtributoDadosProfissionais('contratoContratacao') != null &&
+                            contratoContratacaoInput.value != ''
                             ? contratoContratacaoInput.value
                             : 'Escolher arquivo (.docx, .pdf, .png, .jpeg)' }}
-                            <mat-icon [@fadeInOut] [fontIcon]="colaborador.contratoContratacao != null && contratoContratacaoInput.value != '' 
+                            <mat-icon [@fadeInOut] [fontIcon]="getValueAtributoDadosProfissionais('contratoContratacao') != null && contratoContratacaoInput.value != '' 
                                                             ? 'file_download_done' 
                                                             : 'add_box'" class="icone icone_ok"></mat-icon>
                         </label>
                         <input type="file" formControlName="contratoContratacao" name="contratoContratacao"
-                            style="display: none;" [(ngModel)]="colaborador.contratoContratacao"
-                            #contratoContratacaoInput id="contratoContratacaoInput"
+                            style="display: none;" #contratoContratacaoInput id="contratoContratacaoInput"
                             (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
@@ -748,8 +738,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input formControlName="horaEntrada" name="horaEntrada" type="time" tabindex="26"
-                            [(ngModel)]="colaborador.expediente.horaEntrada" #inputHoraEntrada
-                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            #inputHoraEntrada (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             (change)="realizaValidacaoExpedienteHoraEntrada()"
                             (input)="realizaValidacaoExpedienteHoraEntrada()"
@@ -773,8 +762,7 @@
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input formControlName="horaSaidaAlmoco" name="horaSaidaAlmoco"
                             [type]="dadosProfissionais.controls['horaSaidaAlmoco'].disabled ? 'text' : 'time'"
-                            tabindex="27" [(ngModel)]="colaborador.expediente.horaSaidaAlmoco" #inputHoraSaidaAlmoco
-                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            tabindex="27" #inputHoraSaidaAlmoco (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()" [attr.disabled]="true"
                             (change)="realizaValidacaoExpedienteHoraSaidaAlmoco()"
                             (input)="realizaValidacaoExpedienteHoraSaidaAlmoco()"
@@ -805,8 +793,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input [type]="dadosProfissionais.controls['horaEntradaAlmoco'].disabled ? 'text' : 'time'"
-                            formControlName="horaEntradaAlmoco" name="horaEntradaAlmoco"
-                            [(ngModel)]="colaborador.expediente.horaEntradaAlmoco" #inputHoraEntradaAlmoco
+                            formControlName="horaEntradaAlmoco" name="horaEntradaAlmoco" #inputHoraEntradaAlmoco
                             (keydown.enter)="botaoProximoSegundaEtapa.click()" tabindex="28"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             (change)="realizaValidacaoExpedienteHoraEntradaAlmoco()"
@@ -838,8 +825,8 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input [type]="dadosProfissionais.controls['horaSaida'].disabled ? 'text' : 'time'"
-                            formControlName="horaSaida" name="horaSaida" [(ngModel)]="colaborador.expediente.horaSaida"
-                            #inputHoraSaida (keydown.enter)="botaoProximoSegundaEtapa.click()" tabindex="29"
+                            formControlName="horaSaida" name="horaSaida" #inputHoraSaida
+                            (keydown.enter)="botaoProximoSegundaEtapa.click()" tabindex="29"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             (change)="realizaValidacaoExpedienteHoraSaida()"
                             (input)="realizaValidacaoExpedienteHoraSaida()"
@@ -865,8 +852,8 @@
                             [ngClass]="{'label_desabilitada': dadosProfissionais.controls['escalaEnum'].disabled}">Escala</label>
                     </div>
                     <select formControlName="escalaEnum" name="escalaEnum"
-                        (change)="realizaCalculoCargaHorariaSemanal()" [(ngModel)]="colaborador.expediente.escalaEnum"
-                        tabindex="30" (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                        (change)="realizaCalculoCargaHorariaSemanal()" tabindex="30"
+                        (keydown.enter)="botaoProximoSegundaEtapa.click()"
                         (keydown.esc)="botaoVoltarSegundaEtapa.click()" #selectEscala
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <option value="INDEFINIDA">Indefinida</option>
@@ -886,8 +873,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" formControlName="cargaHorariaSemanal" name="cargaHorariaSemanal"
-                            [(ngModel)]="colaborador.expediente.cargaHorariaSemanal" autocomplete="off"
-                            (keydown.enter)="botaoProximoSegundaEtapa.click()" spellcheck="false"
+                            autocomplete="off" (keydown.enter)="botaoProximoSegundaEtapa.click()" spellcheck="false"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
                             class="input input_desabilitada col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
@@ -939,8 +925,7 @@
                             [ngClass]="{'label_desabilitada': dadosAcesso.get('acessoSistemaAtivo').disabled}">Acesso
                             ao sistema</label>
                     </div>
-                    <select formControlName="acessoSistemaAtivo" name="acessoSistemaAtivo"
-                        [(ngModel)]="colaborador.acessoSistema.acessoSistemaAtivo" tabindex="34"
+                    <select formControlName="acessoSistemaAtivo" name="acessoSistemaAtivo" tabindex="34"
                         (change)="atualizaLiberacaoSistema()" (keydown.enter)="submitFormulario.click()"
                         (keydown.esc)="botaoVoltarTerceiraEtapa.click()" #selectAcessoSistemaAtivo
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -960,8 +945,7 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="password" autocomplete="off" formControlName="senha" name="senha"
-                            style="text-transform:uppercase" spellcheck="false" #inputSenha
-                            [(ngModel)]="colaborador.acessoSistema.senha" maxlength="30"
+                            style="text-transform:uppercase" spellcheck="false" #inputSenha maxlength="30"
                             (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                             [ngClass]="{'input_invalida': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="35">
@@ -987,9 +971,8 @@
                         </label>
                     </div>
                     <select formControlName="permissaoEnum" name="permissaoEnum" tabindex="36"
-                        [(ngModel)]="colaborador.acessoSistema.permissaoEnum" (keydown.enter)="submitFormulario.click()"
-                        (keydown.esc)="botaoVoltarTerceiraEtapa.click()" #selectPermissoes
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                        #selectPermissoes class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <option value="LEITURA_BASICA"
                             title="Permite que o usuário visualize informações não sigilosas nas telas">Leitura básica
                         </option>
@@ -1017,7 +1000,7 @@
                     <select tabindex="37" (change)="(privilegioAtual = selectPrivilegios.value)"
                         [value]="privilegioAtual" (keydown.enter)="submitFormulario.click()"
                         (keydown.esc)="botaoVoltarTerceiraEtapa.click()" #selectPrivilegios
-                        [disabled]="!this.colaborador.acessoSistema.acessoSistemaAtivo ? true : false"
+                        [disabled]="!getValueAtributoDadosAcesso('acessoSistemaAtivo') ? true : false"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <option value="HOME" [disabled]="modulosLiberados.includes(opcInicio.value) ? true : false"
                             #opcInicio>Início</option>

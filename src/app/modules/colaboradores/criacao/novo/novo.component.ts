@@ -95,13 +95,11 @@ export class NovoComponent {
   }
 
   ngOnInit(): void {
-    this.inicializarColaborador();
     this.createForm();
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(1920, 0, 1);
     this.maxDate = new Date(currentYear, 0, 1);
 
-    // this.atualizaTipoPessoa();
     this.atualizaValidatorsTelefone();
     this.obtemTodosEstadosBrasileiros();
     this.obtemTodasOcupacoes();
@@ -110,54 +108,7 @@ export class NovoComponent {
       this.inputNome.nativeElement.focus();
     }, 100);
 
-    this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
-  }
-
-  inicializarColaborador() {
-    this.colaborador = {
-      nome: '',
-      cpfCnpj: '',
-      email: '',
-      dataNascimento: '',
-      telefone: {
-        tipoTelefone: '',
-        prefixo: null,
-        numero: null
-      },
-      endereco: {
-        id: null,
-        logradouro: '',
-        numero: null,
-        bairro: '',
-        codigoPostal: '',
-        cidade: '',
-        complemento: '',
-        estado: ''
-      },
-      tipoOcupacaoEnum: 'TECNICO',
-      ocupacao: '',
-      statusColaboradorEnum: 'ATIVO',
-      modeloContratacaoEnum: 'CLT',
-      modeloTrabalhoEnum: 'PRESENCIAL',
-      contratoContratacao: null,
-      salario: 0.0,
-      entradaEmpresa: '',
-      saidaEmpresa: '',
-      expediente: {
-        horaEntrada: '',
-        horaSaida: '',
-        horaSaidaAlmoco: '',
-        horaEntradaAlmoco: '',
-        cargaHorariaSemanal: '0:00',
-        escalaEnum: 'INDEFINIDA'
-      },
-      acessoSistema: {
-        acessoSistemaAtivo: true,
-        senha: '',
-        permissaoEnum: 'LEITURA_BASICA',
-        privilegios: ['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']
-      }
-    }
+    this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');
   }
 
   createForm() {
@@ -207,6 +158,14 @@ export class NovoComponent {
 
   getValueAtributoDadosColaborador(atributo: string): any {
     return this.dadosColaborador.controls[atributo].value;
+  }
+
+  getValueAtributoDadosProfissionais(atributo: string): any {
+    return this.dadosProfissionais.controls[atributo].value;
+  }
+
+  getValueAtributoDadosAcesso(atributo: string): any {
+    return this.dadosAcesso.controls[atributo].value;
   }
 
   obtemTodasOcupacoes() {
@@ -283,12 +242,10 @@ export class NovoComponent {
   }
 
   verificaSeTipoTelefoneNuloOuVazio(): boolean {
-    if (this.colaborador.telefone != null) {
-      if (this.dadosColaborador.controls['tipoTelefone'].value != null
-        && this.dadosColaborador.controls['tipoTelefone'].value != undefined
-        && this.dadosColaborador.controls['tipoTelefone'].value != '') {
-        return true;
-      }
+    if (this.dadosColaborador.controls['tipoTelefone'].value != null
+      && this.dadosColaborador.controls['tipoTelefone'].value != undefined
+      && this.dadosColaborador.controls['tipoTelefone'].value != '') {
+      return true;
     }
     return false;
   }
@@ -475,21 +432,21 @@ export class NovoComponent {
 
   // STEP EMPRESA
   alteraStatusColaborador() {
-    if (this.colaborador.statusColaboradorEnum == 'ATIVO'
-      || this.colaborador.statusColaboradorEnum == 'AFASTADO'
-      || this.colaborador.statusColaboradorEnum == 'FERIAS') {
-      this.colaborador.saidaEmpresa = '';
+    if (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'ATIVO'
+      || this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'AFASTADO'
+      || this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'FERIAS') {
+      this.dadosProfissionais.controls['saidaEmpresa'].setValue('');
       this.dataSaidaAparente = false;
       this.dadosProfissionais.get('saidaEmpresa').disable();
     }
     else {
-      this.colaborador.saidaEmpresa = '';
+      this.dadosProfissionais.controls['saidaEmpresa'].setValue('');
       this.dataSaidaAparente = false;
       this.dadosProfissionais.get('saidaEmpresa').enable();
     }
 
-    if (this.colaborador.statusColaboradorEnum == 'DISPENSADO') {
-      this.colaborador.acessoSistema.acessoSistemaAtivo = false;
+    if (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'DISPENSADO') {
+      this.dadosAcesso.controls['acessoSistemaAtivo'].setValue(false);
       this.dadosAcesso.get('acessoSistemaAtivo').disable();
       this.atualizaLiberacaoSistema();
     }
@@ -500,19 +457,19 @@ export class NovoComponent {
   }
 
   limpaInputContrato() {
-    this.colaborador.contratoContratacao = null;
+    this.dadosProfissionais.controls['contratoContratacao'].setValue(null);
   }
 
   validaDataEntradaEmpresa() {
-    if (this.colaborador.entradaEmpresa == '') {
+    if (this.getValueAtributoDadosProfissionais('entradaEmpresa') == '') {
       this.dataEntradaAparente = false;
       return;
     }
 
-    let dataEntradaSplittada = this.colaborador.entradaEmpresa.split("-");
+    let dataEntradaSplittada = (this.getValueAtributoDadosProfissionais('entradaEmpresa')).split("-");
     if (dataEntradaSplittada.length == 3) {
       if (parseInt(dataEntradaSplittada[0]) > 2023 || parseInt(dataEntradaSplittada[0]) < 1900) {
-        this.colaborador.entradaEmpresa = '';
+        this.dadosProfissionais.controls['entradaEmpresa'].setValue('');
         this.dataEntradaAparente = false;
         this._snackBar.open("Data de entrada inválida", "Fechar", {
           duration: 3500
@@ -527,21 +484,23 @@ export class NovoComponent {
       return 'error';
     }
     else {
-      if (this.colaborador.entradaEmpresa == '' || this.colaborador.entradaEmpresa == null) return 'calendar_month';
+      if (this.getValueAtributoDadosProfissionais('entradaEmpresa') == '' || this.getValueAtributoDadosProfissionais('entradaEmpresa') == null)
+        return 'calendar_month';
+
       else return 'check';
     }
   }
 
   validaDataSaidaEmpresa() {
-    if (this.colaborador.saidaEmpresa == '') {
+    if (this.getValueAtributoDadosProfissionais('saidaEmpresa') == '') {
       this.dataSaidaAparente = false;
       return;
     }
 
-    let dataSaidaSplittada = this.colaborador.saidaEmpresa.split("-");
+    let dataSaidaSplittada = (this.getValueAtributoDadosProfissionais('saidaEmpresa')).split("-");
     if (dataSaidaSplittada.length == 3) {
       if (parseInt(dataSaidaSplittada[0]) > 2023 || parseInt(dataSaidaSplittada[0]) < 1900) {
-        this.colaborador.saidaEmpresa = '';
+        this.dadosProfissionais.controls['saidaEmpresa'].setValue('');
         this.dataEntradaAparente = false;
         this._snackBar.open("Data de saída inválida", "Fechar", {
           duration: 3500
@@ -556,7 +515,9 @@ export class NovoComponent {
       return 'error';
     }
     else {
-      if (this.colaborador.saidaEmpresa == '' || this.colaborador.saidaEmpresa == null) return 'calendar_month';
+      if (this.getValueAtributoDadosProfissionais('saidaEmpresa') == '' || this.getValueAtributoDadosProfissionais('saidaEmpresa') == null)
+        return 'calendar_month';
+
       else return 'check';
     }
   }
@@ -567,9 +528,9 @@ export class NovoComponent {
   }
 
   habilitaDataSaidaEmpresa() {
-    if (this.colaborador.statusColaboradorEnum != 'ATIVO'
-      && this.colaborador.statusColaboradorEnum != 'AFASTADO'
-      && this.colaborador.statusColaboradorEnum != 'FERIAS') {
+    if (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'ATIVO'
+      && this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'AFASTADO'
+      && this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'FERIAS') {
       this.inputDataSaida.nativeElement.focus();
       this.dataSaidaAparente = true;
     }
@@ -578,7 +539,7 @@ export class NovoComponent {
   // EXPEDIENTE
 
   protected realizaValidacaoExpedienteHoraEntrada() {
-    if (this.colaborador.expediente.horaEntrada != '' && this.colaborador.expediente.horaEntrada != null) {
+    if (this.getValueAtributoDadosProfissionais('horaEntrada') != '' && this.getValueAtributoDadosProfissionais('horaEntrada') != null) {
       this.dadosProfissionais.controls['horaSaidaAlmoco'].addValidators([Validators.required]);
       this.dadosProfissionais.controls['horaEntradaAlmoco'].addValidators([Validators.required]);
       this.dadosProfissionais.controls['horaSaida'].addValidators([Validators.required]);
@@ -586,107 +547,108 @@ export class NovoComponent {
       this.dadosProfissionais.controls['horaSaidaAlmoco'].enable();
     }
     else {
-      this.colaborador.expediente.horaSaidaAlmoco = '';
+      this.dadosProfissionais.controls['horaSaidaAlmoco'].setValue('');
       this.dadosProfissionais.controls['horaSaidaAlmoco'].clearValidators();
       this.dadosProfissionais.controls['horaSaidaAlmoco'].disable();
 
-      this.colaborador.expediente.horaEntradaAlmoco = '';
+      this.dadosProfissionais.controls['horaEntradaAlmoco'].setValue('');
       this.dadosProfissionais.controls['horaEntradaAlmoco'].clearValidators();
       this.dadosProfissionais.controls['horaEntradaAlmoco'].disable();
 
-      this.colaborador.expediente.horaSaida = '';
+      this.dadosProfissionais.controls['horaSaida'].setValue('');
       this.dadosProfissionais.controls['horaSaida'].clearValidators();
       this.dadosProfissionais.controls['horaSaida'].disable();
 
-      this.colaborador.expediente.escalaEnum = 'INDEFINIDA';
+      this.dadosProfissionais.controls['escalaEnum'].setValue('INDEFINIDA');
       this.dadosProfissionais.controls['escalaEnum'].clearValidators();
       this.dadosProfissionais.controls['escalaEnum'].disable();
 
-      this.colaborador.expediente.cargaHorariaSemanal = '0:00'
+      this.dadosProfissionais.controls['cargaHorariaSemanal'].setValue('0:00');
     }
 
     this.invocaMetodoCalculoCargaHorariaSemanal();
   }
 
   protected realizaValidacaoExpedienteHoraSaidaAlmoco() {
-    if (this.colaborador.expediente.horaSaidaAlmoco != '' && this.colaborador.expediente.horaSaidaAlmoco != null) {
+    if (this.getValueAtributoDadosProfissionais('horaSaidaAlmoco') != '' && this.getValueAtributoDadosProfissionais('horaSaidaAlmoco') != null) {
       this.dadosProfissionais.controls['horaEntradaAlmoco'].enable();
     }
     else {
-      this.colaborador.expediente.horaEntradaAlmoco = '';
+      this.dadosProfissionais.controls['horaEntradaAlmoco'].setValue('');
       this.dadosProfissionais.controls['horaEntradaAlmoco'].disable();
 
-      this.colaborador.expediente.horaSaida = '';
+      this.dadosProfissionais.controls['horaSaida'].setValue('');
       this.dadosProfissionais.controls['horaSaida'].disable();
 
-      this.colaborador.expediente.escalaEnum = 'INDEFINIDA';
+      this.dadosProfissionais.controls['escalaEnum'].setValue('INDEFINIDA');
       this.dadosProfissionais.controls['escalaEnum'].disable();
 
-      this.colaborador.expediente.cargaHorariaSemanal = '0:00'
+      this.dadosProfissionais.controls['cargaHorariaSemanal'].setValue('0:00');
     }
 
     this.invocaMetodoCalculoCargaHorariaSemanal();
   }
 
   protected realizaValidacaoExpedienteHoraEntradaAlmoco() {
-    if (this.colaborador.expediente.horaEntradaAlmoco != '' && this.colaborador.expediente.horaEntradaAlmoco != null) {
+    if (this.getValueAtributoDadosProfissionais('horaEntradaAlmoco') != '' && this.getValueAtributoDadosProfissionais('horaEntradaAlmoco') != null) {
       this.dadosProfissionais.controls['horaSaida'].enable();
     }
     else {
-      this.colaborador.expediente.horaSaida = '';
+      this.dadosProfissionais.controls['horaSaida'].setValue('');
       this.dadosProfissionais.controls['horaSaida'].disable();
 
-      this.colaborador.expediente.escalaEnum = 'INDEFINIDA';
+      this.dadosProfissionais.controls['escalaEnum'].setValue('INDEFINIDA');
       this.dadosProfissionais.controls['escalaEnum'].disable();
 
-      this.colaborador.expediente.cargaHorariaSemanal = '0:00'
+      this.dadosProfissionais.controls['cargaHorariaSemanal'].setValue('0:00');
     }
 
     this.invocaMetodoCalculoCargaHorariaSemanal();
   }
 
   protected realizaValidacaoExpedienteHoraSaida() {
-    if (this.colaborador.expediente.horaSaida != '' && this.colaborador.expediente.horaSaida != null) {
+    if (this.getValueAtributoDadosProfissionais('horaSaida') != '' && this.getValueAtributoDadosProfissionais('horaSaida') != null) {
       this.dadosProfissionais.controls['escalaEnum'].enable();
     }
     else {
-      this.colaborador.expediente.escalaEnum = 'INDEFINIDA';
+      this.dadosProfissionais.controls['escalaEnum'].setValue('INDEFINIDA');
       this.dadosProfissionais.controls['escalaEnum'].disable();
 
-      this.colaborador.expediente.cargaHorariaSemanal = '0:00'
+      this.dadosProfissionais.controls['cargaHorariaSemanal'].setValue('0:00');
     }
 
     this.invocaMetodoCalculoCargaHorariaSemanal();
   }
 
   private invocaMetodoCalculoCargaHorariaSemanal() {
-    if (this.colaborador.expediente.horaEntrada != '' && this.colaborador.expediente.horaEntrada != null
-      && this.colaborador.expediente.horaSaidaAlmoco != '' && this.colaborador.expediente.horaSaidaAlmoco != null
-      && this.colaborador.expediente.horaEntradaAlmoco != '' && this.colaborador.expediente.horaEntradaAlmoco != null
-      && this.colaborador.expediente.horaSaida != '' && this.colaborador.expediente.horaSaida != null
-      && this.colaborador.expediente.escalaEnum != 'INDEFINIDA' && this.colaborador.expediente.escalaEnum != null) this.realizaCalculoCargaHorariaSemanal();
+    if (this.getValueAtributoDadosProfissionais('horaEntrada') != '' && this.getValueAtributoDadosProfissionais('horaEntrada') != null
+      && this.getValueAtributoDadosProfissionais('horaSaidaAlmoco') != '' && this.getValueAtributoDadosProfissionais('horaSaidaAlmoco') != null
+      && this.getValueAtributoDadosProfissionais('horaEntradaAlmoco') != '' && this.getValueAtributoDadosProfissionais('horaEntradaAlmoco') != null
+      && this.getValueAtributoDadosProfissionais('horaSaida') != '' && this.getValueAtributoDadosProfissionais('horaSaida') != null
+      && this.getValueAtributoDadosProfissionais('escalaEnum') != 'INDEFINIDA' && this.getValueAtributoDadosProfissionais('escalaEnum') != null)
+      this.realizaCalculoCargaHorariaSemanal();
   }
 
   realizaCalculoCargaHorariaSemanal() {
 
     let horaEntradaEmMinutos: number =
-      (this.colaborador.expediente.horaEntrada != null && this.colaborador.expediente.horaEntrada != '')
-        ? this.calculaHoraEmMinutos(this.colaborador.expediente.horaEntrada.split(':'))
+      (this.getValueAtributoDadosProfissionais('horaEntrada') != null && this.getValueAtributoDadosProfissionais('horaEntrada') != '')
+        ? this.calculaHoraEmMinutos((this.getValueAtributoDadosProfissionais('horaEntrada')).split(':'))
         : 0;
 
     let horaSaidaAlmocoEmMinutos: number =
-      (this.colaborador.expediente.horaSaidaAlmoco != null && this.colaborador.expediente.horaSaidaAlmoco != '')
-        ? this.calculaHoraEmMinutos(this.colaborador.expediente.horaSaidaAlmoco.split(':'))
+      (this.getValueAtributoDadosProfissionais('horaSaidaAlmoco') != null && this.getValueAtributoDadosProfissionais('horaSaidaAlmoco') != '')
+        ? this.calculaHoraEmMinutos((this.getValueAtributoDadosProfissionais('horaSaidaAlmoco')).split(':'))
         : 0;
 
     let horaEntradaAlmocoEmMinutos: number =
-      (this.colaborador.expediente.horaEntradaAlmoco != null && this.colaborador.expediente.horaEntradaAlmoco != '')
-        ? this.calculaHoraEmMinutos(this.colaborador.expediente.horaEntradaAlmoco.split(':'))
+      (this.getValueAtributoDadosProfissionais('horaEntradaAlmoco') != null && this.getValueAtributoDadosProfissionais('horaEntradaAlmoco') != '')
+        ? this.calculaHoraEmMinutos((this.getValueAtributoDadosProfissionais('horaEntradaAlmoco')).split(':'))
         : 0;
 
     let horaSaidaEmMinutos: number =
-      (this.colaborador.expediente.horaSaida != null && this.colaborador.expediente.horaSaida != '')
-        ? this.calculaHoraEmMinutos(this.colaborador.expediente.horaSaida.split(':'))
+      (this.getValueAtributoDadosProfissionais('horaSaida') != null && this.getValueAtributoDadosProfissionais('horaSaida') != '')
+        ? this.calculaHoraEmMinutos((this.getValueAtributoDadosProfissionais('horaSaida')).split(':'))
         : 0;
 
     let TempoHorarioDeAlmoco: number = (horaEntradaAlmocoEmMinutos - horaSaidaAlmocoEmMinutos);
@@ -695,12 +657,11 @@ export class NovoComponent {
     let expedienteTotal: number = ((tempoEntradaSaida - TempoHorarioDeAlmoco) * diasEscala) / 60;
 
 
-
-    this.colaborador.expediente.cargaHorariaSemanal = this.converteFloatParaStringNoFormatoTime(expedienteTotal);
+    this.dadosProfissionais.controls['cargaHorariaSemanal'].setValue(this.converteFloatParaStringNoFormatoTime(expedienteTotal));
   }
 
   private calculaDiasEscala(): number {
-    switch (this.colaborador.expediente.escalaEnum) {
+    switch (this.getValueAtributoDadosProfissionais('escalaEnum')) {
       case 'SEG_A_SEX': {
         return 5;
       }
@@ -746,13 +707,13 @@ export class NovoComponent {
 
   // STEP ACESSO
   atualizaLiberacaoSistema() {
-    if (this.colaborador.acessoSistema.acessoSistemaAtivo) {
+    if (this.getValueAtributoDadosAcesso('acessoSistemaAtivo')) {
       this.dadosAcesso.get('senha').enable();
       this.dadosAcesso.get('permissaoEnum').enable();
     }
     else {
-      this.colaborador.acessoSistema.privilegios = [];
-      this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
+      this.dadosAcesso.controls['privilegios'].setValue([]);
+      this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');
       this.dadosAcesso.get('senha').setValue('');
       this.dadosAcesso.get('senha').disable();
       this.dadosAcesso.get('permissaoEnum').disable();
@@ -760,14 +721,14 @@ export class NovoComponent {
   }
 
   adicionaModulo(moduloLiberado) {
-    this.colaborador.acessoSistema.privilegios.push(moduloLiberado)
-    this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
+    this.getValueAtributoDadosAcesso('privilegios').push(moduloLiberado);
+    this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');
     this.privilegioAtual = '';
   }
 
   removeModulo(moduloLiberado) {
-    this.colaborador.acessoSistema.privilegios.splice(this.colaborador.acessoSistema.privilegios.indexOf(moduloLiberado), 1);
-    this.modulosLiberados = this.colaborador.acessoSistema.privilegios;
+    this.getValueAtributoDadosAcesso('privilegios').splice(this.getValueAtributoDadosAcesso('privilegios').indexOf(moduloLiberado), 1);
+    this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');
   }
 
   defineIconeInputSenha() {
@@ -775,7 +736,7 @@ export class NovoComponent {
       return 'error';
     }
     else {
-      if (this.colaborador.acessoSistema.senha == '' || this.colaborador.acessoSistema.senha == null) return 'lock';
+      if (this.getValueAtributoDadosAcesso('senha') == '' || this.getValueAtributoDadosAcesso('senha') == null) return 'lock';
       else return 'check';
     }
   }

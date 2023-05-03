@@ -6,8 +6,6 @@ import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
 import { ColaboradorService } from '../../services/colaborador.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatePipe } from '@angular/common';
-import { Colaborador } from '../../visualizacao/models/Colaborador';
 import { ColaboradorNovo } from '../models/ColaboradorNovo';
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
@@ -19,11 +17,11 @@ import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-
   styleUrls: ['./novo.component.scss'],
   animations: [
     trigger('fadeInOut', [
-      transition(':enter', [   // :enter is alias to 'void => *'
+      transition(':enter', [
         style({ opacity: 0 }),
         animate(300, style({ opacity: 1 }))
       ]),
-      transition(':leave', [   // :leave is alias to '* => void'
+      transition(':leave', [
         animate(300, style({ opacity: 0 }))
       ])
     ]),
@@ -36,7 +34,6 @@ export class NovoComponent {
     private colaboradorService: ColaboradorService,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private datePipe: DatePipe,
     private ref: ChangeDetectorRef) { }
 
   dataNascimentoAparente: boolean = false;
@@ -56,10 +53,6 @@ export class NovoComponent {
   dadosAcesso: FormGroup;
 
   colaborador: ColaboradorNovo;
-
-  // Variáveis data
-  minDate: Date;
-  maxDate: Date;
 
   // Validations colaborador
   inputLengthCpfCnpj: number = 11;
@@ -89,6 +82,7 @@ export class NovoComponent {
   @ViewChild('inputDataEntrada') inputDataEntrada: ElementRef;
   @ViewChild('inputDataSaida') inputDataSaida: ElementRef;
   @ViewChild('selectAcessoSistemaAtivo') selectAcessoSistemaAtivo: ElementRef;
+  @ViewChild('inputSalario') inputSalario: ElementRef;
 
   ngAfterViewInit(): void {
     this.ref.detectChanges();
@@ -96,10 +90,6 @@ export class NovoComponent {
 
   ngOnInit(): void {
     this.createForm();
-    const currentYear = new Date().getFullYear();
-    this.minDate = new Date(1920, 0, 1);
-    this.maxDate = new Date(currentYear, 0, 1);
-
     this.atualizaValidatorsTelefone();
     this.obtemTodosEstadosBrasileiros();
     this.obtemTodasOcupacoes();
@@ -147,7 +137,7 @@ export class NovoComponent {
     });
     this.dadosAcesso = this.formBuilder.group({
       acessoSistemaAtivo: [true],
-      senha: [''],
+      senha: ['', [Validators.required, Validators.minLength(6)]],
       permissaoEnum: ['LEITURA_BASICA'],
       privilegios: [['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']]
     });
@@ -185,6 +175,14 @@ export class NovoComponent {
     }
   }
 
+  realizaTratamentoCpfCnpj() {
+    this.dadosColaborador.controls['cpfCnpj']
+      .setValue(this.getValueAtributoDadosColaborador('cpfCnpj')
+        .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
+        .replace(/[^0-9.]/g, '')
+        .trim())
+  }
+
   // EMAIL
   defineIconeInputEmail() {
     if (this.dadosColaborador.controls['email'].touched && this.dadosColaborador.controls['email'].invalid) {
@@ -197,7 +195,6 @@ export class NovoComponent {
   }
 
   // TELEFONE
-
   atualizaValidatorsTelefone() {
     this.dadosColaborador.controls['prefixo'].setValue('');
     this.dadosColaborador.controls['prefixo'].reset();
@@ -427,9 +424,6 @@ export class NovoComponent {
     }
   }
 
-  realizaTratamentoCpfCnpj() {
-  }
-
   // STEP EMPRESA
   alteraStatusColaborador() {
     if (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'ATIVO'
@@ -477,6 +471,7 @@ export class NovoComponent {
         return;
       }
     }
+
   }
 
   defineIconeDataEntradaEmpresa() {
@@ -533,6 +528,29 @@ export class NovoComponent {
       && this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'FERIAS') {
       this.inputDataSaida.nativeElement.focus();
       this.dataSaidaAparente = true;
+    }
+  }
+
+  realizaTratamentoRemuneracao(evento) {
+
+    if (evento.data == '-') {
+      this.dadosProfissionais.controls['salario'].setValue(0);
+    }
+
+    if (this.getValueAtributoDadosProfissionais('salario') != null) {
+      if (this.getValueAtributoDadosProfissionais('salario') < 0 || this.getValueAtributoDadosProfissionais('salario').toString().includes('-')) {
+        this.dadosProfissionais.controls['salario'].setValue(0);
+      }
+      if (this.inputSalario.nativeElement.value.toString().startsWith('0')) {
+        this.dadosProfissionais.controls['salario'].setValue(this.getValueAtributoDadosProfissionais('salario'));
+      }
+
+      let inputSalarioSplitted = this.inputSalario.nativeElement.value.toString().split(".")
+      if (inputSalarioSplitted.length == 2) {
+        if (inputSalarioSplitted[1].length > 2) {
+          this.dadosProfissionais.controls['salario'].setValue(parseFloat(inputSalarioSplitted[0] + '.' + inputSalarioSplitted[1].slice(0, 2)));
+        }
+      }
     }
   }
 
@@ -764,6 +782,12 @@ export class NovoComponent {
       this.selectAcessoSistemaAtivo.nativeElement.focus();
     }, 400);
   }
+
+  // TRATAMENTO DE ENVIO DE FORMULÁRIO
+
+
+
+  // ENVIO DE FORMULÁRIO
 
   public enviarFormulario() {
   }

@@ -204,7 +204,7 @@
                     </div>
                     <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h6 *ngIf="dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].invalid"
-                            class="error_message">{{ 'O prefixo deve ser por dois números' }}</h6>
+                            class="error_message">{{ 'O prefixo deve possuir dois números' }}</h6>
                     </div>
                 </div>
 
@@ -338,7 +338,7 @@
                 <div class="row col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
-                            [ngClass]="{'label_invalida': dadosColaborador.controls['logradouro'].touched && dadosColaborador.controls['logradouro'].invalid}">
+                            [ngClass]="{'label_invalida': dadosColaborador.controls['logradouro'].invalid}">
                             Logradouro
                         </label>
                     </div>
@@ -347,7 +347,7 @@
                             style="text-transform:uppercase" spellcheck="false" tabindex="11" maxlength="50"
                             (input)="atualizaValidatorsEndereco()" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
                             (keydown.esc)="retornaParaVisualizacao()"
-                            [ngClass]="{'input_invalida': dadosColaborador.controls['logradouro'].touched && dadosColaborador.controls['logradouro'].invalid}"
+                            [ngClass]="{'input_invalida': dadosColaborador.controls['logradouro'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] *ngIf="dadosColaborador.controls['logradouro'].touched && dadosColaborador.controls['logradouro'].invalid 
                                         || dadosColaborador.controls['logradouro'].valid 
@@ -355,16 +355,14 @@
                                             && dadosColaborador.controls['logradouro'].value != '' 
                                             && dadosColaborador.controls['logradouro'].value != null" [fontIcon]="dadosColaborador.controls['logradouro'].touched && dadosColaborador.controls['logradouro'].invalid 
                                             ? 'error' 
-                                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosColaborador.controls['logradouro'].invalid,
-                                            'icone_error': dadosColaborador.controls['logradouro'].touched && dadosColaborador.controls['logradouro'].invalid}"
+                                            : 'check'" [ngClass]="{'icone_ok': !dadosColaborador.controls['logradouro'].invalid,
+                                            'icone_error': dadosColaborador.controls['logradouro'].invalid}"
                             class="icone"></mat-icon>
                     </div>
 
-                    <div [@fadeInOut]
-                        *ngIf="dadosColaborador.controls['logradouro'].touched && dadosColaborador.controls['logradouro'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosColaborador.controls['logradouro'].invalid"
                         class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo não pode ser vazio' }}</h6>
+                        <h6 class="error_message">{{ 'Campo obrigatório' }}</h6>
                     </div>
                 </div>
 
@@ -372,14 +370,14 @@
                 <div class="row col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label"
-                            [ngClass]="{'label_invalida': dadosColaborador.controls['numero'].touched && dadosColaborador.controls['numero'].invalid}">
+                            [ngClass]="{'label_invalida': dadosColaborador.controls['numero'].invalid}">
                             Número
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="text" autocomplete="off" formControlName="numero" name="numero" maxlength="5"
                             spellcheck="false" (input)="atualizaValidatorsEndereco()" #numeroEndereco
-                            [ngClass]="{'input_invalida': dadosColaborador.controls['numero'].touched && dadosColaborador.controls['numero'].invalid}"
+                            [ngClass]="{'input_invalida': dadosColaborador.controls['numero'].invalid}"
                             (keydown.enter)="botaoProximoPrimeiraEtapa.click()" tabindex="12"
                             (keydown.esc)="retornaParaVisualizacao()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -389,16 +387,14 @@
                                             && dadosColaborador.controls['numero'].value != '' 
                                             && dadosColaborador.controls['numero'].value != null" [fontIcon]="dadosColaborador.controls['numero'].touched && dadosColaborador.controls['numero'].invalid 
                                             ? 'error' 
-                                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosColaborador.controls['numero'].invalid,
-                                            'icone_error': dadosColaborador.controls['numero'].touched && dadosColaborador.controls['numero'].invalid}"
+                                            : 'check'" [ngClass]="{'icone_ok': !dadosColaborador.controls['numero'].invalid,
+                                            'icone_error': dadosColaborador.controls['numero'].invalid}"
                             class="icone"></mat-icon>
                     </div>
 
-                    <div [@fadeInOut]
-                        *ngIf="dadosColaborador.controls['numero'].touched && dadosColaborador.controls['numero'].invalid"
+                    <div [@fadeInOut] *ngIf="dadosColaborador.controls['numero'].invalid"
                         class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Campo numérico obrigatório' }}</h6>
+                        <h6 class="error_message">{{ 'Campo obrigatório' }}</h6>
                     </div>
                 </div>
 
@@ -451,7 +447,10 @@
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosColaborador.controls['complemento'].touched && dadosColaborador.controls['complemento'].value != ''"
-                            [fontIcon]="dadosColaborador.controls['complemento'].touched && dadosColaborador.controls['complemento'].invalid 
+                            [fontIcon]="dadosColaborador.controls['complemento'].touched 
+                                && dadosColaborador.controls['complemento'].invalid 
+                                && getValueAtributoDadosColaborador('complemento') != '' 
+                                && getValueAtributoDadosColaborador('complemento') != null
                                             ? 'error' 
                                             : 'check'"
                             [ngClass]="{'icone_ok': !dadosColaborador.controls['complemento'].invalid,
@@ -551,7 +550,7 @@
                     <div [@fadeInOut]
                         *ngIf="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid"
                         class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
+                        <h6 class="error_message">{{ 'Este campo deve possuir no máximo 30 caracteres' }}</h6>
                     </div>
                 </div>
 
@@ -612,7 +611,8 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="number" formControlName="salario" name="salario" max="9999999.00" min="0.00"
-                            step="100.00" #inputSalario (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            step=".01" #inputSalario (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (input)="realizaTratamentoRemuneracao($event)"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['salario'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="22">
@@ -702,19 +702,13 @@
                                                             ? 'file_download_done' 
                                                             : 'add_box'" class="icone icone_ok"></mat-icon>
                         </label>
-                        <input type="file" formControlName="contratoContratacao" name="contratoContratacao"
-                            style="display: none;" #contratoContratacaoInput id="contratoContratacaoInput"
-                            (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                        <input type="file" accept=".pdf,.docx, .png, .jpeg, .jpg" formControlName="contratoContratacao"
+                            name="contratoContratacao" style="display: none;" #contratoContratacaoInput
+                            id="contratoContratacaoInput" (keydown.enter)="botaoProximoSegundaEtapa.click()"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="25">
 
-                    </div>
-
-                    <div [@fadeInOut]
-                        *ngIf="dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
                     </div>
                 </div>
 
@@ -878,20 +872,6 @@
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
                             class="input input_desabilitada col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                             tabindex="31">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].value != ''"
-                            [fontIcon]="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid 
-                                                            ? 'error' 
-                                                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosProfissionais.controls['cargaHorariaSemanal'].invalid,
-                                                            'icone_error': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
-
-                    <div [@fadeInOut]
-                        *ngIf="dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
                     </div>
                 </div>
 
@@ -937,27 +917,27 @@
                 <!-- SENHA -->
                 <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid}"
+                        <label class="label" [ngClass]="{'label_invalida': defineIconeInputSenha() == 'error'}"
                             [ngClass]="{'label_desabilitada': dadosAcesso.get('senha').disabled}">
                             Senha
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="password" autocomplete="off" formControlName="senha" name="senha"
-                            style="text-transform:uppercase" spellcheck="false" #inputSenha maxlength="30"
+                        <input type="text" autocomplete="off" formControlName="senha" name="senha" spellcheck="false" #inputSenha maxlength="30"
                             (keydown.enter)="submitFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                             [ngClass]="{'input_invalida': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="35">
                         <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputSenha()"
                             [ngClass]="{ 'icone_ok': defineIconeInputSenha() == 'check' || defineIconeInputSenha() == 'lock',
-                                                                    'icone_error': defineIconeInputSenha() == 'error' }" (click)="inputSenha.focus()" class="icone"></mat-icon>
+                                                                    'icone_error': defineIconeInputSenha() == 'error',
+                                                                    'icone_desabilitado': dadosAcesso.controls['senha'].disabled }" (click)="inputSenha.focus()"
+                            class="icone"></mat-icon>
                     </div>
 
                     <div [@fadeInOut]
-                        *ngIf="dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid"
+                        *ngIf=" dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid"
                         class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
+                        <h6 class="error_message">{{ 'Campo obrigatório com mínimo de 6 caracteres' }}</h6>
                     </div>
 
                 </div>

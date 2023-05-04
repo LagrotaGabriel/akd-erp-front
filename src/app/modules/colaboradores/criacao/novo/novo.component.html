@@ -711,8 +711,7 @@
                         <input type="file" accept=".pdf,.docx, .png, .jpeg, .jpg" formControlName="contratoContratacao"
                             name="contratoContratacao" style="display: none;" #contratoContratacaoInput
                             id="contratoContratacaoInput" (keydown.enter)="botaoProximoSegundaEtapa.click()"
-                            (change)="setaContrato($event)"
-                            (keydown.esc)="botaoVoltarSegundaEtapa.click()"
+                            (change)="setaContrato($event)" (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="25">
 
@@ -1050,16 +1049,14 @@
 
                 <!-- BOTÕES DE NAVEGAÇÃO -->
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button type="button" (keydown.enter)="submitFormulario.click()"
-                        (keydown.esc)="botaoVoltarTerceiraEtapa.click()" class="button botaoHabilitado"
-                        #botaoVoltarTerceiraEtapa mat-button tabindex="39" matStepperPrevious
-                        (click)="avancaSegundaEtapa()">
+                    <button type="button" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                        class="button botaoHabilitado" #botaoVoltarTerceiraEtapa mat-button tabindex="39"
+                        matStepperPrevious (click)="avancaSegundaEtapa()">
                         Voltar
                     </button>
-                    <button type="button" (keydown.enter)="submitFormulario.click()"
-                        (click)="enviarFormulario()"
-                        (keydown.esc)="botaoVoltarTerceiraEtapa.click()"tabindex="40"
-                        class="button" #submitFormulario [disabled]="dadosAcesso.valid ? false : true"
+                    <button type="button" (keydown.enter)="submitFormulario.click()" (click)="enviarFormulario()"
+                        (keydown.esc)="botaoVoltarTerceiraEtapa.click()" tabindex="40" class="button" #submitFormulario
+                        [disabled]="dadosAcesso.valid ? false : true"
                         [ngClass]="{'botaoHabilitado': dadosAcesso.valid, 'botaoDesabilitado': !dadosAcesso.valid}"
                         mat-button>Enviar</button>
                 </div>

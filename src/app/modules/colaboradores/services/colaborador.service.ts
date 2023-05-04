@@ -26,83 +26,29 @@ export class ColaboradorService {
     body: null
   }
 
-  /*   private realizaTratamentoDeAtributosNulos(cliente: ClienteNovo): ClienteNovo {
-      cliente = this.realizaTratamentoDosDadosPessoaisNulosDoCliente(cliente);
-      cliente = this.realizaTratamentoDosDadosDeTelefoneNulosDoCliente(cliente);
-      cliente = this.realizaTratamentoDosDadosDeEnderecoNulosDoCliente(cliente);
-      return cliente;
-    }
-  
-    private realizaTratamentoDosDadosPessoaisNulosDoCliente(cliente: ClienteNovo): ClienteNovo {
-      if (cliente.cpfCnpj == '') cliente.cpfCnpj = null;
-      if (cliente.inscricaoEstadual == '') cliente.inscricaoEstadual = null;
-      if (cliente.email == '') cliente.email = null;
-      if (cliente.dataNascimento == '') cliente.dataNascimento = null;
-      return cliente;
-    }
-  
-    private realizaTratamentoDosDadosDeTelefoneNulosDoCliente(cliente: ClienteNovo): ClienteNovo {
-      if (cliente.telefone != null) {
-        if (cliente.telefone.tipoTelefone == '' || cliente.telefone.tipoTelefone == null ||
-          cliente.telefone.prefixo == '' || cliente.telefone.prefixo == null ||
-          cliente.telefone.numero == '' || cliente.telefone.numero == null) cliente.telefone = null;
-      }
-      return cliente;
-    }
-  
-    private realizaTratamentoDosDadosDeEnderecoNulosDoCliente(cliente: ClienteNovo): ClienteNovo {
-      if (cliente.endereco != null) {
-        if (cliente.endereco.estado == '') cliente.endereco.estado = null;
-        if (cliente.endereco.cidade == '') cliente.endereco.cidade = null;
-        if (cliente.endereco.complemento == '') cliente.endereco.complemento = null;
-        if (cliente.endereco.codigoPostal == '') cliente.endereco.codigoPostal = null;
-        if (cliente.endereco.bairro == '') cliente.endereco.bairro = null;
-        if (cliente.endereco.logradouro == '' || cliente.endereco.logradouro == null || cliente.endereco.numero == null) cliente.endereco = null;
-      }
-      return cliente;
-    }
-  
-    public validaDuplicidadeInscricaoEstadual(inscricaoEstadual: string) {
-      this.httpOptions.body = null;
-      return this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-ie`, inscricaoEstadual, this.httpOptions).pipe(
-        catchError(erro => {
-          return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
-        })
-      )
-    }
-  
-    public validaDuplicidadeCpfCnpj(cpfCnpj: string) {
-      this.httpOptions.body = null;
-      return this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, cpfCnpj, this.httpOptions).pipe(
-        catchError((erro: HttpErrorResponse) => {
-          return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
-        })
-      )
-    }
-  
-    public atualizaCliente(idCliente: number, clienteNovo: ClienteNovo): Observable<ClienteNovo> {
-      clienteNovo = this.realizaTratamentoDeAtributosNulos(clienteNovo);
-      this.httpOptions.body = null;
-      return this.http.put<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${idCliente}`, clienteNovo, this.httpOptions).pipe(
-        map(resposta => new ClienteNovo(resposta)),
-      )
-    }
-  
-    public obtemClientePorId(id: number): Observable<ClienteNovo> {
-      this.httpOptions.params = new HttpParams();
-      this.httpOptions.body = null;
-      return this.http.get<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
-        map((resposta) => new ClienteNovo(resposta))
-      )
-    } */
+  /*   public atualizaCliente(idCliente: number, clienteNovo: ClienteNovo): Observable<ClienteNovo> {
+       clienteNovo = this.realizaTratamentoDeAtributosNulos(clienteNovo);
+       this.httpOptions.body = null;
+       return this.http.put<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${idCliente}`, clienteNovo, this.httpOptions).pipe(
+         map(resposta => new ClienteNovo(resposta)),
+       )
+     }
+   
+     public obtemClientePorId(id: number): Observable<ClienteNovo> {
+       this.httpOptions.params = new HttpParams();
+       this.httpOptions.body = null;
+       return this.http.get<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
+         map((resposta) => new ClienteNovo(resposta))
+       )
+     } */
 
-  public novoColaborador(colaboradorNovo: ColaboradorNovo, contratoColaborador: Blob): Observable<number> {
+  public novoColaborador(colaboradorNovo: ColaboradorNovo, contratoColaborador: Blob): Observable<string> {
     this.httpOptions.body = null;
     let formData = new FormData();
     formData.append("contratoColaborador", contratoColaborador);
     formData.append("colaborador", JSON.stringify(colaboradorNovo));
 
-    return this.http.post<number>(`${API_URL.baseUrl}api/sistema/v1/colaborador`, formData, this.httpOptions).pipe(
+    return this.http.post<string>(`${API_URL.baseUrl}api/sistema/v1/colaborador`, formData, this.httpOptions).pipe(
     )
   }
 

@@ -7,11 +7,11 @@
 }
 
 .td_checkbox, .th_checkbox {
-    width: 5%;
+    width: 10%;
 }
 
 .td_expande, .th_expande {
-    width: 5%;
+    width: 10%;
 }
 
 .th_nome,
@@ -60,22 +60,6 @@
 
 .accordion-container, app-acordeao {
     padding: 0;
-}
-
-.avatar_icone{
-    width: 2.25rem;
-    height: 2.25rem;
-    border: none;
-    border-radius: 50%;
-    margin-left: 0;
-    background-image: url('https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255710-stock-illustration-avatar-vector-male-profile-gray.jpg');
-    background-size: cover;
-}
-
-.nome_text {
-    display: flex;
-    align-items: center;
-    padding-left: 1rem
 }
 
 @media (max-width: 1200px) {

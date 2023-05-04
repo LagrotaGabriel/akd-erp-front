@@ -24,7 +24,6 @@ export class ColaboradorNovo {
     expediente?: Expediente;               
 
     constructor(item) {
-        this.fotoPerfil = item?.fotoPerfil;
         this.nome = item?.nome;
         this.dataNascimento = item?.dataNascimento;
         this.email = item?.email;

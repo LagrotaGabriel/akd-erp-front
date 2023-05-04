@@ -10,6 +10,7 @@ import { ColaboradorNovo } from '../models/ColaboradorNovo';
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-novo',
@@ -876,10 +877,24 @@ export class NovoComponent {
   }
 
   public enviarFormulario() {
+    let matriculaGerada: string;
     this.construirObjetoColaborador();
     this.colaboradorService.novoColaborador(this.colaborador, this.contratoContratacao).subscribe({
-      next(response: number) {
-        console.log('Matrícula gerada: ' + response);
+      next: (response: string) => {
+        matriculaGerada = response;
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error);
+        this.router.navigate(['/colaboradores']);
+        this._snackBar.open("Ocorreu um erro durante o cadastro do colaborador. Entre em contato com o suporte", "Fechar", {
+          duration: 5000
+        });
+      },
+      complete: () => {
+        this.router.navigate(['/colaboradores']);
+        this._snackBar.open("Matrícula gerada para o colaborador cadastrado: " + matriculaGerada, "Fechar", {
+          duration: 7500
+        });
       }
     });
   }

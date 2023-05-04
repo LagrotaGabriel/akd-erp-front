@@ -37,33 +37,26 @@ export class NovoComponent {
     private _snackBar: MatSnackBar,
     private ref: ChangeDetectorRef) { }
 
-  colaborador: ColaboradorNovo;
+  private colaborador: ColaboradorNovo;
 
-  dataNascimentoAparente: boolean = false;
-  dataEntradaAparente: boolean = false;
-  dataSaidaAparente: boolean = false;
-
-  // Subscriptions
-  validaDuplicidadeCpfCnpjSubscription$: Subscription;
-  obtemTodosEstadosBrasileirosSubscription$: Subscription;
-  getEnderecoPeloCepSubscription$: Subscription;
-  obtemTodosMunicipiosPorEstadoSubscription$: Subscription;
-  obtemTodasOcupacoesSubscription$: Subscription;
+  protected dataNascimentoAparente: boolean = false;
+  protected dataEntradaAparente: boolean = false;
+  protected dataSaidaAparente: boolean = false;
 
   // Form groups
-  dadosColaborador: FormGroup;
-  dadosProfissionais: FormGroup;
-  dadosAcesso: FormGroup;
+  protected dadosColaborador: FormGroup;
+  protected dadosProfissionais: FormGroup;
+  protected dadosAcesso: FormGroup;
 
   // Validations colaborador
-  inputLengthCpfCnpj: number = 11;
-  inputPatternCpfCnpj: any = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
+  protected inputLengthCpfCnpj: number = 11;
+  protected inputPatternCpfCnpj: any = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
 
   // Validations telefone
-  inputLengthPrefixo: number = 2;
-  inputPrefixoPattern: any = /^\d{2}/;
-  inputLengthTelefone: number;
-  inputTelefonePattern: any;
+  protected inputLengthPrefixo: number = 2;
+  private inputPrefixoPattern: any = /^\d{2}/;
+  protected inputLengthTelefone: number;
+  private inputTelefonePattern: any;
 
   // Variaveis endereço
   estadosResponse: EstadosResponse[];
@@ -87,6 +80,13 @@ export class NovoComponent {
   @ViewChild('selectAcessoSistemaAtivo') selectAcessoSistemaAtivo: ElementRef;
   @ViewChild('inputSalario') inputSalario: ElementRef;
 
+  // Subscriptions
+  private obtemTodosEstadosBrasileirosSubscription$: Subscription;
+  private getEnderecoPeloCepSubscription$: Subscription;
+  private obtemTodosMunicipiosPorEstadoSubscription$: Subscription;
+  private obtemTodasOcupacoesSubscription$: Subscription;
+  private criaNovoColaboradorSubscription$: Subscription;
+
   ngAfterViewInit(): void {
     this.ref.detectChanges();
   }
@@ -104,7 +104,15 @@ export class NovoComponent {
     this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');
   }
 
-  createForm() {
+  ngOnDestroy(): void {
+    if (this.criaNovoColaboradorSubscription$ != undefined) this.criaNovoColaboradorSubscription$.unsubscribe();
+    if (this.obtemTodasOcupacoesSubscription$ != undefined) this.obtemTodasOcupacoesSubscription$.unsubscribe();
+    if (this.obtemTodosEstadosBrasileirosSubscription$ != undefined) this.obtemTodosEstadosBrasileirosSubscription$.unsubscribe();
+    if (this.getEnderecoPeloCepSubscription$ != undefined) this.getEnderecoPeloCepSubscription$.unsubscribe();
+    if (this.obtemTodosMunicipiosPorEstadoSubscription$ != undefined) this.obtemTodosMunicipiosPorEstadoSubscription$.unsubscribe();
+  }
+
+  private createForm() {
     this.dadosColaborador = this.formBuilder.group({
       nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       cpfCnpj: ['', [Validators.pattern(this.inputPatternCpfCnpj), Validators.maxLength(this.inputLengthCpfCnpj), Validators.minLength(this.inputLengthCpfCnpj)]],
@@ -149,26 +157,26 @@ export class NovoComponent {
 
   }
 
-  getValueAtributoDadosColaborador(atributo: string): any {
+  protected getValueAtributoDadosColaborador(atributo: string): any {
     return this.dadosColaborador.controls[atributo].value;
   }
 
-  getValueAtributoDadosProfissionais(atributo: string): any {
+  protected getValueAtributoDadosProfissionais(atributo: string): any {
     return this.dadosProfissionais.controls[atributo].value;
   }
 
-  getValueAtributoDadosAcesso(atributo: string): any {
+  protected getValueAtributoDadosAcesso(atributo: string): any {
     return this.dadosAcesso.controls[atributo].value;
   }
 
-  obtemTodasOcupacoes() {
+  protected obtemTodasOcupacoes() {
     this.obtemTodasOcupacoesSubscription$ = this.colaboradorService.obtemTodasOcupacoes().subscribe({
       next: (resposta: string[]) => this.ocupacoesResponse = resposta
     })
   }
 
   // CPFCNPJ
-  defineIconeInputCpfCnpj() {
+  protected defineIconeInputCpfCnpj() {
     if (this.dadosColaborador.controls['cpfCnpj'].touched && this.dadosColaborador.controls['cpfCnpj'].invalid) {
       return 'error';
     }
@@ -178,7 +186,7 @@ export class NovoComponent {
     }
   }
 
-  realizaTratamentoCpfCnpj() {
+  protected realizaTratamentoCpfCnpj() {
     this.dadosColaborador.controls['cpfCnpj']
       .setValue(this.getValueAtributoDadosColaborador('cpfCnpj')
         .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
@@ -187,7 +195,7 @@ export class NovoComponent {
   }
 
   // EMAIL
-  defineIconeInputEmail() {
+  protected defineIconeInputEmail() {
     if (this.dadosColaborador.controls['email'].touched && this.dadosColaborador.controls['email'].invalid) {
       return 'error';
     }
@@ -198,7 +206,7 @@ export class NovoComponent {
   }
 
   // TELEFONE
-  atualizaValidatorsTelefone() {
+  protected atualizaValidatorsTelefone() {
     this.dadosColaborador.controls['prefixo'].setValue('');
     this.dadosColaborador.controls['prefixo'].reset();
 
@@ -241,7 +249,7 @@ export class NovoComponent {
     this.dadosColaborador.controls['numeroTelefone'].updateValueAndValidity();
   }
 
-  verificaSeTipoTelefoneNuloOuVazio(): boolean {
+  protected verificaSeTipoTelefoneNuloOuVazio(): boolean {
     if (this.dadosColaborador.controls['tipoTelefone'].value != null
       && this.dadosColaborador.controls['tipoTelefone'].value != undefined
       && this.dadosColaborador.controls['tipoTelefone'].value != '') {
@@ -250,7 +258,7 @@ export class NovoComponent {
     return false;
   }
 
-  realizaTratamentoPrefixo() {
+  protected realizaTratamentoPrefixo() {
     this.dadosColaborador.controls['prefixo']
       .setValue(this.getValueAtributoDadosColaborador('prefixo')
         .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
@@ -258,7 +266,7 @@ export class NovoComponent {
         .trim())
   }
 
-  realizaTratamentoNumeroTelefone() {
+  protected realizaTratamentoNumeroTelefone() {
     this.dadosColaborador.controls['numeroTelefone']
       .setValue(this.getValueAtributoDadosColaborador('numeroTelefone')
         .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
@@ -266,7 +274,7 @@ export class NovoComponent {
         .trim())
   }
 
-  defineIconeInputTelefone(): string {
+  protected defineIconeInputTelefone(): string {
     if (this.dadosColaborador.controls['numeroTelefone'].touched && this.dadosColaborador.controls['numeroTelefone'].invalid) {
       return 'error';
     }
@@ -287,7 +295,7 @@ export class NovoComponent {
 
   // DATA NASCIMENTO
 
-  validaDataNascimento() {
+  protected validaDataNascimento() {
 
     if (this.dadosColaborador.controls['dataNascimento'].value == '') {
       this.dataNascimentoAparente = false;
@@ -307,12 +315,12 @@ export class NovoComponent {
     }
   }
 
-  habilitaDataNascimento() {
+  protected habilitaDataNascimento() {
     this.inputDataNascimento.nativeElement.focus();
     this.dataNascimentoAparente = true;
   }
 
-  defineIconeDataNascimento() {
+  protected defineIconeDataNascimento() {
     if (this.dadosColaborador.controls['dataNascimento'].touched && this.dadosColaborador.controls['dataNascimento'].invalid) {
       return 'error';
     }
@@ -323,7 +331,7 @@ export class NovoComponent {
   }
 
   // ENDEREÇO
-  realizaTratamentoCodigoPostal() {
+  protected realizaTratamentoCodigoPostal() {
 
     this.atualizaValidatorsEndereco();
 
@@ -347,7 +355,7 @@ export class NovoComponent {
     }
   }
 
-  atualizaValidatorsEndereco() {
+  protected atualizaValidatorsEndereco() {
     if (
       this.getValueAtributoDadosColaborador('logradouro') != null && this.getValueAtributoDadosColaborador('logradouro') != '' ||
       this.getValueAtributoDadosColaborador('numero') != null && this.getValueAtributoDadosColaborador('numero').toString() != '' ||
@@ -370,7 +378,7 @@ export class NovoComponent {
 
   }
 
-  obtemTodosEstadosBrasileiros() {
+  protected obtemTodosEstadosBrasileiros() {
     this.obtemTodosEstadosBrasileirosSubscription$ =
       this.brasilApiService.getTodosEstados().subscribe({
         next: response => {
@@ -389,7 +397,7 @@ export class NovoComponent {
       });
   }
 
-  setaEnderecoComInformacoesObtidasPeloCep(consultaCepResponse: ConsultaCepResponse) {
+  protected setaEnderecoComInformacoesObtidasPeloCep(consultaCepResponse: ConsultaCepResponse) {
     this.dadosColaborador.controls['logradouro'].setValue(consultaCepResponse.logradouro);
     this.dadosColaborador.controls['numero'].setValue(null);
     this.dadosColaborador.controls['bairro'].setValue(consultaCepResponse.bairro);
@@ -408,7 +416,7 @@ export class NovoComponent {
     this.obtemTodosMunicipiosPorEstado();
   }
 
-  public obtemTodosMunicipiosPorEstado() {
+  protected obtemTodosMunicipiosPorEstado() {
     this.atualizaValidatorsEndereco();
     if (this.getValueAtributoDadosColaborador('estado') != null && this.getValueAtributoDadosColaborador('estado') != '') {
       this.obtemTodosMunicipiosPorEstadoSubscription$ =
@@ -428,7 +436,7 @@ export class NovoComponent {
   }
 
   // STEP EMPRESA
-  alteraStatusColaborador() {
+  protected alteraStatusColaborador() {
     if (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'ATIVO'
       || this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'AFASTADO'
       || this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'FERIAS') {
@@ -453,22 +461,22 @@ export class NovoComponent {
     }
   }
 
-  limpaInputContrato() {
+  protected limpaInputContrato() {
     this.dadosProfissionais.controls['contratoContratacao'].setValue(null);
     this.contratoContratacao = null;
   }
 
-  setaContrato(event) {
+  protected setaContrato(event) {
     if (event.target.files[0] == undefined) this.contratoContratacao = null;
     else {
       const max_size = 2097152;
-      const allowed_types = ['image/png', 'image/jpeg', 'application/pdf' ,'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      const allowed_types = ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
       if (event.target.files[0].size > max_size) {
         this._snackBar.open("O tamanho do arquivo não pode ser maior do que 2MB", "Fechar", {
           duration: 5000
         })
-        this.limpaInputContrato();  
+        this.limpaInputContrato();
         return;
       }
       else if (!(allowed_types.includes(event.target.files[0].type))) {
@@ -485,7 +493,7 @@ export class NovoComponent {
     }
   }
 
-  validaDataEntradaEmpresa() {
+  protected validaDataEntradaEmpresa() {
     if (this.getValueAtributoDadosProfissionais('entradaEmpresa') == '') {
       this.dataEntradaAparente = false;
       return;
@@ -505,7 +513,7 @@ export class NovoComponent {
 
   }
 
-  defineIconeDataEntradaEmpresa() {
+  protected defineIconeDataEntradaEmpresa() {
     if (this.dadosProfissionais.controls['entradaEmpresa'].touched && this.dadosProfissionais.controls['entradaEmpresa'].invalid) {
       return 'error';
     }
@@ -517,7 +525,7 @@ export class NovoComponent {
     }
   }
 
-  validaDataSaidaEmpresa() {
+  protected validaDataSaidaEmpresa() {
     if (this.getValueAtributoDadosProfissionais('saidaEmpresa') == '') {
       this.dataSaidaAparente = false;
       return;
@@ -536,7 +544,7 @@ export class NovoComponent {
     }
   }
 
-  defineIconeDataSaidaEmpresa() {
+  protected defineIconeDataSaidaEmpresa() {
     if (this.dadosProfissionais.controls['saidaEmpresa'].touched && this.dadosProfissionais.controls['saidaEmpresa'].invalid) {
       return 'error';
     }
@@ -548,12 +556,12 @@ export class NovoComponent {
     }
   }
 
-  habilitaDataEntradaEmpresa() {
+  protected habilitaDataEntradaEmpresa() {
     this.inputDataEntrada.nativeElement.focus();
     this.dataEntradaAparente = true;
   }
 
-  habilitaDataSaidaEmpresa() {
+  protected habilitaDataSaidaEmpresa() {
     if (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'ATIVO'
       && this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'AFASTADO'
       && this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'FERIAS') {
@@ -562,7 +570,7 @@ export class NovoComponent {
     }
   }
 
-  realizaTratamentoRemuneracao(evento) {
+  protected realizaTratamentoRemuneracao(evento) {
 
     if (evento.data == '-') {
       this.dadosProfissionais.controls['salario'].setValue(0);
@@ -678,7 +686,7 @@ export class NovoComponent {
       this.realizaCalculoCargaHorariaSemanal();
   }
 
-  realizaCalculoCargaHorariaSemanal() {
+  protected realizaCalculoCargaHorariaSemanal() {
 
     let horaEntradaEmMinutos: number =
       (this.getValueAtributoDadosProfissionais('horaEntrada') != null && this.getValueAtributoDadosProfissionais('horaEntrada') != '')
@@ -755,7 +763,7 @@ export class NovoComponent {
   }
 
   // STEP ACESSO
-  atualizaLiberacaoSistema() {
+  protected atualizaLiberacaoSistema() {
     if (this.getValueAtributoDadosAcesso('acessoSistemaAtivo')) {
       this.dadosAcesso.get('senha').enable();
       this.dadosAcesso.get('permissaoEnum').enable();
@@ -769,18 +777,18 @@ export class NovoComponent {
     }
   }
 
-  adicionaModulo(moduloLiberado) {
+  protected adicionaModulo(moduloLiberado) {
     this.getValueAtributoDadosAcesso('privilegios').push(moduloLiberado);
     this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');
     this.privilegioAtual = '';
   }
 
-  removeModulo(moduloLiberado) {
+  protected removeModulo(moduloLiberado) {
     this.getValueAtributoDadosAcesso('privilegios').splice(this.getValueAtributoDadosAcesso('privilegios').indexOf(moduloLiberado), 1);
     this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');
   }
 
-  defineIconeInputSenha() {
+  protected defineIconeInputSenha() {
     if (this.dadosAcesso.controls['senha'].touched && this.dadosAcesso.controls['senha'].invalid) {
       return 'error';
     }
@@ -792,33 +800,29 @@ export class NovoComponent {
 
   // NAVEGAÇÃO ENTRE OS STEPS
 
-  retornaParaVisualizacao() {
+  protected retornaParaVisualizacao() {
     this.router.navigate(['/colaboradores'])
   }
 
-  avancaPrimeiraEtapa() {
+  protected avancaPrimeiraEtapa() {
     setTimeout(() => {
       this.inputNome.nativeElement.focus();
     }, 400);
   }
 
-  avancaSegundaEtapa() {
+  protected avancaSegundaEtapa() {
     setTimeout(() => {
       this.selectSetor.nativeElement.focus();
     }, 400);
   }
 
-  avancaTerceiraEtapa() {
+  protected avancaTerceiraEtapa() {
     setTimeout(() => {
       this.selectAcessoSistemaAtivo.nativeElement.focus();
     }, 400);
   }
 
-  // TRATAMENTO DE ENVIO DE FORMULÁRIO
-
-
-
-  // ENVIO DE FORMULÁRIO
+  // TRATAMENTO DE OBJETO E ENVIO DE FORMULÁRIO
 
   private construirObjetoColaborador() {
     this.colaborador = {
@@ -876,10 +880,10 @@ export class NovoComponent {
     }
   }
 
-  public enviarFormulario() {
+  protected enviarFormulario() {
     let matriculaGerada: string;
     this.construirObjetoColaborador();
-    this.colaboradorService.novoColaborador(this.colaborador, this.contratoContratacao).subscribe({
+    this.criaNovoColaboradorSubscription$ = this.colaboradorService.novoColaborador(this.colaborador, this.contratoContratacao).subscribe({
       next: (response: string) => {
         matriculaGerada = response;
       },

@@ -77,8 +77,8 @@
                                 <div class="nome_text">
                                     {{
                                     (colaborador.nome.length > 14)
-                                    ? (colaborador.nome | slice:0:14)+'...'
-                                    : (colaborador.nome)
+                                    ? (colaborador.nome | slice:0:14 | titlecase)+'...'
+                                    : (colaborador.nome | titlecase)
                                     }}
                                 </div>
                             </div>

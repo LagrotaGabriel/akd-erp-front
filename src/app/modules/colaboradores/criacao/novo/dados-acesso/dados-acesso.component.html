@@ -1,0 +1,148 @@
+<form #dadosAcessoForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+    [formGroup]="dadosAcesso">
+
+    <!-- ACESSO LIBERADO AO SISTEMA? -->
+    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_desabilitada': dadosAcesso.get('acessoSistemaAtivo').disabled}">Acesso
+                ao sistema</label>
+        </div>
+        <select formControlName="acessoSistemaAtivo" name="acessoSistemaAtivo" tabindex="34"
+            (change)="atualizaLiberacaoSistema()" #selectAcessoSistemaAtivo
+            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <option [ngValue]="true">Liberado</option>
+            <option [ngValue]="false">Bloqueado</option>
+        </select>
+    </div>
+
+    <!-- SENHA -->
+    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label" [ngClass]="{'label_invalida': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid, 
+            'label_desabilitada': dadosAcesso.get('senha').disabled}">
+                Senha
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input type="text" autocomplete="off" formControlName="senha" name="senha" spellcheck="false" #inputSenha
+                maxlength="30"
+                [ngClass]="{'input_invalida': dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid}"
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="35">
+            <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputSenha()" [ngClass]="{ 'icone_ok': defineIconeInputSenha() == 'check' || defineIconeInputSenha() == 'lock',
+                                                    'icone_error': defineIconeInputSenha() == 'error',
+                                                    'icone_desabilitado': dadosAcesso.controls['senha'].disabled }"
+                (click)="inputSenha.focus()" class="icone"></mat-icon>
+        </div>
+
+        <div [@fadeInOut] *ngIf=" dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid"
+            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <h6 class="error_message">{{ 'Campo obrigatório com mínimo de 6 caracteres' }}</h6>
+        </div>
+
+    </div>
+
+    <!-- PERMISSÕES -->
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label" [ngClass]="{'label_desabilitada': dadosAcesso.get('permissaoEnum').disabled}">
+                Permissões
+            </label>
+        </div>
+        <select formControlName="permissaoEnum" name="permissaoEnum" tabindex="36" #selectPermissoes
+            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <option value="LEITURA_BASICA" title="Permite que o usuário visualize informações não sigilosas nas telas">
+                Leitura básica
+            </option>
+            <option value="LEITURA_AVANCADA" title="Permite que o usuário visualize informações completas das telas">
+                Leitura avançada
+            </option>
+            <option value="LEITURA_BASICA_ALTERACAO"
+                title="Permite que o usuário visualize informações não sigilosas nas telas e realize a criação, alteração, ou exclusão de itens">
+                Leitura básica e alterações</option>
+            <option value="LEITURA_AVANCADA_ALTERACAO"
+                title="Permite que o usuário visualize informações completas das telas e realize a criação, alteração, ou exclusão de itens">
+                Leitura avançada e alterações</option>
+        </select>
+    </div>
+
+    <!-- SETOR -->
+    <div class="row col-xl-12 col-lg-4 col-md-4 col-sm-12 col-12 input_group"
+        [ngClass]="{'input_group_modulo': modulosLiberados.length > 0}">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_desabilitada': dadosAcesso.controls['acessoSistemaAtivo'].value == false}">
+                Módulos liberados
+            </label>
+        </div>
+        <select tabindex="37" (change)="(privilegioAtual = selectPrivilegios.value)" [value]="privilegioAtual"
+            #selectPrivilegios [disabled]="!getValueAtributoDadosAcesso('acessoSistemaAtivo') ? true : false"
+            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <option value="HOME" [disabled]="modulosLiberados.includes(opcInicio.value) ? true : false" #opcInicio>
+                Início</option>
+            <option value="CLIENTES" [disabled]="modulosLiberados.includes(opcClientes.value) ? true : false"
+                #opcClientes>
+                Clientes</option>
+            <option value="VENDAS" [disabled]="modulosLiberados.includes(opcVendas.value) ? true : false" #opcVendas>
+                Vendas</option>
+            <option value="PDV" [disabled]="modulosLiberados.includes(opcPdv.value) ? true : false" #opcPdv>
+                Ponto de venda</option>
+            <option value="ESTOQUE" [disabled]="modulosLiberados.includes(opcEstoque.value) ? true : false" #opcEstoque>
+                Estoque</option>
+            <option value="DESPESAS" [disabled]="modulosLiberados.includes(opcDespesas.value) ? true : false"
+                #opcDespesas>
+                Despesas</option>
+            <option value="FECHAMENTOS" [disabled]="modulosLiberados.includes(opcFechamentos.value) ? true : false"
+                #opcFechamentos>
+                Fechamentos</option>
+            <option value="PATRIMONIOS" [disabled]="modulosLiberados.includes(opcPatrimonios.value) ? true : false"
+                #opcPatrimonios>
+                Patrimonios</option>
+            <option value="FORNECEDORES" [disabled]="modulosLiberados.includes(opcFornecedores.value) ? true : false"
+                #opcFornecedores>
+                Fornecedores</option>
+            <option value="COMPRAS" [disabled]="modulosLiberados.includes(opcCompras.value) ? true : false" #opcCompras>
+                Compras</option>
+            <option value="COLABORADORES" [disabled]="modulosLiberados.includes(opcColaboradores.value) ? true : false"
+                #opcColaboradores>
+                Colaboradores</option>
+            <option value="PRECOS" [disabled]="modulosLiberados.includes(opcPrecos.value) ? true : false" #opcPrecos>
+                Preços</option>
+        </select>
+
+        <div class="row col-xl-12 col-lg-4 col-md-4 col-sm-4 col-4 input_group input_group_bt">
+            <button [ngClass]="{'botaoDesabilitado': 
+            selectPrivilegios.value == '' 
+            || selectPrivilegios.value == null 
+            || dadosAcesso.controls['acessoSistemaAtivo'].value == false}" [disabled]="
+            selectPrivilegios.value == '' 
+            || selectPrivilegios.value == null 
+            || dadosAcesso.controls['acessoSistemaAtivo'].value == false ? true : false" type="button"
+                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao"
+                (click)="adicionaModulo(selectPrivilegios.value); selectPrivilegios.focus()"
+                tabindex="38">Adicionar</button>
+        </div>
+    </div>
+
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 chips_container">
+        <div *ngFor="let moduloLiberado of modulosLiberados" class="row chips_block">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 chip mat-elevation-z2"
+                (click)="removeModulo(moduloLiberado)">
+                {{ moduloLiberado | titlecase }}
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTÕES DE NAVEGAÇÃO -->
+    <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <button type="button" class="button botaoHabilitado" #botaoVoltarTerceiraEtapa mat-button tabindex="39"
+            matStepperPrevious>
+            Voltar
+        </button>
+        <button type="button" (click)="solicitarEnvioDeFormulario()" tabindex="40" class="button" #submitFormulario
+            [disabled]="dadosAcesso.valid ? false : true"
+            [ngClass]="{'botaoHabilitado': dadosAcesso.valid, 'botaoDesabilitado': !dadosAcesso.valid}"
+            mat-button>Enviar</button>
+    </div>
+
+</form>

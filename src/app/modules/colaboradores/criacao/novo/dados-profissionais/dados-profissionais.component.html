@@ -1,0 +1,367 @@
+<form #dadosColaboradorForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+    [formGroup]="dadosProfissionais">
+
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container"
+        matTooltip="Preenchimento dos dados profissionais do colaborador" (click)="selectSetor.focus()">
+        <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Dados profissionais
+        </h3>
+    </div>
+
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr_container">
+        <hr class="hr">
+    </div>
+
+    <!-- SETOR -->
+    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label">Setor</label>
+        </div>
+        <select formControlName="tipoOcupacaoEnum" name="tipoOcupacaoEnum" tabindex="17" #selectSetor
+            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <option value="TECNICO">Técnico</option>
+            <option value="TECNICO_INTERNO">Técnico Interno</option>
+            <option value="TECNICO_EXTERNO">Técnico externo</option>
+            <option value="ATENDENTE">Atendimento</option>
+            <option value="GERENTE">Gerência</option>
+            <option value="DIRETOR">Diretoria</option>
+            <option value="FINANCEIRO">Financeiro</option>
+            <option value="ADMINISTRATIVO">Administrativo</option>
+            <option value="MARKETING">Marketing</option>
+            <option value="TECNICO_TI">Tecnologia</option>
+        </select>
+    </div>
+
+    <!-- OCUPAÇÃO -->
+    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_invalida': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}">
+                Ocupação
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input list="ocupacoes" type="text" autocomplete="off" formControlName="ocupacao" name="ocupacao"
+                style="text-transform:uppercase" spellcheck="false" maxlength="30" #inputOcupacao
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}"
+                class="input input_ocupacoes col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
+            <mat-icon [@fadeInOut]
+                *ngIf="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].value != ''"
+                [fontIcon]="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid 
+                                            ? 'error' 
+                                            : 'check'" (click)="inputOcupacao.focus()"
+                [ngClass]="{'icone_ok': !dadosProfissionais.controls['ocupacao'].invalid,
+                                            'icone_error': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}" class="icone"></mat-icon>
+        </div>
+
+        <datalist id="ocupacoes">
+            <option *ngFor="let ocupacao of ocupacoesResponse" [value]="ocupacao | uppercase">
+            </option>
+        </datalist>
+
+        <div [@fadeInOut]
+            *ngIf="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid"
+            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <h6 class="error_message">{{ 'Este campo deve possuir no máximo 30 caracteres' }}</h6>
+        </div>
+    </div>
+
+    <!-- STATUS DO COLABORADOR -->
+    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label">Status atual</label>
+        </div>
+        <select formControlName="statusColaboradorEnum" name="statusColaboradorEnum" tabindex="19"
+            (change)="alteraStatusColaborador()" #selectSetor
+            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <option value="ATIVO">Ativo</option>
+            <option value="AFASTADO">Afastado</option>
+            <option value="FREELANCER">Freelancer</option>
+            <option value="FERIAS">De férias</option>
+            <option value="DISPENSADO">Dispensado</option>
+        </select>
+    </div>
+
+    <!-- MODELO DE CONTRATAÇÃO -->
+    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label">Modelo de contratação</label>
+        </div>
+        <select formControlName="modeloContratacaoEnum" name="modeloContratacaoEnum" tabindex="20" #selectSetor
+            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <option value="CLT">CLT</option>
+            <option value="PJ">Pessoa jurídica (PJ)</option>
+            <option value="FREELANCER">Freelancer</option>
+        </select>
+    </div>
+
+    <!-- MODELO DE TRABALHO -->
+    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label">Modelo de trabalho</label>
+        </div>
+        <select formControlName="modeloTrabalhoEnum" name="modeloTrabalhoEnum" tabindex="21" #selectSetor
+            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <option value="PRESENCIAL">Presencial</option>
+            <option value="HIBRIDO">Híbrido</option>
+            <option value="HOME_OFFICE">Remoto</option>
+        </select>
+    </div>
+
+    <!-- REMUNERAÇÃO -->
+    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label" [ngClass]="{'label_invalida': dadosProfissionais.controls['salario'].invalid}">
+                Remuneração mensal
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input type="number" formControlName="salario" name="salario" max="9999999.00" min="0.00" step=".01"
+                #inputSalario (input)="realizaTratamentoRemuneracao($event)"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['salario'].invalid}"
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="22">
+            <mat-icon [@fadeInOut] [fontIcon]="'attach_money'" (click)="inputSalario.focus()" [ngClass]="{
+                'icone_error': dadosProfissionais.controls['salario'].invalid, 
+                'icone_ok': dadosProfissionais.controls['salario'].valid}" class="icone"></mat-icon>
+
+        </div>
+
+        <div [@fadeInOut] *ngIf="dadosProfissionais.controls['salario'].invalid"
+            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <h6 class="error_message">{{ 'Este campo deve possuir valor entre 0,00 e 9.999.000,00' }}</h6>
+        </div>
+    </div>
+
+    <!-- DATA DE ENTRADA -->
+    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label">
+                Data de entrada
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input min="1900-01-01" max="2023-04-17" [ngClass]="{'emptyDate': getValueAtributoDadosProfissionais('entradaEmpresa') == null 
+            || getValueAtributoDadosProfissionais('entradaEmpresa') == ''}" type="date"
+                formControlName="entradaEmpresa" (focusout)="validaDataEntradaEmpresa()" #inputDataEntrada
+                name="entradaEmpresa" formControlName="entradaEmpresa" name="entradaEmpresa" tabindex="-1"
+                class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataEntradaEmpresa()" [ngClass]="{'icone_ok': defineIconeDataEntradaEmpresa() == 'calendar_month' || defineIconeDataEntradaEmpresa() == 'check',
+                                'icone_error': defineIconeDataEntradaEmpresa() == 'error' }" class="icone"></mat-icon>
+            <div class="input_data_placeholder" *ngIf="!dataEntradaAparente" [@fadeInOut]
+                (focus)="habilitaDataEntradaEmpresa()" (click)="habilitaDataEntradaEmpresa()" tabindex="23"
+                [ngStyle]="{'cursor': 'text'}">
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA DE SAIDA -->
+    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label" [ngClass]="{'label_desabilitada': dadosProfissionais.get('saidaEmpresa').disabled}">
+                Data de saída
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input min="1900-01-01" max="2023-04-17" [ngClass]="{'emptyDate': 
+                getValueAtributoDadosProfissionais('saidaEmpresa') == null || 
+                getValueAtributoDadosProfissionais('saidaEmpresa') == ''}" type="date" formControlName="saidaEmpresa"
+                (focusout)="validaDataSaidaEmpresa()" #inputDataSaida name="saidaEmpresa" formControlName="saidaEmpresa"
+                name="saidaEmpresa" tabindex="-1"
+                class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataSaidaEmpresa()" [ngClass]="{'icone_ok': defineIconeDataSaidaEmpresa() == 'calendar_month' || defineIconeDataSaidaEmpresa() == 'check',
+                                'icone_error': defineIconeDataSaidaEmpresa() == 'error' }" class="icone"></mat-icon>
+            <div class="input_data_placeholder" *ngIf="!dataSaidaAparente" [@fadeInOut]
+                [tabindex]="getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'ATIVO' ? '24' : '-1'"
+                (focus)="habilitaDataSaidaEmpresa()" (click)="habilitaDataSaidaEmpresa()"
+                [ngStyle]="{'cursor': 'text'}">
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTRATO DE TRABALHO -->
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label">Contrato de trabalho</label>
+            <button type="button" class="limpar_file" [@fadeInOut]
+                *ngIf="getValueAtributoDadosProfissionais('contratoContratacao') != null && contratoContratacaoInput.value != ''"
+                (click)="limpaInputContrato()">Limpar</button>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <label class="input input_file col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                for="contratoContratacaoInput">
+                {{ getValueAtributoDadosProfissionais('contratoContratacao') != null &&
+                contratoContratacaoInput.value != ''
+                ? contratoContratacaoInput.value
+                : 'Escolher arquivo (.docx, .pdf, .png, .jpeg)' }}
+                <mat-icon [@fadeInOut] [fontIcon]="getValueAtributoDadosProfissionais('contratoContratacao') != null && contratoContratacaoInput.value != '' 
+                                            ? 'file_download_done' 
+                                            : 'add_box'" class="icone icone_ok"></mat-icon>
+            </label>
+            <input type="file" accept=".pdf,.docx, .png, .jpeg, .jpg" formControlName="contratoContratacao"
+                name="contratoContratacao" style="display: none;" #contratoContratacaoInput
+                id="contratoContratacaoInput" (change)="setaContrato($event)"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="25">
+
+        </div>
+    </div>
+
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container" matTooltip="Preenchimento dos dados de expediente do colaborador. Caso qualquer campo seja preenchido, todos os campos se tornam obrigatórios; 
+    O campo Carga Horária Semanal é preenchido automaticamente" (click)="inputHoraEntrada.focus()">
+        <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Expediente
+        </h3>
+    </div>
+
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr_container">
+        <hr class="hr">
+    </div>
+
+    <!-- HORA DE ENTRADA -->
+    <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_invalida': dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid}">
+                Entrada
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input formControlName="horaEntrada" name="horaEntrada" type="time" tabindex="26" #inputHoraEntrada
+                (change)="realizaValidacaoExpedienteHoraEntrada()" (input)="realizaValidacaoExpedienteHoraEntrada()"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid}"
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
+                (click)="inputHoraEntrada.focus()"></mat-icon>
+        </div>
+
+    </div>
+
+    <!-- HORA DE SAÍDA PARA O ALMOÇO -->
+    <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"
+                [ngClass]="{'label_desabilitada': dadosProfissionais.controls['horaSaidaAlmoco'].disabled}">
+                Saída almoço
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input formControlName="horaSaidaAlmoco" name="horaSaidaAlmoco"
+                [type]="dadosProfissionais.controls['horaSaidaAlmoco'].disabled ? 'text' : 'time'" tabindex="27"
+                #inputHoraSaidaAlmoco [attr.disabled]="true" (change)="realizaValidacaoExpedienteHoraSaidaAlmoco()"
+                (input)="realizaValidacaoExpedienteHoraSaidaAlmoco()"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok" (click)="inputHoraSaidaAlmoco.focus()"
+                [ngClass]="{'icone_desabilitado': dadosProfissionais.controls['horaSaidaAlmoco'].disabled, 
+            'icone_error': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"></mat-icon>
+
+            <div [@fadeInOut]
+                *ngIf="dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid"
+                class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <h6 class="error_message">{{ 'Obrigatório' }}</h6>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- HORA DE RETORNO DO ALMOÇO -->
+    <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_invalida': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"
+                [ngClass]="{'label_desabilitada': dadosProfissionais.controls['horaEntradaAlmoco'].disabled}">
+                Retorno almoço
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input [type]="dadosProfissionais.controls['horaEntradaAlmoco'].disabled ? 'text' : 'time'"
+                formControlName="horaEntradaAlmoco" name="horaEntradaAlmoco" #inputHoraEntradaAlmoco tabindex="28"
+                (change)="realizaValidacaoExpedienteHoraEntradaAlmoco()"
+                (input)="realizaValidacaoExpedienteHoraEntradaAlmoco()"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok" (click)="inputHoraEntradaAlmoco.focus()"
+                [ngClass]="{'icone_desabilitado': dadosProfissionais.controls['horaEntradaAlmoco'].disabled, 
+            'icone_error': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"></mat-icon>
+
+            <div [@fadeInOut]
+                *ngIf="dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid"
+                class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <h6 class="error_message">{{ 'Obrigatório' }}</h6>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- HORA DE SAÍDA -->
+    <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"
+                [ngClass]="{'label_desabilitada': dadosProfissionais.controls['horaSaida'].disabled}">
+                Saída
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input [type]="dadosProfissionais.controls['horaSaida'].disabled ? 'text' : 'time'"
+                formControlName="horaSaida" name="horaSaida" #inputHoraSaida tabindex="29"
+                (change)="realizaValidacaoExpedienteHoraSaida()" (input)="realizaValidacaoExpedienteHoraSaida()"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok" (click)="inputHoraSaida.focus()"
+                [ngClass]="{'icone_desabilitado': dadosProfissionais.controls['horaSaida'].disabled, 
+            'icone_error': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"></mat-icon>
+            <div [@fadeInOut]
+                *ngIf="dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid"
+                class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <h6 class="error_message">{{ 'Obrigatório' }}</h6>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ESCALA -->
+    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_desabilitada': dadosProfissionais.controls['escalaEnum'].disabled}">Escala</label>
+        </div>
+        <select formControlName="escalaEnum" name="escalaEnum" (change)="realizaCalculoCargaHorariaSemanal()"
+            tabindex="30" #selectEscala class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <option value="INDEFINIDA">Indefinida</option>
+            <option value="SEG_A_SEX">5x2</option>
+            <option value="SEG_A_SAB">6x1</option>
+            <option value="DIA_SIM_DIA_NAO">12x36</option>
+        </select>
+    </div>
+
+    <!-- CARGA HORÁRIA SEMANAL -->
+    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}">
+                Carga horária semanal (h)
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input type="text" formControlName="cargaHorariaSemanal" name="cargaHorariaSemanal" autocomplete="off"
+                spellcheck="false"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
+                class="input input_desabilitada col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="31">
+        </div>
+    </div>
+
+    <!-- BOTÕES DE NAVEGAÇÃO -->
+    <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <button type="button" class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button tabindex="32"
+            matStepperPrevious>
+            Voltar
+        </button>
+        <button type="button" tabindex="33" class="button" matStepperNext
+            [disabled]="dadosProfissionais.valid ? false : true"
+            [ngClass]="{'botaoHabilitado': dadosProfissionais.valid, 'botaoDesabilitado': !dadosProfissionais.valid}"
+            mat-button matStepperNext #botaoProximoSegundaEtapa>Próximo</button>
+    </div>
+
+</form>

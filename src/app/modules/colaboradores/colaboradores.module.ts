@@ -17,9 +17,12 @@ import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.co
 import { CabecalhoComponent } from './visualizacao/tabela/cabecalho/cabecalho.component';
 import { AcordeaoComponent } from './visualizacao/tabela/acordeao/acordeao.component';
 import { NovoComponent } from './criacao/novo/novo.component';
+import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pessoais.component';
+import { DadosProfissionaisComponent } from './criacao/novo/dados-profissionais/dados-profissionais.component';
+import { DadosAcessoComponent } from './criacao/novo/dados-acesso/dados-acesso.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent],
   imports: [
     CommonModule,
     BrowserModule,

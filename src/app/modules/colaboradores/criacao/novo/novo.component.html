@@ -603,7 +603,7 @@
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <option value="PRESENCIAL">Presencial</option>
                         <option value="HIBRIDO">Híbrido</option>
-                        <option value="REMOTO">Remoto</option>
+                        <option value="HOME_OFFICE">Remoto</option>
                     </select>
                 </div>
 
@@ -711,6 +711,7 @@
                         <input type="file" accept=".pdf,.docx, .png, .jpeg, .jpg" formControlName="contratoContratacao"
                             name="contratoContratacao" style="display: none;" #contratoContratacaoInput
                             id="contratoContratacaoInput" (keydown.enter)="botaoProximoSegundaEtapa.click()"
+                            (change)="setaContrato($event)"
                             (keydown.esc)="botaoVoltarSegundaEtapa.click()"
                             [ngClass]="{'input_invalida': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="25">
@@ -1056,7 +1057,8 @@
                         Voltar
                     </button>
                     <button type="button" (keydown.enter)="submitFormulario.click()"
-                        (keydown.esc)="botaoVoltarTerceiraEtapa.click()" (click)="avancaTerceiraEtapa()" tabindex="40"
+                        (click)="enviarFormulario()"
+                        (keydown.esc)="botaoVoltarTerceiraEtapa.click()"tabindex="40"
                         class="button" #submitFormulario [disabled]="dadosAcesso.valid ? false : true"
                         [ngClass]="{'botaoHabilitado': dadosAcesso.valid, 'botaoDesabilitado': !dadosAcesso.valid}"
                         mat-button>Enviar</button>

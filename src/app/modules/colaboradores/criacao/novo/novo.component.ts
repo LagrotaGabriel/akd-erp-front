@@ -36,6 +36,8 @@ export class NovoComponent {
     private _snackBar: MatSnackBar,
     private ref: ChangeDetectorRef) { }
 
+  colaborador: ColaboradorNovo;
+
   dataNascimentoAparente: boolean = false;
   dataEntradaAparente: boolean = false;
   dataSaidaAparente: boolean = false;
@@ -51,8 +53,6 @@ export class NovoComponent {
   dadosColaborador: FormGroup;
   dadosProfissionais: FormGroup;
   dadosAcesso: FormGroup;
-
-  colaborador: ColaboradorNovo;
 
   // Validations colaborador
   inputLengthCpfCnpj: number = 11;
@@ -73,6 +73,8 @@ export class NovoComponent {
   privilegioAtual: string = 'CLIENTES';
 
   ocupacoesResponse: string[] = [];
+
+  contratoContratacao: File;
 
   @ViewChild('numeroEndereco') inputNumeroEndereco: ElementRef;
   @ViewChild('contratoContratacaoInput') contratoContratacaoInput: ElementRef;
@@ -452,6 +454,34 @@ export class NovoComponent {
 
   limpaInputContrato() {
     this.dadosProfissionais.controls['contratoContratacao'].setValue(null);
+    this.contratoContratacao = null;
+  }
+
+  setaContrato(event) {
+    if (event.target.files[0] == undefined) this.contratoContratacao = null;
+    else {
+      const max_size = 2097152;
+      const allowed_types = ['image/png', 'image/jpeg', 'application/pdf' ,'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
+      if (event.target.files[0].size > max_size) {
+        this._snackBar.open("O tamanho do arquivo não pode ser maior do que 2MB", "Fechar", {
+          duration: 5000
+        })
+        this.limpaInputContrato();  
+        return;
+      }
+      else if (!(allowed_types.includes(event.target.files[0].type))) {
+        this._snackBar.open("Tipo de arquivo inválido. Escolha uma imagem, um pdf ou um arquivo word", "Fechar", {
+          duration: 5000
+        })
+        this.limpaInputContrato();
+        return;
+      }
+      else {
+        this.contratoContratacao = event.target.files[0];
+      }
+
+    }
   }
 
   validaDataEntradaEmpresa() {
@@ -789,7 +819,69 @@ export class NovoComponent {
 
   // ENVIO DE FORMULÁRIO
 
+  private construirObjetoColaborador() {
+    this.colaborador = {
+      nome: this.getValueAtributoDadosColaborador('nome') != '' ? this.getValueAtributoDadosColaborador('nome') : null,
+      cpfCnpj: this.getValueAtributoDadosColaborador('cpfCnpj') != '' ? this.getValueAtributoDadosColaborador('cpfCnpj') : null,
+      dataNascimento: this.getValueAtributoDadosColaborador('dataNascimento') != '' ? this.getValueAtributoDadosColaborador('dataNascimento') : null,
+      email: this.getValueAtributoDadosColaborador('email') != '' ? this.getValueAtributoDadosColaborador('email') : null,
+      telefone: this.getValueAtributoDadosColaborador('tipoTelefone') != ''
+        ? {
+          tipoTelefone: this.getValueAtributoDadosColaborador('tipoTelefone'),
+          prefixo: this.getValueAtributoDadosColaborador('prefixo'),
+          numero: this.getValueAtributoDadosColaborador('numeroTelefone')
+        }
+        : null,
+      endereco: this.getValueAtributoDadosColaborador('logradouro') != null && this.getValueAtributoDadosColaborador('logradouro') != ''
+        ? {
+          id: null,
+          codigoPostal: this.getValueAtributoDadosColaborador('codigoPostal') != '' ? this.getValueAtributoDadosColaborador('codigoPostal') : null,
+          estado: this.getValueAtributoDadosColaborador('estado') != '' ? this.getValueAtributoDadosColaborador('estado') : null,
+          cidade: this.getValueAtributoDadosColaborador('cidade') != '' ? this.getValueAtributoDadosColaborador('cidade') : null,
+          logradouro: this.getValueAtributoDadosColaborador('logradouro') != '' ? this.getValueAtributoDadosColaborador('logradouro') : null,
+          numero: this.getValueAtributoDadosColaborador('numero') != '' ? this.getValueAtributoDadosColaborador('numero') : null,
+          bairro: this.getValueAtributoDadosColaborador('bairro') != '' ? this.getValueAtributoDadosColaborador('bairro') : null,
+          complemento: this.getValueAtributoDadosColaborador('complemento') != '' ? this.getValueAtributoDadosColaborador('complemento') : null
+        }
+        : null,
+      tipoOcupacaoEnum: this.getValueAtributoDadosProfissionais('tipoOcupacaoEnum'),
+      ocupacao: this.getValueAtributoDadosProfissionais('ocupacao') != '' ? this.getValueAtributoDadosProfissionais('ocupacao') : null,
+      statusColaboradorEnum: this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != ''
+        ? this.getValueAtributoDadosProfissionais('statusColaboradorEnum')
+        : null,
+      modeloContratacaoEnum: this.getValueAtributoDadosProfissionais('modeloContratacaoEnum'),
+      modeloTrabalhoEnum: this.getValueAtributoDadosProfissionais('modeloTrabalhoEnum'),
+      salario: this.getValueAtributoDadosProfissionais('salario') != '' ? this.getValueAtributoDadosProfissionais('salario') : null,
+      entradaEmpresa: this.getValueAtributoDadosProfissionais('entradaEmpresa') != ''
+        ? this.getValueAtributoDadosProfissionais('entradaEmpresa')
+        : null,
+      saidaEmpresa: this.getValueAtributoDadosProfissionais('saidaEmpresa') != ''
+        ? this.getValueAtributoDadosProfissionais('saidaEmpresa')
+        : null,
+      expediente: this.getValueAtributoDadosProfissionais('horaEntrada') != '' && this.getValueAtributoDadosProfissionais('horaEntrada') != null ? {
+        horaEntrada: this.getValueAtributoDadosProfissionais('horaEntrada'),
+        horaSaidaAlmoco: this.getValueAtributoDadosProfissionais('horaSaidaAlmoco'),
+        horaEntradaAlmoco: this.getValueAtributoDadosProfissionais('horaEntradaAlmoco'),
+        horaSaida: this.getValueAtributoDadosProfissionais('horaSaida'),
+        cargaHorariaSemanal: this.getValueAtributoDadosProfissionais('cargaHorariaSemanal'),
+        escalaEnum: this.getValueAtributoDadosProfissionais('escalaEnum')
+      } : null,
+      acessoSistema: {
+        acessoSistemaAtivo: this.getValueAtributoDadosAcesso('acessoSistemaAtivo'),
+        senha: this.getValueAtributoDadosAcesso('acessoSistemaAtivo') ? this.getValueAtributoDadosAcesso('senha') : null,
+        permissaoEnum: this.getValueAtributoDadosAcesso('acessoSistemaAtivo') ? this.getValueAtributoDadosAcesso('permissaoEnum') : null,
+        privilegios: this.getValueAtributoDadosAcesso('acessoSistemaAtivo') ? this.getValueAtributoDadosAcesso('privilegios') : null
+      }
+    }
+  }
+
   public enviarFormulario() {
+    this.construirObjetoColaborador();
+    this.colaboradorService.novoColaborador(this.colaborador, this.contratoContratacao).subscribe({
+      next(response: number) {
+        console.log('Matrícula gerada: ' + response);
+      }
+    });
   }
 
 }

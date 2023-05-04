@@ -20,7 +20,7 @@ export class ClienteService {
     }),
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': '	Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MzMzNDgiLCJleHAiOjE2ODMxNDQ4NTR9.5pQ2T1xmp4Jw-PPbCjQRySiYk2jPKvgvNMjAQvRFGuDgdsLnprW-ipdRije8OEInt0p31Sb2qXDujXt8brYbiQ'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MjE5MjA0IiwiZXhwIjoxNjgzODE2NzI2fQ.OgtzO2fXd5h5EBz9YyVgAFMtd8hCQ4oBdjczUDbO8NpqTzAYXDapt4JmcyuekLMD9Jd2eV5TR63oCWX6915flg'
     }),
     body: null
   }

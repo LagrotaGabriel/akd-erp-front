@@ -6,23 +6,22 @@ import { Endereco } from "src/app/shared/models/Endereco";
 
 export class ColaboradorNovo {
     fotoPerfil?: File;
-    nome: string;                          // OK
-    dataNascimento?: string;               // OK
-    email?: string;                        // OK
-    cpfCnpj?: string;                      // OK
-    salario?: number;                      // OK
-    entradaEmpresa?: string;                                // OK
-    saidaEmpresa?: string;                                  // OK
-    contratoContratacao?: File;                             // OK
-    ocupacao?: string;                                      // OK
-    tipoOcupacaoEnum?: string;                              // OK
-    modeloContratacaoEnum?: string;                         // OK
-    modeloTrabalhoEnum?: string;                            // OK
-    statusColaboradorEnum?: string;                         // OK
-    acessoSistema?: AcessoSistema;         // OK
-    endereco?: Endereco;                   // OK
-    telefone?: Telefone;                   // OK
-    expediente?: Expediente;               // OK
+    nome: string;                          
+    dataNascimento?: string;               
+    email?: string;                        
+    cpfCnpj?: string;                      
+    salario?: number;                      
+    entradaEmpresa?: string;                                
+    saidaEmpresa?: string;                                                        
+    ocupacao?: string;                                      
+    tipoOcupacaoEnum?: string;                              
+    modeloContratacaoEnum?: string;                         
+    modeloTrabalhoEnum?: string;                            
+    statusColaboradorEnum?: string;                         
+    acessoSistema?: AcessoSistema;         
+    endereco?: Endereco;                   
+    telefone?: Telefone;                   
+    expediente?: Expediente;               
 
     constructor(item) {
         this.fotoPerfil = item?.fotoPerfil;
@@ -33,7 +32,6 @@ export class ColaboradorNovo {
         this.salario = item?.salario;
         this.entradaEmpresa = item?.entradaEmpresa;
         this.saidaEmpresa = item?.saidaEmpresa;
-        this.contratoContratacao = item?.contratoContratacao;
         this.ocupacao = item?.ocupacao;
         this.tipoOcupacaoEnum = item?.tipoOcupacaoEnum;
         this.modeloContratacaoEnum = item?.modeloContratacaoEnum;

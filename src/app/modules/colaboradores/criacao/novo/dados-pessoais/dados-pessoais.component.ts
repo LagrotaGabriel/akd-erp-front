@@ -287,6 +287,15 @@ export class DadosPessoaisComponent {
     }
   }
 
+  protected realizaTratamentoNumero() {
+    this.atualizaValidatorsEndereco();
+    this.dadosColaborador.controls['numero']
+    .setValue(this.getValueAtributoDadosColaborador('numero')
+      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
+      .replace(/[^0-9.]/g, '')
+      .trim())
+  }
+
   protected atualizaValidatorsEndereco() {
     if (
       this.getValueAtributoDadosColaborador('logradouro') != null && this.getValueAtributoDadosColaborador('logradouro') != '' ||
@@ -372,7 +381,7 @@ export class DadosPessoaisComponent {
   }
 
   protected avancaSegundaEtapa() {
-    //TODO AJUSTAR
+    
   }
 
 

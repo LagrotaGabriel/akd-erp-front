@@ -1,5 +1,5 @@
-@import '../../../../../dist/variables.scss';
-@import "../../../../../../node_modules/rfs/scss";
+@import '../../../../../../../dist/variables.scss';
+@import "../../../../../../../../node_modules/rfs/scss";
 
 .container,
 .titulo,
@@ -20,9 +20,18 @@
 .hr_container,
 .container_imagem_perfil,
 .container_dados_pessoais,
-app-custom-input {
+app-custom-error {
     margin: 0;
     padding: 0;
+}
+
+.input_group,
+.input_container,
+.label_container,
+.input,
+.error_message_container,
+app-custom-error {
+    width: 100%;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -192,9 +201,11 @@ input:focus {
     top: 0;
     bottom: 0;
     margin: auto 0;
-    right: 0.5rem;
+    right: 1.5rem;
     color: $dark-white;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
 }
 
 .icone_ok {
@@ -232,7 +243,8 @@ input:focus {
     user-select: none;
 }
 
-.input_ocupacoes::-webkit-calendar-picker-indicator, .input_cidade::-webkit-calendar-picker-indicator {
+.input_ocupacoes::-webkit-calendar-picker-indicator,
+.input_cidade::-webkit-calendar-picker-indicator {
     display: none !important;
 }
 

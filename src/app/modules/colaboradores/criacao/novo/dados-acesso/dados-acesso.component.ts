@@ -41,6 +41,7 @@ export class DadosAcessoComponent {
 
   ngOnInit(): void {
     this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');
+    this.emissorDeDadosAcessoDoColaborador.emit(this.dadosAcesso);
   }
 
   ngAfterViewInit(): void {

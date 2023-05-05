@@ -70,10 +70,7 @@ export class DadosPessoaisComponent {
   ngOnInit(): void {
     this.atualizaValidatorsTelefone();
     this.obtemTodosEstadosBrasileiros();
-
-    setTimeout(() => {
-      this.inputNome.nativeElement.focus();
-    }, 100);
+    this.emissorDeDadosPessoaisDoColaborador.emit(this.dadosColaborador);
   }
 
   ngAfterViewInit(): void {

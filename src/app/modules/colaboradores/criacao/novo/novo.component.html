@@ -36,8 +36,7 @@
             <ng-template matStepLabel>
                 <span>Sistema</span>
             </ng-template>
-            <app-dados-acesso
-            (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
+            <app-dados-acesso (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
                 (emissorDeDadosAcessoDoColaborador)="recebeFormGroupDadosAcesso($event)"></app-dados-acesso>
         </mat-step>
 

@@ -2,8 +2,7 @@
     [formGroup]="dadosColaborador">
 
     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container"
-        matTooltip="Preenchimento dos dados pessoais do colaborador. O campo nome é obrigatório"
-        (click)="inputNome.focus()">
+        matTooltip="Preenchimento dos dados pessoais do colaborador. O campo nome é obrigatório">
         <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             Dados pessoais
         </h3>
@@ -14,61 +13,20 @@
     </div>
 
     <!-- INPUT GROUP NOME -->
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label
-                [ngClass]="{'label_invalida': dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid}"
-                class="label">
-                Nome
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input matInput formControlName="nome" name="nome" maxlength="50" autocapitalize="words"
-                style="text-transform:uppercase" spellcheck="false" tabindex="1" type="text" autofocus="on"
-                autocomplete="off" #inputNome
-                [ngClass]="{'input_invalida': dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid}"
-                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon *ngIf="dadosColaborador.controls['nome'].touched" [fontIcon]="dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid
-            ? 'error' 
-            : 'check'" [@fadeInOut] (click)="inputNome.focus()"
-                [ngClass]="{'icone_ok': !dadosColaborador.controls['nome'].invalid,
-                        'icone_error': dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid}" class="icone"></mat-icon>
-        </div>
-
-        <div [@fadeInOut] *ngIf="dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid"
-            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <h6 class="error_message">{{ dadosColaborador.controls['nome'].errors['minlength']
-                ? 'A quantidade mínima para este campo é de 3 caracteres'
-                : 'O campo nome não pode ser vazio' }}</h6>
-        </div>
-    </div>
+    <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'nome'" [titulo]="'Nome'"
+        [tabIndex]="1" [maxLength]="50" [touched]="dadosColaborador.controls['nome'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [valido]="!(dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid)"
+        [mensagemErro]="'Campo obrigatório de no mínimo 3 caracteres'" formControlName="nome"
+        #inputNome></app-custom-input>
 
     <!-- INPUT GROUP CPF/CNPJ -->
-    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 input_group input_group_cpfCnpj">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label
-                [ngClass]="{'label_invalida': dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid}"
-                class="label">CPF</label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input type="text" autocomplete="off" formControlName="cpfCnpj" name="cpfCnpj" spellcheck="false"
-                tabindex="2" (input)="realizaTratamentoCpfCnpj()" [maxlength]="inputLengthCpfCnpj" #inputCpfCnpj
-                [ngClass]="{'input_invalida': dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid}"
-                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputCpfCnpj()" [ngClass]="{ 'icone_ok': defineIconeInputCpfCnpj() == 'check' || defineIconeInputCpfCnpj() == 'badge',
-                                                    'icone_error': defineIconeInputCpfCnpj() == 'error' }"
-                (click)="inputCpfCnpj.focus()" class="icone"></mat-icon>
-        </div>
-
-        <div [@fadeInOut]
-            *ngIf="dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid"
-            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <h6 class="error_message">{{ 'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos' +
-                '
-                numéricos' }}</h6>
-        </div>
-
-    </div>
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" [id]="'cpf'" [titulo]="'CPF'"
+        [tabIndex]="2" [maxLength]="inputLengthCpfCnpj" [touched]="dadosColaborador.controls['cpfCnpj'].touched"
+        [todosCaracteresMaiusculos]="true" customIcon="'badge'"
+        [valido]="!(dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid)"
+        [mensagemErro]="'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos numéricos'"
+        formControlName="cpfCnpj" #inputCpfCnpj></app-custom-input>
 
     <!-- DATA DE NASCIMENTO -->
     <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 input_group input_group_dataNascimento">
@@ -422,8 +380,7 @@
             (click)="retornaParaVisualizacao()">
             Voltar
         </button>
-        <button type="button" class="button" tabindex="16"
-            [disabled]="dadosColaboradorForm.valid ? false : true"
+        <button type="button" class="button" tabindex="16" [disabled]="dadosColaboradorForm.valid ? false : true"
             [ngClass]="{'botaoHabilitado': dadosColaboradorForm.valid, 'botaoDesabilitado': !dadosColaboradorForm.valid}"
             mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
     </div>

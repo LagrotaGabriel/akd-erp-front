@@ -55,6 +55,7 @@ export class DadosProfissionaisComponent {
 
   ngOnInit(): void {
     this.obtemTodasOcupacoes();
+    this.emissorDeDadosProfissionaisDoColaborador.emit(this.dadosProfissionais);
   }
 
   ngAfterViewInit(): void {

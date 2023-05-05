@@ -1,0 +1,16 @@
+<div class="row input_group">
+    <div class="row label_container">
+        <label [ngClass]="{'label_invalida': !valido}" class="label" [attr.for]="id">
+            {{ titulo }}
+        </label>
+    </div>
+    <div class="input_container">
+        <input matInput [ngClass]="{'input_invalida': !valido}" [maxlength]="maxLength" [(ngModel)]="value"
+            [ngStyle]="{'text-transform': todosCaracteresMaiusculos ? 'uppercase' : 'none' }" spellcheck="false"
+            [tabindex]="tabIndex" type="text" autocomplete="off" class="input" (blur)="onTouchCb($event)" [id]="id" #input>
+        <mat-icon *ngIf="(customIcon == null) ? touched : true" [fontIcon]="geraNomeIcone()" [@fadeInOut]
+            [ngClass]="{'icone_ok': valido, 'icone_error' : !valido}" class="icone" (click)="input.focus()"></mat-icon>
+    </div>
+
+    <app-custom-error [@fadeInOut] *ngIf="!valido" [mensagemErro]="mensagemErro"></app-custom-error>
+</div>

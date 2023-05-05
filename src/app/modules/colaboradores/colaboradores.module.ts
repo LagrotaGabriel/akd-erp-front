@@ -20,9 +20,11 @@ import { NovoComponent } from './criacao/novo/novo.component';
 import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pessoais.component';
 import { DadosProfissionaisComponent } from './criacao/novo/dados-profissionais/dados-profissionais.component';
 import { DadosAcessoComponent } from './criacao/novo/dados-acesso/dados-acesso.component';
+import { CustomInputComponent } from './criacao/novo/shared/custom-input/custom-input.component';
+import { CustomErrorComponent } from './criacao/novo/shared/custom-input/custom-error/custom-error.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomInputComponent, CustomErrorComponent],
   imports: [
     CommonModule,
     BrowserModule,

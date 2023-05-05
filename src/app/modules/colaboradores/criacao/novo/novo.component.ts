@@ -1,7 +1,6 @@
 import { Subscription } from 'rxjs';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ChangeDetectorRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ColaboradorService } from '../../services/colaborador.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,18 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-novo',
   templateUrl: './novo.component.html',
-  styleUrls: ['./novo.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate(300, style({ opacity: 0 }))
-      ])
-    ]),
-  ]
+  styleUrls: ['./novo.component.scss']
 })
 export class NovoComponent {
 
@@ -32,15 +20,10 @@ export class NovoComponent {
     private ref: ChangeDetectorRef) { }
 
   private colaborador: ColaboradorNovo;
-
-  // Form groups
   protected dadosColaborador: FormGroup;
   protected dadosProfissionais: FormGroup;
   protected dadosAcesso: FormGroup;
-
   protected contratoContratacao: File;
-
-  // Subscriptions
   private criaNovoColaboradorSubscription$: Subscription;
 
   ngAfterViewInit(): void {
@@ -51,15 +34,20 @@ export class NovoComponent {
     if (this.criaNovoColaboradorSubscription$ != undefined) this.criaNovoColaboradorSubscription$.unsubscribe();
   }
 
+  // FUNÇÕES QUE RECEBEM EMISSÃO DE EVENTOS DOS COMPONENTES FILHOS
+
   protected recebeFormGroupDadosPessoais(event) {
+    console.log('Recebendo dados pessoais')
     this.dadosColaborador = event;
   }
 
   protected recebeFormGroupDadosProfissionais(event) {
+    console.log('Recebendo dados profissionais')
     this.dadosProfissionais = event;
   }
 
   protected recebeFormGroupDadosAcesso(event) {
+    console.log('Recebendo dados de acesso')
     this.dadosAcesso = event;
   }
 
@@ -82,6 +70,11 @@ export class NovoComponent {
 
 
   private construirObjetoColaborador() {
+
+    console.log(this.dadosColaborador);
+    console.log(this.dadosProfissionais);
+    console.log(this.dadosAcesso);
+
     this.colaborador = {
       nome: this.getValueAtributoDadosColaborador('nome') != '' ? this.getValueAtributoDadosColaborador('nome') : null,
       cpfCnpj: this.getValueAtributoDadosColaborador('cpfCnpj') != '' ? this.getValueAtributoDadosColaborador('cpfCnpj') : null,

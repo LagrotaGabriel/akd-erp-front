@@ -137,7 +137,6 @@ export class DadosPessoaisComponent {
     }
   }
 
-  // TELEFONE
   protected atualizaValidatorsTelefone() {
     this.dadosColaborador.controls['prefixo'].setValue('');
     this.dadosColaborador.controls['prefixo'].reset();
@@ -290,10 +289,10 @@ export class DadosPessoaisComponent {
   protected realizaTratamentoNumero() {
     this.atualizaValidatorsEndereco();
     this.dadosColaborador.controls['numero']
-    .setValue(this.getValueAtributoDadosColaborador('numero')
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
-      .replace(/[^0-9.]/g, '')
-      .trim())
+      .setValue(this.getValueAtributoDadosColaborador('numero')
+        .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
+        .replace(/[^0-9.]/g, '')
+        .trim())
   }
 
   protected atualizaValidatorsEndereco() {
@@ -381,7 +380,7 @@ export class DadosPessoaisComponent {
   }
 
   protected avancaSegundaEtapa() {
-    
+
   }
 
 

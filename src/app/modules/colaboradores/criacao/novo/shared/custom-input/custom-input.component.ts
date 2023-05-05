@@ -1,5 +1,4 @@
 import { Component, Input, forwardRef } from '@angular/core';
-import { StatusInputEnum } from './enums/StatusInputEnum';
 import { ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 
@@ -29,7 +28,6 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class CustomInputComponent implements ControlValueAccessor {
 
   @Input() id: string = '';
-  @Input() status: StatusInputEnum;
   @Input() valido: boolean;
   @Input() titulo: string = '';
   @Input() tabIndex: number;

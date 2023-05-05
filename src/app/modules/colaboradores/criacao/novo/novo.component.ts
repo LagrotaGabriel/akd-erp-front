@@ -37,7 +37,7 @@ export class NovoComponent {
   // FUNÇÕES QUE RECEBEM EMISSÃO DE EVENTOS DOS COMPONENTES FILHOS
 
   protected recebeFormGroupDadosPessoais(event) {
-    console.log('Recebendo dados pessoais')
+    console.log('Recebendo dados pessoais');
     this.dadosColaborador = event;
   }
 

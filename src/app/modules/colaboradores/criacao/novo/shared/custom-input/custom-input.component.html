@@ -1,14 +1,16 @@
 <div class="row input_group">
     <div class="row label_container">
-        <label [ngClass]="{'label_invalida': !valido}" class="label" [attr.for]="id">
+        <label [ngClass]="{'label_invalida': !valido, 'label_desabilitada': disabled}" class="label" [attr.for]="id">
             {{ titulo }}
         </label>
     </div>
     <div class="input_container">
-        <input matInput [ngClass]="{'input_invalida': !valido}" [maxlength]="maxLength" [(ngModel)]="value"
+        <input matInput [ngClass]="{'input_invalida': !valido, 'input_desabilitada': disabled}" [maxlength]="maxLength"
+            [(ngModel)]="value" [disabled]="disabled"
             [ngStyle]="{'text-transform': todosCaracteresMaiusculos ? 'uppercase' : 'none' }" spellcheck="false"
-            [tabindex]="tabIndex" type="text" autocomplete="off" class="input" (blur)="onTouchCb($event)" [id]="id" #input>
-        <mat-icon *ngIf="(customIcon == null) ? touched : true" [fontIcon]="geraNomeIcone()" [@fadeInOut]
+            [tabindex]="tabIndex" type="text" autocomplete="off" class="input" (blur)="onTouchCb($event)" [id]="id"
+            #input>
+        <mat-icon *ngIf="((customIcon == null) ? touched : true) && !disabled" [fontIcon]="geraNomeIcone()" [@fadeInOut]
             [ngClass]="{'icone_ok': valido, 'icone_error' : !valido}" class="icone" (click)="input.focus()"></mat-icon>
     </div>
 

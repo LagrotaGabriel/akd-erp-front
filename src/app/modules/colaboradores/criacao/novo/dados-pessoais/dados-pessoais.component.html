@@ -15,15 +15,16 @@
     <!-- INPUT GROUP NOME -->
     <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'nome'" [titulo]="'Nome'"
         [tabIndex]="1" [maxLength]="50" [touched]="dadosColaborador.controls['nome'].touched"
-        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null" [disabled]="dadosColaborador.controls['nome'].disabled"
         [valido]="!(dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid)"
         [mensagemErro]="'Campo obrigatório de no mínimo 3 caracteres'" formControlName="nome"
         #inputNome></app-custom-input>
 
     <!-- INPUT GROUP CPF/CNPJ -->
-    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" [id]="'cpf'" [titulo]="'CPF'"
-        [tabIndex]="2" [maxLength]="inputLengthCpfCnpj" [touched]="dadosColaborador.controls['cpfCnpj'].touched"
-        [todosCaracteresMaiusculos]="true" customIcon="'badge'"
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" [id]="'cpf'" [titulo]="'CPF'" [tabIndex]="2"
+        [maxLength]="inputLengthCpfCnpj" [touched]="dadosColaborador.controls['cpfCnpj'].touched"
+        [disabled]="dadosColaborador.controls['cpfCnpj'].disabled" [todosCaracteresMaiusculos]="false"
+        [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
         [valido]="!(dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid)"
         [mensagemErro]="'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos numéricos'"
         formControlName="cpfCnpj" #inputCpfCnpj></app-custom-input>
@@ -51,28 +52,13 @@
         </div>
     </div>
 
-    <!-- E-MAIL -->
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group input_group_email">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid}">
-                E-mail
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="3"
-                style="text-transform:lowercase" #inputEmail
-                [ngClass]="{'input_invalida': dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid}"
-                formControlName="email" name="email" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputEmail()" [ngClass]="{ 'icone_ok': defineIconeInputEmail() == 'check' || defineIconeInputEmail() == 'alternate_email',
-                                                    'icone_error': defineIconeInputEmail() == 'error' }"
-                (click)="inputEmail.focus()" class="icone"></mat-icon>
-        </div>
-        <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <h6 *ngIf="dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid"
-                class="error_message">{{ 'O e-mail digitado é inválido' }}</h6>
-        </div>
-    </div>
+    <!-- INPUT GROUP EMAIL -->
+    <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'email'" [titulo]="'E-mail'"
+        [tabIndex]="4" [maxLength]="50" [touched]="dadosColaborador.controls['email'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="'alternate_email'"
+        [disabled]="dadosColaborador.controls['email'].disabled"
+        [valido]="!(dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid)"
+        [mensagemErro]="'O e-mail digitado é inválido'" formControlName="email" #inputEmail></app-custom-input>
 
     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container titulo_sessao_container_primeiro"
         matTooltip="Preenchimento dos dados do telefone do colaborador. Caso o tipo seja fixo, móvel ou móvel com whatsapp, 
@@ -103,61 +89,22 @@
         </div>
     </div>
 
-    <!-- PREFIXO -->
-    <div class="row col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].invalid}"
-                [ngClass]="{'label_desabilitada': !verificaSeTipoTelefoneNuloOuVazio()}">
-                Prefixo
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input type="text" autocomplete="off" maxlength="2" spellcheck="false" (input)="realizaTratamentoPrefixo()"
-                tabindex="6"
-                [ngClass]="{'input_invalida': dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].invalid}"
-                formControlName="prefixo" name="prefixo" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut]
-                *ngIf="dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].value != ''"
-                [fontIcon]="dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].invalid 
-            ? 'error' 
-            : 'check'"
-                [ngClass]="{'icone_ok': !dadosColaborador.controls['prefixo'].invalid,
-                    'icone_error': dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].invalid}"
-                class="icone"></mat-icon>
-        </div>
-        <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <h6 *ngIf="dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].invalid"
-                class="error_message">{{ 'O prefixo deve possuir dois números' }}</h6>
-        </div>
-    </div>
+    <!-- INPUT GROUP PREFIXO -->
+    <app-custom-input class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12" [id]="'prefixo'" [titulo]="'Prefixo'"
+        [tabIndex]="6" [maxLength]="2" [touched]="dadosColaborador.controls['prefixo'].touched"
+        [todosCaracteresMaiusculos]="false" customIcon="null" [disabled]="dadosColaborador.controls['prefixo'].disabled"
+        [valido]="!(dadosColaborador.controls['prefixo'].touched && dadosColaborador.controls['prefixo'].invalid)"
+        [mensagemErro]="'O prefixo deve possuir dois números'" formControlName="prefixo"
+        #inputPrefixo></app-custom-input>
 
-    <!-- NÚMERO -->
-    <div class="row col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosColaborador.controls['numeroTelefone'].touched && dadosColaborador.controls['numeroTelefone'].invalid}"
-                [ngClass]="{'label_desabilitada': !verificaSeTipoTelefoneNuloOuVazio()}">
-                Número
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input type="text" autocomplete="off" [maxlength]="inputLengthTelefone" spellcheck="false"
-                (input)="realizaTratamentoNumeroTelefone()" tabindex="7"
-                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                [ngClass]="{'input_invalida': dadosColaborador.controls['numeroTelefone'].touched && dadosColaborador.controls['numeroTelefone'].invalid}"
-                formControlName="numeroTelefone" name="numeroTelefone">
-            <mat-icon [@fadeInOut]
-                *ngIf="dadosColaborador.controls['tipoTelefone'].value != '' && dadosColaborador.controls['tipoTelefone'].value != null"
-                [fontIcon]="defineIconeInputTelefone()" [ngClass]="{'icone_ok': defineIconeInputTelefone() == 'smartphone' || defineIconeInputTelefone() == 'check' || defineIconeInputTelefone() == 'call' ,
-                    'icone_error': defineIconeInputTelefone() == 'error'}" class="icone"></mat-icon>
-        </div>
-        <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <h6 *ngIf="dadosColaborador.controls['numeroTelefone'].touched && dadosColaborador.controls['numeroTelefone'].invalid"
-                class="error_message">{{ 'O número deve ser composto por ' + inputLengthTelefone + '
-                caracteres numéricos' }}</h6>
-        </div>
-    </div>
+    <!-- INPUT GROUP NÚMERO -->
+    <app-custom-input class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12" [id]="'numeroTelefone'" [titulo]="'Número'"
+        [tabIndex]="7" [maxLength]="inputLengthTelefone" [touched]="dadosColaborador.controls['numeroTelefone'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="'call'" (input)="realizaTratamentoNumeroTelefone()"
+        [disabled]="dadosColaborador.controls['numeroTelefone'].disabled"
+        [valido]="!(dadosColaborador.controls['numeroTelefone'].touched && dadosColaborador.controls['numeroTelefone'].invalid)"
+        [mensagemErro]="'O número deve ser composto por ' + inputLengthTelefone + ' caracteres numéricos'"
+        formControlName="numeroTelefone" #inputNumeroTelefone></app-custom-input>
 
     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container"
         matTooltip="Preenchimento dos dados de endereço do 

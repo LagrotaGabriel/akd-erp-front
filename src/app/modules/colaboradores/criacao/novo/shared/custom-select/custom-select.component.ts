@@ -18,6 +18,7 @@ export class CustomSelectComponent implements ControlValueAccessor {
 
   @Input() titulo: string;
   @Input() tabIndex: number;
+  @Input() disabledGroup: boolean;
   @Input() options: SelectOption[];
 
   private innerValue: any;

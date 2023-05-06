@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ColaboradorService } from '../../../services/colaborador.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { SelectOption } from '../shared/models/select-option';
 
 @Component({
   selector: 'app-dados-profissionais',
@@ -56,6 +57,7 @@ export class DadosProfissionaisComponent {
   ngOnInit(): void {
     this.obtemTodasOcupacoes();
     this.emissorDeDadosProfissionaisDoColaborador.emit(this.dadosProfissionais);
+    this.dadosProfissionais.get('saidaEmpresa').disable();
   }
 
   ngAfterViewInit(): void {
@@ -85,11 +87,140 @@ export class DadosProfissionaisComponent {
       escalaEnum: [{ value: 'INDEFINIDA', disabled: true }],
       cargaHorariaSemanal: [{ value: '0:00', disabled: true }],
     });
-    this.dadosProfissionais.get('saidaEmpresa').disable();
   }
 
   protected getValueAtributoDadosProfissionais(atributo: string): any {
     return this.dadosProfissionais.controls[atributo].value;
+  }
+
+  protected geraOptionsSetor(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'Técnico',
+        value: 'TECNICO'
+      },
+      {
+        text: 'Técnico interno',
+        value: 'TECNICO_INTERNO'
+      },
+      {
+        text: 'Técnico externo',
+        value: 'TECNICO_EXTERNO'
+      },
+      {
+        text: 'Atendimento',
+        value: 'ATENDENTE'
+      },
+      {
+        text: 'Gerência',
+        value: 'GERENTE'
+      },
+      {
+        text: 'Diretoria',
+        value: 'DIRETOR'
+      },
+      {
+        text: 'Financeiro',
+        value: 'FINANCEIRO'
+      },
+      {
+        text: 'Administrativo',
+        value: 'ADMINISTRATIVO'
+      },
+      {
+        text: 'Marketing',
+        value: 'MARKETING'
+      },
+      {
+        text: 'Tecnologia',
+        value: 'TECNICO_TI'
+      }
+    ]
+    return options;
+  }
+
+  protected geraOptionsStatusColaborador(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'Ativo',
+        value: 'ATIVO'
+      },
+      {
+        text: 'Afastado',
+        value: 'AFASTADO'
+      },
+      {
+        text: 'Freelancer',
+        value: 'FREELANCER'
+      },
+      {
+        text: 'De férias',
+        value: 'FERIAS'
+      },
+      {
+        text: 'Dispensado',
+        value: 'DISPENSADO'
+      }
+    ]
+    return options;
+  }
+
+  protected geraOptionsModeloContratacao(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'CLT',
+        value: 'CLT'
+      },
+      {
+        text: 'Pessoa jurídica (PJ)',
+        value: 'PJ'
+      },
+      {
+        text: 'Freelancer',
+        value: 'FREELANCER'
+      }
+    ]
+    return options;
+  }
+
+  protected geraOptionsModeloTrabalho(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'Presencial',
+        value: 'PRESENCIAL'
+      },
+      {
+        text: 'Híbrido',
+        value: 'HIBRIDO'
+      },
+      {
+        text: 'Remoto',
+        value: 'HOME_OFFICE'
+      }
+    ]
+    return options;
+  }
+
+  protected geraOptionsEscala(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'Indefinida',
+        value: 'INDEFINIDA'
+      },
+      {
+        text: '5x2',
+        value: 'SEG_A_SEX'
+      },
+      {
+        text: '6x1',
+        value: 'SEG_A_SAB'
+      },
+      {
+        text: '12x36',
+        value: 'DIA_SIM_DIA_NAO'
+      }
+    ]
+    return options;
   }
 
   protected obtemTodasOcupacoes() {
@@ -248,7 +379,6 @@ export class DadosProfissionaisComponent {
   }
 
   // EXPEDIENTE
-
   protected realizaValidacaoExpedienteHoraEntrada() {
     if (this.getValueAtributoDadosProfissionais('horaEntrada') != '' && this.getValueAtributoDadosProfissionais('horaEntrada') != null) {
       this.dadosProfissionais.controls['horaSaidaAlmoco'].addValidators([Validators.required]);

@@ -2,7 +2,7 @@
     [formGroup]="dadosProfissionais">
 
     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container"
-        matTooltip="Preenchimento dos dados profissionais do colaborador" (click)="selectSetor.focus()">
+        matTooltip="Preenchimento dos dados profissionais do colaborador">
         <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             Dados profissionais
         </h3>
@@ -13,24 +13,8 @@
     </div>
 
     <!-- SELECT GROUP SETOR -->
-    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label">Setor</label>
-        </div>
-        <select formControlName="tipoOcupacaoEnum" name="tipoOcupacaoEnum" tabindex="17" #selectSetor
-            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <option value="TECNICO">Técnico</option>
-            <option value="TECNICO_INTERNO">Técnico Interno</option>
-            <option value="TECNICO_EXTERNO">Técnico externo</option>
-            <option value="ATENDENTE">Atendimento</option>
-            <option value="GERENTE">Gerência</option>
-            <option value="DIRETOR">Diretoria</option>
-            <option value="FINANCEIRO">Financeiro</option>
-            <option value="ADMINISTRATIVO">Administrativo</option>
-            <option value="MARKETING">Marketing</option>
-            <option value="TECNICO_TI">Tecnologia</option>
-        </select>
-    </div>
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="tipoOcupacaoEnum"
+        [tabIndex]="17" [titulo]="'Setor'" #selectSetor [options]="geraOptionsSetor()"></app-custom-select>
 
     <!-- INPUT GROUP OCUPAÇÃO -->
     <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
@@ -67,46 +51,19 @@
     </div>
 
     <!-- SELECT GROUP STATUS DO COLABORADOR -->
-    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label">Status atual</label>
-        </div>
-        <select formControlName="statusColaboradorEnum" name="statusColaboradorEnum" tabindex="19"
-            (change)="alteraStatusColaborador()" #selectSetor
-            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <option value="ATIVO">Ativo</option>
-            <option value="AFASTADO">Afastado</option>
-            <option value="FREELANCER">Freelancer</option>
-            <option value="FERIAS">De férias</option>
-            <option value="DISPENSADO">Dispensado</option>
-        </select>
-    </div>
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="statusColaboradorEnum"
+        [tabIndex]="19" [titulo]="'Status atual'" (change)="alteraStatusColaborador()" #selectStatus
+        [options]="geraOptionsStatusColaborador()"></app-custom-select>
 
     <!-- SELECT GROUP MODELO DE CONTRATAÇÃO -->
-    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label">Modelo de contratação</label>
-        </div>
-        <select formControlName="modeloContratacaoEnum" name="modeloContratacaoEnum" tabindex="20" #selectSetor
-            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <option value="CLT">CLT</option>
-            <option value="PJ">Pessoa jurídica (PJ)</option>
-            <option value="FREELANCER">Freelancer</option>
-        </select>
-    </div>
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="modeloContratacaoEnum"
+        [tabIndex]="20" [titulo]="'Modelo de contratação'" #selectModeloContratacao
+        [options]="geraOptionsModeloContratacao()"></app-custom-select>
 
-    <!-- SELECT GROUP MODELO DE TRABALHO -->
-    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label">Modelo de trabalho</label>
-        </div>
-        <select formControlName="modeloTrabalhoEnum" name="modeloTrabalhoEnum" tabindex="21" #selectSetor
-            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <option value="PRESENCIAL">Presencial</option>
-            <option value="HIBRIDO">Híbrido</option>
-            <option value="HOME_OFFICE">Remoto</option>
-        </select>
-    </div>
+    <!-- SELECT GROUP MODELO DE TABALHO -->
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="modeloTrabalhoEnum"
+        [tabIndex]="21" [titulo]="'Modelo de trabalho'" #selectModeloTrabalho
+        [options]="geraOptionsModeloTrabalho()"></app-custom-select>
 
     <!-- INPUT GROUP REMUNERAÇÃO -->
     <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
@@ -322,19 +279,10 @@
     </div>
 
     <!-- SELECT GROUP ESCALA -->
-    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_desabilitada': dadosProfissionais.controls['escalaEnum'].disabled}">Escala</label>
-        </div>
-        <select formControlName="escalaEnum" name="escalaEnum" (change)="realizaCalculoCargaHorariaSemanal()"
-            tabindex="30" #selectEscala class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <option value="INDEFINIDA">Indefinida</option>
-            <option value="SEG_A_SEX">5x2</option>
-            <option value="SEG_A_SAB">6x1</option>
-            <option value="DIA_SIM_DIA_NAO">12x36</option>
-        </select>
-    </div>
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="escalaEnum" [tabIndex]="30"
+        [titulo]="'Escala'" (change)="realizaCalculoCargaHorariaSemanal()"
+        [disabledGroup]="dadosProfissionais.controls['escalaEnum'].disabled" #selectEscala
+        [options]="geraOptionsEscala()"></app-custom-select>
 
     <!-- INPUT CARGA HORÁRIA SEMANAL -->
     <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">

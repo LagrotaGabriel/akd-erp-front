@@ -1,20 +1,11 @@
 <form #dadosAcessoForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
     [formGroup]="dadosAcesso">
 
-    <!-- SELECT GROUP ACESSO LIBERADO AO SISTEMA -->
-    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_desabilitada': dadosAcesso.get('acessoSistemaAtivo').disabled}">Acesso
-                ao sistema</label>
-        </div>
-        <select formControlName="acessoSistemaAtivo" name="acessoSistemaAtivo" tabindex="34"
-            (change)="atualizaLiberacaoSistema()" #selectAcessoSistemaAtivo
-            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <option [ngValue]="true">Liberado</option>
-            <option [ngValue]="false">Bloqueado</option>
-        </select>
-    </div>
+    <!-- SELECT GROUP ACESSO ATIVO -->
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="acessoSistemaAtivo"
+        [tabIndex]="34" [titulo]="'Acesso ao sistema'" (change)="atualizaLiberacaoSistema()"
+        [disabledGroup]="dadosAcesso.get('acessoSistemaAtivo').disabled" #selectAcessoSistemaAtivo
+        [options]="geraOptionsAcessoSistemaAtivo()"></app-custom-select>
 
     <!-- INPUT GROUP SENHA -->
     <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'senha'" [titulo]="'Senha'"
@@ -26,28 +17,9 @@
         #inputBairro></app-custom-input>
 
     <!-- SELECT GROUP PERMISSÕES -->
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label" [ngClass]="{'label_desabilitada': dadosAcesso.get('permissaoEnum').disabled}">
-                Permissões
-            </label>
-        </div>
-        <select formControlName="permissaoEnum" name="permissaoEnum" tabindex="36" #selectPermissoes
-            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <option value="LEITURA_BASICA" title="Permite que o usuário visualize informações não sigilosas nas telas">
-                Leitura básica
-            </option>
-            <option value="LEITURA_AVANCADA" title="Permite que o usuário visualize informações completas das telas">
-                Leitura avançada
-            </option>
-            <option value="LEITURA_BASICA_ALTERACAO"
-                title="Permite que o usuário visualize informações não sigilosas nas telas e realize a criação, alteração, ou exclusão de itens">
-                Leitura básica e alterações</option>
-            <option value="LEITURA_AVANCADA_ALTERACAO"
-                title="Permite que o usuário visualize informações completas das telas e realize a criação, alteração, ou exclusão de itens">
-                Leitura avançada e alterações</option>
-        </select>
-    </div>
+    <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="permissaoEnum"
+        [tabIndex]="36" [titulo]="'Permissões'" [disabledGroup]="dadosAcesso.get('permissaoEnum').disabled"
+        #selectAcessoSistemaAtivo [options]="geraOptionsPermissoes()"></app-custom-select>
 
     <!-- SETOR -->
     <div class="row col-xl-12 col-lg-4 col-md-4 col-sm-12 col-12 input_group"
@@ -107,6 +79,7 @@
         </div>
     </div>
 
+    <!-- CHIPS DE SETORES LIBERADOS -->
     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 chips_container">
         <div *ngFor="let moduloLiberado of modulosLiberados" class="row chips_block">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 chip mat-elevation-z2"

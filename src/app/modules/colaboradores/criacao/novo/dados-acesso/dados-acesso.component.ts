@@ -2,6 +2,7 @@ import { Subscription } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SelectOption } from '../shared/models/select-option';
 
 @Component({
   selector: 'app-dados-acesso',
@@ -63,6 +64,42 @@ export class DadosAcessoComponent {
 
   protected getValueAtributoDadosAcesso(atributo: string): any {
     return this.dadosAcesso.controls[atributo].value;
+  }
+
+  protected geraOptionsAcessoSistemaAtivo(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'Liberado',
+        value: true
+      },
+      {
+        text: 'Bloqueado',
+        value: false
+      }
+    ]
+    return options;
+  }
+
+  protected geraOptionsPermissoes(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'Leitura simples',
+        value: 'LEITURA_BASICA'
+      },
+      {
+        text: 'Leitura completa',
+        value: 'LEITURA_AVANCADA'
+      },
+      {
+        text: 'Leitura simples + Alterações',
+        value: 'LEITURA_BASICA_ALTERACAO'
+      },
+      {
+        text: 'Leitura completa + Alterações',
+        value: 'LEITURA_AVANCADA_ALTERACAO'
+      }
+    ]
+    return options;
   }
 
   protected atualizaLiberacaoSistema() {

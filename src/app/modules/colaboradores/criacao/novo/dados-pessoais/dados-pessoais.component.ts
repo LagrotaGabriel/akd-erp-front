@@ -142,7 +142,7 @@ export class DadosPessoaisComponent {
   protected geraOptionsTipoTelefone(): SelectOption[] {
     let options: SelectOption[] = [
       {
-        text: '',
+        text: 'Sem telefone',
         value: ''
       },
       {

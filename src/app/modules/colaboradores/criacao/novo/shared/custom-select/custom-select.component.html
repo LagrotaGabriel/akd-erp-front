@@ -1,10 +1,10 @@
 <!-- SELECT GROUP TIPO DO TELEFONE -->
 <div class="row input_group">
     <div class="row label_container">
-        <label class="label">{{ titulo }}</label>
+        <label class="label" [ngClass]="{'label_desabilitada': disabledGroup}">{{ titulo }}</label>
     </div>
     <div class="input_container">
-        <select class="input" #select [(ngModel)]="value" [tabIndex]="tabIndex">
+        <select class="input" #select [(ngModel)]="value" [tabIndex]="tabIndex" [disabled]="disabledGroup">
             <option *ngFor="let option of options" [ngValue]="option.value">{{ option.text }}</option>
         </select>
     </div>

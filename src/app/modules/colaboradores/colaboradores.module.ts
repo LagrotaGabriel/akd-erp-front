@@ -22,9 +22,10 @@ import { DadosProfissionaisComponent } from './criacao/novo/dados-profissionais/
 import { DadosAcessoComponent } from './criacao/novo/dados-acesso/dados-acesso.component';
 import { CustomInputComponent } from './criacao/novo/shared/custom-input/custom-input.component';
 import { CustomErrorComponent } from './criacao/novo/shared/custom-input/custom-error/custom-error.component';
+import { CustomSelectComponent } from './criacao/novo/shared/custom-select/custom-select.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomInputComponent, CustomErrorComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomInputComponent, CustomErrorComponent, CustomSelectComponent],
   imports: [
     CommonModule,
     BrowserModule,

@@ -63,7 +63,7 @@
 
     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container titulo_sessao_container_primeiro"
         matTooltip="Preenchimento dos dados do telefone do colaborador. Caso o tipo seja fixo, móvel ou móvel com whatsapp, 
-    o preenchimendo do prefixo e do número são obrigatórios" (click)="inputTipoTelefone.focus()">
+    o preenchimendo do prefixo e do número são obrigatórios">
         <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             Telefone
         </h3>
@@ -74,21 +74,10 @@
     </div>
 
     <!-- SELECT GROUP TIPO DO TELEFONE -->
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label">Tipo do telefone</label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <select formControlName="tipoTelefone" name="tipoTelefone" tabindex="5"
-                (change)="atualizaValidatorsTelefone()" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                #inputTipoTelefone>
-                <option value="" selected>Sem telefone</option>
-                <option value="FIXO">Fixo</option>
-                <option value="MOVEL">Móvel</option>
-                <option value="MOVEL_WHATSAPP">Móvel com whatsapp</option>
-            </select>
-        </div>
-    </div>
+    <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="tipoTelefone"
+        (change)="atualizaValidatorsTelefone()" [tabIndex]="5"
+        [titulo]="'Tipo do telefone'" #inputTipoTelefone
+        [options]="geraOptionsTipoTelefone()"></app-custom-select>
 
     <!-- INPUT GROUP PREFIXO -->
     <app-custom-input class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12" [id]="'prefixo'" [titulo]="'Prefixo'"
@@ -130,20 +119,10 @@
         #inputCodigoPostal></app-custom-input>
 
     <!-- SELECT GROUP ESTADO -->
-    <div class="row col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosColaborador.controls['estado'].touched && dadosColaborador.controls['estado'].invalid}">
-                Estado
-            </label>
-        </div>
-        <select formControlName="estado" name="estado" (change)="obtemTodosMunicipiosPorEstado()"
-            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="9">
-            <option value=""></option>
-            <option *ngFor="let estado of estadosResponse" [value]="estado.sigla">{{ estado.sigla + ' - ' +
-                estado.nome | uppercase}}</option>
-        </select>
-    </div>
+    <app-custom-select class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="estado"
+        (change)="obtemTodosMunicipiosPorEstado()" [tabIndex]="9"
+        [titulo]="'Estado'" #inputEstado
+        [options]="this.estadosOptions"></app-custom-select>
 
     <!-- CIDADE -->
     <div class="row col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 input_group">

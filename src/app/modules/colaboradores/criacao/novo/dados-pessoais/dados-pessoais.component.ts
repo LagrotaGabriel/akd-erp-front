@@ -8,6 +8,7 @@ import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-c
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
+import { SelectOption } from '../shared/models/select-option';
 
 @Component({
   selector: 'app-dados-pessoais',
@@ -47,6 +48,7 @@ export class DadosPessoaisComponent {
 
   // Variaveis endereço
   estadosResponse: EstadosResponse[];
+  estadosOptions: SelectOption[];
   municipiosResponse: MunicipiosResponse[];
 
   @ViewChild('numeroEndereco') inputNumeroEndereco: ElementRef;
@@ -135,6 +137,28 @@ export class DadosPessoaisComponent {
       if (this.dadosColaborador.controls['email'].value == '' || this.dadosColaborador.controls['email'].value == null) return 'alternate_email';
       else return 'check';
     }
+  }
+
+  protected geraOptionsTipoTelefone(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: '',
+        value: ''
+      },
+      {
+        text: 'Fixo',
+        value: 'FIXO'
+      },
+      {
+        text: 'Móvel',
+        value: 'MOVEL'
+      },
+      {
+        text: 'Móvel com whatsapp',
+        value: 'MOVEL_WHATSAPP'
+      }
+    ]
+    return options;
   }
 
   protected atualizaValidatorsTelefone() {
@@ -318,6 +342,24 @@ export class DadosPessoaisComponent {
 
   }
 
+  protected geraOptionsEstado() {
+    let options: SelectOption[] = [
+      {
+        text: '',
+        value: ''
+      },
+    ]
+
+    this.estadosResponse.forEach(estado => {
+      options.push({
+        text: (estado.sigla + ' - ' + estado.nome).toUpperCase(),
+        value: estado.sigla
+      })
+    })
+
+    this.estadosOptions = options;
+  }
+
   protected obtemTodosEstadosBrasileiros() {
     this.obtemTodosEstadosBrasileirosSubscription$ =
       this.brasilApiService.getTodosEstados().subscribe({
@@ -332,6 +374,7 @@ export class DadosPessoaisComponent {
           });
         },
         complete: () => {
+          this.geraOptionsEstado();
           console.log("Estados carregados com sucesso");
         }
       });

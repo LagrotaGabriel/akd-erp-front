@@ -280,6 +280,11 @@ export class DadosProfissionaisComponent {
     }
   }
 
+  protected getHoje(): string {
+    let hoje = new Date();
+    return (hoje.getFullYear() + '-' + hoje.getMonth() + '-' + hoje.getDay()).toString();
+  }
+
   protected validaDataEntradaEmpresa() {
     if (this.getValueAtributoDadosProfissionais('entradaEmpresa') == '') {
       this.dataEntradaAparente = false;

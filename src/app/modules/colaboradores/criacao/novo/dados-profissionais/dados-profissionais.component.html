@@ -57,50 +57,18 @@
     </div>
 
     <!-- INPUT GROUP DATA DE ENTRADA -->
-    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label">
-                Data de entrada
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input min="1900-01-01" max="2023-04-17" [ngClass]="{'emptyDate': getValueAtributoDadosProfissionais('entradaEmpresa') == null 
-            || getValueAtributoDadosProfissionais('entradaEmpresa') == ''}" type="date"
-                formControlName="entradaEmpresa" (focusout)="validaDataEntradaEmpresa()" #inputDataEntrada
-                name="entradaEmpresa" formControlName="entradaEmpresa" name="entradaEmpresa" tabindex="-1"
-                class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataEntradaEmpresa()" [ngClass]="{'icone_ok': defineIconeDataEntradaEmpresa() == 'calendar_month' || defineIconeDataEntradaEmpresa() == 'check',
-                                'icone_error': defineIconeDataEntradaEmpresa() == 'error' }" class="icone"></mat-icon>
-            <div class="input_data_placeholder" *ngIf="!dataEntradaAparente" [@fadeInOut]
-                (focus)="habilitaDataEntradaEmpresa()" (click)="habilitaDataEntradaEmpresa()" tabindex="23"
-                [ngStyle]="{'cursor': 'text'}">
-            </div>
-        </div>
-    </div>
+    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [minDate]="'1900-01-01'"
+        [maxDate]="getHoje()" [disabledGroup]="dadosProfissionais.controls['entradaEmpresa'].disabled"
+        [id]="'entradaEmpresa'" [titulo]="'Data de entrada'" [tabIndex]="-1" formControlName="entradaEmpresa"
+        [vazio]="getValueAtributoDadosProfissionais('entradaEmpresa') == '' || getValueAtributoDadosProfissionais('entradaEmpresa') == null"
+        (focusout)="validaDataEntradaEmpresa()" #inputDataEntrada></app-custom-date-input>
 
-    <!-- INPUT GROUP DATA DE SAIDA -->
-    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label" [ngClass]="{'label_desabilitada': dadosProfissionais.get('saidaEmpresa').disabled}">
-                Data de saída
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input min="1900-01-01" max="2023-04-17" [ngClass]="{'emptyDate': 
-                getValueAtributoDadosProfissionais('saidaEmpresa') == null || 
-                getValueAtributoDadosProfissionais('saidaEmpresa') == ''}" type="date" formControlName="saidaEmpresa"
-                (focusout)="validaDataSaidaEmpresa()" #inputDataSaida name="saidaEmpresa" formControlName="saidaEmpresa"
-                name="saidaEmpresa" tabindex="-1"
-                class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataSaidaEmpresa()" [ngClass]="{'icone_ok': defineIconeDataSaidaEmpresa() == 'calendar_month' || defineIconeDataSaidaEmpresa() == 'check',
-                                'icone_error': defineIconeDataSaidaEmpresa() == 'error' }" class="icone"></mat-icon>
-            <div class="input_data_placeholder" *ngIf="!dataSaidaAparente" [@fadeInOut]
-                [tabindex]="getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'ATIVO' ? '24' : '-1'"
-                (focus)="habilitaDataSaidaEmpresa()" (click)="habilitaDataSaidaEmpresa()"
-                [ngStyle]="{'cursor': 'text'}">
-            </div>
-        </div>
-    </div>
+    <!-- INPUT GROUP DATA DE SAÍDA -->
+    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [minDate]="'1900-01-01'"
+        [maxDate]="getHoje()" [disabledGroup]="dadosProfissionais.controls['saidaEmpresa'].disabled"
+        [id]="'saidaEmpresa'" [titulo]="'Data de saída'" [tabIndex]="-1" formControlName="saidaEmpresa"
+        [vazio]="getValueAtributoDadosProfissionais('saidaEmpresa') == '' || getValueAtributoDadosProfissionais('saidaEmpresa') == null"
+        (focusout)="validaDataSaidaEmpresa()" #inputDataSaida></app-custom-date-input>
 
     <!-- FILE GROUP CONTRATO DE TRABALHO -->
     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">

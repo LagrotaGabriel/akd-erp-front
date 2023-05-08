@@ -34,8 +34,6 @@ export class DadosPessoaisComponent {
     private _snackBar: MatSnackBar,
     private ref: ChangeDetectorRef) { }
 
-  protected dataNascimentoAparente: boolean = false;
-
   // Validations colaborador
   protected inputLengthCpfCnpj: number = 11;
   protected inputPatternCpfCnpj: any = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
@@ -252,28 +250,16 @@ export class DadosPessoaisComponent {
   // DATA NASCIMENTO
 
   protected validaDataNascimento() {
-
-    if (this.dadosColaborador.controls['dataNascimento'].value == '') {
-      this.dataNascimentoAparente = false;
-      return;
-    }
-
     let dataNascimentoSplitada = (this.dadosColaborador.controls['dataNascimento'].value).split("-");
     if (dataNascimentoSplitada.length == 3) {
       if (parseInt(dataNascimentoSplitada[0]) > 2023 || parseInt(dataNascimentoSplitada[0]) < 1900) {
         this.dadosColaborador.controls['dataNascimento'].setValue('');
-        this.dataNascimentoAparente = false;
         this._snackBar.open("Data de nascimento inválida", "Fechar", {
           duration: 3500
         })
         return;
       }
     }
-  }
-
-  protected habilitaDataNascimento() {
-    this.inputDataNascimento.nativeElement.focus();
-    this.dataNascimentoAparente = true;
   }
 
   protected defineIconeDataNascimento() {

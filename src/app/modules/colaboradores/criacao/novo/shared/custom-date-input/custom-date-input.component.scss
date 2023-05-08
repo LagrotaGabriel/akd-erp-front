@@ -1,5 +1,5 @@
-@import '../../../../../dist/variables.scss';
-@import "../../../../../../node_modules/rfs/scss";
+@import '../../../../../../../dist/variables.scss';
+@import "../../../../../../../../node_modules/rfs/scss";
 
 .container,
 .titulo,
@@ -18,10 +18,17 @@
 .container_dados_pessoais,
 app-custom-input,
 app-custom-select,
-app-custom-title-container,
-app-custom-date-input {
+app-custom-title-container {
     margin: 0;
     padding: 0;
+}
+
+.input_group,
+.input_container,
+.label_container,
+.input,
+app-custom-error {
+    width: 100%;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -136,8 +143,10 @@ span {
     background-color: transparent;
     font-size: 1rem;
     font-weight: 400;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1rem;
     padding-right: 2rem;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .input::-webkit-calendar-picker-indicator {
@@ -170,9 +179,11 @@ input:focus {
     top: 0;
     bottom: 0;
     margin: auto 0;
-    right: 0.5rem;
+    right: 1.5rem;
     color: $dark-white;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
 }
 
 .icone_ok {
@@ -188,10 +199,6 @@ input:focus {
     cursor: auto;
 }
 
-.label_invalida {
-    color: $strong-red;
-}
-
 .label_desabilitada {
     color: $dark-grey;
 }
@@ -203,11 +210,6 @@ input:focus {
 
 .input_desabilitada {
     color: $primary-color-disabled !important;
-}
-
-.input_data {
-    -ms-user-select: none;
-    user-select: none;
 }
 
 .button_container {

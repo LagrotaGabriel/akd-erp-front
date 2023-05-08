@@ -22,28 +22,12 @@
         [mensagemErro]="'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos numéricos'"
         formControlName="cpfCnpj" #inputCpfCnpj></app-custom-input>
 
-    <!-- DATA DE NASCIMENTO -->
-    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 input_group input_group_dataNascimento">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label">
-                Data de nascimento
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input min="1900-01-01" max="2023-04-17" [ngClass]="{'emptyDate': 
-                dadosColaborador.controls['dataNascimento'].value == null 
-                || dadosColaborador.controls['dataNascimento'].value == ''}" type="date"
-                formControlName="dataNascimento" (focusout)="validaDataNascimento()" #inputDataNascimento
-                name="dataNascimento" tabindex="-1" formControlName="dataNascimento" name="dataNascimento"
-                class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataNascimento()" [ngClass]="{'icone_ok': defineIconeDataNascimento() == 'calendar_month' || defineIconeDataNascimento() == 'check',
-                                                    'icone_error': defineIconeDataNascimento() == 'error' }"
-                class="icone"></mat-icon>
-            <div class="input_data_placeholder" *ngIf="!dataNascimentoAparente" [@fadeInOut] tabindex="3"
-                (focus)="habilitaDataNascimento()" (click)="habilitaDataNascimento()" [ngStyle]="{'cursor': 'text' }">
-            </div>
-        </div>
-    </div>
+    <!-- INPUT GROUP DATA DE NASCIMENTO -->
+    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" [minDate]="'1900-01-01'"
+        [disabledGroup]="dadosColaborador.controls['dataNascimento'].disabled" [id]="'dataNascimento'"
+        [vazio]="getValueAtributoDadosColaborador('dataNascimento') == '' || getValueAtributoDadosColaborador('dataNascimento') == null"
+        [maxDate]="'2023-04-17'" [titulo]="'Data de nascimento'" [tabIndex]="-1" formControlName="dataNascimento"
+        (focusout)="validaDataNascimento()" #inputDataNascimento></app-custom-date-input>
 
     <!-- INPUT GROUP EMAIL -->
     <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'email'" [titulo]="'E-mail'"

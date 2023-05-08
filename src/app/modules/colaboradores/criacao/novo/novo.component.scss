@@ -1,21 +1,12 @@
-@import '../../../../../dist/variables.scss';
 @import "../../../../../../node_modules/rfs/scss";
+@import '../../../../../dist/variables.scss';
+@import '../novo/shared/custom-inputs.scss';
 
 .container,
 .titulo,
 .form,
-.input_group,
-.input_container,
-.label_container,
-.label,
-.asterisco,
-.input,
-.error_message_container,
-.error_message,
 .chips_block,
 .block,
-.container_imagem_perfil,
-.container_dados_pessoais,
 app-custom-input,
 app-custom-select,
 app-custom-title-container,
@@ -23,24 +14,6 @@ app-custom-date-input,
 app-custom-time-input {
     margin: 0;
     padding: 0;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-    display: none;
-}
-
-input[type="time"]::-webkit-calendar-picker-indicator {
-    background: none;
-    display: none;
-}
-
-.emptyDate {
-    color: transparent !important;
-}
-
-.emptyDate:focus {
-    transition: 0.5s;
-    color: $primary-color !important;
 }
 
 .container {
@@ -109,45 +82,12 @@ span {
     font-weight: 600;
 }
 
-.input_group {
-    padding: 0rem 1rem 1.5rem 1rem;
-}
-
-.label {
-    color: $dark-white;
-    font-size: 1.2rem;
-    font-weight: 400;
-    font-family: $font-roboto;
-    margin-bottom: 0.3rem;
-    letter-spacing: 0;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
 .error_message {
     color: $strong-red;
     font-weight: 400;
     font-size: 0.6rem;
     position: absolute;
     right: 0;
-}
-
-.input {
-    background-color: transparent;
-    font-size: 1rem;
-    font-weight: 400;
-    padding: 0.5rem 1rem;
-    padding-right: 2rem;
-}
-
-.input::-webkit-calendar-picker-indicator {
-    display: none !important;
-}
-
-input[type=text],
-input[type=password] {
-    height: 100%;
 }
 
 option,
@@ -167,48 +107,7 @@ input:focus {
 }
 
 .icone {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
     right: 0.5rem;
-    color: $dark-white;
-    cursor: pointer;
-}
-
-.icone_ok {
-    color: $primary-color;
-}
-
-.icone_error {
-    color: $strong-red;
-}
-
-.icone_desabilitado {
-    color: $dark-grey;
-    cursor: auto;
-}
-
-.label_invalida {
-    color: $strong-red;
-}
-
-.label_desabilitada {
-    color: $dark-grey;
-}
-
-.input_invalida {
-    border: 1px solid $strong-red !important;
-    color: $strong-red !important;
-}
-
-.input_desabilitada {
-    color: $primary-color-disabled !important;
-}
-
-.input_data {
-    -ms-user-select: none;
-    user-select: none;
 }
 
 .button_container {
@@ -278,13 +177,6 @@ input:focus {
 
 .limpar_file:focus {
     outline: none;
-}
-
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
 }
 
 /* Firefox */
@@ -367,21 +259,13 @@ input[type=number] {
     background-color: $primary-color;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 960px) {}
 
-}
+@media (max-width: 768px) {}
 
-@media (max-width: 768px) {
+@media (max-width: 550px) {}
 
-}
-
-@media (max-width: 550px) {
-
-}
-
-@media (max-width: 450px) {
-
-}
+@media (max-width: 450px) {}
 
 @keyframes pulse {
 

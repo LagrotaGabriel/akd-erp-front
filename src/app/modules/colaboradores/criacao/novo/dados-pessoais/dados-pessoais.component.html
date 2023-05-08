@@ -1,16 +1,8 @@
 <form #dadosColaboradorForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
     [formGroup]="dadosColaborador">
 
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container"
-        matTooltip="Preenchimento dos dados pessoais do colaborador. O campo nome é obrigatório">
-        <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            Dados pessoais
-        </h3>
-    </div>
-
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr_container">
-        <hr class="hr">
-    </div>
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Dados Pessoais'"
+        [descricao]="'Preenchimento dos dados pessoais do colaborador. O campo nome é obrigatório'"></app-custom-title-container>
 
     <!-- INPUT GROUP NOME -->
     <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'nome'" [titulo]="'Nome'"
@@ -61,22 +53,13 @@
         [valido]="!(dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid)"
         [mensagemErro]="'O e-mail digitado é inválido'" formControlName="email" #inputEmail></app-custom-input>
 
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container titulo_sessao_container_primeiro"
-        matTooltip="Preenchimento dos dados do telefone do colaborador. Caso o tipo seja fixo, móvel ou móvel com whatsapp, 
-    o preenchimendo do prefixo e do número são obrigatórios">
-        <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            Telefone
-        </h3>
-    </div>
-
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr_container">
-        <hr class="hr">
-    </div>
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Telefone'"
+        [descricao]="'Preenchimento dos dados do telefone do colaborador. Caso o tipo seja fixo, móvel ou móvel com whatsapp,' 
+        + ' o preenchimendo do prefixo e do número são obrigatórios'"></app-custom-title-container>
 
     <!-- SELECT GROUP TIPO DO TELEFONE -->
     <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="tipoTelefone"
-        (change)="atualizaValidatorsTelefone()" [tabIndex]="5"
-        [titulo]="'Tipo do telefone'" #inputTipoTelefone
+        (change)="atualizaValidatorsTelefone()" [tabIndex]="5" [titulo]="'Tipo do telefone'" #inputTipoTelefone
         [options]="geraOptionsTipoTelefone()"></app-custom-select>
 
     <!-- INPUT GROUP PREFIXO -->
@@ -97,17 +80,9 @@
         [mensagemErro]="'O número deve ser composto por ' + inputLengthTelefone + ' caracteres numéricos'"
         formControlName="numeroTelefone" #inputNumeroTelefone></app-custom-input>
 
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container"
-        matTooltip="Preenchimento dos dados de endereço do 
-    colaborador. Caso qualquer campo do endereço esteja preenchido, os campos logradouro e número se fazem obrigatórios">
-        <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            Endereço
-        </h3>
-    </div>
-
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr_container">
-        <hr class="hr">
-    </div>
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Endereço'"
+        [descricao]="'Preenchimento dos dados de endereço do colaborador. Caso qualquer campo do endereço esteja preenchido,' 
+        + ' os campos logradouro e número se fazem obrigatórios'"></app-custom-title-container>
 
     <!-- INPUT GROUP CEP -->
     <app-custom-input class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'cep'" [titulo]="'Cep'" [tabIndex]="8"
@@ -120,45 +95,18 @@
 
     <!-- SELECT GROUP ESTADO -->
     <app-custom-select class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="estado"
-        (change)="obtemTodosMunicipiosPorEstado()" [tabIndex]="9"
-        [titulo]="'Estado'" #inputEstado
+        (change)="obtemTodosMunicipiosPorEstado()" [tabIndex]="9" [titulo]="'Estado'" #inputEstado
         [options]="this.estadosOptions"></app-custom-select>
 
-    <!-- CIDADE -->
-    <div class="row col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].invalid}">
-                Cidade
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input type="text" autocomplete="off" formControlName="cidade" name="cidade"
-                style="text-transform:uppercase" spellcheck="false" list="municipiosEstado" maxlength="50"
-                (input)="atualizaValidatorsEndereco()" (change)="atualizaValidatorsEndereco()" tabindex="10"
-                [ngClass]="{'input_invalida': dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].invalid}"
-                class="input input_cidade col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut]
-                *ngIf="dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].value != ''"
-                [fontIcon]="dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].invalid 
-                        ? 'error' 
-                        : 'check'"
-                [ngClass]="{'icone_ok': !dadosColaborador.controls['cidade'].invalid,
-                                'icone_error': dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].invalid}"
-                class="icone"></mat-icon>
-        </div>
-
-        <datalist id="municipiosEstado">
-            <option *ngFor="let municipio of municipiosResponse" [value]="municipio.nome | uppercase">
-            </option>
-        </datalist>
-
-        <div [@fadeInOut]
-            *ngIf="dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].invalid"
-            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
-        </div>
-    </div>
+    <!-- INPUT GROUP CIDADE -->
+    <app-custom-input class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cidade'" [titulo]="'Cidade'"
+        [tabIndex]="10" [maxLength]="50" [touched]="dadosColaborador.controls['cidade'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosColaborador.controls['cidade'].disabled" (input)="atualizaValidatorsEndereco()"
+        (change)="atualizaValidatorsEndereco()" [dataList]="dataListCidade"
+        [valido]="!(dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].invalid)"
+        [mensagemErro]="'Este campo deve possuir no máximo 50 caracteres'" formControlName="cidade"
+        #inputCodigoPostal></app-custom-input>
 
     <!-- INPUT GROUP LOGRADOURO -->
     <app-custom-input class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12" [id]="'logradouro'" [titulo]="'Logradouro'"

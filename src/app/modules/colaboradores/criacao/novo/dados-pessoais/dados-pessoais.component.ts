@@ -48,6 +48,7 @@ export class DadosPessoaisComponent {
 
   // Variaveis endereço
   estadosResponse: EstadosResponse[];
+  dataListCidade: string[];
   estadosOptions: SelectOption[];
   municipiosResponse: MunicipiosResponse[];
 
@@ -360,6 +361,15 @@ export class DadosPessoaisComponent {
     this.estadosOptions = options;
   }
 
+  protected geraDataListCidade() {
+    let municipiosList: string[] = []
+    this.municipiosResponse.forEach(municipio => {
+      municipiosList.push(municipio.nome);
+    })
+
+    this.dataListCidade = municipiosList;
+  }
+
   protected obtemTodosEstadosBrasileiros() {
     this.obtemTodosEstadosBrasileirosSubscription$ =
       this.brasilApiService.getTodosEstados().subscribe({
@@ -410,7 +420,10 @@ export class DadosPessoaisComponent {
               duration: 3500
             })
           },
-          complete: () => console.log('Obtenção de municípios por estado realizada com sucesso')
+          complete: () => {
+            console.log('Obtenção de municípios por estado realizada com sucesso')
+            this.geraDataListCidade();
+          }
         })
     }
     else {

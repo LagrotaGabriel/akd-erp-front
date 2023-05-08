@@ -93,6 +93,8 @@ export class DadosProfissionaisComponent {
     return this.dadosProfissionais.controls[atributo].value;
   }
 
+  // OPTIONS
+
   protected geraOptionsSetor(): SelectOption[] {
     let options: SelectOption[] = [
       {

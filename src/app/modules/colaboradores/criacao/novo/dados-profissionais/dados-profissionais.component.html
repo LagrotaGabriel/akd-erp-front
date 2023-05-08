@@ -1,54 +1,21 @@
 <form #dadosColaboradorForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
     [formGroup]="dadosProfissionais">
 
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container"
-        matTooltip="Preenchimento dos dados profissionais do colaborador">
-        <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            Dados profissionais
-        </h3>
-    </div>
-
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr_container">
-        <hr class="hr">
-    </div>
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Dados profissionais'"
+        [descricao]="'Preenchimento dos dados profissionais do colaborador'"></app-custom-title-container>
 
     <!-- SELECT GROUP SETOR -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="tipoOcupacaoEnum"
         [tabIndex]="17" [titulo]="'Setor'" #selectSetor [options]="geraOptionsSetor()"></app-custom-select>
 
     <!-- INPUT GROUP OCUPAÇÃO -->
-    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}">
-                Ocupação
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input list="ocupacoes" type="text" autocomplete="off" formControlName="ocupacao" name="ocupacao"
-                style="text-transform:uppercase" spellcheck="false" maxlength="30" #inputOcupacao
-                [ngClass]="{'input_invalida': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}"
-                class="input input_ocupacoes col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
-            <mat-icon [@fadeInOut]
-                *ngIf="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].value != ''"
-                [fontIcon]="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid 
-                                            ? 'error' 
-                                            : 'check'" (click)="inputOcupacao.focus()"
-                [ngClass]="{'icone_ok': !dadosProfissionais.controls['ocupacao'].invalid,
-                                            'icone_error': dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid}" class="icone"></mat-icon>
-        </div>
-
-        <datalist id="ocupacoes">
-            <option *ngFor="let ocupacao of ocupacoesResponse" [value]="ocupacao | uppercase">
-            </option>
-        </datalist>
-
-        <div [@fadeInOut]
-            *ngIf="dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid"
-            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <h6 class="error_message">{{ 'Este campo deve possuir no máximo 30 caracteres' }}</h6>
-        </div>
-    </div>
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'ocupacao'" [titulo]="'Ocupação'"
+        [tabIndex]="18" [maxLength]="30" [touched]="dadosProfissionais.controls['ocupacao'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null" [dataList]="ocupacoesResponse"
+        [disabledGroup]="dadosProfissionais.controls['ocupacao'].disabled"
+        [valido]="!(dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid)"
+        [mensagemErro]="'Este campo deve possuir no máximo 30 caracteres'" formControlName="ocupacao"
+        #inputCodigoPostal></app-custom-input>
 
     <!-- SELECT GROUP STATUS DO COLABORADOR -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="statusColaboradorEnum"
@@ -163,16 +130,9 @@
         </div>
     </div>
 
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container" matTooltip="Preenchimento dos dados de expediente do colaborador. Caso qualquer campo seja preenchido, todos os campos se tornam obrigatórios; 
-    O campo Carga Horária Semanal é preenchido automaticamente" (click)="inputHoraEntrada.focus()">
-        <h3 class="titulo_sessao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            Expediente
-        </h3>
-    </div>
-
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 hr_container">
-        <hr class="hr">
-    </div>
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Expediente'"
+        [descricao]="'Preenchimento dos dados de expediente do colaborador. Caso qualquer campo seja preenchido,' 
+        + ' todos os campos se tornam obrigatórios; O campo Carga Horária Semanal é preenchido automaticamente'"></app-custom-title-container>
 
     <!-- INPUT GROUP HORA DE ENTRADA -->
     <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">

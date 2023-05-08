@@ -37,6 +37,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   @Input() mensagemErro: string;
   @Input() customIcon: string;
   @Input() disabledGroup: boolean;
+  @Input() dataList: string[];
 
   private innerValue: any;
 

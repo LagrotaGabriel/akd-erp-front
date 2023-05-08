@@ -175,6 +175,10 @@ span {
     padding-right: 2rem;
 }
 
+.input::-webkit-calendar-picker-indicator {
+    display: none !important;
+}
+
 input[type=text],
 input[type=password] {
     height: 100%;

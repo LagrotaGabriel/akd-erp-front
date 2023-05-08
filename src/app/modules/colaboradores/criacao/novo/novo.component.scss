@@ -21,7 +21,8 @@
 .container_imagem_perfil,
 .container_dados_pessoais,
 app-custom-input,
-app-custom-select {
+app-custom-select,
+app-custom-title-container {
     margin: 0;
     padding: 0;
 }
@@ -165,6 +166,10 @@ span {
     font-weight: 400;
     padding: 0.5rem 1rem;
     padding-right: 2rem;
+}
+
+.input::-webkit-calendar-picker-indicator {
+    display: none !important;
 }
 
 input[type=text],

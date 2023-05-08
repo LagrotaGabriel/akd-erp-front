@@ -386,6 +386,28 @@ export class DadosProfissionaisComponent {
   }
 
   // EXPEDIENTE
+
+  redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente(campo: string) {
+    switch(campo) {
+      case 'entrada': {
+        this.realizaValidacaoExpedienteHoraEntrada();
+        break;
+      }
+      case 'saidaAlmoco': {
+        this.realizaValidacaoExpedienteHoraSaidaAlmoco();
+        break;
+      }
+      case 'entradaAlmoco': {
+        this.realizaValidacaoExpedienteHoraEntradaAlmoco();
+        break;
+      }
+      case 'saida': {
+        this.realizaValidacaoExpedienteHoraSaida();
+        break;
+      }
+    }
+  }
+
   protected realizaValidacaoExpedienteHoraEntrada() {
     if (this.getValueAtributoDadosProfissionais('horaEntrada') != '' && this.getValueAtributoDadosProfissionais('horaEntrada') != null) {
       this.dadosProfissionais.controls['horaSaidaAlmoco'].addValidators([Validators.required]);

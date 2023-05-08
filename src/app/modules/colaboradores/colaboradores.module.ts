@@ -21,13 +21,14 @@ import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pess
 import { DadosProfissionaisComponent } from './criacao/novo/dados-profissionais/dados-profissionais.component';
 import { DadosAcessoComponent } from './criacao/novo/dados-acesso/dados-acesso.component';
 import { CustomInputComponent } from './criacao/novo/shared/custom-input/custom-input.component';
-import { CustomErrorComponent } from './criacao/novo/shared/custom-input/custom-error/custom-error.component';
+import { CustomErrorComponent } from './criacao/novo/shared/custom-error/custom-error.component';
 import { CustomSelectComponent } from './criacao/novo/shared/custom-select/custom-select.component';
 import { CustomTitleContainerComponent } from './criacao/novo/shared/custom-title-container/custom-title-container.component';
 import { CustomDateInputComponent } from './criacao/novo/shared/custom-date-input/custom-date-input.component';
+import { CustomTimeInputComponent } from './criacao/novo/shared/custom-time-input/custom-time-input.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomInputComponent, CustomErrorComponent, CustomSelectComponent, CustomTitleContainerComponent, CustomDateInputComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomInputComponent, CustomErrorComponent, CustomSelectComponent, CustomTitleContainerComponent, CustomDateInputComponent, CustomTimeInputComponent],
   imports: [
     CommonModule,
     BrowserModule,

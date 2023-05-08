@@ -8,7 +8,7 @@
         <input matInput [min]="minDate" [max]="maxDate" [ngClass]="{'emptyDate': vazio }" [(ngModel)]=" value"
             [disabled]="disabledGroup" type="date" [tabindex]="tabIndex" (blur)="onTouchCb($event)" [id]="id"
             class="input input_data" #input>
-        <mat-icon [@fadeInOut] [fontIcon]="'calendar_month'"
+        <mat-icon [@fadeInOut] [fontIcon]="'calendar_month'" (click)="input.focus()"
             [ngClass]="{'icone_desabilitado': disabledGroup, 'icone_ok': !disabledGroup}" class="icone"></mat-icon>
     </div>
 </div>

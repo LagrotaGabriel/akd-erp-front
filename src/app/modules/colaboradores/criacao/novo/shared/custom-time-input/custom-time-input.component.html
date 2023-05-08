@@ -1,0 +1,19 @@
+<div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+        <label class="label" [ngClass]="{'label_invalida': !valido, 'label_desabilitada': disabledGroup}"
+            (click)="input.focus()">
+            {{ titulo }}
+        </label>
+    </div>
+    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <input [tabindex]="tabIndex" [disabled]="disabledGroup" [attr.type]="disabledGroup ? 'text' : 'time'" [id]="id"
+            [(ngModel)]="value" #input [ngClass]="{'input_invalida': !valido}" (blur)="onTouchCb($event)"
+            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+        <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok" (click)="input.focus()"
+            [ngClass]="{'icone_desabilitado': disabledGroup, 'icone_error': !valido}"></mat-icon>
+
+        <app-custom-error [@fadeInOut] *ngIf="!valido" [mensagemErro]="mensagemErro"></app-custom-error>
+    </div>
+
+</div>

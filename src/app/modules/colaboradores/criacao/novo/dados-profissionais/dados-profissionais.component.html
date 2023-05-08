@@ -94,7 +94,6 @@
                 id="contratoContratacaoInput" (change)="setaContrato($event)"
                 [ngClass]="{'input_invalida': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
                 class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="25">
-
         </div>
     </div>
 
@@ -103,108 +102,39 @@
         + ' todos os campos se tornam obrigatórios; O campo Carga Horária Semanal é preenchido automaticamente'"></app-custom-title-container>
 
     <!-- INPUT GROUP HORA DE ENTRADA -->
-    <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid}">
-                Entrada
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input formControlName="horaEntrada" name="horaEntrada" type="time" tabindex="26" #inputHoraEntrada
-                (change)="realizaValidacaoExpedienteHoraEntrada()" (input)="realizaValidacaoExpedienteHoraEntrada()"
-                [ngClass]="{'input_invalida': dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid}"
-                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok"
-                (click)="inputHoraEntrada.focus()"></mat-icon>
-        </div>
-
-    </div>
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaEntrada'"
+        [titulo]="'Entrada'" [tabIndex]="26" [disabledGroup]="dadosProfissionais.controls['horaEntrada'].disabled"
+        (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entrada')"
+        (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entrada')"
+        [valido]="!(dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid)"
+        [mensagemErro]="'Obrigatório'" formControlName="horaEntrada" #inputHoraEntrada></app-custom-time-input>
 
     <!-- INPUT GROUP HORA DE SAÍDA PARA O ALMOÇO -->
-    <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"
-                [ngClass]="{'label_desabilitada': dadosProfissionais.controls['horaSaidaAlmoco'].disabled}">
-                Saída almoço
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input formControlName="horaSaidaAlmoco" name="horaSaidaAlmoco"
-                [type]="dadosProfissionais.controls['horaSaidaAlmoco'].disabled ? 'text' : 'time'" tabindex="27"
-                #inputHoraSaidaAlmoco [attr.disabled]="true" (change)="realizaValidacaoExpedienteHoraSaidaAlmoco()"
-                (input)="realizaValidacaoExpedienteHoraSaidaAlmoco()"
-                [ngClass]="{'input_invalida': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"
-                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok" (click)="inputHoraSaidaAlmoco.focus()"
-                [ngClass]="{'icone_desabilitado': dadosProfissionais.controls['horaSaidaAlmoco'].disabled, 
-            'icone_error': dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid}"></mat-icon>
-
-            <div [@fadeInOut]
-                *ngIf="dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid"
-                class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <h6 class="error_message">{{ 'Obrigatório' }}</h6>
-            </div>
-        </div>
-
-    </div>
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaSaidaAlmoco'"
+        [titulo]="'Saída almoço'" [tabIndex]="27"
+        [disabledGroup]="dadosProfissionais.controls['horaSaidaAlmoco'].disabled"
+        (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saidaAlmoco')"
+        (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saidaAlmoco')"
+        [valido]="!(dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid)"
+        [mensagemErro]="'Obrigatório'" formControlName="horaSaidaAlmoco" #inputHoraSaidaAlmoco></app-custom-time-input>
 
     <!-- INPUT GROUP HORA DE RETORNO DO ALMOÇO -->
-    <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"
-                [ngClass]="{'label_desabilitada': dadosProfissionais.controls['horaEntradaAlmoco'].disabled}">
-                Retorno almoço
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input [type]="dadosProfissionais.controls['horaEntradaAlmoco'].disabled ? 'text' : 'time'"
-                formControlName="horaEntradaAlmoco" name="horaEntradaAlmoco" #inputHoraEntradaAlmoco tabindex="28"
-                (change)="realizaValidacaoExpedienteHoraEntradaAlmoco()"
-                (input)="realizaValidacaoExpedienteHoraEntradaAlmoco()"
-                [ngClass]="{'input_invalida': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"
-                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok" (click)="inputHoraEntradaAlmoco.focus()"
-                [ngClass]="{'icone_desabilitado': dadosProfissionais.controls['horaEntradaAlmoco'].disabled, 
-            'icone_error': dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid}"></mat-icon>
-
-            <div [@fadeInOut]
-                *ngIf="dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid"
-                class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <h6 class="error_message">{{ 'Obrigatório' }}</h6>
-            </div>
-        </div>
-
-    </div>
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaEntradaAlmoco'"
+        [titulo]="'Retorno almoço'" [tabIndex]="28"
+        [disabledGroup]="dadosProfissionais.controls['horaEntradaAlmoco'].disabled"
+        (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entradaAlmoco')"
+        (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entradaAlmoco')"
+        [valido]="!(dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid)"
+        [mensagemErro]="'Obrigatório'" formControlName="horaEntradaAlmoco"
+        #inputHoraEntradaAlmoco></app-custom-time-input>
 
     <!-- INPUT GROUP HORA DE SAÍDA -->
-    <div class="row col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 input_group">
-        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-            <label class="label"
-                [ngClass]="{'label_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"
-                [ngClass]="{'label_desabilitada': dadosProfissionais.controls['horaSaida'].disabled}">
-                Saída
-            </label>
-        </div>
-        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <input [type]="dadosProfissionais.controls['horaSaida'].disabled ? 'text' : 'time'"
-                formControlName="horaSaida" name="horaSaida" #inputHoraSaida tabindex="29"
-                (change)="realizaValidacaoExpedienteHoraSaida()" (input)="realizaValidacaoExpedienteHoraSaida()"
-                [ngClass]="{'input_invalida': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"
-                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <mat-icon [@fadeInOut] [fontIcon]="'alarm'" class="icone icone_ok" (click)="inputHoraSaida.focus()"
-                [ngClass]="{'icone_desabilitado': dadosProfissionais.controls['horaSaida'].disabled, 
-            'icone_error': dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid}"></mat-icon>
-            <div [@fadeInOut]
-                *ngIf="dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid"
-                class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <h6 class="error_message">{{ 'Obrigatório' }}</h6>
-            </div>
-        </div>
-
-    </div>
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaSaida'" [titulo]="'Saída'"
+        [tabIndex]="29" [disabledGroup]="dadosProfissionais.controls['horaSaida'].disabled"
+        (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saida')"
+        (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saida')"
+        [valido]="!(dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid)"
+        [mensagemErro]="'Obrigatório'" formControlName="horaSaida" #inputHoraSaida></app-custom-time-input>
 
     <!-- SELECT GROUP ESCALA -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="escalaEnum" [tabIndex]="30"

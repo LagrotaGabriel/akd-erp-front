@@ -1,14 +1,16 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
 import { SelectOption } from '../shared/models/select-option';
+import { CustomInputComponent } from '../shared/custom-input/custom-input.component';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-dados-pessoais',
@@ -50,9 +52,10 @@ export class DadosPessoaisComponent {
   estadosOptions: SelectOption[];
   municipiosResponse: MunicipiosResponse[];
 
-  @ViewChild('inputNumero') inputNumero: ElementRef;
-  @ViewChild('inputNome') inputNome: ElementRef;
-  @ViewChild('inputDataNascimento') inputDataNascimento: ElementRef;
+  @ViewChild('inputNumero') inputNumero: CustomInputComponent;
+  @ViewChild('inputNome') inputNome: CustomInputComponent;
+  @ViewChild('botaoProximo') botaoProximo: ElementRef;
+  @ViewChild('botaoRetorno') botaoRetorno: ElementRef;
 
   // Subscriptions
   private obtemTodosEstadosBrasileirosSubscription$: Subscription;
@@ -62,7 +65,9 @@ export class DadosPessoaisComponent {
   protected dadosColaborador: FormGroup = this.createForm();
   @Output() emissorDeDadosPessoaisDoColaborador = new EventEmitter<FormGroup>();
 
-  dadosColaboradorSubscribe$: Subscription = this.dadosColaborador.valueChanges.subscribe({
+  dadosColaboradorSubscribe$: Subscription = this.dadosColaborador.valueChanges.pipe(
+    debounceTime(500)
+  ).subscribe({
     next: () => {
       this.emissorDeDadosPessoaisDoColaborador.emit(this.dadosColaborador);
     }
@@ -71,19 +76,16 @@ export class DadosPessoaisComponent {
   @Input() stepAtual: number;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.stepAtual == 0) {
-      console.log(this.inputNome);
+    if (this.stepAtual == 0 && !changes['stepAtual'].isFirstChange()) {
+      this.inputNome.acionaFoco();
     }
-  }
-
-  ngOnInit(): void {
-    this.atualizaValidatorsTelefone();
-    this.obtemTodosEstadosBrasileiros();
-    this.emissorDeDadosPessoaisDoColaborador.emit(this.dadosColaborador);
   }
 
   ngAfterViewInit(): void {
     this.ref.detectChanges();
+    this.obtemTodosEstadosBrasileiros();
+    this.emissorDeDadosPessoaisDoColaborador.emit(this.dadosColaborador);
+    this.inputNome.acionaFoco();
   }
 
   ngOnDestroy(): void {
@@ -100,8 +102,9 @@ export class DadosPessoaisComponent {
       email: ['', [Validators.email, Validators.maxLength(50)]],
       dataNascimento: [''],
       tipoTelefone: [''],
-      prefixo: [null, [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
-      numeroTelefone: [null],
+      //prefixo: [null, [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
+      prefixo: [{ value: '', disabled: true }],
+      numeroTelefone: [{ value: '', disabled: true }],
       logradouro: [''],
       numero: [null],
       bairro: ['', Validators.maxLength(50)],
@@ -398,7 +401,7 @@ export class DadosPessoaisComponent {
     this.dadosColaborador.controls['estado'].markAsTouched();
     this.dadosColaborador.controls['cidade'].markAsTouched();
 
-    this.inputNumero.nativeElement.focus();
+    this.inputNumero.acionaFoco();
 
     this.obtemTodosMunicipiosPorEstado();
   }
@@ -429,9 +432,13 @@ export class DadosPessoaisComponent {
     this.router.navigate(['/colaboradores'])
   }
 
-  protected avancaSegundaEtapa() {
-
+  protected avancaProximaEtapa() {
+    if (this.dadosColaborador.invalid) {
+      this.dadosColaborador.markAllAsTouched();
+      this._snackBar.open('Ops! Algum campo está incorreto. Revise o formulário e tente novamente.', "Fechar", {
+        duration: 3500
+      })
+    }
   }
-
 
 }

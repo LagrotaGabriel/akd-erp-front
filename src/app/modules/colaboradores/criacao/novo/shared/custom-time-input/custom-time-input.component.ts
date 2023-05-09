@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -35,6 +35,14 @@ export class CustomTimeInputComponent implements ControlValueAccessor {
   @Input() disabledGroup: boolean;
 
   private innerValue: any;
+
+  @ViewChild('input') input: ElementRef;
+
+  public acionaFoco() {
+    setTimeout(() => {
+      this.input.nativeElement.focus();
+    }, 100);
+  }
 
   get value() {
     return this.innerValue;

@@ -1,8 +1,9 @@
 <form #dadosColaboradorForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-    [formGroup]="dadosProfissionais">
+    [formGroup]="dadosProfissionais" (keyup.enter)="botaoProximo.click()" (keyup.escape)="botaoRetorno.click()">
 
     <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Dados profissionais'"
-        [descricao]="'Preenchimento dos dados profissionais do colaborador'"></app-custom-title-container>
+        [descricao]="'Preenchimento dos dados profissionais do colaborador'"
+        (click)="selectSetor.acionaFoco()"></app-custom-title-container>
 
     <!-- SELECT GROUP SETOR -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="tipoOcupacaoEnum"
@@ -15,7 +16,7 @@
         [disabledGroup]="dadosProfissionais.controls['ocupacao'].disabled"
         [valido]="!(dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid)"
         [mensagemErro]="'Este campo deve possuir no máximo 30 caracteres'" formControlName="ocupacao"
-        #inputCodigoPostal></app-custom-input>
+        #inputOcupacao></app-custom-input>
 
     <!-- SELECT GROUP STATUS DO COLABORADOR -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="statusColaboradorEnum"
@@ -99,7 +100,8 @@
 
     <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Expediente'"
         [descricao]="'Preenchimento dos dados de expediente do colaborador. Caso qualquer campo seja preenchido,' 
-        + ' todos os campos se tornam obrigatórios; O campo Carga Horária Semanal é preenchido automaticamente'"></app-custom-title-container>
+        + ' todos os campos se tornam obrigatórios; O campo Carga Horária Semanal é preenchido automaticamente'"
+        (click)="inputHoraEntrada.acionaFoco()"></app-custom-title-container>
 
     <!-- INPUT GROUP HORA DE ENTRADA -->
     <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaEntrada'"
@@ -160,14 +162,11 @@
 
     <!-- BOTÕES DE NAVEGAÇÃO -->
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button type="button" class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button tabindex="15"
-            matStepperPrevious>
+        <button type="button" class="button botaoHabilitado" #botaoRetorno mat-button tabindex="15" matStepperPrevious>
             Voltar
         </button>
-        <button type="button" tabindex="16" class="button" matStepperNext
-            [disabled]="dadosProfissionais.valid ? false : true"
-            [ngClass]="{'botaoHabilitado': dadosProfissionais.valid, 'botaoDesabilitado': !dadosProfissionais.valid}"
-            mat-button matStepperNext #botaoProximoSegundaEtapa>Próximo</button>
+        <button type="button" tabindex="16" class="button botaoHabilitado" (click)="avancaProximaEtapa()" matStepperNext
+            mat-button matStepperNext #botaoProximo>Próximo</button>
     </div>
 
 </form>

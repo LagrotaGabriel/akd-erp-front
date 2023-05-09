@@ -1,8 +1,9 @@
 <form #dadosAcessoForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-    [formGroup]="dadosAcesso">
+    [formGroup]="dadosAcesso" (keyup.enter)="submitFormulario.click()" (keyup.escape)="botaoRetorno.click()">
 
     <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Acesso'"
-    [descricao]="'Preenchimento dos dados de acesso ao sistema'"></app-custom-title-container>
+        [descricao]="'Preenchimento dos dados de acesso ao sistema'"
+        (click)="selectAcessoSistemaAtivo.acionaFoco()"></app-custom-title-container>
 
     <!-- SELECT GROUP ACESSO ATIVO -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="acessoSistemaAtivo"
@@ -24,7 +25,7 @@
         [tabIndex]="3" [titulo]="'Permissões'" [disabledGroup]="dadosAcesso.get('permissaoEnum').disabled"
         #selectAcessoSistemaAtivo [options]="geraOptionsPermissoes()"></app-custom-select>
 
-    <!-- SETOR -->
+    <!-- MÓDULOS LIBERADOS -->
     <div class="row col-xl-12 col-lg-4 col-md-4 col-sm-12 col-12 input_group"
         [ngClass]="{'input_group_modulo': modulosLiberados.length > 0}">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
@@ -94,14 +95,12 @@
 
     <!-- BOTÕES DE NAVEGAÇÃO -->
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button type="button" class="button botaoHabilitado" #botaoVoltarTerceiraEtapa mat-button tabindex="6"
+        <button type="button" class="button botaoHabilitado" #botaoRetorno mat-button tabindex="6"
             matStepperPrevious>
             Voltar
         </button>
-        <button type="button" (click)="solicitarEnvioDeFormulario()" tabindex="7" class="button" #submitFormulario
-            [disabled]="dadosAcesso.valid ? false : true"
-            [ngClass]="{'botaoHabilitado': dadosAcesso.valid, 'botaoDesabilitado': !dadosAcesso.valid}"
-            mat-button>Enviar</button>
+        <button type="button" (click)="solicitarEnvioDeFormulario()" tabindex="7" class="button botaoHabilitado"
+            #submitFormulario mat-button>Enviar</button>
     </div>
 
 </form>

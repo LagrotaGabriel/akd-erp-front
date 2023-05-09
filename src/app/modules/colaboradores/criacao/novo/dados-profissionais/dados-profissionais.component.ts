@@ -1,10 +1,11 @@
-import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 import { ColaboradorService } from '../../../services/colaborador.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SelectOption } from '../shared/models/select-option';
+import { CustomSelectComponent } from '../shared/custom-select/custom-select.component';
 
 @Component({
   selector: 'app-dados-profissionais',
@@ -29,15 +30,14 @@ export class DadosProfissionaisComponent {
     private _snackBar: MatSnackBar,
     private ref: ChangeDetectorRef) { }
 
-  protected dataEntradaAparente: boolean = false;
-  protected dataSaidaAparente: boolean = false;
-
   private obtemTodasOcupacoesSubscription$: Subscription;
 
   protected dadosProfissionais: FormGroup = this.createForm();
   @Output() emissorDeDadosProfissionaisDoColaborador = new EventEmitter<FormGroup>();
 
-  dadosProfissionaisSubscribe$: Subscription = this.dadosProfissionais.valueChanges.subscribe({
+  dadosProfissionaisSubscribe$: Subscription = this.dadosProfissionais.valueChanges.pipe(
+    debounceTime(500)
+  ).subscribe({
     next: () => {
       this.emissorDeDadosProfissionaisDoColaborador.emit(this.dadosProfissionais);
     }
@@ -48,26 +48,23 @@ export class DadosProfissionaisComponent {
   protected contratoContratacao: File;
   @Output() emissorDeContratoContratacao = new EventEmitter<File>();
 
-  @ViewChild('contratoContratacaoInput') contratoContratacaoInput: ElementRef;
-  @ViewChild('selectSetor') selectSetor: ElementRef;
-  @ViewChild('inputDataEntrada') inputDataEntrada: ElementRef;
-  @ViewChild('inputDataSaida') inputDataSaida: ElementRef;
+  @ViewChild('selectSetor') selectSetor: CustomSelectComponent;
   @ViewChild('inputSalario') inputSalario: ElementRef;
+  @ViewChild('botaoProximo') botaoProximo: ElementRef;
+  @ViewChild('botaoRetorno') botaoRetorno: ElementRef;
 
   @Input() stepAtual: number;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.stepAtual == 1) console.log('Profissional acessado');
-  }
-
-  ngOnInit(): void {
-    this.obtemTodasOcupacoes();
-    this.emissorDeDadosProfissionaisDoColaborador.emit(this.dadosProfissionais);
-    this.dadosProfissionais.get('saidaEmpresa').disable();
+    if (this.stepAtual == 1) {
+      this.selectSetor.acionaFoco();
+    }
   }
 
   ngAfterViewInit(): void {
     this.ref.detectChanges();
+    this.obtemTodasOcupacoes();
+    this.emissorDeDadosProfissionaisDoColaborador.emit(this.dadosProfissionais);
   }
 
   ngOnDestroy(): void {
@@ -85,7 +82,7 @@ export class DadosProfissionaisComponent {
       contratoContratacao: [null],
       salario: [0.0, [Validators.max(9999999.00), Validators.min(0.00)]],
       entradaEmpresa: [''],
-      saidaEmpresa: [''],
+      saidaEmpresa: [{ value: '', disabled: true }],
       horaEntrada: [''],
       horaSaidaAlmoco: [{ value: '', disabled: true }],
       horaEntradaAlmoco: [{ value: '', disabled: true }],
@@ -242,12 +239,10 @@ export class DadosProfissionaisComponent {
       || this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'AFASTADO'
       || this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'FERIAS') {
       this.dadosProfissionais.controls['saidaEmpresa'].setValue('');
-      this.dataSaidaAparente = false;
       this.dadosProfissionais.get('saidaEmpresa').disable();
     }
     else {
       this.dadosProfissionais.controls['saidaEmpresa'].setValue('');
-      this.dataSaidaAparente = false;
       this.dadosProfissionais.get('saidaEmpresa').enable();
     }
   }
@@ -293,7 +288,6 @@ export class DadosProfissionaisComponent {
 
   protected validaDataEntradaEmpresa() {
     if (this.getValueAtributoDadosProfissionais('entradaEmpresa') == '') {
-      this.dataEntradaAparente = false;
       return;
     }
 
@@ -301,7 +295,6 @@ export class DadosProfissionaisComponent {
     if (dataEntradaSplittada.length == 3) {
       if (parseInt(dataEntradaSplittada[0]) > 2023 || parseInt(dataEntradaSplittada[0]) < 1900) {
         this.dadosProfissionais.controls['entradaEmpresa'].setValue('');
-        this.dataEntradaAparente = false;
         this._snackBar.open("Data de entrada inválida", "Fechar", {
           duration: 3500
         })
@@ -325,7 +318,6 @@ export class DadosProfissionaisComponent {
 
   protected validaDataSaidaEmpresa() {
     if (this.getValueAtributoDadosProfissionais('saidaEmpresa') == '') {
-      this.dataSaidaAparente = false;
       return;
     }
 
@@ -333,7 +325,6 @@ export class DadosProfissionaisComponent {
     if (dataSaidaSplittada.length == 3) {
       if (parseInt(dataSaidaSplittada[0]) > 2023 || parseInt(dataSaidaSplittada[0]) < 1900) {
         this.dadosProfissionais.controls['saidaEmpresa'].setValue('');
-        this.dataEntradaAparente = false;
         this._snackBar.open("Data de saída inválida", "Fechar", {
           duration: 3500
         })
@@ -351,20 +342,6 @@ export class DadosProfissionaisComponent {
         return 'calendar_month';
 
       else return 'check';
-    }
-  }
-
-  protected habilitaDataEntradaEmpresa() {
-    this.inputDataEntrada.nativeElement.focus();
-    this.dataEntradaAparente = true;
-  }
-
-  protected habilitaDataSaidaEmpresa() {
-    if (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'ATIVO'
-      && this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'AFASTADO'
-      && this.getValueAtributoDadosProfissionais('statusColaboradorEnum') != 'FERIAS') {
-      this.inputDataSaida.nativeElement.focus();
-      this.dataSaidaAparente = true;
     }
   }
 
@@ -394,7 +371,7 @@ export class DadosProfissionaisComponent {
   // EXPEDIENTE
 
   redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente(campo: string) {
-    switch(campo) {
+    switch (campo) {
       case 'entrada': {
         this.realizaValidacaoExpedienteHoraEntrada();
         break;
@@ -579,6 +556,15 @@ export class DadosProfissionaisComponent {
   private calculaHoraEmMinutos(horaSplitada: string[]): number {
     if (horaSplitada.length == 2) return (Number((Number(horaSplitada[0]) * 60) + (Number(horaSplitada[1]))));
     else return 0;
+  }
+
+  protected avancaProximaEtapa() {
+    if (this.dadosProfissionais.invalid) {
+      this.dadosProfissionais.markAllAsTouched();
+      this._snackBar.open('Ops! Algum campo está incorreto. Revise o formulário e tente novamente.', "Fechar", {
+        duration: 3500
+      })
+    }
   }
 
 }

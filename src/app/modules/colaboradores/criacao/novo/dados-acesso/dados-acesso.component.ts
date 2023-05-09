@@ -3,6 +3,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from '../shared/models/select-option';
+import { CustomSelectComponent } from '../shared/custom-select/custom-select.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dados-acesso',
@@ -23,12 +25,13 @@ import { SelectOption } from '../shared/models/select-option';
 export class DadosAcessoComponent {
 
   constructor(private formBuilder: FormBuilder,
+    private _snackBar: MatSnackBar,
     private ref: ChangeDetectorRef) { }
 
   modulosLiberados: string[] = ['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS'];
   privilegioAtual: string = 'CLIENTES';
 
-  @ViewChild('selectAcessoSistemaAtivo') selectAcessoSistemaAtivo: ElementRef;
+  @ViewChild('selectAcessoSistemaAtivo') selectAcessoSistemaAtivo: CustomSelectComponent;
 
   protected dadosAcesso: FormGroup = this.createForm();
   @Output() emissorDeDadosAcessoDoColaborador = new EventEmitter<FormGroup>();
@@ -43,7 +46,9 @@ export class DadosAcessoComponent {
   @Input() stepAtual: number;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.stepAtual == 2) console.log('Acesso acessado');
+    if (this.stepAtual == 2) {
+      this.selectAcessoSistemaAtivo.acionaFoco();
+    }
   }
 
   ngOnInit(): void {
@@ -144,7 +149,13 @@ export class DadosAcessoComponent {
   }
 
   protected solicitarEnvioDeFormulario() {
-    this.emissorDeSolicitacaoDeEnvioDeFormulario.emit();
+    if (this.dadosAcesso.valid) this.emissorDeSolicitacaoDeEnvioDeFormulario.emit();
+    else {
+      this.dadosAcesso.markAllAsTouched();
+      this._snackBar.open('Ops! Algum campo está incorreto. Revise o formulário e tente novamente.', "Fechar", {
+        duration: 3500
+      })
+    }
   }
 
 }

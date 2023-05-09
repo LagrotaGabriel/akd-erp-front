@@ -1,13 +1,14 @@
 <form #dadosColaboradorForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-    [formGroup]="dadosColaborador">
+    [formGroup]="dadosColaborador" (keyup.enter)="botaoProximo.click()" (keyup.escape)="botaoRetorno.click()">
 
     <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Dados Pessoais'"
-        [descricao]="'Preenchimento dos dados pessoais do colaborador. O campo nome é obrigatório'"></app-custom-title-container>
+        [descricao]="'Preenchimento dos dados pessoais do colaborador. O campo nome é obrigatório'"
+        (click)="inputNome.acionaFoco()"></app-custom-title-container>
 
     <!-- INPUT GROUP NOME -->
-    <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'inputNome'" [attr.id]="'inputNome'" [titulo]="'Nome'"
+    <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'inputNome'" [titulo]="'Nome'"
         [tabIndex]="1" [maxLength]="50" [touched]="dadosColaborador.controls['nome'].touched"
-        [todosCaracteresMaiusculos]="true" [customIcon]="null" 
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
         [disabledGroup]="dadosColaborador.controls['nome'].disabled"
         [valido]="!(dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid)"
         [mensagemErro]="'Campo obrigatório de no mínimo 3 caracteres'" formControlName="nome"
@@ -39,7 +40,8 @@
 
     <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Telefone'"
         [descricao]="'Preenchimento dos dados do telefone do colaborador. Caso o tipo seja fixo, móvel ou móvel com whatsapp,' 
-        + ' o preenchimendo do prefixo e do número são obrigatórios'"></app-custom-title-container>
+        + ' o preenchimendo do prefixo e do número são obrigatórios'"
+        (click)="inputTipoTelefone.acionaFoco()"></app-custom-title-container>
 
     <!-- SELECT GROUP TIPO DO TELEFONE -->
     <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="tipoTelefone"
@@ -66,7 +68,8 @@
 
     <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Endereço'"
         [descricao]="'Preenchimento dos dados de endereço do colaborador. Caso qualquer campo do endereço esteja preenchido,' 
-        + ' os campos logradouro e número se fazem obrigatórios'"></app-custom-title-container>
+        + ' os campos logradouro e número se fazem obrigatórios'"
+        (click)="inputCodigoPostal.acionaFoco()"></app-custom-title-container>
 
     <!-- INPUT GROUP CEP -->
     <app-custom-input class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'cep'" [titulo]="'Cep'" [tabIndex]="8"
@@ -127,12 +130,12 @@
         #inputBairro></app-custom-input>
 
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button type="button" class="button botaoHabilitado" #botaoVoltarVisualizacao mat-button tabindex="15"
-            (click)="retornaParaVisualizacao()">
+        <button type="button" class="button botaoHabilitado" #botaoRetorno mat-button tabindex="15"
+            (click)="retornaParaVisualizacao()" (keypress.enter)="botaoRetorno.click()"
+            (keypress.escape)="botaoRetorno.click()">
             Voltar
         </button>
-        <button type="button" class="button" tabindex="16" [disabled]="dadosColaboradorForm.valid ? false : true"
-            [ngClass]="{'botaoHabilitado': dadosColaboradorForm.valid, 'botaoDesabilitado': !dadosColaboradorForm.valid}"
-            mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
+        <button type="button" class="button botaoHabilitado" tabindex="16" (click)="avancaProximaEtapa()" mat-button
+            matStepperNext #botaoProximo>Próximo</button>
     </div>
 </form>

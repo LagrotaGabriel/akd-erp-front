@@ -6,7 +6,7 @@
 
     <hr class="hr">
 
-    <mat-horizontal-stepper linear #stepper>
+    <mat-horizontal-stepper (selectionChange)="mudaPasso($event)" linear #stepper>
 
         <ng-template matStepperIcon="edit">
             <i class="fa fa-check"></i>
@@ -21,6 +21,7 @@
                 <span>Pessoal</span>
             </ng-template>
             <app-dados-pessoais
+                [stepAtual]="stepAtual"
                 (emissorDeDadosPessoaisDoColaborador)="recebeFormGroupDadosPessoais($event)"></app-dados-pessoais>
         </mat-step>
 
@@ -28,7 +29,8 @@
             <ng-template matStepLabel>
                 <span>Profissional</span>
             </ng-template>
-            <app-dados-profissionais (emissorDeContratoContratacao)="recebeContratoContratacao($event)"
+            <app-dados-profissionais [stepAtual]="stepAtual"
+                (emissorDeContratoContratacao)="recebeContratoContratacao($event)"
                 (emissorDeDadosProfissionaisDoColaborador)="recebeFormGroupDadosProfissionais($event)"></app-dados-profissionais>
         </mat-step>
 
@@ -36,7 +38,7 @@
             <ng-template matStepLabel>
                 <span>Sistema</span>
             </ng-template>
-            <app-dados-acesso (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
+            <app-dados-acesso [stepAtual]="stepAtual" (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
                 (emissorDeDadosAcessoDoColaborador)="recebeFormGroupDadosAcesso($event)"></app-dados-acesso>
         </mat-step>
 

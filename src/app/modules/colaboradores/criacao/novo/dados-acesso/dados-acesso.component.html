@@ -6,13 +6,13 @@
 
     <!-- SELECT GROUP ACESSO ATIVO -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="acessoSistemaAtivo"
-        [tabIndex]="34" [titulo]="'Acesso ao sistema'" (change)="atualizaLiberacaoSistema()"
+        [tabIndex]="1" [titulo]="'Acesso ao sistema'" (change)="atualizaLiberacaoSistema()"
         [disabledGroup]="dadosAcesso.get('acessoSistemaAtivo').disabled" #selectAcessoSistemaAtivo
         [options]="geraOptionsAcessoSistemaAtivo()"></app-custom-select>
 
     <!-- INPUT GROUP SENHA -->
     <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'senha'" [titulo]="'Senha'"
-        [tabIndex]="35" [maxLength]="30" [touched]="dadosAcesso.controls['senha'].touched"
+        [tabIndex]="2" [maxLength]="30" [touched]="dadosAcesso.controls['senha'].touched"
         [todosCaracteresMaiusculos]="false" [customIcon]="'lock'"
         [disabledGroup]="dadosAcesso.controls['senha'].disabled"
         [valido]="!(dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid)"
@@ -21,7 +21,7 @@
 
     <!-- SELECT GROUP PERMISSÕES -->
     <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="permissaoEnum"
-        [tabIndex]="36" [titulo]="'Permissões'" [disabledGroup]="dadosAcesso.get('permissaoEnum').disabled"
+        [tabIndex]="3" [titulo]="'Permissões'" [disabledGroup]="dadosAcesso.get('permissaoEnum').disabled"
         #selectAcessoSistemaAtivo [options]="geraOptionsPermissoes()"></app-custom-select>
 
     <!-- SETOR -->
@@ -33,7 +33,7 @@
                 Módulos liberados
             </label>
         </div>
-        <select tabindex="37" (change)="(privilegioAtual = selectPrivilegios.value)" [value]="privilegioAtual"
+        <select tabindex="4" (change)="(privilegioAtual = selectPrivilegios.value)" [value]="privilegioAtual"
             #selectPrivilegios [disabled]="!getValueAtributoDadosAcesso('acessoSistemaAtivo') ? true : false"
             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <option value="HOME" [disabled]="modulosLiberados.includes(opcInicio.value) ? true : false" #opcInicio>
@@ -78,7 +78,7 @@
             || dadosAcesso.controls['acessoSistemaAtivo'].value == false ? true : false" type="button"
                 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 botao"
                 (click)="adicionaModulo(selectPrivilegios.value); selectPrivilegios.focus()"
-                tabindex="38">Adicionar</button>
+                tabindex="5">Adicionar</button>
         </div>
     </div>
 
@@ -94,11 +94,11 @@
 
     <!-- BOTÕES DE NAVEGAÇÃO -->
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button type="button" class="button botaoHabilitado" #botaoVoltarTerceiraEtapa mat-button tabindex="39"
+        <button type="button" class="button botaoHabilitado" #botaoVoltarTerceiraEtapa mat-button tabindex="6"
             matStepperPrevious>
             Voltar
         </button>
-        <button type="button" (click)="solicitarEnvioDeFormulario()" tabindex="40" class="button" #submitFormulario
+        <button type="button" (click)="solicitarEnvioDeFormulario()" tabindex="7" class="button" #submitFormulario
             [disabled]="dadosAcesso.valid ? false : true"
             [ngClass]="{'botaoHabilitado': dadosAcesso.valid, 'botaoDesabilitado': !dadosAcesso.valid}"
             mat-button>Enviar</button>

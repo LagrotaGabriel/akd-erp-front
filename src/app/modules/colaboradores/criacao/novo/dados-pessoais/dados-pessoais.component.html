@@ -5,9 +5,9 @@
         [descricao]="'Preenchimento dos dados pessoais do colaborador. O campo nome é obrigatório'"></app-custom-title-container>
 
     <!-- INPUT GROUP NOME -->
-    <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'nome'" [titulo]="'Nome'"
+    <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'inputNome'" [attr.id]="'inputNome'" [titulo]="'Nome'"
         [tabIndex]="1" [maxLength]="50" [touched]="dadosColaborador.controls['nome'].touched"
-        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null" 
         [disabledGroup]="dadosColaborador.controls['nome'].disabled"
         [valido]="!(dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid)"
         [mensagemErro]="'Campo obrigatório de no mínimo 3 caracteres'" formControlName="nome"
@@ -26,7 +26,7 @@
     <app-custom-date-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" [minDate]="'1900-01-01'"
         [disabledGroup]="dadosColaborador.controls['dataNascimento'].disabled" [id]="'dataNascimento'"
         [vazio]="getValueAtributoDadosColaborador('dataNascimento') == '' || getValueAtributoDadosColaborador('dataNascimento') == null"
-        [maxDate]="'2023-04-17'" [titulo]="'Data de nascimento'" [tabIndex]="-1" formControlName="dataNascimento"
+        [maxDate]="'2023-04-17'" [titulo]="'Data de nascimento'" [tabIndex]="3" formControlName="dataNascimento"
         (focusout)="validaDataNascimento()" #inputDataNascimento></app-custom-date-input>
 
     <!-- INPUT GROUP EMAIL -->
@@ -101,7 +101,7 @@
         formControlName="logradouro" #inputLogradouro></app-custom-input>
 
     <!-- INPUT GROUP NUMERO -->
-    <app-custom-input class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12" [id]="'numero'" [titulo]="'Número'"
+    <app-custom-input class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12" [id]="'numeroEndereco'" [titulo]="'Número'"
         [tabIndex]="12" [maxLength]="5" [touched]="dadosColaborador.controls['numero'].touched"
         [todosCaracteresMaiusculos]="false" [customIcon]="null"
         [disabledGroup]="dadosColaborador.controls['numero'].disabled" (input)="realizaTratamentoNumero()"

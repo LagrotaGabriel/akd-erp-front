@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from '../shared/models/select-option';
 
@@ -39,6 +39,12 @@ export class DadosAcessoComponent {
   })
 
   @Output() emissorDeSolicitacaoDeEnvioDeFormulario = new EventEmitter();
+
+  @Input() stepAtual: number;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.stepAtual == 2) console.log('Acesso acessado');
+  }
 
   ngOnInit(): void {
     this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');

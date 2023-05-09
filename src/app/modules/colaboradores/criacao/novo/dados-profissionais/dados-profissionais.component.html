@@ -6,11 +6,11 @@
 
     <!-- SELECT GROUP SETOR -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="tipoOcupacaoEnum"
-        [tabIndex]="17" [titulo]="'Setor'" #selectSetor [options]="geraOptionsSetor()"></app-custom-select>
+        [tabIndex]="1" [titulo]="'Setor'" #selectSetor [options]="geraOptionsSetor()"></app-custom-select>
 
     <!-- INPUT GROUP OCUPAÇÃO -->
     <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'ocupacao'" [titulo]="'Ocupação'"
-        [tabIndex]="18" [maxLength]="30" [touched]="dadosProfissionais.controls['ocupacao'].touched"
+        [tabIndex]="2" [maxLength]="30" [touched]="dadosProfissionais.controls['ocupacao'].touched"
         [todosCaracteresMaiusculos]="true" [customIcon]="null" [dataList]="ocupacoesResponse"
         [disabledGroup]="dadosProfissionais.controls['ocupacao'].disabled"
         [valido]="!(dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid)"
@@ -19,17 +19,17 @@
 
     <!-- SELECT GROUP STATUS DO COLABORADOR -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="statusColaboradorEnum"
-        [tabIndex]="19" [titulo]="'Status atual'" (change)="alteraStatusColaborador()" #selectStatus
+        [tabIndex]="3" [titulo]="'Status atual'" (change)="alteraStatusColaborador()" #selectStatus
         [options]="geraOptionsStatusColaborador()"></app-custom-select>
 
     <!-- SELECT GROUP MODELO DE CONTRATAÇÃO -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="modeloContratacaoEnum"
-        [tabIndex]="20" [titulo]="'Modelo de contratação'" #selectModeloContratacao
+        [tabIndex]="4" [titulo]="'Modelo de contratação'" #selectModeloContratacao
         [options]="geraOptionsModeloContratacao()"></app-custom-select>
 
     <!-- SELECT GROUP MODELO DE TABALHO -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="modeloTrabalhoEnum"
-        [tabIndex]="21" [titulo]="'Modelo de trabalho'" #selectModeloTrabalho
+        [tabIndex]="5" [titulo]="'Modelo de trabalho'" #selectModeloTrabalho
         [options]="geraOptionsModeloTrabalho()"></app-custom-select>
 
     <!-- INPUT GROUP REMUNERAÇÃO -->
@@ -43,7 +43,7 @@
             <input type="number" formControlName="salario" name="salario" max="9999999.00" min="0.00" step=".01"
                 #inputSalario (input)="realizaTratamentoRemuneracao($event)"
                 [ngClass]="{'input_invalida': dadosProfissionais.controls['salario'].invalid}"
-                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="22">
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="6">
             <mat-icon [@fadeInOut] [fontIcon]="'attach_money'" (click)="inputSalario.focus()" [ngClass]="{
                 'icone_error': dadosProfissionais.controls['salario'].invalid, 
                 'icone_ok': dadosProfissionais.controls['salario'].valid}" class="icone"></mat-icon>
@@ -59,14 +59,14 @@
     <!-- INPUT GROUP DATA DE ENTRADA -->
     <app-custom-date-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [minDate]="'1900-01-01'"
         [maxDate]="getHoje()" [disabledGroup]="dadosProfissionais.controls['entradaEmpresa'].disabled"
-        [id]="'entradaEmpresa'" [titulo]="'Data de entrada'" [tabIndex]="-1" formControlName="entradaEmpresa"
+        [id]="'entradaEmpresa'" [titulo]="'Data de entrada'" [tabIndex]="7" formControlName="entradaEmpresa"
         [vazio]="getValueAtributoDadosProfissionais('entradaEmpresa') == '' || getValueAtributoDadosProfissionais('entradaEmpresa') == null"
         (focusout)="validaDataEntradaEmpresa()" #inputDataEntrada></app-custom-date-input>
 
     <!-- INPUT GROUP DATA DE SAÍDA -->
     <app-custom-date-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [minDate]="'1900-01-01'"
         [maxDate]="getHoje()" [disabledGroup]="dadosProfissionais.controls['saidaEmpresa'].disabled"
-        [id]="'saidaEmpresa'" [titulo]="'Data de saída'" [tabIndex]="-1" formControlName="saidaEmpresa"
+        [id]="'saidaEmpresa'" [titulo]="'Data de saída'" [tabIndex]="8" formControlName="saidaEmpresa"
         [vazio]="getValueAtributoDadosProfissionais('saidaEmpresa') == '' || getValueAtributoDadosProfissionais('saidaEmpresa') == null"
         (focusout)="validaDataSaidaEmpresa()" #inputDataSaida></app-custom-date-input>
 
@@ -103,7 +103,7 @@
 
     <!-- INPUT GROUP HORA DE ENTRADA -->
     <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaEntrada'"
-        [titulo]="'Entrada'" [tabIndex]="26" [disabledGroup]="dadosProfissionais.controls['horaEntrada'].disabled"
+        [titulo]="'Entrada'" [tabIndex]="9" [disabledGroup]="dadosProfissionais.controls['horaEntrada'].disabled"
         (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entrada')"
         (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entrada')"
         [valido]="!(dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid)"
@@ -111,7 +111,7 @@
 
     <!-- INPUT GROUP HORA DE SAÍDA PARA O ALMOÇO -->
     <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaSaidaAlmoco'"
-        [titulo]="'Saída almoço'" [tabIndex]="27"
+        [titulo]="'Saída almoço'" [tabIndex]="10"
         [disabledGroup]="dadosProfissionais.controls['horaSaidaAlmoco'].disabled"
         (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saidaAlmoco')"
         (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saidaAlmoco')"
@@ -120,7 +120,7 @@
 
     <!-- INPUT GROUP HORA DE RETORNO DO ALMOÇO -->
     <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaEntradaAlmoco'"
-        [titulo]="'Retorno almoço'" [tabIndex]="28"
+        [titulo]="'Retorno almoço'" [tabIndex]="11"
         [disabledGroup]="dadosProfissionais.controls['horaEntradaAlmoco'].disabled"
         (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entradaAlmoco')"
         (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entradaAlmoco')"
@@ -130,14 +130,14 @@
 
     <!-- INPUT GROUP HORA DE SAÍDA -->
     <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaSaida'" [titulo]="'Saída'"
-        [tabIndex]="29" [disabledGroup]="dadosProfissionais.controls['horaSaida'].disabled"
+        [tabIndex]="12" [disabledGroup]="dadosProfissionais.controls['horaSaida'].disabled"
         (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saida')"
         (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saida')"
         [valido]="!(dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid)"
         [mensagemErro]="'Obrigatório'" formControlName="horaSaida" #inputHoraSaida></app-custom-time-input>
 
     <!-- SELECT GROUP ESCALA -->
-    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="escalaEnum" [tabIndex]="30"
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="escalaEnum" [tabIndex]="13"
         [titulo]="'Escala'" (change)="realizaCalculoCargaHorariaSemanal()"
         [disabledGroup]="dadosProfissionais.controls['escalaEnum'].disabled" #selectEscala
         [options]="geraOptionsEscala()"></app-custom-select>
@@ -154,17 +154,17 @@
             <input type="text" formControlName="cargaHorariaSemanal" name="cargaHorariaSemanal" autocomplete="off"
                 spellcheck="false"
                 [ngClass]="{'input_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
-                class="input input_desabilitada col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="31">
+                class="input input_desabilitada col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="14">
         </div>
     </div>
 
     <!-- BOTÕES DE NAVEGAÇÃO -->
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button type="button" class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button tabindex="32"
+        <button type="button" class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button tabindex="15"
             matStepperPrevious>
             Voltar
         </button>
-        <button type="button" tabindex="33" class="button" matStepperNext
+        <button type="button" tabindex="16" class="button" matStepperNext
             [disabled]="dadosProfissionais.valid ? false : true"
             [ngClass]="{'botaoHabilitado': dadosProfissionais.valid, 'botaoDesabilitado': !dadosProfissionais.valid}"
             mat-button matStepperNext #botaoProximoSegundaEtapa>Próximo</button>

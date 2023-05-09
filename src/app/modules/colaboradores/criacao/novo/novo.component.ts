@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ColaboradorService } from '../../services/colaborador.service';
 import { Router } from '@angular/router';
@@ -26,12 +26,18 @@ export class NovoComponent {
   protected contratoContratacao: File;
   private criaNovoColaboradorSubscription$: Subscription;
 
+  stepAtual: number = 0;
+
   ngAfterViewInit(): void {
     this.ref.detectChanges();
   }
 
   ngOnDestroy(): void {
     if (this.criaNovoColaboradorSubscription$ != undefined) this.criaNovoColaboradorSubscription$.unsubscribe();
+  }
+
+  mudaPasso(event) {
+    this.stepAtual = event.selectedIndex;
   }
 
   // FUNÇÕES QUE RECEBEM EMISSÃO DE EVENTOS DOS COMPONENTES FILHOS
@@ -70,10 +76,6 @@ export class NovoComponent {
 
 
   private construirObjetoColaborador() {
-
-    console.log(this.dadosColaborador);
-    console.log(this.dadosProfissionais);
-    console.log(this.dadosAcesso);
 
     this.colaborador = {
       nome: this.getValueAtributoDadosColaborador('nome') != '' ? this.getValueAtributoDadosColaborador('nome') : null,

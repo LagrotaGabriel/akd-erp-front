@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -50,7 +50,7 @@ export class DadosPessoaisComponent {
   estadosOptions: SelectOption[];
   municipiosResponse: MunicipiosResponse[];
 
-  @ViewChild('numeroEndereco') inputNumeroEndereco: ElementRef;
+  @ViewChild('inputNumero') inputNumero: ElementRef;
   @ViewChild('inputNome') inputNome: ElementRef;
   @ViewChild('inputDataNascimento') inputDataNascimento: ElementRef;
 
@@ -67,6 +67,14 @@ export class DadosPessoaisComponent {
       this.emissorDeDadosPessoaisDoColaborador.emit(this.dadosColaborador);
     }
   })
+
+  @Input() stepAtual: number;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.stepAtual == 0) {
+      console.log(this.inputNome);
+    }
+  }
 
   ngOnInit(): void {
     this.atualizaValidatorsTelefone();
@@ -390,7 +398,7 @@ export class DadosPessoaisComponent {
     this.dadosColaborador.controls['estado'].markAsTouched();
     this.dadosColaborador.controls['cidade'].markAsTouched();
 
-    this.inputNumeroEndereco.nativeElement.focus();
+    this.inputNumero.nativeElement.focus();
 
     this.obtemTodosMunicipiosPorEstado();
   }

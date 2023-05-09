@@ -17,7 +17,7 @@
         [todosCaracteresMaiusculos]="false" [customIcon]="'lock'"
         [disabledGroup]="dadosAcesso.controls['senha'].disabled"
         [valido]="!(dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid)"
-        [mensagemErro]="'Campo obrigatório com mínimo de 6 caracteres'" formControlName="senha"
+        [mensagemErro]="'Obrigatório no mínimo 6 caracteres'" formControlName="senha"
         #inputBairro></app-custom-input>
 
     <!-- SELECT GROUP PERMISSÕES -->
@@ -26,7 +26,7 @@
         #selectAcessoSistemaAtivo [options]="geraOptionsPermissoes()"></app-custom-select>
 
     <!-- MÓDULOS LIBERADOS -->
-    <div class="row col-xl-12 col-lg-4 col-md-4 col-sm-12 col-12 input_group"
+    <div class="row col-xl-12 col-lg-4 col-md-4 col-sm-12 col-12 input_group input_group_without_component"
         [ngClass]="{'input_group_modulo': modulosLiberados.length > 0}">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
             <label class="label"
@@ -69,7 +69,7 @@
                 Preços</option>
         </select>
 
-        <div class="row col-xl-12 col-lg-4 col-md-4 col-sm-4 col-4 input_group input_group_bt">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group input_group_bt">
             <button [ngClass]="{'botaoDesabilitado': 
             selectPrivilegios.value == '' 
             || selectPrivilegios.value == null 
@@ -95,8 +95,7 @@
 
     <!-- BOTÕES DE NAVEGAÇÃO -->
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button type="button" class="button botaoHabilitado" #botaoRetorno mat-button tabindex="6"
-            matStepperPrevious>
+        <button type="button" class="button botaoHabilitado" #botaoRetorno mat-button tabindex="6" matStepperPrevious>
             Voltar
         </button>
         <button type="button" (click)="solicitarEnvioDeFormulario()" tabindex="7" class="button botaoHabilitado"

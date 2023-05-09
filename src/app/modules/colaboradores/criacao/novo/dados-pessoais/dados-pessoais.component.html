@@ -15,16 +15,16 @@
         #inputNome></app-custom-input>
 
     <!-- INPUT GROUP CPF/CNPJ -->
-    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" [id]="'cpf'" [titulo]="'CPF'" [tabIndex]="2"
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" [id]="'cpf'" [titulo]="'CPF'" [tabIndex]="2"
         [maxLength]="inputLengthCpfCnpj" [touched]="dadosColaborador.controls['cpfCnpj'].touched"
         [disabledGroup]="dadosColaborador.controls['cpfCnpj'].disabled" [todosCaracteresMaiusculos]="false"
         [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
         [valido]="!(dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid)"
-        [mensagemErro]="'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos numéricos'"
+        [mensagemErro]="'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos'"
         formControlName="cpfCnpj" #inputCpfCnpj></app-custom-input>
 
     <!-- INPUT GROUP DATA DE NASCIMENTO -->
-    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" [minDate]="'1900-01-01'"
+    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" [minDate]="'1900-01-01'"
         [disabledGroup]="dadosColaborador.controls['dataNascimento'].disabled" [id]="'dataNascimento'"
         [vazio]="getValueAtributoDadosColaborador('dataNascimento') == '' || getValueAtributoDadosColaborador('dataNascimento') == null"
         [maxDate]="'2023-04-17'" [titulo]="'Data de nascimento'" [tabIndex]="3" formControlName="dataNascimento"
@@ -63,7 +63,7 @@
         [todosCaracteresMaiusculos]="false" [customIcon]="'call'" (input)="realizaTratamentoNumeroTelefone()"
         [disabledGroup]="dadosColaborador.controls['numeroTelefone'].disabled"
         [valido]="!(dadosColaborador.controls['numeroTelefone'].invalid)"
-        [mensagemErro]="'O número deve ser composto por ' + inputLengthTelefone + ' caracteres numéricos'"
+        [mensagemErro]="'O número deve ser composto por ' + inputLengthTelefone + ' caracteres'"
         formControlName="numeroTelefone" #inputNumeroTelefone></app-custom-input>
 
     <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Endereço'"

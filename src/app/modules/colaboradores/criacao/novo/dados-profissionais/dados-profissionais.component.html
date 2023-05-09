@@ -34,7 +34,7 @@
         [options]="geraOptionsModeloTrabalho()"></app-custom-select>
 
     <!-- INPUT GROUP REMUNERAÇÃO -->
-    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group input_group_without_component">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
             <label class="label" [ngClass]="{'label_invalida': dadosProfissionais.controls['salario'].invalid}">
                 Remuneração mensal
@@ -72,7 +72,7 @@
         (focusout)="validaDataSaidaEmpresa()" #inputDataSaida></app-custom-date-input>
 
     <!-- FILE GROUP CONTRATO DE TRABALHO -->
-    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group input_group_without_component">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
             <label class="label">Contrato de trabalho</label>
             <button type="button" class="limpar_file" [@fadeInOut]
@@ -145,7 +145,7 @@
         [options]="geraOptionsEscala()"></app-custom-select>
 
     <!-- INPUT CARGA HORÁRIA SEMANAL -->
-    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
+    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group input_group_without_component">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
             <label class="label"
                 [ngClass]="{'label_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}">

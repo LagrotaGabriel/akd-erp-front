@@ -51,4 +51,9 @@
 
 @media (max-width: 550px) {}
 
-@media (max-width: 450px) {}
+@media (max-width: 450px) {
+    .titulo_sessao {
+        font-size: 0.85rem;
+        padding: 0 0.5rem;
+    }
+}

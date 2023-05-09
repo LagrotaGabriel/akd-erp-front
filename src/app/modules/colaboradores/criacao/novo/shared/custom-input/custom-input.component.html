@@ -7,15 +7,15 @@
     </div>
     <div class="input_container">
         <input matInput [ngClass]="{'input_invalida': !valido, 'input_desabilitada': disabledGroup}"
-            [maxlength]="maxLength" [(ngModel)]="value" [disabled]="disabledGroup" [attr.list]="dataList != null ? 'dataList' : null"
+            [maxlength]="maxLength" [(ngModel)]="value" [disabled]="disabledGroup"
+            [attr.list]="dataList != null ? 'dataList' : null"
             [ngStyle]="{'text-transform': todosCaracteresMaiusculos ? 'uppercase' : 'none' }" spellcheck="false"
             [tabindex]="tabIndex" type="text" autocomplete="off" class="input" (blur)="onTouchCb($event)" [attr.id]="id"
             #input>
-        <mat-icon *ngIf="((customIcon == null) ? touched && value != '' && value != null : true) && !disabledGroup"
-            [fontIcon]="geraNomeIcone()" [@fadeInOut] [ngClass]="{'icone_ok': valido, 'icone_error' : !valido}"
-            class="icone" (click)="input.focus()"></mat-icon>
+        <mat-icon *ngIf="iconeAparente()" [fontIcon]="geraNomeIcone()" [@fadeInOut]
+            [ngClass]="{'icone_ok': valido, 'icone_error' : !valido}" class="icone" (click)="input.focus()"></mat-icon>
     </div>
-    
+
     <datalist *ngIf="dataList" id="dataList">
         <option *ngFor="let data of dataList" [value]="data | uppercase"></option>
     </datalist>

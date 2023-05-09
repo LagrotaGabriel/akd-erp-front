@@ -49,6 +49,16 @@ export class CustomInputComponent implements ControlValueAccessor {
     }, 100);
   }
 
+  public iconeAparente(): boolean {
+    if (!this.disabledGroup) {
+      if (this.customIcon != null) return true;
+      if (!this.valido) return true;
+      else if (this.valido && this.value != null && this.value != '') return true;
+      else return false;
+    }
+    else return false;
+  }
+
   get value() {
     return this.innerValue;
   }

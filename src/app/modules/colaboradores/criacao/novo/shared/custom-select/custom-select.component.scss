@@ -1,30 +1,6 @@
 @import '../../../../../../../dist/variables.scss';
 @import "../../../../../../../../node_modules/rfs/scss";
-@import "../../novo.component.scss";
-
-.input_group,
-.input_container,
-.label_container,
-.input,
-.error_message_container {
-    width: 100%;
-}
-
-.input_group {
-    padding: 0rem 1rem 1.5rem 1rem;
-}
-
-.label {
-    color: $dark-white;
-    font-size: 1.2rem;
-    font-weight: 400;
-    font-family: $font-roboto;
-    margin-bottom: 0.3rem;
-    letter-spacing: 0;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
+@import '../custom-inputs.scss';
 
 option,
 select {
@@ -42,24 +18,4 @@ option:focus,
 select:focus {
     border: 1px solid $primary-color !important;
     outline: none;
-}
-
-.label_desabilitada {
-    color: $dark-grey;
-}
-
-@media (max-width: 960px) {
-
-}
-
-@media (max-width: 768px) {
-
-}
-
-@media (max-width: 550px) {
-
-}
-
-@media (max-width: 450px) {
-
 }

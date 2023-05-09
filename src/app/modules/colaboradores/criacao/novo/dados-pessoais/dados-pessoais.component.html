@@ -11,20 +11,20 @@
         [todosCaracteresMaiusculos]="true" [customIcon]="null"
         [disabledGroup]="dadosColaborador.controls['nome'].disabled"
         [valido]="!(dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid)"
-        [mensagemErro]="'Campo obrigatório de no mínimo 3 caracteres'" formControlName="nome"
+        [mensagemErro]="'Campo obrigatório'" formControlName="nome"
         #inputNome></app-custom-input>
 
     <!-- INPUT GROUP CPF/CNPJ -->
-    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" [id]="'cpf'" [titulo]="'CPF'" [tabIndex]="2"
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cpf'" [titulo]="'CPF'" [tabIndex]="2"
         [maxLength]="inputLengthCpfCnpj" [touched]="dadosColaborador.controls['cpfCnpj'].touched"
         [disabledGroup]="dadosColaborador.controls['cpfCnpj'].disabled" [todosCaracteresMaiusculos]="false"
         [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
         [valido]="!(dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid)"
-        [mensagemErro]="'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos'"
+        [mensagemErro]="'Mínimo de ' + inputLengthCpfCnpj + ' caracteres numéricos'"
         formControlName="cpfCnpj" #inputCpfCnpj></app-custom-input>
 
     <!-- INPUT GROUP DATA DE NASCIMENTO -->
-    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12" [minDate]="'1900-01-01'"
+    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [minDate]="'1900-01-01'"
         [disabledGroup]="dadosColaborador.controls['dataNascimento'].disabled" [id]="'dataNascimento'"
         [vazio]="getValueAtributoDadosColaborador('dataNascimento') == '' || getValueAtributoDadosColaborador('dataNascimento') == null"
         [maxDate]="'2023-04-17'" [titulo]="'Data de nascimento'" [tabIndex]="3" formControlName="dataNascimento"
@@ -54,7 +54,7 @@
         [todosCaracteresMaiusculos]="false" customIcon="null"
         [disabledGroup]="dadosColaborador.controls['prefixo'].disabled"
         [valido]="!(dadosColaborador.controls['prefixo'].invalid)"
-        [mensagemErro]="'O prefixo deve possuir dois números'" formControlName="prefixo"
+        [mensagemErro]="'Mínimo de 2 caracteres numéricos'" formControlName="prefixo"
         #inputPrefixo></app-custom-input>
 
     <!-- INPUT GROUP NÚMERO -->
@@ -63,7 +63,7 @@
         [todosCaracteresMaiusculos]="false" [customIcon]="'call'" (input)="realizaTratamentoNumeroTelefone()"
         [disabledGroup]="dadosColaborador.controls['numeroTelefone'].disabled"
         [valido]="!(dadosColaborador.controls['numeroTelefone'].invalid)"
-        [mensagemErro]="'O número deve ser composto por ' + inputLengthTelefone + ' caracteres'"
+        [mensagemErro]="'Mínimo de ' + inputLengthTelefone + ' caracteres numéricos'"
         formControlName="numeroTelefone" #inputNumeroTelefone></app-custom-input>
 
     <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Endereço'"
@@ -77,7 +77,7 @@
         [todosCaracteresMaiusculos]="false" [customIcon]="null"
         [disabledGroup]="dadosColaborador.controls['codigoPostal'].disabled" (input)="realizaTratamentoCodigoPostal()"
         [valido]="!(dadosColaborador.controls['codigoPostal'].touched && dadosColaborador.controls['codigoPostal'].invalid)"
-        [mensagemErro]="'Este campo deve possuir 8 dígitos numéricos'" formControlName="codigoPostal"
+        [mensagemErro]="'Mínimo de 8 caracteres numéricos'" formControlName="codigoPostal"
         #inputCodigoPostal></app-custom-input>
 
     <!-- SELECT GROUP ESTADO -->

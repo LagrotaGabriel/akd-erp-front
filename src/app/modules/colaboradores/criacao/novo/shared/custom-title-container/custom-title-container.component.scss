@@ -49,7 +49,12 @@
 
 @media (max-width: 768px) {}
 
-@media (max-width: 550px) {}
+@media (max-width: 576px) {
+    .titulo_sessao {
+        font-size: 0.9rem;
+        padding: 0.1rem 1rem;
+    }
+}
 
 @media (max-width: 450px) {
     .titulo_sessao {

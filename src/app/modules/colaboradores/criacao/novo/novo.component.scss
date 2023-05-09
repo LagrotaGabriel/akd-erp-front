@@ -267,10 +267,6 @@ input[type=number] {
         padding: 1.5rem 1.5rem;
     }
 
-    .titulo {
-        font-size: 1.1rem;
-    }
-
     .hr {
         margin: 1rem 0;
         margin-bottom: 0;
@@ -286,7 +282,7 @@ input[type=number] {
 
 }
 
-@media (max-width: 550px) {
+@media (max-width: 576px) {
 
     .container {
         padding: 1rem;
@@ -297,12 +293,30 @@ input[type=number] {
     }
 
     .hr {
-        margin: 0.9rem 0;
+        margin: 0.7rem 0;
         margin-bottom: 0;
     }
 
+    .input_group_without_component {
+        padding: 0rem 1rem 1.5rem 1rem !important;
+    }
+
+    .input_file {
+        font-size: 0.9rem;
+    }
+
+    .botao {
+        font-size: 0.8rem;
+        padding: 0.4rem 1rem;
+    }
+
+    .chip {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.85rem;
+    }
+
     .button_container {
-        padding: 0;
+        padding: 0 1rem;
         margin-bottom: 0.5rem;
     }
 
@@ -325,10 +339,6 @@ input[type=number] {
 
 @media (max-width: 450px) {
 
-    .container {
-        padding: 1rem;
-    }
-
     .titulo {
         font-size: 1rem;
     }
@@ -336,10 +346,6 @@ input[type=number] {
     .hr {
         margin: 0.8rem 0;
         margin-bottom: 0;
-    }
-
-    .input_group_without_component {
-        padding: 0rem 1rem 1.5rem 1rem !important;
     }
 
     .input_file {
@@ -357,28 +363,15 @@ input[type=number] {
     }
 
     .button_container {
-        padding: 0;
+        padding: 0 1rem;
         margin-bottom: 0.5rem;
     }
 
     .button {
-        padding: 0.2rem 0.5rem;
-        margin: 0 0.4rem;
-        width: 100%;
-        font-size: 0.8rem;
+        padding: 0.2rem 1.5rem;
+        font-size: 0.85rem;
     }
 
-    ::ng-deep .mat-step-icon {
-        margin: 0 !important;
-    }
-
-    ::ng-deep .mat-step-label {
-        display: none !important;
-    }
-
-    ::ng-deep .mat-horizontal-stepper-header {
-        padding: 0 0.5rem !important;
-    }
 }
 
 @keyframes pulse {

@@ -6,7 +6,7 @@
         (click)="selectSetor.acionaFoco()"></app-custom-title-container>
 
     <!-- SELECT GROUP SETOR -->
-    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="tipoOcupacaoEnum"
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" formControlName="tipoOcupacaoEnum"
         [tabIndex]="1" [titulo]="'Setor'" #selectSetor [options]="geraOptionsSetor()"></app-custom-select>
 
     <!-- INPUT GROUP OCUPAÇÃO -->
@@ -34,7 +34,7 @@
         [options]="geraOptionsModeloTrabalho()"></app-custom-select>
 
     <!-- INPUT GROUP REMUNERAÇÃO -->
-    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group input_group_without_component">
+    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group input_group_without_component">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
             <label class="label" [ngClass]="{'label_invalida': dadosProfissionais.controls['salario'].invalid}">
                 Remuneração mensal
@@ -104,7 +104,7 @@
         (click)="inputHoraEntrada.acionaFoco()"></app-custom-title-container>
 
     <!-- INPUT GROUP HORA DE ENTRADA -->
-    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaEntrada'"
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12" [id]="'horaEntrada'"
         [titulo]="'Entrada'" [tabIndex]="9" [disabledGroup]="dadosProfissionais.controls['horaEntrada'].disabled"
         (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entrada')"
         (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entrada')"
@@ -112,7 +112,7 @@
         [mensagemErro]="'Obrigatório'" formControlName="horaEntrada" #inputHoraEntrada></app-custom-time-input>
 
     <!-- INPUT GROUP HORA DE SAÍDA PARA O ALMOÇO -->
-    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaSaidaAlmoco'"
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12" [id]="'horaSaidaAlmoco'"
         [titulo]="'Saída almoço'" [tabIndex]="10"
         [disabledGroup]="dadosProfissionais.controls['horaSaidaAlmoco'].disabled"
         (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saidaAlmoco')"
@@ -121,7 +121,7 @@
         [mensagemErro]="'Obrigatório'" formControlName="horaSaidaAlmoco" #inputHoraSaidaAlmoco></app-custom-time-input>
 
     <!-- INPUT GROUP HORA DE RETORNO DO ALMOÇO -->
-    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaEntradaAlmoco'"
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12" [id]="'horaEntradaAlmoco'"
         [titulo]="'Retorno almoço'" [tabIndex]="11"
         [disabledGroup]="dadosProfissionais.controls['horaEntradaAlmoco'].disabled"
         (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entradaAlmoco')"
@@ -131,7 +131,7 @@
         #inputHoraEntradaAlmoco></app-custom-time-input>
 
     <!-- INPUT GROUP HORA DE SAÍDA -->
-    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12" [id]="'horaSaida'" [titulo]="'Saída'"
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12" [id]="'horaSaida'" [titulo]="'Saída'"
         [tabIndex]="12" [disabledGroup]="dadosProfissionais.controls['horaSaida'].disabled"
         (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saida')"
         (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saida')"
@@ -139,7 +139,7 @@
         [mensagemErro]="'Obrigatório'" formControlName="horaSaida" #inputHoraSaida></app-custom-time-input>
 
     <!-- SELECT GROUP ESCALA -->
-    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="escalaEnum" [tabIndex]="13"
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" formControlName="escalaEnum" [tabIndex]="13"
         [titulo]="'Escala'" (change)="realizaCalculoCargaHorariaSemanal()"
         [disabledGroup]="dadosProfissionais.controls['escalaEnum'].disabled" #selectEscala
         [options]="geraOptionsEscala()"></app-custom-select>

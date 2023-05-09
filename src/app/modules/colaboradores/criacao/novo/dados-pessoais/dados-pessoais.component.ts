@@ -97,12 +97,11 @@ export class DadosPessoaisComponent {
 
   private createForm(): FormGroup {
     return this.formBuilder.group({
-      nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      nome: ['', [Validators.required, Validators.maxLength(50)]],
       cpfCnpj: ['', [Validators.pattern(this.inputPatternCpfCnpj), Validators.maxLength(this.inputLengthCpfCnpj), Validators.minLength(this.inputLengthCpfCnpj)]],
       email: ['', [Validators.email, Validators.maxLength(50)]],
       dataNascimento: [''],
       tipoTelefone: [''],
-      //prefixo: [null, [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
       prefixo: [{ value: '', disabled: true }],
       numeroTelefone: [{ value: '', disabled: true }],
       logradouro: [''],

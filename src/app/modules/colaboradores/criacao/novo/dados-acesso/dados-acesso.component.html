@@ -12,7 +12,7 @@
         [options]="geraOptionsAcessoSistemaAtivo()"></app-custom-select>
 
     <!-- INPUT GROUP SENHA -->
-    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'senha'" [titulo]="'Senha'"
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'senha'" [titulo]="'Senha'"
         [tabIndex]="2" [maxLength]="30" [touched]="dadosAcesso.controls['senha'].touched"
         [todosCaracteresMaiusculos]="false" [customIcon]="'lock'"
         [disabledGroup]="dadosAcesso.controls['senha'].disabled"
@@ -26,7 +26,7 @@
         #selectAcessoSistemaAtivo [options]="geraOptionsPermissoes()"></app-custom-select>
 
     <!-- MÓDULOS LIBERADOS -->
-    <div class="row col-xl-12 col-lg-4 col-md-4 col-sm-12 col-12 input_group input_group_without_component"
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group input_group_without_component"
         [ngClass]="{'input_group_modulo': modulosLiberados.length > 0}">
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
             <label class="label"

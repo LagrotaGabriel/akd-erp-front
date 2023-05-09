@@ -115,7 +115,15 @@ input::-webkit-inner-spin-button {
 
 @media (max-width: 768px) {}
 
-@media (max-width: 550px) {}
+@media (max-width: 576px) {
+    .label {
+        font-size: 0.95rem;
+    }
+
+    .input {
+        font-size: 0.9rem;
+    }
+}
 
 @media (max-width: 450px) {
     .label {

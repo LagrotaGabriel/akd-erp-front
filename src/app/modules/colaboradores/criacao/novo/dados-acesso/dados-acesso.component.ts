@@ -9,18 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-dados-acesso',
   templateUrl: './dados-acesso.component.html',
-  styleUrls: ['./dados-acesso.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate(300, style({ opacity: 0 }))
-      ])
-    ]),
-  ]
+  styleUrls: ['./dados-acesso.component.scss']
 })
 export class DadosAcessoComponent {
 

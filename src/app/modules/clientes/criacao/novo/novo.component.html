@@ -6,7 +6,7 @@
 
     <hr class="hr">
 
-    <mat-horizontal-stepper linear #stepper>
+    <mat-horizontal-stepper (selectionChange)="mudaPasso($event)" linear #stepper>
 
         <ng-template matStepperIcon="edit">
             <i class="fa fa-check"></i>
@@ -18,210 +18,29 @@
 
         <!-- PRIMEIRA ETAPA: CADASTRO DE DADOS DO CLIENTE -->
         <mat-step [stepControl]="dadosCliente" editable="true">
-            <form #dadosClienteForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                [formGroup]="dadosCliente">
-                <ng-template matStepLabel>
-                    <span>Dados</span>
-                </ng-template>
-
-                <!-- INPUT GROUP NOME -->
-                <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'inputNome'"
-                    [titulo]="'Nome'" [tabIndex]="1" [maxLength]="50" [touched]="dadosCliente.controls['nome'].touched"
-                    [todosCaracteresMaiusculos]="true" [customIcon]="null"
-                    [disabledGroup]="dadosCliente.controls['nome'].disabled"
-                    [valido]="!(dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid)"
-                    [mensagemErro]="'Campo obrigatório'" formControlName="nome" #inputNome></app-custom-input>
-
-                <!-- SELECT GROUP TIPO -->
-                <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="tipoPessoa"
-                    [tabIndex]="2" [titulo]="'Tipo pessoa'" (change)="atualizaTipoPessoa()" #SelectTipoPessoa
-                    [options]="geraOptionsTipoPessoa()"></app-custom-select>
-
-                <!-- SELECT GROUP STATUS -->
-                <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="statusCliente"
-                    [tabIndex]="3" [titulo]="'Status'" #SelectStatusCliente
-                    [options]="geraOptionsStatusCliente()"></app-custom-select>
-
-                <!-- INPUT GROUP CPF/CNPJ -->
-                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'cpfCnpj'"
-                    [titulo]="getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' ? 'Cpf' : 'Cnpj'" [tabIndex]="4"
-                    [maxLength]="inputLengthCpfCnpj" [touched]="dadosCliente.controls['cpfCnpj'].touched"
-                    [todosCaracteresMaiusculos]="false" [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
-                    [disabledGroup]="dadosCliente.controls['cpfCnpj'].disabled"
-                    [valido]="!(dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid)"
-                    [mensagemErro]="'Mínimo de ' + inputLengthCpfCnpj + ' caracteres numéricos'"
-                    formControlName="cpfCnpj" #inputCpfCnpj></app-custom-input>
-
-                <!-- INPUT GROUP INSCRIÇÃO ESTADUAL -->
-                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'inscricaoEstadual'"
-                    [titulo]="'Inscrição estadual'" [tabIndex]="5" [maxLength]="12"
-                    [touched]="dadosCliente.controls['inscricaoEstadual'].touched" [todosCaracteresMaiusculos]="false"
-                    [customIcon]="null" (input)="realizaTratamentoInscricaoEstadual()"
-                    [disabledGroup]="dadosCliente.controls['inscricaoEstadual'].disabled"
-                    [valido]="!(dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid)"
-                    [mensagemErro]="'Mínimo de 12 caracteres numéricos'" formControlName="inscricaoEstadual"
-                    #inputInscricaoEstadual></app-custom-input>
-
-                <!-- INPUT GROUP E-MAIL -->
-                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'email'"
-                    [titulo]="'E-mail'" [tabIndex]="6" [maxLength]="50"
-                    [touched]="dadosCliente.controls['email'].touched" [todosCaracteresMaiusculos]="false"
-                    [customIcon]="'alternate_email'" [disabledGroup]="dadosCliente.controls['email'].disabled"
-                    [valido]="!(dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid)"
-                    [mensagemErro]="'O e-mail digitado é inválido'" formControlName="email"
-                    #inputInscricaoEstadual></app-custom-input>
-
-                <!-- INPUT GROUP DATA DE NASCIMENTO -->
-                <app-custom-date-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [minDate]="'1900-01-01'"
-                    [maxDate]="'2023-04-17'" [disabledGroup]="dadosCliente.controls['dataNascimento'].disabled"
-                    [id]="'dataNascimento'" [titulo]="'Data de nascimento'" formControlName="dataNascimento"
-                    [vazio]="getValueAtributoDadosCliente('dataNascimento') == '' || getValueAtributoDadosCliente('dataNascimento') == null"
-                    (focusout)="validaDataNascimento()" [tabIndex]="7" #inputDataNascimento></app-custom-date-input>
-
-                <!-- PRIMEIRO CONTAINER DE BOTÃO -->
-                <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button class="button botaoHabilitado" #botaoVoltarVisualizacaoClientes mat-button tabindex="8"
-                        (click)="retornaParaVisualizacaoDeClientes()">
-                        Voltar
-                    </button>
-                    <button tabindex="9" class="button"
-                        [ngClass]="{'botaoHabilitado': dadosClienteForm.valid, 'botaoDesabilitado': !dadosClienteForm.valid}"
-                        mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
-                </div>
-            </form>
+            <ng-template matStepLabel>
+                <span>Dados</span>
+            </ng-template>
+            <app-dados-pessoais [stepAtual]="stepAtual"
+                (emissorDeDadosPessoaisDoCliente)="recebeFormGroupDadosPessoais($event)"></app-dados-pessoais>
         </mat-step>
 
         <!-- SEGUNDA ETAPA: CADASTRO DE TELEFONE -->
         <mat-step [stepControl]="dadosTelefone" editable="true">
-            <form #dadosTelefoneForm="ngForm"
-                class="row form form_telefone col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                [formGroup]="dadosTelefone">
-                <ng-template matStepLabel>
-                    <span>Telefone</span>
-                </ng-template>
-
-                <!-- SELECT GROUP TIPO DO TELEFONE -->
-                <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="tipoTelefone"
-                    [tabIndex]="10" [titulo]="'Tipo do telefone'" (change)="atualizaValidatorsTelefone()"
-                    #SelectTipoTelefone [options]="geraOptionsTipoTelefone()"></app-custom-select>
-
-                <!-- INPUT GROUP PREFIXO -->
-                <app-custom-input class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12" [id]="'prefixo'"
-                    [titulo]="'Prefixo'" [tabIndex]="11" [maxLength]="2"
-                    [touched]="dadosTelefone.controls['prefixo'].touched" [todosCaracteresMaiusculos]="false"
-                    customIcon="null" [disabledGroup]="dadosTelefone.controls['prefixo'].disabled"
-                    [valido]="!(dadosTelefone.controls['prefixo'].invalid)"
-                    [mensagemErro]="'Mínimo de 2 caracteres numéricos'" formControlName="prefixo"
-                    #inputPrefixo></app-custom-input>
-
-                <!-- INPUT GROUP NÚMERO -->
-                <app-custom-input class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12" [id]="'numero'"
-                    [titulo]="'Número'" [tabIndex]="12" [maxLength]="inputLengthTelefone"
-                    [touched]="dadosTelefone.controls['numero'].touched" [todosCaracteresMaiusculos]="false"
-                    [customIcon]="'call'" (input)="realizaTratamentoNumeroTelefone()"
-                    [disabledGroup]="dadosTelefone.controls['numero'].disabled"
-                    [valido]="!(dadosTelefone.controls['numero'].invalid)"
-                    [mensagemErro]="'Mínimo de ' + inputLengthTelefone + ' caracteres numéricos'"
-                    formControlName="numero" #inputNumeroTelefone></app-custom-input>
-
-                <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button matStepperPrevious
-                        tabindex="13">
-                        Voltar
-                    </button>
-                    <button class="button" mat-button #botaoProximoSegundaEtapa type="button" tabindex="14"
-                        [ngClass]="{'botaoHabilitado': dadosTelefone.valid, 'botaoDesabilitado': !dadosTelefone.valid}"
-                        matStepperNext>
-                        Próximo
-                    </button>
-                </div>
-            </form>
+            <ng-template matStepLabel>
+                <span>Telefone</span>
+            </ng-template>
+            <app-dados-telefone [stepAtual]="stepAtual"
+                (emissorDeDadosDeTelefoneDoCliente)="recebeFormGroupDadosTelefone($event)"></app-dados-telefone>
         </mat-step>
 
         <!-- TERCEIRA ETAPA: CADASTRO DE ENDEREÇO -->
         <mat-step [stepControl]="dadosEndereco" editable="true">
-            <form #dadosEnderecoForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                [formGroup]="dadosEndereco">
-                <ng-template matStepLabel>
-                    <span>Endereço</span>
-                </ng-template>
-
-                <!-- INPUT GROUP CEP -->
-                <app-custom-input class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'cep'" [titulo]="'Cep'"
-                    [tabIndex]="15" [maxLength]="8" [touched]="dadosEndereco.controls['codigoPostal'].touched"
-                    [todosCaracteresMaiusculos]="false" [customIcon]="null" formControlName="codigoPostal"
-                    [disabledGroup]="dadosEndereco.controls['codigoPostal'].disabled"
-                    (input)="realizaTratamentoCodigoPostal()" #inputCodigoPostal
-                    [valido]="!(dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid)"
-                    [mensagemErro]="'Mínimo de 8 caracteres numéricos'"></app-custom-input>
-
-                <!-- SELECT GROUP ESTADO -->
-                <app-custom-select class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="estado"
-                    (change)="obtemTodosMunicipiosPorEstado()" [tabIndex]="16" [titulo]="'Estado'" #inputEstado
-                    [options]="this.estadosOptions"></app-custom-select>
-
-                <!-- INPUT GROUP CIDADE -->
-                <app-custom-input class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cidade'"
-                    [titulo]="'Cidade'" [tabIndex]="17" [maxLength]="50"
-                    [touched]="dadosEndereco.controls['cidade'].touched" [todosCaracteresMaiusculos]="true"
-                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['cidade'].disabled"
-                    (input)="atualizaValidatorsEndereco()" (change)="atualizaValidatorsEndereco()"
-                    [dataList]="dataListCidade"
-                    [valido]="!(dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid)"
-                    [mensagemErro]="'Máximo de 50 caracteres'" formControlName="cidade"
-                    #inputCodigoPostal></app-custom-input>
-
-                <!-- INPUT GROUP LOGRADOURO -->
-                <app-custom-input class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12" [id]="'logradouro'"
-                    [titulo]="'Logradouro'" [tabIndex]="18" [maxLength]="50"
-                    [touched]="dadosEndereco.controls['logradouro'].touched" [todosCaracteresMaiusculos]="true"
-                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['logradouro'].disabled"
-                    (input)="atualizaValidatorsEndereco()" [valido]="!(dadosEndereco.controls['logradouro'].invalid)"
-                    [mensagemErro]="'Campo obrigatório'" formControlName="logradouro"
-                    #inputLogradouro></app-custom-input>
-
-                <!-- INPUT GROUP NUMERO -->
-                <app-custom-input class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12" [id]="'numeroEndereco'"
-                    [titulo]="'Número'" [tabIndex]="19" [maxLength]="5"
-                    [touched]="dadosEndereco.controls['numero'].touched" [todosCaracteresMaiusculos]="false"
-                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['numero'].disabled"
-                    (input)="realizaTratamentoNumero()" [valido]="!(dadosEndereco.controls['numero'].invalid)"
-                    [mensagemErro]="'Campo obrigatório'" formControlName="numero" #inputNumero></app-custom-input>
-
-                <!-- INPUT GROUP BAIRRO -->
-                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'bairro'"
-                    [titulo]="'Bairro'" [tabIndex]="20" [maxLength]="50"
-                    [touched]="dadosEndereco.controls['bairro'].touched" [todosCaracteresMaiusculos]="true"
-                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['bairro'].disabled"
-                    (input)="atualizaValidatorsEndereco()"
-                    [valido]="!(dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid)"
-                    [mensagemErro]="'Máximo de 50 caracteres'" formControlName="bairro" #inputBairro></app-custom-input>
-
-                <!-- INPUT GROUP COMPLEMENTO -->
-                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'complemento'"
-                    [titulo]="'Complemento'" [tabIndex]="21" [maxLength]="80"
-                    [touched]="dadosEndereco.controls['complemento'].touched" [todosCaracteresMaiusculos]="true"
-                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['complemento'].disabled"
-                    (input)="atualizaValidatorsEndereco()"
-                    [valido]="!(dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid)"
-                    [mensagemErro]="'Esse campo deve possuir no máximo 80 caracteres'" formControlName="complemento"
-                    #inputBairro></app-custom-input>
-
-                <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <button (click)="avancaSegundaEtapa()" #botaoVoltarTerceiraEtapa class="button botaoHabilitado"
-                        mat-button matStepperPrevious tabindex="22">
-                        Voltar
-                    </button>
-                    <button (click)="enviarFormulario()" #botaoEnviarFormulario type="button" tabindex="23"
-                        class="button"
-                        [disabled]="dadosCliente.invalid || dadosTelefone.invalid || dadosEndereco.invalid" [ngClass]="{'botaoHabilitado': dadosCliente.valid && dadosEndereco.valid && dadosEndereco.valid, 
-                    'botaoDesabilitado': !dadosCliente.valid || !dadosEndereco.valid || !dadosTelefone.valid}"
-                        mat-button>
-                        Enviar
-                    </button>
-                </div>
-
-            </form>
+            <ng-template matStepLabel>
+                <span>Endereço</span>
+            </ng-template>
+            <app-dados-endereco [stepAtual]="stepAtual" (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
+                (emissorDeDadosDeEnderecoDoCliente)="recebeFormGroupDadosEndereco($event)"></app-dados-endereco>
         </mat-step>
 
     </mat-horizontal-stepper>

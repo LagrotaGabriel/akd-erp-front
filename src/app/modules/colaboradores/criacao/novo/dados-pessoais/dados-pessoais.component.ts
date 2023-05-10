@@ -54,8 +54,6 @@ export class DadosPessoaisComponent {
 
   @ViewChild('inputNumero') inputNumero: CustomInputComponent;
   @ViewChild('inputNome') inputNome: CustomInputComponent;
-  @ViewChild('botaoProximo') botaoProximo: ElementRef;
-  @ViewChild('botaoRetorno') botaoRetorno: ElementRef;
 
   // Subscriptions
   private obtemTodosEstadosBrasileirosSubscription$: Subscription;

@@ -1,1 +1,67 @@
-<p>dados-pessoais works!</p>
+<form #dadosClienteForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+    [formGroup]="dadosCliente">
+
+    <!-- INPUT GROUP NOME -->
+    <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'inputNome'" [titulo]="'Nome'"
+        [tabIndex]="1" [maxLength]="50" [touched]="dadosCliente.controls['nome'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null" [disabledGroup]="dadosCliente.controls['nome'].disabled"
+        [valido]="!(dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid)"
+        [mensagemErro]="'Campo obrigatório'" formControlName="nome" #inputNome></app-custom-input>
+
+    <!-- SELECT GROUP TIPO -->
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="tipoPessoa" [tabIndex]="2"
+        [titulo]="'Tipo pessoa'" (change)="atualizaTipoPessoa()" #SelectTipoPessoa
+        [options]="geraOptionsTipoPessoa()"></app-custom-select>
+
+    <!-- SELECT GROUP STATUS -->
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="statusCliente"
+        [tabIndex]="3" [titulo]="'Status'" #SelectStatusCliente
+        [options]="geraOptionsStatusCliente()"></app-custom-select>
+
+    <!-- INPUT GROUP CPF/CNPJ -->
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'cpfCnpj'"
+        [titulo]="getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' ? 'Cpf' : 'Cnpj'" [tabIndex]="4"
+        [maxLength]="inputLengthCpfCnpj" [touched]="dadosCliente.controls['cpfCnpj'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
+        [disabledGroup]="dadosCliente.controls['cpfCnpj'].disabled"
+        [valido]="!(dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid)"
+        [mensagemErro]="'Mínimo de ' + inputLengthCpfCnpj + ' caracteres numéricos'" formControlName="cpfCnpj"
+        #inputCpfCnpj></app-custom-input>
+
+    <!-- INPUT GROUP INSCRIÇÃO ESTADUAL -->
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'inscricaoEstadual'"
+        [titulo]="'Inscrição estadual'" [tabIndex]="5" [maxLength]="12"
+        [touched]="dadosCliente.controls['inscricaoEstadual'].touched" [todosCaracteresMaiusculos]="false"
+        [customIcon]="null" (input)="realizaTratamentoInscricaoEstadual()"
+        [disabledGroup]="dadosCliente.controls['inscricaoEstadual'].disabled"
+        [valido]="!(dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid)"
+        [mensagemErro]="'Mínimo de 12 caracteres numéricos'" formControlName="inscricaoEstadual"
+        #inputInscricaoEstadual></app-custom-input>
+
+    <!-- INPUT GROUP E-MAIL -->
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'email'" [titulo]="'E-mail'"
+        [tabIndex]="6" [maxLength]="50" [touched]="dadosCliente.controls['email'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="'alternate_email'"
+        [disabledGroup]="dadosCliente.controls['email'].disabled"
+        [valido]="!(dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid)"
+        [mensagemErro]="'O e-mail digitado é inválido'" formControlName="email"
+        #inputInscricaoEstadual></app-custom-input>
+
+    <!-- INPUT GROUP DATA DE NASCIMENTO -->
+    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [minDate]="'1900-01-01'"
+        [maxDate]="'2023-04-17'" [disabledGroup]="dadosCliente.controls['dataNascimento'].disabled"
+        [id]="'dataNascimento'" [titulo]="'Data de nascimento'" formControlName="dataNascimento"
+        [vazio]="getValueAtributoDadosCliente('dataNascimento') == '' || getValueAtributoDadosCliente('dataNascimento') == null"
+        (focusout)="validaDataNascimento()" [tabIndex]="7" #inputDataNascimento></app-custom-date-input>
+
+    <!-- PRIMEIRO CONTAINER DE BOTÃO -->
+    <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <button class="button botaoHabilitado" #botaoVoltarVisualizacaoClientes mat-button tabindex="8"
+            (click)="retornaParaVisualizacaoDeClientes()">
+            Voltar
+        </button>
+        <button tabindex="9" class="button"
+            [ngClass]="{'botaoHabilitado': dadosClienteForm.valid, 'botaoDesabilitado': !dadosClienteForm.valid}"
+            mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
+    </div>
+</form>

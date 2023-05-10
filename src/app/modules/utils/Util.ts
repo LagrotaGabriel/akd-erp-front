@@ -1,6 +1,6 @@
 export class Util {
 
-    public static stringToNumber(string: string): number {
+    public static transformStringToNumber(string: string): number {
         let convertido: number = parseInt(string);
         if (!Number.isNaN(convertido)) return convertido;
         else return null;

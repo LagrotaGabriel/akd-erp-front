@@ -1,5 +1,5 @@
 <form #dadosClienteForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-    [formGroup]="dadosCliente">
+    [formGroup]="dadosCliente" (keyup.enter)="botaoProximo.click()" (keyup.escape)="botaoRetorno.click()">
 
     <!-- INPUT GROUP NOME -->
     <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'inputNome'" [titulo]="'Nome'"
@@ -56,11 +56,11 @@
 
     <!-- PRIMEIRO CONTAINER DE BOTÃO -->
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button class="button botaoHabilitado" #botaoVoltar mat-button tabindex="8"
+        <button class="button botaoHabilitado" type="button" #botaoRetorno mat-button tabindex="8"
             (click)="retornaParaVisualizacaoDeClientes()">
             Voltar
         </button>
-        <button tabindex="9" class="button" mat-button matStepperNext #botaoProximo
+        <button tabindex="9" class="button" type="button" mat-button matStepperNext #botaoProximo
             [ngClass]="{'botaoHabilitado': dadosClienteForm.valid, 'botaoDesabilitado': !dadosClienteForm.valid}"
             (click)="avancaProximaEtapa()">Próximo</button>
     </div>

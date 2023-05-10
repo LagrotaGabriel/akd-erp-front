@@ -247,7 +247,7 @@ export class DadosPessoaisComponent {
     console.log(cnpjResponse.numero);
     let endereco: Endereco = new Endereco();
     if (Util.isNotEmptyString(cnpjResponse.logradouro)) endereco.logradouro = cnpjResponse.logradouro;
-    if (Util.isNotEmptyString(cnpjResponse.numero)) endereco.numero = Util.stringToNumber(cnpjResponse.numero);
+    if (Util.isNotEmptyString(cnpjResponse.numero)) endereco.numero = Util.transformStringToNumber(cnpjResponse.numero);
     if (Util.isNotEmptyString(cnpjResponse.bairro)) endereco.bairro = cnpjResponse.bairro;
     if (Util.isNotEmptyString(cnpjResponse.municipio)) endereco.cidade = cnpjResponse.municipio;
     if (Util.isNotEmptyNumber(cnpjResponse.cep)) endereco.codigoPostal = cnpjResponse.cep.toString();

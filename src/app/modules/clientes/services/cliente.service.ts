@@ -87,7 +87,6 @@ export class ClienteService {
   }
 
   public novoCliente(clienteNovo: ClienteNovo): Observable<ClienteNovo> {
-    clienteNovo = this.realizaTratamentoDeAtributosNulos(clienteNovo);
     this.httpOptions.body = null;
     return this.http.post<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
       map(resposta => new ClienteNovo(resposta)),

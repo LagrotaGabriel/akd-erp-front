@@ -1,5 +1,5 @@
 <form #dadosTelefoneForm="ngForm" class="row form form_telefone col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-    [formGroup]="dadosTelefone">
+    [formGroup]="dadosTelefone" (keyup.enter)="botaoProximo.click()" (keyup.escape)="botaoRetorno.click()">
 
     <!-- SELECT GROUP TIPO DO TELEFONE -->
     <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="tipoTelefone"
@@ -24,10 +24,10 @@
         #inputNumeroTelefone></app-custom-input>
 
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button class="button" #botaoRetorna mat-button matStepperPrevious tabindex="13">
+        <button class="button" type="button" #botaoRetorno mat-button matStepperPrevious tabindex="13">
             Voltar
         </button>
-        <button class="button" mat-button #botaoAvanca type="button" tabindex="14" (click)="avancaProximaEtapa()"
+        <button class="button" mat-button #botaoProximo type="button" tabindex="14" (click)="avancaProximaEtapa()"
             matStepperNext>
             Próximo
         </button>

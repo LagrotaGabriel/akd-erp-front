@@ -10,6 +10,7 @@ import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
 import { Endereco } from '../../models/endereco';
+import { Util } from 'src/app/modules/utils/Util';
 
 @Component({
   selector: 'app-dados-endereco',
@@ -262,7 +263,8 @@ export class DadosEnderecoComponent {
   }
 
   protected obtemTodosMunicipiosPorEstado() {
-    if (this.getValueAtributoDadosEndereco('estado') != null && this.getValueAtributoDadosEndereco('estado') != '') {
+
+    if (Util.isNotEmptyString(this.getValueAtributoDadosEndereco('estado'))) {
       this.obtemTodosMunicipiosPorEstadoSubscription$ =
         this.brasilApiService.obtemTodosMunicipiosPorEstado(this.getValueAtributoDadosEndereco('estado')).subscribe({
           next: resposta => this.municipiosResponse = resposta,
@@ -286,15 +288,15 @@ export class DadosEnderecoComponent {
     console.log(endereco.numero);
     this.dadosEndereco.setValue({
       codigoPostal: this.getValueAtributoDadosEndereco('codigoPostal'),
-      logradouro: (endereco.logradouro != null && endereco.logradouro != '') ? endereco.logradouro : this.getValueAtributoDadosEndereco('logradouro'),
-      numero: (endereco.numero != null) ? endereco.numero : this.getValueAtributoDadosEndereco('numero'),
-      bairro: (endereco.bairro != null && endereco.bairro != '') ? endereco.bairro : this.getValueAtributoDadosEndereco('bairro'),
-      estado: (endereco.estado != null && endereco.estado != '') ? endereco.estado : this.getValueAtributoDadosEndereco('estado'),
-      cidade: (endereco.cidade != null && endereco.cidade != '') ? endereco.cidade : this.getValueAtributoDadosEndereco('cidade'),
-      complemento: (endereco.complemento != null && endereco.complemento != '') ? endereco.complemento : this.getValueAtributoDadosEndereco('complemento'),
+      logradouro: (Util.isNotEmptyString(endereco.logradouro)) ? endereco.logradouro : this.getValueAtributoDadosEndereco('logradouro'),
+      numero: (Util.isNotEmptyNumber(endereco.numero)) ? endereco.numero : this.getValueAtributoDadosEndereco('numero'),
+      bairro: (Util.isNotEmptyString(endereco.bairro)) ? endereco.bairro : this.getValueAtributoDadosEndereco('bairro'),
+      estado: (Util.isNotEmptyString(endereco.estado)) ? endereco.estado : this.getValueAtributoDadosEndereco('estado'),
+      cidade: (Util.isNotEmptyString(endereco.cidade)) ? endereco.cidade : this.getValueAtributoDadosEndereco('cidade'),
+      complemento: (Util.isNotEmptyString(endereco.complemento)) ? endereco.complemento : this.getValueAtributoDadosEndereco('complemento'),
     })
 
-    if (endereco.estado != null && endereco.estado != '') this.obtemTodosMunicipiosPorEstado();
+    if (Util.isNotEmptyString(endereco.estado)) this.obtemTodosMunicipiosPorEstado();
 
     this.dadosEndereco.markAllAsTouched();
   }

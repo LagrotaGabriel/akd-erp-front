@@ -6,7 +6,6 @@ import { Cliente as ClienteNovo } from '../criacao/models/cliente';
 import { Cliente } from '../visualizacao/models/Cliente';
 import { catchError, map, Observable, retry, throwError, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -144,8 +143,14 @@ export class ClienteService {
     this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
       .subscribe(
         ((response) => {
-          let blob = new Blob([response], { type: 'mediaType' });
-          saveAs(blob, 'akadion-clientes-' + new Date().getTime().toString() + '.pdf');
+          let blob = new Blob([response], { type: 'application/pdf' });
+          let fileURL = URL.createObjectURL(blob);
+          let tagUrlRelatorio = document.createElement('a');
+          tagUrlRelatorio.href = fileURL;
+          tagUrlRelatorio.target = '_blank';
+          tagUrlRelatorio.download = 'akadion-clientes-' + new Date().getTime().toString() + '.pdf';
+          document.body.appendChild(tagUrlRelatorio);
+          tagUrlRelatorio.click();
         })
       );
   }

@@ -3,10 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 
-// import { Colaborador as ColaboradorNovo } from '../criacao/models/colaborador';
 import { catchError, map, Observable, retry, throwError, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { saveAs } from 'file-saver';
 import { PageObject } from '../visualizacao/models/PageObject';
 import { ColaboradorNovo } from '../criacao/models/ColaboradorNovo';
 
@@ -99,8 +97,14 @@ export class ColaboradorService {
     this.http.post(`${API_URL.baseUrl}api/sistema/v1/colaborador/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
       .subscribe(
         ((response) => {
-          let blob = new Blob([response], { type: 'mediaType' });
-          saveAs(blob, 'akadion-colaboradores-' + new Date().getTime().toString() + '.pdf');
+          let blob = new Blob([response], { type: 'application/pdf' });
+          let fileURL = URL.createObjectURL(blob);
+          let tagUrlRelatorio = document.createElement('a');
+          tagUrlRelatorio.href = fileURL;
+          tagUrlRelatorio.target = '_blank';
+          tagUrlRelatorio.download = 'akadion-colaboradores-' + new Date().getTime().toString() + '.pdf';
+          document.body.appendChild(tagUrlRelatorio);
+          tagUrlRelatorio.click();
         })
       );
   }

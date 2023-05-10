@@ -1,18 +1,18 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
-import { ViewComponent } from './visualizacao/view/view.component';
-import { MenuComponent } from './visualizacao/menu/menu.component';
-import { TabelaComponent } from './visualizacao/tabela/tabela.component';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatStepperModule } from '@angular/material/stepper';
+
+import { ViewComponent } from './visualizacao/view/view.component';
+import { MenuComponent } from './visualizacao/menu/menu.component';
+import { TabelaComponent } from './visualizacao/tabela/tabela.component';
 import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.component';
 import { CabecalhoComponent } from './visualizacao/tabela/cabecalho/cabecalho.component';
 import { AcordeaoComponent } from './visualizacao/tabela/acordeao/acordeao.component';
@@ -28,7 +28,9 @@ import { CustomDateInputComponent } from './criacao/novo/shared/custom-date-inpu
 import { CustomTimeInputComponent } from './criacao/novo/shared/custom-time-input/custom-time-input.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomInputComponent, CustomErrorComponent, CustomSelectComponent, CustomTitleContainerComponent, CustomDateInputComponent, CustomTimeInputComponent],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent,
+    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomInputComponent, CustomErrorComponent, CustomSelectComponent,
+    CustomTitleContainerComponent, CustomDateInputComponent, CustomTimeInputComponent],
   imports: [
     CommonModule,
     BrowserModule,

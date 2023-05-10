@@ -55,9 +55,12 @@ export class CabecalhoComponent {
   removeColaboradorEmMassa$: Subscription;
 
   ngOnDestroy(): void {
+    const startTime = performance.now();
     if (this.geraRelatorio$ != undefined) this.geraRelatorio$.unsubscribe();
     if (this.buscaColaboradoresSubscribe$ != undefined) this.buscaColaboradoresSubscribe$.unsubscribe();
     if (this.removeColaboradorEmMassa$ != undefined) this.removeColaboradorEmMassa$.unsubscribe();
+    const duration = performance.now() - startTime;
+    console.log(`ngOnDestroy levou ${duration}ms`);
   }
 
   alteraQuantidadeItensExibidosPorPagina(select) {
@@ -75,10 +78,13 @@ export class CabecalhoComponent {
   }
 
   geraRelatorio() {
+    const startTime = performance.now();
     let listaDeIdsDeColaboradoresSelecionadosNaTabela: number[] = [];
     this.colaboradoresSelecionadosNaTabela.forEach(colaborador => { listaDeIdsDeColaboradoresSelecionadosNaTabela.push(colaborador.id) })
     if (this.colaboradoresSelecionadosNaTabela.length == 0) listaDeIdsDeColaboradoresSelecionadosNaTabela = [];
     this.geraRelatorio$ = this.colaboradorService.obtemRelatorioColaboradores(listaDeIdsDeColaboradoresSelecionadosNaTabela);
+    const duration = performance.now() - startTime;
+    console.log(`Geração de relatórios levou ${duration}ms`);
   }
 
   excluiColaboradoresEmMassa() {

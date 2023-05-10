@@ -34,11 +34,9 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input matInput formControlName="nome" name="nome" maxlength="50" autocapitalize="words"
+                        <input matInput formControlName="nome" maxlength="50" autocapitalize="words"
                             style="text-transform:uppercase" spellcheck="false" tabindex="1" type="text" autofocus="on"
-                            autocomplete="off" [(ngModel)]="cliente.nome" #inputNome
-                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            (keydown.esc)="retornaParaVisualizacaoDeClientes()"
+                            autocomplete="off" #inputNome
                             [ngClass]="{'input_invalida': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon *ngIf="dadosCliente.controls['nome'].touched" [fontIcon]="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid 
@@ -62,11 +60,8 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label">Tipo pessoa</label>
                     </div>
-                    <select formControlName="tipoPessoa" name="tipoPessoa" autocomplete="off" tabindex="2"
-                        (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                        (keydown.esc)="retornaParaVisualizacaoDeClientes()" (change)="atualizaTipoPessoa()"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [(ngModel)]="cliente.tipoPessoa"
-                        required>
+                    <select formControlName="tipoPessoa" autocomplete="off" tabindex="2" (change)="atualizaTipoPessoa()"
+                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" required>
                         <option value="FISICA">Física</option>
                         <option value="JURIDICA">Jurídica</option>
                     </select>
@@ -77,9 +72,7 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label class="label">Status</label>
                     </div>
-                    <select formControlName="statusCliente" name="statusCliente" [(ngModel)]="cliente.statusCliente"
-                        tabindex="3" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                        (keydown.esc)="retornaParaVisualizacaoDeClientes()"
+                    <select formControlName="statusCliente" tabindex="3"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <option value="COMUM">Comum</option>
                         <option value="DEVEDOR">Devedor</option>
@@ -93,14 +86,12 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label
                             [ngClass]="{'label_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
-                            class="label">{{ cliente.tipoPessoa == 'FISICA' ? 'Cpf' : 'Cnpj' }}</label>
+                            class="label">{{ getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' ? 'Cpf' : 'Cnpj'
+                            }}</label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="cpfCnpj" name="cpfCnpj"
-                            spellcheck="false" tabindex="4" (input)="realizaTratamentoCpfCnpj()"
-                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            (keydown.esc)="retornaParaVisualizacaoDeClientes()" [(ngModel)]="cliente.cpfCnpj"
-                            [maxlength]="inputLengthCpfCnpj" #inputCpfCnpj
+                        <input type="text" autocomplete="off" formControlName="cpfCnpj" spellcheck="false" tabindex="4"
+                            (input)="realizaTratamentoCpfCnpj()" [maxlength]="inputLengthCpfCnpj" #inputCpfCnpj
                             [ngClass]="{'input_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut]
@@ -127,23 +118,20 @@
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
                         <label
                             [ngClass]="{'label_invalida': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
-                            [ngClass]="{'label_desabilitada': cliente.tipoPessoa == 'FISICA'}" class="label">Inscrição
+                            [ngClass]="{'label_desabilitada': getValueAtributoDadosCliente('tipoPessoa') == 'FISICA'}" class="label">Inscrição
                             estadual</label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="inscricaoEstadual"
-                            name="inscricaoEstadual" spellcheck="false" tabindex="5"
-                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()" #inputInscricaoEstadual
-                            (keydown.esc)="retornaParaVisualizacaoDeClientes()"
+                        <input type="text" autocomplete="off" formControlName="inscricaoEstadual" spellcheck="false"
+                            tabindex="5" #inputInscricaoEstadual
                             [ngClass]="{'input_invalida': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
-                            (input)="realizaTratamentoInscricaoEstadual()" [(ngModel)]="cliente.inscricaoEstadual"
-                            maxlength="12" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            (input)="realizaTratamentoInscricaoEstadual()" maxlength="12"
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].value != ''"
                             [fontIcon]="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid 
                             ? 'error' 
-                            : 'check'"
-                            (click)="inputInscricaoEstadual.focus()"
+                            : 'check'" (click)="inputInscricaoEstadual.focus()"
                             [ngClass]="{'icone_ok': !dadosCliente.controls['inscricaoEstadual'].invalid,
                                     'icone_error': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
                             class="icone"></mat-icon>
@@ -164,11 +152,8 @@
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="6"
-                            style="text-transform:lowercase"
+                            style="text-transform:lowercase" formControlName="email" #inputEmail
                             [ngClass]="{'input_invalida': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}"
-                            formControlName="email" name="email" [(ngModel)]="cliente.email" #inputEmail
-                            (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            (keydown.esc)="retornaParaVisualizacaoDeClientes()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputEmail()" [ngClass]="{ 'icone_ok': defineIconeInputEmail() == 'check' || defineIconeInputEmail() == 'alternate_email',
                             'icone_error': defineIconeInputEmail() == 'error' }" class="icone"
@@ -183,24 +168,24 @@
                 <!-- DATA DE NASCIMENTO -->
                 <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label" [ngClass]="{'label_desabilitada': cliente.tipoPessoa == 'JURIDICA'}">
+                        <label class="label"
+                            [ngClass]="{'label_desabilitada': getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA'}">
                             Data de nascimento
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <input min="1900-01-01" max="2023-04-17" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            [ngClass]="{'emptyDate': cliente.dataNascimento == null || cliente.dataNascimento == ''}"
-                            (keydown.esc)="retornaParaVisualizacaoDeClientes()" type="date"
+                            [ngClass]="{'emptyDate': getValueAtributoDadosCliente('dataNascimento') == null 
+                            || getValueAtributoDadosCliente('dataNascimento') == ''}" type="date"
                             formControlName="dataNascimento" (focusout)="validaDataNascimento()" #inputDataNascimento
-                            name="dataNascimento" formControlName="dataNascimento" name="dataNascimento" tabindex="-1"
-                            [(ngModel)]="cliente.dataNascimento"
+                            formControlName="dataNascimento" tabindex="-1"
                             class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataNascimento()" [ngClass]="{'icone_ok': defineIconeDataNascimento() == 'calendar_month' || defineIconeDataNascimento() == 'check',
-                                                'icone_error': defineIconeDataNascimento() == 'error' }"
-                            class="icone"></mat-icon>
+                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataNascimento()"
+                            [ngClass]="{'icone_ok': defineIconeDataNascimento() == 'calendar_month' 
+                            || defineIconeDataNascimento() == 'check', 'icone_error': defineIconeDataNascimento() == 'error' }" class="icone"></mat-icon>
                         <div class="input_data_placeholder" *ngIf="!dataNascimentoAparente" [@fadeInOut] tabindex="7"
                             (focus)="habilitaDataNascimento()" (click)="habilitaDataNascimento()"
-                            [ngStyle]="{'cursor': cliente.tipoPessoa == 'FISICA' ? 'text' : 'default' }">
+                            [ngStyle]="{'cursor': getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' ? 'text' : 'default' }">
                         </div>
                     </div>
                 </div>
@@ -233,10 +218,7 @@
                         <label class="label">Tipo do telefone</label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <select *ngIf="cliente.telefone != null" formControlName="tipoTelefone" name="tipoTelefone"
-                            [(ngModel)]="cliente.telefone.tipoTelefone" tabindex="10"
-                            (keydown.enter)="botaoProximoSegundaEtapa.click();"
-                            (keydown.esc)="botaoVoltarSegundaEtapa.click();" (change)="atualizaValidatorsTelefone()"
+                        <select formControlName="tipoTelefone" tabindex="10" (change)="atualizaValidatorsTelefone()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" #inputTipoTelefone>
                             <option value="" selected>Sem telefone</option>
                             <option value="FIXO">Fixo</option>
@@ -256,13 +238,10 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input *ngIf="cliente.telefone != null" type="text" autocomplete="off" maxlength="2"
-                            spellcheck="false" tabindex="11" (input)="realizaTratamentoPrefixo()"
+                        <input type="text" autocomplete="off" maxlength="2" spellcheck="false" tabindex="11"
+                            (input)="realizaTratamentoPrefixo()"
                             [ngClass]="{'input_invalida': dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid}"
-                            formControlName="prefixo" name="prefixo" [(ngModel)]="cliente.telefone.prefixo"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                            (keydown.enter)="botaoProximoSegundaEtapa.click();"
-                            (keydown.esc)="botaoVoltarSegundaEtapa.click();">
+                            formControlName="prefixo" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].value != ''"
                             [fontIcon]="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid 
@@ -288,16 +267,13 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input *ngIf="cliente.telefone != null" type="text" autocomplete="off"
-                            [maxlength]="inputLengthTelefone" spellcheck="false" tabindex="12"
-                            (input)="realizaTratamentoNumeroTelefone()"
-                            (keydown.enter)="botaoProximoSegundaEtapa.click();"
-                            (keydown.esc)="botaoVoltarSegundaEtapa.click();"
+                        <input type="text" autocomplete="off" [maxlength]="inputLengthTelefone" spellcheck="false"
+                            tabindex="12" (input)="realizaTratamentoNumeroTelefone()"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                             [ngClass]="{'input_invalida': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
-                            formControlName="numero" name="numero" [(ngModel)]="cliente.telefone.numero">
+                            formControlName="numero">
                         <mat-icon [@fadeInOut]
-                            *ngIf="cliente.telefone.tipoTelefone != '' && cliente.telefone.tipoTelefone != null"
+                            *ngIf="getValueAtributoDadosTelefone('tipoTelefone') != '' && getValueAtributoDadosTelefone('tipoTelefone') != null"
                             [fontIcon]="defineIconeInputTelefone()" [ngClass]="{'icone_ok': defineIconeInputTelefone() == 'smartphone' || defineIconeInputTelefone() == 'check' || defineIconeInputTelefone() == 'call' ,
                                     'icone_error': defineIconeInputTelefone() == 'error'}" class="icone"></mat-icon>
                     </div>
@@ -340,12 +316,8 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input *ngIf="cliente.endereco != null" type="text" autocomplete="off"
-                            formControlName="codigoPostal" name="codigoPostal" spellcheck="false"
-                            [(ngModel)]="cliente.endereco.codigoPostal" #codigoPostal
-                            (input)="realizaTratamentoCodigoPostal()" maxlength="8" tabindex="15"
-                            (keydown.enter)="botaoEnviarFormulario.click()"
-                            (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                        <input type="text" autocomplete="off" formControlName="codigoPostal" spellcheck="false"
+                            #codigoPostal (input)="realizaTratamentoCodigoPostal()" maxlength="8" tabindex="15"
                             [ngClass]="{'input_invalida': dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <mat-icon [@fadeInOut]
@@ -373,9 +345,7 @@
                             Estado
                         </label>
                     </div>
-                    <select *ngIf="cliente.endereco != null" formControlName="estado" name="estado"
-                        [(ngModel)]="cliente.endereco.estado" (change)="obtemTodosMunicipiosPorEstado()"
-                        (keydown.enter)="botaoEnviarFormulario.click()" (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                    <select formControlName="estado" (change)="obtemTodosMunicipiosPorEstado()"
                         class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="16">
                         <option value=""></option>
                         <option *ngFor="let estado of estadosResponse" [value]="estado.sigla">{{ estado.sigla + ' - ' +
@@ -392,13 +362,10 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="cidade" name="cidade"
-                            style="text-transform:uppercase" spellcheck="false" [(ngModel)]="cliente.endereco.cidade"
-                            list="municipiosEstado" maxlength="50" (input)="atualizaValidatorsEndereco()"
-                            (change)="atualizaValidatorsEndereco()" *ngIf="cliente.endereco != null"
+                        <input type="text" autocomplete="off" formControlName="cidade" style="text-transform:uppercase"
+                            spellcheck="false" list="municipiosEstado" maxlength="50"
+                            (input)="atualizaValidatorsEndereco()" (change)="atualizaValidatorsEndereco()"
                             [ngClass]="{'input_invalida': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}"
-                            (keydown.enter)="botaoEnviarFormulario.click()"
-                            (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
                             class="input input_cidade col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="17">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].value != ''"
@@ -431,11 +398,9 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="logradouro" name="logradouro"
-                            style="text-transform:uppercase" spellcheck="false"
-                            [(ngModel)]="cliente.endereco.logradouro" maxlength="50"
-                            (input)="atualizaValidatorsEndereco()" (keydown.enter)="botaoEnviarFormulario.click()"
-                            (keydown.esc)="botaoVoltarTerceiraEtapa.click()" *ngIf="cliente.endereco != null"
+                        <input type="text" autocomplete="off" formControlName="logradouro"
+                            style="text-transform:uppercase" spellcheck="false" maxlength="50"
+                            (input)="atualizaValidatorsEndereco()"
                             [ngClass]="{'input_invalida': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
                         <mat-icon [@fadeInOut] *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid 
@@ -466,12 +431,9 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="numero" name="numero" maxlength="5"
-                            spellcheck="false" [(ngModel)]="cliente.endereco.numero"
+                        <input type="text" autocomplete="off" formControlName="numero" maxlength="5" spellcheck="false"
                             (input)="atualizaValidatorsEndereco()" #numeroEndereco
                             [ngClass]="{'input_invalida': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}"
-                            (keydown.enter)="botaoEnviarFormulario.click()"
-                            (keydown.esc)="botaoVoltarTerceiraEtapa.click()" *ngIf="cliente.endereco != null"
                             class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="19">
                         <mat-icon [@fadeInOut] *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid 
                         || dadosEndereco.controls['logradouro'].valid 
@@ -501,14 +463,10 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="bairro" name="bairro"
-                            style="text-transform:uppercase" spellcheck="false" [(ngModel)]="cliente.endereco.bairro"
-                            maxlength="50" (input)="atualizaValidatorsEndereco()"
-                            (keydown.enter)="botaoEnviarFormulario.click()"
-                            (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                        <input type="text" autocomplete="off" formControlName="bairro" style="text-transform:uppercase"
+                            spellcheck="false" maxlength="50" (input)="atualizaValidatorsEndereco()"
                             [ngClass]="{'input_invalida': dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="20"
-                            *ngIf="cliente.endereco != null">
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="20">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].value != ''"
                             [fontIcon]="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid 
@@ -535,14 +493,11 @@
                         </label>
                     </div>
                     <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="complemento" name="complemento"
-                            style="text-transform:uppercase" spellcheck="false"
-                            [(ngModel)]="cliente.endereco.complemento" maxlength="80"
-                            (input)="atualizaValidatorsEndereco()" (keydown.enter)="botaoEnviarFormulario.click()"
-                            (keydown.esc)="botaoVoltarTerceiraEtapa.click()"
+                        <input type="text" autocomplete="off" formControlName="complemento"
+                            style="text-transform:uppercase" spellcheck="false" maxlength="80"
+                            (input)="atualizaValidatorsEndereco()"
                             [ngClass]="{'input_invalida': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="21"
-                            *ngIf="cliente.endereco != null">
+                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="21">
                         <mat-icon [@fadeInOut]
                             *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].value != ''"
                             [fontIcon]="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid 

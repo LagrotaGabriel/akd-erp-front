@@ -43,9 +43,9 @@ export class NovoComponent implements OnInit, OnDestroy {
   novoClienteSubscription$: Subscription;
 
   // Form groups
-  dadosCliente: FormGroup;
-  dadosTelefone: FormGroup;
-  dadosEndereco: FormGroup;
+  protected dadosCliente: FormGroup = this.createFormDadosCliente();
+  protected dadosTelefone: FormGroup = this.createFormDadosTelefone();
+  protected dadosEndereco: FormGroup = this.createFormDadosEndereco();
 
   // Variáveis data de nascimento
   minDate: Date;
@@ -74,16 +74,13 @@ export class NovoComponent implements OnInit, OnDestroy {
   @ViewChild('inputDataNascimento') inputDataNascimento: ElementRef;
 
   ngOnInit(): void {
-    this.inicializarCliente();
-    this.createForm();
-    console.log(this.cliente.dataNascimento);
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(1920, 0, 1);
     this.maxDate = new Date(currentYear, 0, 1);
 
-    this.atualizaTipoPessoa();
-    this.atualizaValidatorsTelefone();
-    this.obtemTodosEstadosBrasileiros();
+    //this.atualizaTipoPessoa();
+    //this.atualizaValidatorsTelefone();
+    //this.obtemTodosEstadosBrasileiros();
 
     setTimeout(() => {
       this.inputNome.nativeElement.focus();
@@ -100,50 +97,30 @@ export class NovoComponent implements OnInit, OnDestroy {
     if (this.novoClienteSubscription$ != undefined) this.novoClienteSubscription$.unsubscribe();
   }
 
-  inicializarCliente() {
-    this.cliente = {
-      nome: '',
-      tipoPessoa: 'FISICA',
-      cpfCnpj: '',
-      inscricaoEstadual: '',
-      email: '',
-      dataNascimento: '',
-      statusCliente: 'COMUM',
-      telefone: {
-        tipoTelefone: '',
-        prefixo: null,
-        numero: null
-      },
-      endereco: {
-        logradouro: '',
-        numero: null,
-        bairro: '',
-        codigoPostal: '',
-        cidade: '',
-        complemento: '',
-        estado: ''
-      },
-    }
-  }
-
-  createForm() {
-    this.dadosCliente = this.formBuilder.group({
+  createFormDadosCliente(): FormGroup {
+    return this.formBuilder.group({
       nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      tipoPessoa: ['', Validators.required],
+      tipoPessoa: ['FISICA', Validators.required],
       cpfCnpj: ['', [Validators.pattern(this.inputPatternCpfCnpj), Validators.maxLength(this.inputLengthCpfCnpj), Validators.minLength(this.inputLengthCpfCnpj)]],
       inscricaoEstadual: ['', [Validators.pattern(/^\d{12}/), Validators.maxLength(12), Validators.minLength(12)]],
       email: ['', [Validators.email, Validators.maxLength(50)]],
       dataNascimento: [''],
-      statusCliente: ['', Validators.required]
+      statusCliente: ['COMUM', Validators.required]
     });
-    this.dadosTelefone = this.formBuilder.group({
+  }
+
+  createFormDadosTelefone(): FormGroup {
+    return this.formBuilder.group({
       tipoTelefone: [''],
-      prefixo: ['', [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
-      numero: [''],
+      prefixo: [null, [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
+      numero: [null],
     });
-    this.dadosEndereco = this.formBuilder.group({
+  }
+
+  createFormDadosEndereco(): FormGroup {
+    return this.formBuilder.group({
       logradouro: [''],
-      numero: [''],
+      numero: [null],
       bairro: ['', Validators.maxLength(50)],
       codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^\d{5}\d{3}/)]],
       cidade: ['', Validators.maxLength(50)],
@@ -158,6 +135,30 @@ export class NovoComponent implements OnInit, OnDestroy {
     private router: Router,
     private _snackBar: MatSnackBar,
     private datePipe: DatePipe) { }
+
+  protected getValueAtributoDadosCliente(atributo: string): any {
+    return this.dadosCliente.controls[atributo].value;
+  }
+
+  protected setValueParaAtributoDadosCliente(atributo: string, valor: any) {
+    this.dadosCliente.controls[atributo] = valor;
+  }
+
+  protected getValueAtributoDadosTelefone(atributo: string): any {
+    return this.dadosTelefone.controls[atributo].value;
+  }
+
+  protected setValueParaAtributoDadosTelefone(atributo: string, valor: any) {
+    this.dadosTelefone.controls[atributo] = valor;
+  }
+
+  protected getValueAtributoDadosEndereco(atributo: string): any {
+    return this.dadosEndereco.controls[atributo].value;
+  }
+
+  protected setValueParaAtributoDadosEndereco(atributo: string, valor: any) {
+    this.dadosEndereco.controls[atributo] = valor;
+  }
 
   retornaParaVisualizacaoDeClientes() {
     this.router.navigate(['/clientes'])
@@ -187,20 +188,20 @@ export class NovoComponent implements OnInit, OnDestroy {
       return 'error';
     }
     else {
-      if (this.cliente.email == '' || this.cliente.email == null) return 'alternate_email';
+      if (this.getValueAtributoDadosCliente('email') == '' || this.getValueAtributoDadosCliente('email') == null) return 'alternate_email';
       else return 'check';
     }
   }
 
   atualizaTipoPessoa() {
 
-    if (this.cliente.tipoPessoa == 'FISICA') {
+    if (this.getValueAtributoDadosCliente('tipoPessoa') == 'FISICA') {
       this.inputLengthCpfCnpj = 11;
       this.inputPatternCpfCnpj = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
       this.dadosCliente.controls['inscricaoEstadual'].disable();
       this.dadosCliente.controls['dataNascimento'].enable();
     }
-    else if (this.cliente.tipoPessoa == 'JURIDICA') {
+    else if (this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA') {
       this.inputLengthCpfCnpj = 14;
       this.inputPatternCpfCnpj = /^\d{2}\d{3}\d{3}\d{4}\d{2}/
       this.dataNascimentoAparente = false;
@@ -210,37 +211,37 @@ export class NovoComponent implements OnInit, OnDestroy {
     this.dadosCliente.controls['cpfCnpj'].setValidators([Validators.maxLength(this.inputLengthCpfCnpj),
     Validators.minLength(this.inputLengthCpfCnpj), Validators.pattern(this.inputPatternCpfCnpj)]);
 
-    this.cliente.dataNascimento = '';
+    this.setValueParaAtributoDadosCliente('dataNascimento', '')
     this.dadosCliente.controls['dataNascimento'].reset();
 
-    this.cliente.inscricaoEstadual = '';
+    this.setValueParaAtributoDadosCliente('inscricaoEstadual', '')
     this.dadosCliente.controls['inscricaoEstadual'].reset();
 
-    this.cliente.cpfCnpj = '';
+    this.setValueParaAtributoDadosCliente('cpfCnpj', '')
     this.dadosCliente.controls['cpfCnpj'].reset();
   }
 
   atualizaValidatorsTelefone() {
-    this.cliente.telefone.prefixo = '';
+    this.setValueParaAtributoDadosTelefone('prefixo', '');
     this.dadosTelefone.controls['prefixo'].reset();
 
-    this.cliente.telefone.numero = '';
+    this.setValueParaAtributoDadosTelefone('numero', '');
     this.dadosTelefone.controls['numero'].reset();
 
     this.dadosTelefone.controls['prefixo'].clearValidators();
     this.dadosTelefone.controls['numero'].clearValidators();
 
-    if (this.cliente.telefone.tipoTelefone != '' && this.cliente.telefone.tipoTelefone != null) {
+    if (this.getValueAtributoDadosTelefone('tipoTelefone') != '' && this.getValueAtributoDadosTelefone('tipoTelefone') != null) {
 
       this.dadosTelefone.controls['prefixo'].enable();
       this.dadosTelefone.controls['numero'].enable();
 
-      if (this.cliente.telefone.tipoTelefone == 'FIXO') {
+      if (this.getValueAtributoDadosTelefone('tipoTelefone') == 'FIXO') {
         this.inputLengthTelefone = 8;
         this.inputTelefonePattern = /^\d{4}\d{4}/;
       }
 
-      else if (this.cliente.telefone.tipoTelefone == 'MOVEL' || this.cliente.telefone.tipoTelefone == 'MOVEL_WHATSAPP') {
+      else if (this.getValueAtributoDadosTelefone('tipoTelefone') == 'MOVEL' || this.getValueAtributoDadosTelefone('tipoTelefone') == 'MOVEL_WHATSAPP') {
         this.inputLengthTelefone = 9;
         this.inputTelefonePattern = /^\d\d{4}\d{4}/;
       }
@@ -265,28 +266,33 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   // DADOS
   realizaTratamentoCpfCnpj() {
-    this.cliente.cpfCnpj = this.cliente.cpfCnpj
+    this.setValueParaAtributoDadosCliente('cpfCnpj', this.getValueAtributoDadosCliente('cpfCnpj')
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
-      .trim();
+      .trim());
     this.invocaValidacaoDuplicidadeCpfCnpj();
   }
 
   invocaValidacaoDuplicidadeCpfCnpj() {
 
-    if (this.cliente.tipoPessoa == 'JURIDICA' && this.cliente.cpfCnpj.length == 14 && this.dadosCliente.controls['cpfCnpj'].valid ||
-      this.cliente.tipoPessoa == 'FISICA' && this.cliente.cpfCnpj.length == 11 && this.dadosCliente.controls['cpfCnpj'].valid) {
+    if (
+      this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA'
+      && this.getValueAtributoDadosCliente('cpfCnpj').length == 14
+      && this.dadosCliente.controls['cpfCnpj'].valid ||
+      this.getValueAtributoDadosCliente('tipoPessoa') == 'FISICA'
+      && this.getValueAtributoDadosCliente('cpfCnpj').length == 11
+      && this.dadosCliente.controls['cpfCnpj'].valid) {
 
-      this.validaDuplicidadeCpfCnpjSubscription$ = this.clienteService.validaDuplicidadeCpfCnpj(this.cliente.cpfCnpj).subscribe({
+      this.validaDuplicidadeCpfCnpjSubscription$ = this.clienteService.validaDuplicidadeCpfCnpj(this.getValueAtributoDadosCliente('cpfCnpj')).subscribe({
         error: error => {
-          this.cliente.cpfCnpj = '';
+          this.setValueParaAtributoDadosCliente('cpfCnpj', '');
           this.dadosCliente.controls['cpfCnpj'].reset();
           this._snackBar.open(error, "Fechar", {
             duration: 3500
           });
         },
         complete: () => {
-          if (this.cliente.tipoPessoa == 'JURIDICA') this.obtemDadosDoClientePeloCnpj();
+          if (this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA') this.obtemDadosDoClientePeloCnpj();
           console.log('Validação de duplicidade de Cpf/Cnpj finalizada com sucesso')
         }
       });
@@ -296,7 +302,7 @@ export class NovoComponent implements OnInit, OnDestroy {
   }
 
   obtemDadosDoClientePeloCnpj() {
-    this.obtemDadosClientePeloCnpjSubscription$ = this.brasilApiService.obtemDadosClientePeloCnpj(this.cliente.cpfCnpj).subscribe({
+    this.obtemDadosClientePeloCnpjSubscription$ = this.brasilApiService.obtemDadosClientePeloCnpj(this.getValueAtributoDadosCliente('cpfCnpj')).subscribe({
       next: retornoApi => this.setaClienteComInformacoesObtidasPeloCnpj(retornoApi),
       error: error => {
         this._snackBar.open('Ocorreu um erro na obtenção das informações do CNPJ', "Fechar", {
@@ -320,12 +326,12 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   private setaClienteComInformacoesPessoaisObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (cnpjResponse.nomeFantasia != null && cnpjResponse.nomeFantasia != '') {
-      this.cliente.nome = cnpjResponse.nomeFantasia;
+      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.nomeFantasia);
       this.dadosCliente.controls['nome'].markAsTouched();
     }
 
     if (cnpjResponse.email != null && cnpjResponse.email != '') {
-      this.cliente.email = cnpjResponse.email;
+      this.setValueParaAtributoDadosCliente('email', cnpjResponse.email);
       this.dadosCliente.controls['email'].markAsTouched();
     }
   }
@@ -333,16 +339,17 @@ export class NovoComponent implements OnInit, OnDestroy {
   private setaClienteComInformacoesDeTelefoneObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (cnpjResponse.telefonePrincipal != null && cnpjResponse.telefonePrincipal != '') {
       if (cnpjResponse.telefonePrincipal.length == 10) {
-        this.cliente.telefone.tipoTelefone = 'FIXO';
+        this.setValueParaAtributoDadosTelefone('tipoTelefone', 'FIXO');
       }
       else {
-        this.cliente.telefone.tipoTelefone = 'MOVEL';
+        this.setValueParaAtributoDadosTelefone('tipoTelefone', 'MOVEL');
       }
       this.atualizaValidatorsTelefone();
       this.dadosTelefone.controls['tipoTelefone'].markAsTouched();
 
-      this.cliente.telefone.prefixo = cnpjResponse.telefonePrincipal.slice(0, 2);
-      this.cliente.telefone.numero = cnpjResponse.telefonePrincipal.slice(2);
+      this.setValueParaAtributoDadosTelefone('prefixo', cnpjResponse.telefonePrincipal.slice(0, 2));
+      this.setValueParaAtributoDadosTelefone('numero', cnpjResponse.telefonePrincipal.slice(2));
+
       this.dadosTelefone.controls['prefixo'].markAsTouched();
       this.dadosTelefone.controls['numero'].markAsTouched();
     }
@@ -350,56 +357,56 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   private setaClienteComInformacoesDeEnderecoObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (cnpjResponse.logradouro != null && cnpjResponse.logradouro != '') {
-      this.cliente.endereco.logradouro = cnpjResponse.logradouro;
+      this.setValueParaAtributoDadosEndereco('logradouro', cnpjResponse.logradouro);
       this.dadosEndereco.controls['logradouro'].markAsTouched();
     }
 
     if (cnpjResponse.numero != null && cnpjResponse.numero != '') {
-      this.cliente.endereco.numero = parseInt(cnpjResponse.numero);
+      this.setValueParaAtributoDadosEndereco('numero', parseInt(cnpjResponse.numero));
       this.dadosEndereco.controls['numero'].markAsTouched();
     }
 
     if (cnpjResponse.bairro != null && cnpjResponse.bairro != '') {
-      this.cliente.endereco.bairro = cnpjResponse.bairro;
+      this.setValueParaAtributoDadosEndereco('bairro', parseInt(cnpjResponse.bairro));
       this.dadosEndereco.controls['bairro'].markAsTouched();
     }
 
     if (cnpjResponse.municipio != null && cnpjResponse.municipio != '') {
-      this.cliente.endereco.cidade = cnpjResponse.municipio;
+      this.setValueParaAtributoDadosEndereco('cidade', cnpjResponse.municipio);
       this.dadosEndereco.controls['cidade'].markAsTouched();
     }
 
     if (cnpjResponse.cep != null) {
-      this.cliente.endereco.codigoPostal = (cnpjResponse.cep).toString();
+      this.setValueParaAtributoDadosEndereco('codigoPostal', (cnpjResponse.cep).toString());
       this.dadosEndereco.controls['codigoPostal'].markAsTouched();
     }
 
     if (cnpjResponse.uf != null && cnpjResponse.uf != '') {
-      this.cliente.endereco.estado = cnpjResponse.uf;
+      this.setValueParaAtributoDadosEndereco('estado', cnpjResponse.uf);
       this.dadosEndereco.controls['estado'].markAsTouched();
       this.obtemTodosMunicipiosPorEstado();
     }
 
     if (cnpjResponse.complemento != null && cnpjResponse.complemento != '') {
-      this.cliente.endereco.complemento = cnpjResponse.complemento;
+      this.setValueParaAtributoDadosEndereco('complemento', cnpjResponse.complemento);
       this.dadosEndereco.controls['complemento'].markAsTouched();
     }
   }
 
   realizaTratamentoInscricaoEstadual() {
-    this.cliente.inscricaoEstadual = this.cliente.inscricaoEstadual
+    this.setValueParaAtributoDadosCliente('inscricaoEstadual', this.getValueAtributoDadosCliente('inscricaoEstadual')
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
-      .trim();
+      .trim());
     this.invocaValidacaoDuplicidadeInscricaoEstadual();
   }
 
   invocaValidacaoDuplicidadeInscricaoEstadual() {
-    if (this.cliente.inscricaoEstadual.length == 11 && this.dadosCliente.controls['inscricaoEstadual'].valid) {
+    if (this.getValueAtributoDadosCliente('inscricaoEstadual').length == 11 && this.dadosCliente.controls['inscricaoEstadual'].valid) {
       this.validaDuplicidadeInscricaoEstadualSubscription$ =
-        this.clienteService.validaDuplicidadeInscricaoEstadual(this.cliente.inscricaoEstadual).subscribe({
+        this.clienteService.validaDuplicidadeInscricaoEstadual(this.getValueAtributoDadosCliente('inscricaoEstadual')).subscribe({
           error: error => {
-            this.cliente.inscricaoEstadual = '';
+            this.setValueParaAtributoDadosCliente('inscricaoEstadual', '');
             this.dadosCliente.controls['inscricaoEstadual'].reset();
             this._snackBar.open(error, "Fechar", {
               duration: 3500
@@ -411,7 +418,7 @@ export class NovoComponent implements OnInit, OnDestroy {
   }
 
   habilitaDataNascimento() {
-    if (this.cliente.tipoPessoa != 'JURIDICA') {
+    if (this.getValueAtributoDadosCliente('tipoPessoa') != 'JURIDICA') {
       this.inputDataNascimento.nativeElement.focus();
       this.dataNascimentoAparente = true;
     }
@@ -419,15 +426,15 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   validaDataNascimento() {
 
-    if (this.cliente.dataNascimento == '') {
+    if (this.getValueAtributoDadosCliente('dataNascimento') == '') {
       this.dataNascimentoAparente = false;
       return;
     }
 
-    let dataNascimentoSplitada = this.cliente.dataNascimento.split("-");
+    let dataNascimentoSplitada = this.getValueAtributoDadosCliente('dataNascimento').split("-");
     if (dataNascimentoSplitada.length == 3) {
       if (parseInt(dataNascimentoSplitada[0]) > 2023 || parseInt(dataNascimentoSplitada[0]) < 1900) {
-        this.cliente.dataNascimento = '';
+        this.setValueParaAtributoDadosCliente('dataNascimento', '');
         this.dataNascimentoAparente = false;
         this._snackBar.open("Data de nascimento inválida", "Fechar", {
           duration: 3500
@@ -442,42 +449,44 @@ export class NovoComponent implements OnInit, OnDestroy {
       return 'error';
     }
     else {
-      if (this.cliente.dataNascimento == '' || this.cliente.dataNascimento == null) return 'calendar_month';
+      if (this.getValueAtributoDadosCliente('dataNascimento') == '' || this.getValueAtributoDadosCliente('dataNascimento') == null) return 'calendar_month';
       else return 'check';
     }
   }
 
   // TELEFONE
   verificaSePrefixoTelefoneNuloOuVazio(): boolean {
-    if (this.cliente.telefone != null) {
-      if (this.cliente.telefone.prefixo != null && this.cliente.telefone.prefixo != undefined && this.cliente.telefone.prefixo != '') {
-        return true;
-      }
+    if (
+      this.getValueAtributoDadosTelefone('prefixo') != null
+      && this.getValueAtributoDadosTelefone('prefixo') != undefined
+      && this.getValueAtributoDadosTelefone('prefixo') != '') {
+      return true;
     }
     return false;
   }
 
   verificaSeTipoTelefoneNuloOuVazio(): boolean {
-    if (this.cliente.telefone != null) {
-      if (this.cliente.telefone.tipoTelefone != null && this.cliente.telefone.tipoTelefone != undefined && this.cliente.telefone.tipoTelefone != '') {
-        return true;
-      }
+    if (
+      this.getValueAtributoDadosTelefone('tipoTelefone') != null
+      && this.getValueAtributoDadosTelefone('tipoTelefone') != undefined
+      && this.getValueAtributoDadosTelefone('tipoTelefone') != '') {
+      return true;
     }
     return false;
   }
 
   realizaTratamentoPrefixo() {
-    this.cliente.telefone.prefixo = this.cliente.telefone.prefixo
+    this.setValueParaAtributoDadosTelefone('prefixo', this.getValueAtributoDadosTelefone('prefixo')
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
-      .trim();
+      .trim());
   }
 
   realizaTratamentoNumeroTelefone() {
-    this.cliente.telefone.numero = this.cliente.telefone.numero
+    this.setValueParaAtributoDadosTelefone('numero', this.getValueAtributoDadosTelefone('numero')
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
-      .trim();
+      .trim());
   }
 
   defineIconeInputTelefone(): string {
@@ -486,14 +495,14 @@ export class NovoComponent implements OnInit, OnDestroy {
     }
     else {
       if (
-        this.cliente.telefone.numero == '' && this.cliente.telefone.tipoTelefone == 'MOVEL_WHATSAPP'
-        || this.cliente.telefone.numero == '' && this.cliente.telefone.tipoTelefone == 'MOVEL'
-        || this.cliente.telefone.numero == null && this.cliente.telefone.tipoTelefone == 'MOVEL_WHATSAPP'
-        || this.cliente.telefone.numero == null && this.cliente.telefone.tipoTelefone == 'MOVEL') return 'smartphone';
+        this.getValueAtributoDadosTelefone('numero') == '' && this.getValueAtributoDadosTelefone('tipoTelefone') == 'MOVEL_WHATSAPP'
+        || this.getValueAtributoDadosTelefone('numero') == '' && this.getValueAtributoDadosTelefone('tipoTelefone') == 'MOVEL'
+        || this.getValueAtributoDadosTelefone('numero') == null && this.getValueAtributoDadosTelefone('tipoTelefone') == 'MOVEL_WHATSAPP'
+        || this.getValueAtributoDadosTelefone('numero') == null && this.getValueAtributoDadosTelefone('tipoTelefone') == 'MOVEL') return 'smartphone';
 
       else if (
-        this.cliente.telefone.numero == '' && this.cliente.telefone.tipoTelefone == 'FIXO'
-        || this.cliente.telefone.numero == null && this.cliente.telefone.tipoTelefone == 'FIXO') return 'call';
+        this.getValueAtributoDadosTelefone('numero') == '' && this.getValueAtributoDadosTelefone('tipoTelefone') == 'FIXO'
+        || this.getValueAtributoDadosTelefone('numero') == null && this.getValueAtributoDadosTelefone('tipoTelefone') == 'FIXO') return 'call';
 
       else return 'check';
     }
@@ -501,14 +510,14 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   // ENDEREÇO
   atualizaValidatorsEndereco() {
-    if (this.cliente.endereco.logradouro != null && this.cliente.endereco.logradouro != '' ||
-      this.cliente.endereco.numero != null && this.cliente.endereco.numero.toString() != '' ||
-      this.cliente.endereco.bairro != null && this.cliente.endereco.bairro != '' ||
-      this.cliente.endereco.cidade != null && this.cliente.endereco.cidade != '' ||
-      this.cliente.endereco.estado != null && this.cliente.endereco.estado != '' ||
-      this.cliente.endereco.codigoPostal != null && this.cliente.endereco.codigoPostal != '' ||
-      this.cliente.endereco.complemento != null && this.cliente.endereco.complemento != '') {
-      this.cliente.endereco.cidade = this.cliente.endereco.cidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    if (this.getValueAtributoDadosEndereco('logradouro') != null && this.getValueAtributoDadosEndereco('logradouro') != '' ||
+      this.getValueAtributoDadosEndereco('numero') != null && this.getValueAtributoDadosEndereco('numero').toString() != '' ||
+      this.getValueAtributoDadosEndereco('bairro') != null && this.getValueAtributoDadosEndereco('bairro') != '' ||
+      this.getValueAtributoDadosEndereco('cidade') != null && this.getValueAtributoDadosEndereco('cidade') != '' ||
+      this.getValueAtributoDadosEndereco('estado') != null && this.getValueAtributoDadosEndereco('estado') != '' ||
+      this.getValueAtributoDadosEndereco('codigoPostal') != null && this.getValueAtributoDadosEndereco('codigoPostal') != '' ||
+      this.getValueAtributoDadosEndereco('complemento') != null && this.getValueAtributoDadosEndereco('complemento') != '') {
+      this.setValueParaAtributoDadosEndereco('cidade', this.getValueAtributoDadosEndereco('cidade').normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
       this.dadosEndereco.controls['logradouro'].addValidators([Validators.required, Validators.maxLength(50), Validators.minLength(1)]);
       this.dadosEndereco.controls['numero'].addValidators([Validators.required, Validators.max(99999), Validators.min(1), Validators.pattern(/^\d{1,5}$/)]);
     }
@@ -545,14 +554,14 @@ export class NovoComponent implements OnInit, OnDestroy {
 
     this.atualizaValidatorsEndereco();
 
-    this.cliente.endereco.codigoPostal = this.cliente.endereco.codigoPostal
+    this.setValueParaAtributoDadosEndereco('codigoPostal', this.getValueAtributoDadosEndereco('codigoPostal')
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
-      .trim();
+      .trim());
 
-    if (this.dadosEndereco.controls['codigoPostal'].valid && this.cliente.endereco.codigoPostal.length == 8) {
+    if (this.dadosEndereco.controls['codigoPostal'].valid && this.getValueAtributoDadosEndereco('codigoPostal').length == 8) {
       this.getEnderecoPeloCepSubscription$ =
-        this.brasilApiService.getEnderecoPeloCep(this.cliente.endereco.codigoPostal).subscribe({
+        this.brasilApiService.getEnderecoPeloCep(this.getValueAtributoDadosEndereco('codigoPostal')).subscribe({
           next: resposta => this.setaEnderecoComInformacoesObtidasPeloCep(resposta),
           error: error => {
             this._snackBar.open(error, "Fechar", {
@@ -565,13 +574,12 @@ export class NovoComponent implements OnInit, OnDestroy {
   }
 
   setaEnderecoComInformacoesObtidasPeloCep(consultaCepResponse: ConsultaCepResponse) {
-    this.cliente.endereco.logradouro = consultaCepResponse.logradouro;
-    this.cliente.endereco.numero = null;
-    this.cliente.endereco.bairro = consultaCepResponse.bairro;
-    this.cliente.endereco.estado = consultaCepResponse.estado;
-    this.cliente.endereco.cidade = consultaCepResponse.cidade;
-    this.cliente.endereco.complemento = null;
-
+    this.setValueParaAtributoDadosEndereco('logradouro', consultaCepResponse.logradouro);
+    this.setValueParaAtributoDadosEndereco('numero', null);
+    this.setValueParaAtributoDadosEndereco('bairro', consultaCepResponse.bairro);
+    this.setValueParaAtributoDadosEndereco('estado', consultaCepResponse.estado);
+    this.setValueParaAtributoDadosEndereco('cidade', consultaCepResponse.cidade);
+    this.setValueParaAtributoDadosEndereco('complemento', null);
     this.dadosEndereco.controls['codigoPostal'].markAsTouched();
     this.dadosEndereco.controls['logradouro'].markAsTouched();
     this.dadosEndereco.controls['bairro'].markAsTouched();
@@ -585,9 +593,9 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   public obtemTodosMunicipiosPorEstado() {
     this.atualizaValidatorsEndereco();
-    if (this.cliente.endereco.estado != null && this.cliente.endereco.estado != '') {
+    if (this.getValueAtributoDadosEndereco('estado') != null && this.getValueAtributoDadosEndereco('estado') != '') {
       this.obtemTodosMunicipiosPorEstadoSubscription$ =
-        this.brasilApiService.obtemTodosMunicipiosPorEstado(this.cliente.endereco.estado).subscribe({
+        this.brasilApiService.obtemTodosMunicipiosPorEstado(this.getValueAtributoDadosEndereco('estado')).subscribe({
           next: resposta => this.municipiosResponse = resposta,
           error: error => {
             this._snackBar.open(error, 'Fechar', {
@@ -605,10 +613,11 @@ export class NovoComponent implements OnInit, OnDestroy {
   // SUBMIT
 
   public enviarFormulario() {
-    if (this.cliente.dataNascimento != null && this.cliente.dataNascimento != '')
-      this.cliente.dataNascimento = this.datePipe.transform(this.cliente.dataNascimento, "yyyy-MM-dd");
+    if (this.getValueAtributoDadosCliente('dataNascimento') != null && this.getValueAtributoDadosCliente('dataNascimento') != '')
+      this.setValueParaAtributoDadosCliente('dataNascimento', this.datePipe.transform(this.getValueAtributoDadosCliente('dataNascimento'), "yyyy-MM-dd"));
 
     if (this.dadosCliente.valid && this.dadosTelefone.valid && this.dadosEndereco.valid) {
+      //TODO ESTRUTURAR LÓGICA DE CRIAÇÃO DE OBJETO DO TIPO CLIENTE
       this.novoClienteSubscription$ =
         this.clienteService.novoCliente(this.cliente).subscribe({
           error: error => {

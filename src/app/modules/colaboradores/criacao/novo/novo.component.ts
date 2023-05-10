@@ -29,7 +29,10 @@ export class NovoComponent {
   stepAtual: number = 0;
 
   ngAfterViewInit(): void {
+    const startTime = performance.now();
     this.ref.detectChanges();
+    const duration = performance.now() - startTime;
+    console.log(`ngAfterViewInit levou ${duration}ms`);
   }
 
   ngOnDestroy(): void {

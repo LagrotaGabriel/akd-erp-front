@@ -1,0 +1,12 @@
+@import "../../../../../node_modules/rfs/scss";
+@import '../../../../dist/variables.scss';
+@import '../styles/custom-inputs.scss';
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    background: none;
+    display: none;
+}
+
+.icone {
+    right: 0.5rem;
+}

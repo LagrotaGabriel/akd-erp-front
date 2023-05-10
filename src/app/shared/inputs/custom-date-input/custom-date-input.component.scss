@@ -1,6 +1,6 @@
-@import "../../../../../../../../node_modules/rfs/scss";
-@import '../../../../../../../dist/variables.scss';
-@import '../custom-inputs.scss';
+@import "../../../../../node_modules/rfs/scss";
+@import '../../../../dist/variables.scss';
+@import '../styles/custom-inputs.scss';
 
 input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;

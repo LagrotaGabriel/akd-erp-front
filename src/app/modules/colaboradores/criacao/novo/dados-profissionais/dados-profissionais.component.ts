@@ -4,8 +4,8 @@ import { Subscription, debounceTime } from 'rxjs';
 import { ColaboradorService } from '../../../services/colaborador.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { SelectOption } from '../shared/models/select-option';
-import { CustomSelectComponent } from '../shared/custom-select/custom-select.component';
+import { SelectOption } from '../../../../../shared/inputs/models/select-option';
+import { CustomSelectComponent } from '../../../../../shared/inputs/custom-select/custom-select.component';
 
 @Component({
   selector: 'app-dados-profissionais',

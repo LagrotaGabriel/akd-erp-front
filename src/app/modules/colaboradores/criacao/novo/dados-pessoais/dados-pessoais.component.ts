@@ -8,8 +8,8 @@ import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-c
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
-import { SelectOption } from '../../../../../shared/inputs/models/select-option';
-import { CustomInputComponent } from '../../../../../shared/inputs/custom-input/custom-input.component';
+import { SelectOption } from '../../../../shared/inputs/models/select-option';
+import { CustomInputComponent } from '../../../../shared/inputs/custom-input/custom-input.component';
 import { ViewportScroller } from '@angular/common';
 
 @Component({

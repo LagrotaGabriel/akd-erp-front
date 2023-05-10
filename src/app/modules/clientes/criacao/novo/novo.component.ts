@@ -1,8 +1,8 @@
 import { ClienteService } from '../../services/cliente.service';
 import { CnpjResponse } from '../../../../shared/models/brasil-api/cnpj-response';
 import { ConsultaCepResponse } from '../../../../shared/models/brasil-api/consulta-cep-response';
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../models/cliente';
 import { BrasilApiService } from '../../../../shared/services/brasil-api.service';
 import { EstadosResponse } from '../../../../shared/models/brasil-api/estados-response';
@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 
 @Component({
   selector: 'app-novo',
@@ -31,7 +32,13 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class NovoComponent implements OnInit, OnDestroy {
 
-  dataNascimentoAparente: boolean = false;
+  constructor(private formBuilder: FormBuilder,
+    private brasilApiService: BrasilApiService,
+    private clienteService: ClienteService,
+    private router: Router,
+    private _snackBar: MatSnackBar,
+    private datePipe: DatePipe,
+    private ref: ChangeDetectorRef) { }
 
   // Subscriptions
   validaDuplicidadeCpfCnpjSubscription$: Subscription;
@@ -66,6 +73,8 @@ export class NovoComponent implements OnInit, OnDestroy {
   // Variaveis endereço
   estadosResponse: EstadosResponse[];
   municipiosResponse: MunicipiosResponse[];
+  estadosOptions: SelectOption[];
+  dataListCidade: string[];
 
   @ViewChild('numeroEndereco') inputNumeroEndereco: ElementRef;
   @ViewChild('inputTipoTelefone') inputTipoTelefone: ElementRef;
@@ -82,9 +91,16 @@ export class NovoComponent implements OnInit, OnDestroy {
     //this.atualizaValidatorsTelefone();
     //this.obtemTodosEstadosBrasileiros();
 
-    setTimeout(() => {
-      this.inputNome.nativeElement.focus();
-    }, 100);
+    /*     setTimeout(() => {
+          this.inputNome.nativeElement.focus();
+        }, 100); */
+  }
+
+  ngAfterViewInit(): void {
+    this.ref.detectChanges();
+    this.obtemTodosEstadosBrasileiros();
+    //this.emissorDeDadosPessoaisDoColaborador.emit(this.dadosColaborador);
+    //this.inputNome.acionaFoco();
   }
 
   ngOnDestroy(): void {
@@ -99,10 +115,16 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   createFormDadosCliente(): FormGroup {
     return this.formBuilder.group({
-      nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      nome: ['', [Validators.required, Validators.maxLength(50)]],
       tipoPessoa: ['FISICA', Validators.required],
       cpfCnpj: ['', [Validators.pattern(this.inputPatternCpfCnpj), Validators.maxLength(this.inputLengthCpfCnpj), Validators.minLength(this.inputLengthCpfCnpj)]],
-      inscricaoEstadual: ['', [Validators.pattern(/^\d{12}/), Validators.maxLength(12), Validators.minLength(12)]],
+      inscricaoEstadual: new FormControl(
+        {
+          value: '',
+          disabled: true
+        },
+        Validators.pattern(/^\d{12}/)
+      ),
       email: ['', [Validators.email, Validators.maxLength(50)]],
       dataNascimento: [''],
       statusCliente: ['COMUM', Validators.required]
@@ -112,8 +134,26 @@ export class NovoComponent implements OnInit, OnDestroy {
   createFormDadosTelefone(): FormGroup {
     return this.formBuilder.group({
       tipoTelefone: [''],
-      prefixo: [null, [Validators.minLength(this.inputLengthPrefixo), Validators.maxLength(this.inputLengthPrefixo), Validators.pattern(this.inputPrefixoPattern)]],
-      numero: [null],
+      prefixo: new FormControl(
+        {
+          value: '',
+          disabled: true
+        },
+        [
+          Validators.minLength(this.inputLengthPrefixo),
+          Validators.maxLength(this.inputLengthPrefixo),
+          Validators.pattern(this.inputPrefixoPattern)]
+      ),
+      numero: new FormControl(
+        {
+          value: '',
+          disabled: true
+        },
+        [
+          Validators.minLength(this.inputLengthTelefone),
+          Validators.maxLength(this.inputLengthTelefone),
+          Validators.pattern(this.inputTelefonePattern)]
+      ),
     });
   }
 
@@ -129,19 +169,12 @@ export class NovoComponent implements OnInit, OnDestroy {
     });
   }
 
-  constructor(private formBuilder: FormBuilder,
-    private brasilApiService: BrasilApiService,
-    private clienteService: ClienteService,
-    private router: Router,
-    private _snackBar: MatSnackBar,
-    private datePipe: DatePipe) { }
-
   protected getValueAtributoDadosCliente(atributo: string): any {
     return this.dadosCliente.controls[atributo].value;
   }
 
   protected setValueParaAtributoDadosCliente(atributo: string, valor: any) {
-    this.dadosCliente.controls[atributo] = valor;
+    this.dadosCliente.controls[atributo].setValue(valor);
   }
 
   protected getValueAtributoDadosTelefone(atributo: string): any {
@@ -149,7 +182,7 @@ export class NovoComponent implements OnInit, OnDestroy {
   }
 
   protected setValueParaAtributoDadosTelefone(atributo: string, valor: any) {
-    this.dadosTelefone.controls[atributo] = valor;
+    this.dadosTelefone.controls[atributo].setValue(valor);
   }
 
   protected getValueAtributoDadosEndereco(atributo: string): any {
@@ -157,7 +190,85 @@ export class NovoComponent implements OnInit, OnDestroy {
   }
 
   protected setValueParaAtributoDadosEndereco(atributo: string, valor: any) {
-    this.dadosEndereco.controls[atributo] = valor;
+    this.dadosEndereco.controls[atributo].setValue(valor);
+  }
+
+  // OPTIONS
+
+  protected geraOptionsTipoPessoa(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'Física',
+        value: 'FISICA'
+      },
+      {
+        text: 'Jurídica',
+        value: 'JURIDICA'
+      }
+    ]
+    return options;
+  }
+
+  protected geraOptionsStatusCliente(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'Comum',
+        value: 'COMUM'
+      },
+      {
+        text: 'Devedor',
+        value: 'DEVEDOR'
+      },
+      {
+        text: 'Vip',
+        value: 'VIP'
+      },
+      {
+        text: 'Atenção',
+        value: 'ATENCAO'
+      }
+    ]
+    return options;
+  }
+
+  protected geraOptionsTipoTelefone(): SelectOption[] {
+    let options: SelectOption[] = [
+      {
+        text: 'Sem telefone',
+        value: ''
+      },
+      {
+        text: 'Fixo',
+        value: 'FIXO'
+      },
+      {
+        text: 'Móvel',
+        value: 'MOVEL'
+      },
+      {
+        text: 'Móvel com whatsapp',
+        value: 'MOVEL_WHATSAPP'
+      }
+    ]
+    return options;
+  }
+
+  protected geraOptionsEstado() {
+    let options: SelectOption[] = [
+      {
+        text: '',
+        value: ''
+      },
+    ]
+
+    this.estadosResponse.forEach(estado => {
+      options.push({
+        text: (estado.sigla + ' - ' + estado.nome).toUpperCase(),
+        value: estado.sigla
+      })
+    })
+
+    this.estadosOptions = options;
   }
 
   retornaParaVisualizacaoDeClientes() {
@@ -204,7 +315,6 @@ export class NovoComponent implements OnInit, OnDestroy {
     else if (this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA') {
       this.inputLengthCpfCnpj = 14;
       this.inputPatternCpfCnpj = /^\d{2}\d{3}\d{3}\d{4}\d{2}/
-      this.dataNascimentoAparente = false;
       this.dadosCliente.controls['inscricaoEstadual'].enable();
       this.dadosCliente.controls['dataNascimento'].disable();
     }
@@ -212,13 +322,8 @@ export class NovoComponent implements OnInit, OnDestroy {
     Validators.minLength(this.inputLengthCpfCnpj), Validators.pattern(this.inputPatternCpfCnpj)]);
 
     this.setValueParaAtributoDadosCliente('dataNascimento', '')
-    this.dadosCliente.controls['dataNascimento'].reset();
-
     this.setValueParaAtributoDadosCliente('inscricaoEstadual', '')
-    this.dadosCliente.controls['inscricaoEstadual'].reset();
-
     this.setValueParaAtributoDadosCliente('cpfCnpj', '')
-    this.dadosCliente.controls['cpfCnpj'].reset();
   }
 
   atualizaValidatorsTelefone() {
@@ -274,7 +379,6 @@ export class NovoComponent implements OnInit, OnDestroy {
   }
 
   invocaValidacaoDuplicidadeCpfCnpj() {
-
     if (
       this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA'
       && this.getValueAtributoDadosCliente('cpfCnpj').length == 14
@@ -417,17 +521,9 @@ export class NovoComponent implements OnInit, OnDestroy {
     }
   }
 
-  habilitaDataNascimento() {
-    if (this.getValueAtributoDadosCliente('tipoPessoa') != 'JURIDICA') {
-      this.inputDataNascimento.nativeElement.focus();
-      this.dataNascimentoAparente = true;
-    }
-  }
-
   validaDataNascimento() {
 
     if (this.getValueAtributoDadosCliente('dataNascimento') == '') {
-      this.dataNascimentoAparente = false;
       return;
     }
 
@@ -435,7 +531,6 @@ export class NovoComponent implements OnInit, OnDestroy {
     if (dataNascimentoSplitada.length == 3) {
       if (parseInt(dataNascimentoSplitada[0]) > 2023 || parseInt(dataNascimentoSplitada[0]) < 1900) {
         this.setValueParaAtributoDadosCliente('dataNascimento', '');
-        this.dataNascimentoAparente = false;
         this._snackBar.open("Data de nascimento inválida", "Fechar", {
           duration: 3500
         })
@@ -531,7 +626,16 @@ export class NovoComponent implements OnInit, OnDestroy {
 
   }
 
-  obtemTodosEstadosBrasileiros() {
+  protected geraDataListCidade() {
+    let municipiosList: string[] = []
+    this.municipiosResponse.forEach(municipio => {
+      municipiosList.push(municipio.nome);
+    })
+
+    this.dataListCidade = municipiosList;
+  }
+
+  protected obtemTodosEstadosBrasileiros() {
     this.obtemTodosEstadosBrasileirosSubscription$ =
       this.brasilApiService.getTodosEstados().subscribe({
         next: response => {
@@ -545,6 +649,7 @@ export class NovoComponent implements OnInit, OnDestroy {
           });
         },
         complete: () => {
+          this.geraOptionsEstado();
           console.log("Estados carregados com sucesso");
         }
       });
@@ -591,7 +696,7 @@ export class NovoComponent implements OnInit, OnDestroy {
     this.obtemTodosMunicipiosPorEstado();
   }
 
-  public obtemTodosMunicipiosPorEstado() {
+  protected obtemTodosMunicipiosPorEstado() {
     this.atualizaValidatorsEndereco();
     if (this.getValueAtributoDadosEndereco('estado') != null && this.getValueAtributoDadosEndereco('estado') != '') {
       this.obtemTodosMunicipiosPorEstadoSubscription$ =
@@ -602,12 +707,24 @@ export class NovoComponent implements OnInit, OnDestroy {
               duration: 3500
             })
           },
-          complete: () => console.log('Obtenção de municípios por estado realizada com sucesso')
+          complete: () => {
+            this.geraDataListCidade();
+            console.log('Obtenção de municípios por estado realizada com sucesso')
+          }
         })
     }
     else {
       this.municipiosResponse = [];
     }
+  }
+
+  protected realizaTratamentoNumero() {
+    this.atualizaValidatorsEndereco();
+    this.dadosEndereco.controls['numero']
+      .setValue(this.getValueAtributoDadosEndereco('numero')
+        .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
+        .replace(/[^0-9.]/g, '')
+        .trim())
   }
 
   // SUBMIT

@@ -20,28 +20,25 @@ import { NovoComponent } from './criacao/novo/novo.component';
 import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pessoais.component';
 import { DadosProfissionaisComponent } from './criacao/novo/dados-profissionais/dados-profissionais.component';
 import { DadosAcessoComponent } from './criacao/novo/dados-acesso/dados-acesso.component';
-import { CustomInputComponent } from '../../shared/inputs/custom-input/custom-input.component';
-import { CustomErrorComponent } from '../../shared/inputs/custom-error/custom-error.component';
-import { CustomSelectComponent } from '../../shared/inputs/custom-select/custom-select.component';
+
 import { CustomTitleContainerComponent } from './criacao/novo/shared/custom-title-container/custom-title-container.component';
-import { CustomDateInputComponent } from '../../shared/inputs/custom-date-input/custom-date-input.component';
-import { CustomTimeInputComponent } from '../../shared/inputs/custom-time-input/custom-time-input.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent,
-    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomInputComponent, CustomErrorComponent, CustomSelectComponent,
-    CustomTitleContainerComponent, CustomDateInputComponent, CustomTimeInputComponent],
+    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomTitleContainerComponent],
   imports: [
     CommonModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    SharedModule,
     MatIconModule,
     MatBadgeModule,
     MatTooltipModule,
     MatProgressBarModule,
-    MatStepperModule
+    MatStepperModule,
   ],
   exports: [
     MenuComponent, ViewComponent, TabelaComponent

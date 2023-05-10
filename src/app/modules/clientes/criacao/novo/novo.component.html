@@ -25,170 +25,58 @@
                 </ng-template>
 
                 <!-- INPUT GROUP NOME -->
-                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label
-                            [ngClass]="{'label_invalida': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
-                            class="label">
-                            Nome
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input matInput formControlName="nome" maxlength="50" autocapitalize="words"
-                            style="text-transform:uppercase" spellcheck="false" tabindex="1" type="text" autofocus="on"
-                            autocomplete="off" #inputNome
-                            [ngClass]="{'input_invalida': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon *ngIf="dadosCliente.controls['nome'].touched" [fontIcon]="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid 
-                            ? 'error' 
-                            : 'check'" [@fadeInOut] (click)="inputNome.focus()"
-                            [ngClass]="{'icone_ok': !dadosCliente.controls['nome'].invalid,
-                                        'icone_error': dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid}" class="icone"></mat-icon>
-                    </div>
+                <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'inputNome'"
+                    [titulo]="'Nome'" [tabIndex]="1" [maxLength]="50" [touched]="dadosCliente.controls['nome'].touched"
+                    [todosCaracteresMaiusculos]="true" [customIcon]="null"
+                    [disabledGroup]="dadosCliente.controls['nome'].disabled"
+                    [valido]="!(dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid)"
+                    [mensagemErro]="'Campo obrigatório'" formControlName="nome" #inputNome></app-custom-input>
 
-                    <div [@fadeInOut]
-                        *ngIf="dadosCliente.controls['nome'].touched && dadosCliente.controls['nome'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ dadosCliente.controls['nome'].errors['minlength']
-                            ? 'A quantidade mínima para este campo é de 3 caracteres'
-                            : 'O campo nome não pode ser vazio' }}</h6>
-                    </div>
-                </div>
+                <!-- SELECT GROUP TIPO -->
+                <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="tipoPessoa"
+                    [tabIndex]="2" [titulo]="'Tipo pessoa'" (change)="atualizaTipoPessoa()" #SelectTipoPessoa
+                    [options]="geraOptionsTipoPessoa()"></app-custom-select>
 
-                <!-- INPUT GROUP TIPO -->
-                <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Tipo pessoa</label>
-                    </div>
-                    <select formControlName="tipoPessoa" autocomplete="off" tabindex="2" (change)="atualizaTipoPessoa()"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" required>
-                        <option value="FISICA">Física</option>
-                        <option value="JURIDICA">Jurídica</option>
-                    </select>
-                </div>
-
-                <!-- INPUT GROUP STATUS -->
-                <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Status</label>
-                    </div>
-                    <select formControlName="statusCliente" tabindex="3"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <option value="COMUM">Comum</option>
-                        <option value="DEVEDOR">Devedor</option>
-                        <option value="VIP">Vip</option>
-                        <option value="ATENCAO">Atenção</option>
-                    </select>
-                </div>
+                <!-- SELECT GROUP STATUS -->
+                <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="statusCliente"
+                    [tabIndex]="3" [titulo]="'Status'" #SelectStatusCliente
+                    [options]="geraOptionsStatusCliente()"></app-custom-select>
 
                 <!-- INPUT GROUP CPF/CNPJ -->
-                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label
-                            [ngClass]="{'label_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
-                            class="label">{{ getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' ? 'Cpf' : 'Cnpj'
-                            }}</label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="cpfCnpj" spellcheck="false" tabindex="4"
-                            (input)="realizaTratamentoCpfCnpj()" [maxlength]="inputLengthCpfCnpj" #inputCpfCnpj
-                            [ngClass]="{'input_invalida': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].value != ''"
-                            [fontIcon]="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid 
-                            ? 'error' 
-                            : 'check'" (click)="inputCpfCnpj.focus()"
-                            [ngClass]="{'icone_ok': !dadosCliente.controls['cpfCnpj'].invalid,
-                                    'icone_error': dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
+                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'cpfCnpj'"
+                    [titulo]="getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' ? 'Cpf' : 'Cnpj'" [tabIndex]="4"
+                    [maxLength]="inputLengthCpfCnpj" [touched]="dadosCliente.controls['cpfCnpj'].touched"
+                    [todosCaracteresMaiusculos]="false" [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
+                    [disabledGroup]="dadosCliente.controls['cpfCnpj'].disabled"
+                    [valido]="!(dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid)"
+                    [mensagemErro]="'Mínimo de ' + inputLengthCpfCnpj + ' caracteres numéricos'"
+                    formControlName="cpfCnpj" #inputCpfCnpj></app-custom-input>
 
-                    <div [@fadeInOut]
-                        *ngIf="dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir ' + inputLengthCpfCnpj + ' dígitos' + '
-                            numéricos' }}</h6>
-                    </div>
+                <!-- INPUT GROUP INSCRIÇÃO ESTADUAL -->
+                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'inscricaoEstadual'"
+                    [titulo]="'Inscrição estadual'" [tabIndex]="5" [maxLength]="12"
+                    [touched]="dadosCliente.controls['inscricaoEstadual'].touched" [todosCaracteresMaiusculos]="false"
+                    [customIcon]="null" (input)="realizaTratamentoInscricaoEstadual()"
+                    [disabledGroup]="dadosCliente.controls['inscricaoEstadual'].disabled"
+                    [valido]="!(dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid)"
+                    [mensagemErro]="'Mínimo de 12 caracteres numéricos'" formControlName="inscricaoEstadual"
+                    #inputInscricaoEstadual></app-custom-input>
 
-                </div>
+                <!-- INPUT GROUP E-MAIL -->
+                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'email'"
+                    [titulo]="'E-mail'" [tabIndex]="6" [maxLength]="50"
+                    [touched]="dadosCliente.controls['email'].touched" [todosCaracteresMaiusculos]="false"
+                    [customIcon]="'alternate_email'" [disabledGroup]="dadosCliente.controls['email'].disabled"
+                    [valido]="!(dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid)"
+                    [mensagemErro]="'O e-mail digitado é inválido'" formControlName="email"
+                    #inputInscricaoEstadual></app-custom-input>
 
-                <!-- INSCRIÇÃO ESTADUAL -->
-                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label
-                            [ngClass]="{'label_invalida': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
-                            [ngClass]="{'label_desabilitada': getValueAtributoDadosCliente('tipoPessoa') == 'FISICA'}" class="label">Inscrição
-                            estadual</label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="inscricaoEstadual" spellcheck="false"
-                            tabindex="5" #inputInscricaoEstadual
-                            [ngClass]="{'input_invalida': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
-                            (input)="realizaTratamentoInscricaoEstadual()" maxlength="12"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].value != ''"
-                            [fontIcon]="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid 
-                            ? 'error' 
-                            : 'check'" (click)="inputInscricaoEstadual.focus()"
-                            [ngClass]="{'icone_ok': !dadosCliente.controls['inscricaoEstadual'].invalid,
-                                    'icone_error': dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
-                    <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 *ngIf="dadosCliente.controls['inscricaoEstadual'].touched && dadosCliente.controls['inscricaoEstadual'].invalid"
-                            class="error_message">{{ 'Este campo deve possuir 12 dígitos numéricos' }}</h6>
-                    </div>
-                </div>
-
-                <!-- E-MAIL -->
-                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}">
-                            E-mail
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="email" autocomplete="off" maxlength="50" spellcheck="false" tabindex="6"
-                            style="text-transform:lowercase" formControlName="email" #inputEmail
-                            [ngClass]="{'input_invalida': dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeInputEmail()" [ngClass]="{ 'icone_ok': defineIconeInputEmail() == 'check' || defineIconeInputEmail() == 'alternate_email',
-                            'icone_error': defineIconeInputEmail() == 'error' }" class="icone"
-                            (click)="inputEmail.focus()"></mat-icon>
-                    </div>
-                    <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 *ngIf="dadosCliente.controls['email'].touched && dadosCliente.controls['email'].invalid"
-                            class="error_message">{{ 'O e-mail digitado é inválido' }}</h6>
-                    </div>
-                </div>
-
-                <!-- DATA DE NASCIMENTO -->
-                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_desabilitada': getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA'}">
-                            Data de nascimento
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input min="1900-01-01" max="2023-04-17" (keydown.enter)="botaoProximoPrimeiraEtapa.click()"
-                            [ngClass]="{'emptyDate': getValueAtributoDadosCliente('dataNascimento') == null 
-                            || getValueAtributoDadosCliente('dataNascimento') == ''}" type="date"
-                            formControlName="dataNascimento" (focusout)="validaDataNascimento()" #inputDataNascimento
-                            formControlName="dataNascimento" tabindex="-1"
-                            class="input input_data col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut] [fontIcon]="defineIconeDataNascimento()"
-                            [ngClass]="{'icone_ok': defineIconeDataNascimento() == 'calendar_month' 
-                            || defineIconeDataNascimento() == 'check', 'icone_error': defineIconeDataNascimento() == 'error' }" class="icone"></mat-icon>
-                        <div class="input_data_placeholder" *ngIf="!dataNascimentoAparente" [@fadeInOut] tabindex="7"
-                            (focus)="habilitaDataNascimento()" (click)="habilitaDataNascimento()"
-                            [ngStyle]="{'cursor': getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' ? 'text' : 'default' }">
-                        </div>
-                    </div>
-                </div>
+                <!-- INPUT GROUP DATA DE NASCIMENTO -->
+                <app-custom-date-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [minDate]="'1900-01-01'"
+                    [maxDate]="'2023-04-17'" [disabledGroup]="dadosCliente.controls['dataNascimento'].disabled"
+                    [id]="'dataNascimento'" [titulo]="'Data de nascimento'" formControlName="dataNascimento"
+                    [vazio]="getValueAtributoDadosCliente('dataNascimento') == '' || getValueAtributoDadosCliente('dataNascimento') == null"
+                    (focusout)="validaDataNascimento()" [tabIndex]="7" #inputDataNascimento></app-custom-date-input>
 
                 <!-- PRIMEIRO CONTAINER DE BOTÃO -->
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -196,7 +84,7 @@
                         (click)="retornaParaVisualizacaoDeClientes()">
                         Voltar
                     </button>
-                    <button (click)="avancaSegundaEtapa()" tabindex="9" class="button"
+                    <button tabindex="9" class="button"
                         [ngClass]="{'botaoHabilitado': dadosClienteForm.valid, 'botaoDesabilitado': !dadosClienteForm.valid}"
                         mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
                 </div>
@@ -212,85 +100,36 @@
                     <span>Telefone</span>
                 </ng-template>
 
-                <!-- Tipo do telefone -->
-                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label">Tipo do telefone</label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <select formControlName="tipoTelefone" tabindex="10" (change)="atualizaValidatorsTelefone()"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" #inputTipoTelefone>
-                            <option value="" selected>Sem telefone</option>
-                            <option value="FIXO">Fixo</option>
-                            <option value="MOVEL">Móvel</option>
-                            <option value="MOVEL_WHATSAPP">Móvel com whatsapp</option>
-                        </select>
-                    </div>
-                </div>
+                <!-- SELECT GROUP TIPO DO TELEFONE -->
+                <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="tipoTelefone"
+                    [tabIndex]="10" [titulo]="'Tipo do telefone'" (change)="atualizaValidatorsTelefone()"
+                    #SelectTipoTelefone [options]="geraOptionsTipoTelefone()"></app-custom-select>
 
-                <!-- PREFIXO -->
-                <div class="row col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid}"
-                            [ngClass]="{'label_desabilitada': !verificaSeTipoTelefoneNuloOuVazio()}">
-                            Prefixo
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" maxlength="2" spellcheck="false" tabindex="11"
-                            (input)="realizaTratamentoPrefixo()"
-                            [ngClass]="{'input_invalida': dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid}"
-                            formControlName="prefixo" class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].value != ''"
-                            [fontIcon]="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid 
-                            ? 'error' 
-                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosTelefone.controls['prefixo'].invalid,
-                                    'icone_error': dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
-                    <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 *ngIf="dadosTelefone.controls['prefixo'].touched && dadosTelefone.controls['prefixo'].invalid"
-                            class="error_message">{{ 'O prefixo deve ser composto por dois caracteres numéricos' }}</h6>
-                    </div>
-                </div>
+                <!-- INPUT GROUP PREFIXO -->
+                <app-custom-input class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12" [id]="'prefixo'"
+                    [titulo]="'Prefixo'" [tabIndex]="11" [maxLength]="2"
+                    [touched]="dadosTelefone.controls['prefixo'].touched" [todosCaracteresMaiusculos]="false"
+                    customIcon="null" [disabledGroup]="dadosTelefone.controls['prefixo'].disabled"
+                    [valido]="!(dadosTelefone.controls['prefixo'].invalid)"
+                    [mensagemErro]="'Mínimo de 2 caracteres numéricos'" formControlName="prefixo"
+                    #inputPrefixo></app-custom-input>
 
-                <!-- NÚMERO -->
-                <div class="row col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
-                            [ngClass]="{'label_desabilitada': !verificaSeTipoTelefoneNuloOuVazio()}">
-                            Número
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" [maxlength]="inputLengthTelefone" spellcheck="false"
-                            tabindex="12" (input)="realizaTratamentoNumeroTelefone()"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                            [ngClass]="{'input_invalida': dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid}"
-                            formControlName="numero">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="getValueAtributoDadosTelefone('tipoTelefone') != '' && getValueAtributoDadosTelefone('tipoTelefone') != null"
-                            [fontIcon]="defineIconeInputTelefone()" [ngClass]="{'icone_ok': defineIconeInputTelefone() == 'smartphone' || defineIconeInputTelefone() == 'check' || defineIconeInputTelefone() == 'call' ,
-                                    'icone_error': defineIconeInputTelefone() == 'error'}" class="icone"></mat-icon>
-                    </div>
-                    <div [@fadeInOut] class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 *ngIf="dadosTelefone.controls['numero'].touched && dadosTelefone.controls['numero'].invalid"
-                            class="error_message">{{ 'O número deve ser composto por ' + inputLengthTelefone + '
-                            caracteres numéricos' }}</h6>
-                    </div>
-                </div>
+                <!-- INPUT GROUP NÚMERO -->
+                <app-custom-input class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12" [id]="'numero'"
+                    [titulo]="'Número'" [tabIndex]="12" [maxLength]="inputLengthTelefone"
+                    [touched]="dadosTelefone.controls['numero'].touched" [todosCaracteresMaiusculos]="false"
+                    [customIcon]="'call'" (input)="realizaTratamentoNumeroTelefone()"
+                    [disabledGroup]="dadosTelefone.controls['numero'].disabled"
+                    [valido]="!(dadosTelefone.controls['numero'].invalid)"
+                    [mensagemErro]="'Mínimo de ' + inputLengthTelefone + ' caracteres numéricos'"
+                    formControlName="numero" #inputNumeroTelefone></app-custom-input>
 
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <button class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button matStepperPrevious
-                        tabindex="13" (click)="avancaPrimeiraEtapa()">
+                        tabindex="13">
                         Voltar
                     </button>
                     <button class="button" mat-button #botaoProximoSegundaEtapa type="button" tabindex="14"
-                        (click)="avancaTerceiraEtapa()"
                         [ngClass]="{'botaoHabilitado': dadosTelefone.valid, 'botaoDesabilitado': !dadosTelefone.valid}"
                         matStepperNext>
                         Próximo
@@ -307,213 +146,66 @@
                     <span>Endereço</span>
                 </ng-template>
 
-                <!-- CÓDIGO POSTAL -->
-                <div class="row col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid}">
-                            Cep
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="codigoPostal" spellcheck="false"
-                            #codigoPostal (input)="realizaTratamentoCodigoPostal()" maxlength="8" tabindex="15"
-                            [ngClass]="{'input_invalida': dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].value != ''"
-                            [fontIcon]="dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid 
-                        ? 'error' 
-                        : 'check'"
-                            [ngClass]="{'icone_ok': !dadosEndereco.controls['codigoPostal'].invalid,
-                                'icone_error': dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
+                <!-- INPUT GROUP CEP -->
+                <app-custom-input class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'cep'" [titulo]="'Cep'"
+                    [tabIndex]="15" [maxLength]="8" [touched]="dadosEndereco.controls['codigoPostal'].touched"
+                    [todosCaracteresMaiusculos]="false" [customIcon]="null" formControlName="codigoPostal"
+                    [disabledGroup]="dadosEndereco.controls['codigoPostal'].disabled"
+                    (input)="realizaTratamentoCodigoPostal()" #inputCodigoPostal
+                    [valido]="!(dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid)"
+                    [mensagemErro]="'Mínimo de 8 caracteres numéricos'"></app-custom-input>
 
-                    <div [@fadeInOut]
-                        *ngIf="dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
-                    </div>
-                </div>
+                <!-- SELECT GROUP ESTADO -->
+                <app-custom-select class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="estado"
+                    (change)="obtemTodosMunicipiosPorEstado()" [tabIndex]="16" [titulo]="'Estado'" #inputEstado
+                    [options]="this.estadosOptions"></app-custom-select>
 
-                <!-- ESTADO -->
-                <div class="row col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosEndereco.controls['estado'].touched && dadosEndereco.controls['estado'].invalid}">
-                            Estado
-                        </label>
-                    </div>
-                    <select formControlName="estado" (change)="obtemTodosMunicipiosPorEstado()"
-                        class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="16">
-                        <option value=""></option>
-                        <option *ngFor="let estado of estadosResponse" [value]="estado.sigla">{{ estado.sigla + ' - ' +
-                            estado.nome | uppercase}}</option>
-                    </select>
-                </div>
+                <!-- INPUT GROUP CIDADE -->
+                <app-custom-input class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cidade'"
+                    [titulo]="'Cidade'" [tabIndex]="17" [maxLength]="50"
+                    [touched]="dadosEndereco.controls['cidade'].touched" [todosCaracteresMaiusculos]="true"
+                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['cidade'].disabled"
+                    (input)="atualizaValidatorsEndereco()" (change)="atualizaValidatorsEndereco()"
+                    [dataList]="dataListCidade"
+                    [valido]="!(dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid)"
+                    [mensagemErro]="'Máximo de 50 caracteres'" formControlName="cidade"
+                    #inputCodigoPostal></app-custom-input>
 
-                <!-- CIDADE -->
-                <div class="row col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}">
-                            Cidade
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="cidade" style="text-transform:uppercase"
-                            spellcheck="false" list="municipiosEstado" maxlength="50"
-                            (input)="atualizaValidatorsEndereco()" (change)="atualizaValidatorsEndereco()"
-                            [ngClass]="{'input_invalida': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}"
-                            class="input input_cidade col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="17">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].value != ''"
-                            [fontIcon]="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid 
-                        ? 'error' 
-                        : 'check'"
-                            [ngClass]="{'icone_ok': !dadosEndereco.controls['cidade'].invalid,
-                                'icone_error': dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
+                <!-- INPUT GROUP LOGRADOURO -->
+                <app-custom-input class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12" [id]="'logradouro'"
+                    [titulo]="'Logradouro'" [tabIndex]="18" [maxLength]="50"
+                    [touched]="dadosEndereco.controls['logradouro'].touched" [todosCaracteresMaiusculos]="true"
+                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['logradouro'].disabled"
+                    (input)="atualizaValidatorsEndereco()" [valido]="!(dadosEndereco.controls['logradouro'].invalid)"
+                    [mensagemErro]="'Campo obrigatório'" formControlName="logradouro"
+                    #inputLogradouro></app-custom-input>
 
-                    <datalist id="municipiosEstado">
-                        <option *ngFor="let municipio of municipiosResponse" [value]="municipio.nome | uppercase">
-                        </option>
-                    </datalist>
+                <!-- INPUT GROUP NUMERO -->
+                <app-custom-input class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12" [id]="'numeroEndereco'"
+                    [titulo]="'Número'" [tabIndex]="19" [maxLength]="5"
+                    [touched]="dadosEndereco.controls['numero'].touched" [todosCaracteresMaiusculos]="false"
+                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['numero'].disabled"
+                    (input)="realizaTratamentoNumero()" [valido]="!(dadosEndereco.controls['numero'].invalid)"
+                    [mensagemErro]="'Campo obrigatório'" formControlName="numero" #inputNumero></app-custom-input>
 
-                    <div [@fadeInOut]
-                        *ngIf="dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
-                    </div>
-                </div>
+                <!-- INPUT GROUP BAIRRO -->
+                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'bairro'"
+                    [titulo]="'Bairro'" [tabIndex]="20" [maxLength]="50"
+                    [touched]="dadosEndereco.controls['bairro'].touched" [todosCaracteresMaiusculos]="true"
+                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['bairro'].disabled"
+                    (input)="atualizaValidatorsEndereco()"
+                    [valido]="!(dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid)"
+                    [mensagemErro]="'Máximo de 50 caracteres'" formControlName="bairro" #inputBairro></app-custom-input>
 
-                <!-- LOGRADOURO -->
-                <div class="row col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}">
-                            Logradouro
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="logradouro"
-                            style="text-transform:uppercase" spellcheck="false" maxlength="50"
-                            (input)="atualizaValidatorsEndereco()"
-                            [ngClass]="{'input_invalida': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="18">
-                        <mat-icon [@fadeInOut] *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid 
-                        || dadosEndereco.controls['logradouro'].valid 
-                            && dadosEndereco.controls['logradouro'].touched 
-                            && dadosEndereco.controls['logradouro'].value != '' 
-                            && dadosEndereco.controls['logradouro'].value != null" [fontIcon]="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid 
-                            ? 'error' 
-                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosEndereco.controls['logradouro'].invalid,
-                            'icone_error': dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
-
-                    <div [@fadeInOut]
-                        *ngIf="dadosEndereco.controls['logradouro'].touched && dadosEndereco.controls['logradouro'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo não pode ser vazio' }}</h6>
-                    </div>
-                </div>
-
-                <!-- NUMERO -->
-                <div class="row col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}">
-                            Número
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="numero" maxlength="5" spellcheck="false"
-                            (input)="atualizaValidatorsEndereco()" #numeroEndereco
-                            [ngClass]="{'input_invalida': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="19">
-                        <mat-icon [@fadeInOut] *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid 
-                        || dadosEndereco.controls['logradouro'].valid 
-                            && dadosEndereco.controls['numero'].touched 
-                            && dadosEndereco.controls['numero'].value != '' 
-                            && dadosEndereco.controls['numero'].value != null" [fontIcon]="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid 
-                            ? 'error' 
-                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosEndereco.controls['numero'].invalid,
-                            'icone_error': dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
-
-                    <div [@fadeInOut]
-                        *ngIf="dadosEndereco.controls['numero'].touched && dadosEndereco.controls['numero'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Campo numérico obrigatório' }}</h6>
-                    </div>
-                </div>
-
-                <!-- BAIRRO -->
-                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid}">
-                            Bairro
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="bairro" style="text-transform:uppercase"
-                            spellcheck="false" maxlength="50" (input)="atualizaValidatorsEndereco()"
-                            [ngClass]="{'input_invalida': dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="20">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].value != ''"
-                            [fontIcon]="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid 
-                            ? 'error' 
-                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosEndereco.controls['bairro'].invalid,
-                            'icone_error': dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
-
-                    <div [@fadeInOut]
-                        *ngIf="dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir 8 dígitos numéricos' }}</h6>
-                    </div>
-                </div>
-
-                <!-- COMPLEMENTO -->
-                <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group">
-                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
-                        <label class="label"
-                            [ngClass]="{'label_invalida': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}">
-                            Complemento
-                        </label>
-                    </div>
-                    <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <input type="text" autocomplete="off" formControlName="complemento"
-                            style="text-transform:uppercase" spellcheck="false" maxlength="80"
-                            (input)="atualizaValidatorsEndereco()"
-                            [ngClass]="{'input_invalida': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}"
-                            class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="21">
-                        <mat-icon [@fadeInOut]
-                            *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].value != ''"
-                            [fontIcon]="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid 
-                            ? 'error' 
-                            : 'check'"
-                            [ngClass]="{'icone_ok': !dadosEndereco.controls['complemento'].invalid,
-                            'icone_error': dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid}"
-                            class="icone"></mat-icon>
-                    </div>
-
-                    <div [@fadeInOut]
-                        *ngIf="dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid"
-                        class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="error_message">{{ 'Este campo deve possuir no máximo 80 caracteres' }}</h6>
-                    </div>
-                </div>
+                <!-- INPUT GROUP COMPLEMENTO -->
+                <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'complemento'"
+                    [titulo]="'Complemento'" [tabIndex]="21" [maxLength]="80"
+                    [touched]="dadosEndereco.controls['complemento'].touched" [todosCaracteresMaiusculos]="true"
+                    [customIcon]="null" [disabledGroup]="dadosEndereco.controls['complemento'].disabled"
+                    (input)="atualizaValidatorsEndereco()"
+                    [valido]="!(dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid)"
+                    [mensagemErro]="'Esse campo deve possuir no máximo 80 caracteres'" formControlName="complemento"
+                    #inputBairro></app-custom-input>
 
                 <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <button (click)="avancaSegundaEtapa()" #botaoVoltarTerceiraEtapa class="button botaoHabilitado"

@@ -2,8 +2,8 @@ import { Subscription } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SelectOption } from '../../../../../shared/inputs/models/select-option';
-import { CustomSelectComponent } from '../../../../../shared/inputs/custom-select/custom-select.component';
+import { SelectOption } from '../../../../shared/inputs/models/select-option';
+import { CustomSelectComponent } from '../../../../shared/inputs/custom-select/custom-select.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

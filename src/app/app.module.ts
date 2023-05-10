@@ -56,7 +56,14 @@ import { ColaboradoresModule } from './modules/colaboradores/colaboradores.modul
     ColaboradoresModule,
     HttpClientModule,
   ],
+  // exports: [
+  //   CustomInputComponent,
+  //   CustomErrorComponent,
+  //   CustomSelectComponent,
+  //   CustomDateInputComponent,
+  //   CustomTimeInputComponent
+  // ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

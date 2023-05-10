@@ -3,6 +3,7 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClientesRoutingModule } from './clientes-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,10 +38,12 @@ import { DadosEnderecoComponent } from './criacao/novo/dados-endereco/dados-ende
 registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent, PaginacaoComponent, AcordeaoComponent, CabecalhoComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent ],
-  exports: [ MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent ],
+  declarations: [MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent, PaginacaoComponent, AcordeaoComponent,
+    CabecalhoComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent],
+  exports: [MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent],
   imports: [
     CommonModule,
+    SharedModule,
     ClientesRoutingModule,
     MatGridListModule,
     MatIconModule,
@@ -60,7 +63,7 @@ registerLocaleData(ptBr);
     MatStepperModule,
     MatNativeDateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt' },

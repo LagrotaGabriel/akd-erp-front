@@ -1,17 +1,14 @@
 import { ClienteService } from '../../services/cliente.service';
-import { CnpjResponse } from '../../../../shared/models/brasil-api/cnpj-response';
-import { ConsultaCepResponse } from '../../../../shared/models/brasil-api/consulta-cep-response';
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Cliente } from '../models/cliente';
 import { BrasilApiService } from '../../../../shared/services/brasil-api.service';
-import { EstadosResponse } from '../../../../shared/models/brasil-api/estados-response';
-import { MunicipiosResponse } from '../../../../shared/models/brasil-api/municipios-response';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
+import { Telefone } from '../models/telefone';
+import { Endereco } from '../models/endereco';
 
 @Component({
   selector: 'app-novo',
@@ -20,12 +17,10 @@ import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option
 })
 export class NovoComponent implements OnDestroy {
 
-  constructor(private formBuilder: FormBuilder,
-    private brasilApiService: BrasilApiService,
+  constructor(
     private clienteService: ClienteService,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private datePipe: DatePipe,
     private ref: ChangeDetectorRef) { }
 
   // Subscriptions
@@ -39,6 +34,8 @@ export class NovoComponent implements OnDestroy {
   cliente: Cliente;
 
   stepAtual: number = 0;
+  telefoneBuscadoCnpj: Telefone;
+  enderecoBuscadoCnpj: Endereco;
 
   ngAfterViewInit(): void {
     const startTime = performance.now();
@@ -70,6 +67,16 @@ export class NovoComponent implements OnDestroy {
   protected recebeFormGroupDadosEndereco(event) {
     console.log('Recebendo dados de endereço')
     this.dadosEndereco = event;
+  }
+
+  protected recebeTelefoneEncontradoNoCnpj(telefone: Telefone) {
+    console.log('Recebendo telefone encontrado pelo CNPJ');
+    this.telefoneBuscadoCnpj = telefone;
+  }
+
+  protected recebeEnderecoEncontradoNoCnpj(endereco: Endereco) {
+    console.log('Recebendo endereço encontrado pelo CNPJ');
+    this.enderecoBuscadoCnpj = endereco;
   }
 
   // SUBMIT

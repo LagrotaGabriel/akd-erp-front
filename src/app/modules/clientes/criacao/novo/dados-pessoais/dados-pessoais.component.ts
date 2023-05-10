@@ -5,10 +5,12 @@ import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
 import { ClienteService } from '../../../services/cliente.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatePipe } from '@angular/common';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
+import { Telefone } from '../../models/telefone';
+import { Endereco } from '../../models/endereco';
+import { Util } from 'src/app/modules/utils/Util';
 
 @Component({
   selector: 'app-dados-pessoais',
@@ -22,7 +24,6 @@ export class DadosPessoaisComponent {
     private clienteService: ClienteService,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private datePipe: DatePipe,
     private ref: ChangeDetectorRef) { }
 
   // Validations
@@ -38,6 +39,9 @@ export class DadosPessoaisComponent {
   validaDuplicidadeInscricaoEstadualSubscription$: Subscription;
 
   @Input() stepAtual: number;
+
+  @Output() emissorDeTelefoneEncontradoNoCnpj = new EventEmitter<Telefone>();
+  @Output() emissorDeEnderecoEncontradoNoCnpj = new EventEmitter<Endereco>();
 
   protected dadosCliente: FormGroup = this.createFormDadosCliente();
   @Output() emissorDeDadosPessoaisDoCliente = new EventEmitter<FormGroup>();
@@ -215,74 +219,41 @@ export class DadosPessoaisComponent {
   }
 
   private setaClienteComInformacoesPessoaisObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    if (cnpjResponse.nomeFantasia != null && cnpjResponse.nomeFantasia != '') {
+    if (Util.isNotEmptyString(cnpjResponse.nomeFantasia)) {
       this.setValueParaAtributoDadosCliente('nome', cnpjResponse.nomeFantasia);
       this.dadosCliente.controls['nome'].markAsTouched();
     }
 
-    if (cnpjResponse.email != null && cnpjResponse.email != '') {
+    if (Util.isNotEmptyString(cnpjResponse.email)) {
       this.setValueParaAtributoDadosCliente('email', cnpjResponse.email);
       this.dadosCliente.controls['email'].markAsTouched();
     }
   }
 
   private setaClienteComInformacoesDeTelefoneObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    //TODO
-    /*     if (cnpjResponse.telefonePrincipal != null && cnpjResponse.telefonePrincipal != '') {
-          if (cnpjResponse.telefonePrincipal.length == 10) {
-            this.setValueParaAtributoDadosTelefone('tipoTelefone', 'FIXO');
-          }
-          else {
-            this.setValueParaAtributoDadosTelefone('tipoTelefone', 'MOVEL');
-          }
-          this.atualizaValidatorsTelefone();
-          this.dadosTelefone.controls['tipoTelefone'].markAsTouched();
-    
-          this.setValueParaAtributoDadosTelefone('prefixo', cnpjResponse.telefonePrincipal.slice(0, 2));
-          this.setValueParaAtributoDadosTelefone('numero', cnpjResponse.telefonePrincipal.slice(2));
-    
-          this.dadosTelefone.controls['prefixo'].markAsTouched();
-          this.dadosTelefone.controls['numero'].markAsTouched();
-        } */
+    if (Util.isEmptyString(cnpjResponse.telefonePrincipal)) {
+      let telefone: Telefone = new Telefone();
+      if (cnpjResponse.telefonePrincipal.length == 10) telefone.tipoTelefone = 'FIXO';
+      else telefone.tipoTelefone = 'MOVEL';
+
+      telefone.prefixo = cnpjResponse.telefonePrincipal.slice(0, 2);
+      telefone.numero = cnpjResponse.telefonePrincipal.slice(2);
+
+      this.emissorDeTelefoneEncontradoNoCnpj.emit(telefone);
+    }
   }
 
   private setaClienteComInformacoesDeEnderecoObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    //TODO
-    /*     if (cnpjResponse.logradouro != null && cnpjResponse.logradouro != '') {
-          this.setValueParaAtributoDadosEndereco('logradouro', cnpjResponse.logradouro);
-          this.dadosEndereco.controls['logradouro'].markAsTouched();
-        }
-    
-        if (cnpjResponse.numero != null && cnpjResponse.numero != '') {
-          this.setValueParaAtributoDadosEndereco('numero', parseInt(cnpjResponse.numero));
-          this.dadosEndereco.controls['numero'].markAsTouched();
-        }
-    
-        if (cnpjResponse.bairro != null && cnpjResponse.bairro != '') {
-          this.setValueParaAtributoDadosEndereco('bairro', parseInt(cnpjResponse.bairro));
-          this.dadosEndereco.controls['bairro'].markAsTouched();
-        }
-    
-        if (cnpjResponse.municipio != null && cnpjResponse.municipio != '') {
-          this.setValueParaAtributoDadosEndereco('cidade', cnpjResponse.municipio);
-          this.dadosEndereco.controls['cidade'].markAsTouched();
-        }
-    
-        if (cnpjResponse.cep != null) {
-          this.setValueParaAtributoDadosEndereco('codigoPostal', (cnpjResponse.cep).toString());
-          this.dadosEndereco.controls['codigoPostal'].markAsTouched();
-        }
-    
-        if (cnpjResponse.uf != null && cnpjResponse.uf != '') {
-          this.setValueParaAtributoDadosEndereco('estado', cnpjResponse.uf);
-          this.dadosEndereco.controls['estado'].markAsTouched();
-          this.obtemTodosMunicipiosPorEstado();
-        }
-    
-        if (cnpjResponse.complemento != null && cnpjResponse.complemento != '') {
-          this.setValueParaAtributoDadosEndereco('complemento', cnpjResponse.complemento);
-          this.dadosEndereco.controls['complemento'].markAsTouched();
-        } */
+    console.log(cnpjResponse.numero);
+    let endereco: Endereco = new Endereco();
+    if (Util.isNotEmptyString(cnpjResponse.logradouro)) endereco.logradouro = cnpjResponse.logradouro;
+    if (Util.isNotEmptyString(cnpjResponse.numero)) endereco.numero = Util.stringToNumber(cnpjResponse.numero);
+    if (Util.isNotEmptyString(cnpjResponse.bairro)) endereco.bairro = cnpjResponse.bairro;
+    if (Util.isNotEmptyString(cnpjResponse.municipio)) endereco.cidade = cnpjResponse.municipio;
+    if (Util.isNotEmptyNumber(cnpjResponse.cep)) endereco.codigoPostal = cnpjResponse.cep.toString();
+    if (Util.isNotEmptyString(cnpjResponse.uf)) endereco.estado = cnpjResponse.uf;
+    if (Util.isNotEmptyString(cnpjResponse.complemento)) endereco.complemento = cnpjResponse.complemento;
+    this.emissorDeEnderecoEncontradoNoCnpj.emit(endereco);
   }
 
   realizaTratamentoInscricaoEstadual() {
@@ -329,6 +300,15 @@ export class DadosPessoaisComponent {
 
   retornaParaVisualizacaoDeClientes() {
     this.router.navigate(['/clientes'])
+  }
+
+  protected avancaProximaEtapa() {
+    if (this.dadosCliente.invalid) {
+      this.dadosCliente.markAllAsTouched();
+      this._snackBar.open('Ops! Algum campo está incorreto. Revise o formulário e tente novamente.', "Fechar", {
+        duration: 3500
+      })
+    }
   }
 
 }

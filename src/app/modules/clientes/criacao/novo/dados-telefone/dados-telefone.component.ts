@@ -1,13 +1,10 @@
 import { Subscription, debounceTime } from 'rxjs';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
-import { ClienteService } from '../../../services/cliente.service';
-import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatePipe } from '@angular/common';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-select/custom-select.component';
+import { Telefone } from '../../models/telefone';
 
 @Component({
   selector: 'app-dados-telefone',
@@ -17,11 +14,7 @@ import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-sele
 export class DadosTelefoneComponent {
 
   constructor(private formBuilder: FormBuilder,
-    private brasilApiService: BrasilApiService,
-    private clienteService: ClienteService,
-    private router: Router,
     private _snackBar: MatSnackBar,
-    private datePipe: DatePipe,
     private ref: ChangeDetectorRef) { }
 
   // Validations
@@ -34,6 +27,7 @@ export class DadosTelefoneComponent {
   @ViewChild('SelectTipoTelefone') selectTipoTelefone: CustomSelectComponent;
 
   @Input() stepAtual: number;
+  @Input() telefoneEncontradoNoCnpj: Telefone;
 
   protected dadosTelefone: FormGroup = this.createFormDadosTelefone();
   @Output() emissorDeDadosDeTelefoneDoCliente = new EventEmitter<FormGroup>();
@@ -57,6 +51,13 @@ export class DadosTelefoneComponent {
         this.selectTipoTelefone.acionaFoco();
       }, 300);
     }
+
+    if (changes['telefoneEncontradoNoCnpj'] != undefined) {
+      let telefone: Telefone = changes['telefoneEncontradoNoCnpj'].currentValue;
+      if (telefone != undefined) {
+        this.atualizaTelefoneComTelefoneEncontradoPeloCnpj(telefone);
+      }
+    }
   }
 
   ngOnDestroy(): void {
@@ -72,8 +73,6 @@ export class DadosTelefoneComponent {
           disabled: true
         },
         [
-          Validators.minLength(this.inputLengthPrefixo),
-          Validators.maxLength(this.inputLengthPrefixo),
           Validators.pattern(this.inputPrefixoPattern)]
       ),
       numero: new FormControl(
@@ -82,8 +81,6 @@ export class DadosTelefoneComponent {
           disabled: true
         },
         [
-          Validators.minLength(this.inputLengthTelefone),
-          Validators.maxLength(this.inputLengthTelefone),
           Validators.pattern(this.inputTelefonePattern)]
       ),
     });
@@ -121,19 +118,16 @@ export class DadosTelefoneComponent {
   }
 
   atualizaValidatorsTelefone() {
-    this.setValueParaAtributoDadosTelefone('prefixo', '');
-    this.dadosTelefone.controls['prefixo'].reset();
 
-    this.setValueParaAtributoDadosTelefone('numero', '');
-    this.dadosTelefone.controls['numero'].reset();
+    this.dadosTelefone.setValue({
+      tipoTelefone: this.getValueAtributoDadosTelefone('tipoTelefone'),
+      prefixo: '',
+      numero: ''
+    })
 
-    this.dadosTelefone.controls['prefixo'].clearValidators();
-    this.dadosTelefone.controls['numero'].clearValidators();
+    if (this.getValueAtributoDadosTelefone('tipoTelefone') != '') {
 
-    if (this.getValueAtributoDadosTelefone('tipoTelefone') != '' && this.getValueAtributoDadosTelefone('tipoTelefone') != null) {
-
-      this.dadosTelefone.controls['prefixo'].enable();
-      this.dadosTelefone.controls['numero'].enable();
+      this.dadosTelefone.enable()
 
       if (this.getValueAtributoDadosTelefone('tipoTelefone') == 'FIXO') {
         this.inputLengthTelefone = 8;
@@ -145,14 +139,14 @@ export class DadosTelefoneComponent {
         this.inputTelefonePattern = /^\d\d{4}\d{4}/;
       }
 
-      //TODO VERIFICAR POSSIBILIDADE DE ADICIONAR VALIDATORS EM MASSA
-      this.dadosTelefone.controls['prefixo'].addValidators(Validators.required);
-      this.dadosTelefone.controls['prefixo'].addValidators([Validators.maxLength(this.inputLengthPrefixo), Validators.minLength(this.inputLengthPrefixo)]);
-      this.dadosTelefone.controls['prefixo'].addValidators(Validators.pattern(this.inputPrefixoPattern));
+      this.dadosTelefone.controls['prefixo'].addValidators([
+        Validators.required, Validators.pattern(this.inputPrefixoPattern)
+      ])
 
-      this.dadosTelefone.controls['numero'].addValidators(Validators.required);
-      this.dadosTelefone.controls['numero'].addValidators([Validators.maxLength(this.inputLengthTelefone), Validators.minLength(this.inputLengthTelefone)]);
-      this.dadosTelefone.controls['numero'].addValidators(Validators.pattern(this.inputTelefonePattern));
+      this.dadosTelefone.controls['numero'].addValidators([
+        Validators.required, Validators.pattern(this.inputTelefonePattern)
+      ])
+
     }
 
     else {
@@ -164,23 +158,24 @@ export class DadosTelefoneComponent {
     this.dadosTelefone.controls['numero'].updateValueAndValidity();
   }
 
+  private atualizaTelefoneComTelefoneEncontradoPeloCnpj(telefone: Telefone) {
+    this.setValueParaAtributoDadosTelefone('tipoTelefone', telefone.tipoTelefone);
+    this.atualizaValidatorsTelefone();
+    this.dadosTelefone.setValue({
+      tipoTelefone: telefone.tipoTelefone,
+      prefixo: telefone.prefixo,
+      numero: telefone.numero,
+    })
+    this.dadosTelefone.markAllAsTouched();
+  }
+
   verificaSePrefixoTelefoneNuloOuVazio(): boolean {
-    if (
-      this.getValueAtributoDadosTelefone('prefixo') != null
-      && this.getValueAtributoDadosTelefone('prefixo') != undefined
-      && this.getValueAtributoDadosTelefone('prefixo') != '') {
-      return true;
-    }
+    if (this.getValueAtributoDadosTelefone('prefixo') != '') return true;
     return false;
   }
 
   verificaSeTipoTelefoneNuloOuVazio(): boolean {
-    if (
-      this.getValueAtributoDadosTelefone('tipoTelefone') != null
-      && this.getValueAtributoDadosTelefone('tipoTelefone') != undefined
-      && this.getValueAtributoDadosTelefone('tipoTelefone') != '') {
-      return true;
-    }
+    if (this.getValueAtributoDadosTelefone('tipoTelefone') != '') return true;
     return false;
   }
 
@@ -196,6 +191,15 @@ export class DadosTelefoneComponent {
       .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
       .replace(/[^0-9.]/g, '')
       .trim());
+  }
+
+  protected avancaProximaEtapa() {
+    if (this.dadosTelefone.invalid) {
+      this.dadosTelefone.markAllAsTouched();
+      this._snackBar.open('Ops! Algum campo está incorreto. Revise o formulário e tente novamente.', "Fechar", {
+        duration: 3500
+      })
+    }
   }
 
 }

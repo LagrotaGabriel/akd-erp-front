@@ -24,11 +24,10 @@
         #inputNumeroTelefone></app-custom-input>
 
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button class="button botaoHabilitado" #botaoVoltarSegundaEtapa mat-button matStepperPrevious tabindex="13">
+        <button class="button" #botaoRetorna mat-button matStepperPrevious tabindex="13">
             Voltar
         </button>
-        <button class="button" mat-button #botaoProximoSegundaEtapa type="button" tabindex="14"
-            [ngClass]="{'botaoHabilitado': dadosTelefone.valid, 'botaoDesabilitado': !dadosTelefone.valid}"
+        <button class="button" mat-button #botaoAvanca type="button" tabindex="14" (click)="avancaProximaEtapa()"
             matStepperNext>
             Próximo
         </button>

@@ -56,12 +56,12 @@
 
     <!-- PRIMEIRO CONTAINER DE BOTÃO -->
     <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <button class="button botaoHabilitado" #botaoVoltarVisualizacaoClientes mat-button tabindex="8"
+        <button class="button botaoHabilitado" #botaoVoltar mat-button tabindex="8"
             (click)="retornaParaVisualizacaoDeClientes()">
             Voltar
         </button>
-        <button tabindex="9" class="button"
+        <button tabindex="9" class="button" mat-button matStepperNext #botaoProximo
             [ngClass]="{'botaoHabilitado': dadosClienteForm.valid, 'botaoDesabilitado': !dadosClienteForm.valid}"
-            mat-button matStepperNext #botaoProximoPrimeiraEtapa>Próximo</button>
+            (click)="avancaProximaEtapa()">Próximo</button>
     </div>
 </form>

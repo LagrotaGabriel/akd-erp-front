@@ -22,6 +22,8 @@
                 <span>Dados</span>
             </ng-template>
             <app-dados-pessoais [stepAtual]="stepAtual"
+                (emissorDeEnderecoEncontradoNoCnpj)="recebeEnderecoEncontradoNoCnpj($event)"
+                (emissorDeTelefoneEncontradoNoCnpj)="recebeTelefoneEncontradoNoCnpj($event)"
                 (emissorDeDadosPessoaisDoCliente)="recebeFormGroupDadosPessoais($event)"></app-dados-pessoais>
         </mat-step>
 
@@ -30,7 +32,7 @@
             <ng-template matStepLabel>
                 <span>Telefone</span>
             </ng-template>
-            <app-dados-telefone [stepAtual]="stepAtual"
+            <app-dados-telefone [stepAtual]="stepAtual" [telefoneEncontradoNoCnpj]="telefoneBuscadoCnpj"
                 (emissorDeDadosDeTelefoneDoCliente)="recebeFormGroupDadosTelefone($event)"></app-dados-telefone>
         </mat-step>
 
@@ -39,7 +41,8 @@
             <ng-template matStepLabel>
                 <span>Endereço</span>
             </ng-template>
-            <app-dados-endereco [stepAtual]="stepAtual" (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
+            <app-dados-endereco [stepAtual]="stepAtual" [enderecoEncontradoNoCnpj]="enderecoBuscadoCnpj"
+                (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
                 (emissorDeDadosDeEnderecoDoCliente)="recebeFormGroupDadosEndereco($event)"></app-dados-endereco>
         </mat-step>
 

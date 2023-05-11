@@ -71,11 +71,10 @@ export class DadosEnderecoComponent {
         this.inputCodigoPostal.acionaFoco();
       }, 300);
     }
-
     if (changes['enderecoEncontradoNoCnpj'] != undefined) {
       let endereco: Endereco = changes['enderecoEncontradoNoCnpj'].currentValue;
       if (endereco != undefined) {
-        this.atualizaEnderecoComTelefoneEncontradoPeloCnpj(endereco);
+        this.atualizaEnderecoComValoresEncontradosPeloCnpj(endereco);
       }
     }
   }
@@ -284,10 +283,9 @@ export class DadosEnderecoComponent {
     }
   }
 
-  private atualizaEnderecoComTelefoneEncontradoPeloCnpj(endereco: Endereco) {
-    console.log(endereco.numero);
+  private atualizaEnderecoComValoresEncontradosPeloCnpj(endereco: Endereco) {
     this.dadosEndereco.setValue({
-      codigoPostal: this.getValueAtributoDadosEndereco('codigoPostal'),
+      codigoPostal: (Util.isNotEmptyString(endereco.codigoPostal)) ? endereco.codigoPostal : this.getValueAtributoDadosEndereco('codigoPostal'),
       logradouro: (Util.isNotEmptyString(endereco.logradouro)) ? endereco.logradouro : this.getValueAtributoDadosEndereco('logradouro'),
       numero: (Util.isNotEmptyNumber(endereco.numero)) ? endereco.numero : this.getValueAtributoDadosEndereco('numero'),
       bairro: (Util.isNotEmptyString(endereco.bairro)) ? endereco.bairro : this.getValueAtributoDadosEndereco('bairro'),

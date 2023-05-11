@@ -21,7 +21,7 @@
     <!-- INPUT GROUP CPF/CNPJ -->
     <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'cpfCnpj'"
         [titulo]="getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' ? 'Cpf' : 'Cnpj'" [tabIndex]="4"
-        [maxLength]="inputLengthCpfCnpj" [touched]="dadosCliente.controls['cpfCnpj'].touched"
+        [maxLength]="20" [touched]="dadosCliente.controls['cpfCnpj'].touched"
         [todosCaracteresMaiusculos]="false" [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
         [disabledGroup]="dadosCliente.controls['cpfCnpj'].disabled"
         [valido]="!(dadosCliente.controls['cpfCnpj'].touched && dadosCliente.controls['cpfCnpj'].invalid)"

@@ -19,7 +19,7 @@ export class ClienteService {
     }),
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MjE5MjA0IiwiZXhwIjoxNjgzODE2NzI2fQ.OgtzO2fXd5h5EBz9YyVgAFMtd8hCQ4oBdjczUDbO8NpqTzAYXDapt4JmcyuekLMD9Jd2eV5TR63oCWX6915flg'
+      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MjE5MjA0IiwiZXhwIjoxNjg0NDM0MDMwfQ.TI7kPJNw0eEQDOrbpQVGZO0cruCUBUobklO1VF71GGGi9WUQLBZNILN6kLgXqrMrcpGvix3YGzJKo77hcH1yAA'
     }),
     body: null
   }
@@ -73,7 +73,10 @@ export class ClienteService {
     this.httpOptions.body = null;
     return this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, cpfCnpj, this.httpOptions).pipe(
       catchError((erro: HttpErrorResponse) => {
-        return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
+        console.log(erro);
+        if (erro.status != 403 && erro.status != 0) return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")));
+        else if (erro.status == 403) return throwError(() => new Error('Ops! Ocorreu um erro de autenticação'));
+        else return throwError(() => new Error('Ops! Ocorreu um erro de conexão com o servidor'));
       })
     )
   }

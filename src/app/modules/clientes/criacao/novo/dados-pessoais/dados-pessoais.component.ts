@@ -178,7 +178,7 @@ export class DadosPessoaisComponent {
       && this.dadosCliente.controls['cpfCnpj'].valid) {
 
       this.validaDuplicidadeCpfCnpjSubscription$ = this.clienteService.validaDuplicidadeCpfCnpj(this.getValueAtributoDadosCliente('cpfCnpj')).subscribe({
-        error: error => {
+        error: (error) => {
           this.setValueParaAtributoDadosCliente('cpfCnpj', '');
           this.dadosCliente.controls['cpfCnpj'].reset();
           this._snackBar.open(error, "Fechar", {
@@ -213,6 +213,7 @@ export class DadosPessoaisComponent {
   }
 
   setaClienteComInformacoesObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
+    console.log(cnpjResponse);
     this.setaClienteComInformacoesPessoaisObtidasPeloCnpj(cnpjResponse);
     this.setaClienteComInformacoesDeTelefoneObtidasPeloCnpj(cnpjResponse);
     this.setaClienteComInformacoesDeEnderecoObtidasPeloCnpj(cnpjResponse);
@@ -221,6 +222,10 @@ export class DadosPessoaisComponent {
   private setaClienteComInformacoesPessoaisObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (Util.isNotEmptyString(cnpjResponse.nomeFantasia)) {
       this.setValueParaAtributoDadosCliente('nome', cnpjResponse.nomeFantasia);
+      this.dadosCliente.controls['nome'].markAsTouched();
+    }
+    else if (Util.isNotEmptyString(cnpjResponse.razaoSocial)) {
+      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.razaoSocial);
       this.dadosCliente.controls['nome'].markAsTouched();
     }
 
@@ -233,18 +238,26 @@ export class DadosPessoaisComponent {
   private setaClienteComInformacoesDeTelefoneObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (Util.isEmptyString(cnpjResponse.telefonePrincipal)) {
       let telefone: Telefone = new Telefone();
-      if (cnpjResponse.telefonePrincipal.length == 10) telefone.tipoTelefone = 'FIXO';
-      else telefone.tipoTelefone = 'MOVEL';
-
-      telefone.prefixo = cnpjResponse.telefonePrincipal.slice(0, 2);
-      telefone.numero = cnpjResponse.telefonePrincipal.slice(2);
-
+      if (cnpjResponse.telefonePrincipal.length == 10) {
+        telefone.tipoTelefone = 'FIXO';
+        telefone.prefixo = cnpjResponse.telefonePrincipal.slice(0, 2);
+        telefone.numero = cnpjResponse.telefonePrincipal.slice(2);
+      }
+      else if (cnpjResponse.telefonePrincipal.length == 11) {
+        telefone.tipoTelefone = 'MOVEL';
+        telefone.prefixo = cnpjResponse.telefonePrincipal.slice(0, 2);
+        telefone.numero = cnpjResponse.telefonePrincipal.slice(2);
+      }
+      else {
+        telefone.tipoTelefone = '';
+        telefone.prefixo = '';
+        telefone.numero = '';
+      }
       this.emissorDeTelefoneEncontradoNoCnpj.emit(telefone);
     }
   }
 
   private setaClienteComInformacoesDeEnderecoObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    console.log(cnpjResponse.numero);
     let endereco: Endereco = new Endereco();
     if (Util.isNotEmptyString(cnpjResponse.logradouro)) endereco.logradouro = cnpjResponse.logradouro;
     if (Util.isNotEmptyString(cnpjResponse.numero)) endereco.numero = Util.transformStringToNumber(cnpjResponse.numero);

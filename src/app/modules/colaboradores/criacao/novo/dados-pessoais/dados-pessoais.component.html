@@ -16,7 +16,7 @@
 
     <!-- INPUT GROUP CPF/CNPJ -->
     <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cpf'" [titulo]="'CPF'" [tabIndex]="2"
-        [maxLength]="inputLengthCpfCnpj" [touched]="dadosColaborador.controls['cpfCnpj'].touched"
+        [maxLength]="20" [touched]="dadosColaborador.controls['cpfCnpj'].touched"
         [disabledGroup]="dadosColaborador.controls['cpfCnpj'].disabled" [todosCaracteresMaiusculos]="false"
         [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
         [valido]="!(dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid)"

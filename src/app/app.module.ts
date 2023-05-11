@@ -24,7 +24,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatExpansionModule } from '@angular/material/expansion';
 
-import { ClientesModule } from './modules/clientes/clientes.module';
+import { ClientesModule } from './modules/pages/clientes/clientes.module';
 import { DatePipe } from '@angular/common';
 import { ColaboradoresModule } from './modules/colaboradores/colaboradores.module';
 
@@ -56,13 +56,7 @@ import { ColaboradoresModule } from './modules/colaboradores/colaboradores.modul
     ColaboradoresModule,
     HttpClientModule,
   ],
-  // exports: [
-  //   CustomInputComponent,
-  //   CustomErrorComponent,
-  //   CustomSelectComponent,
-  //   CustomDateInputComponent,
-  //   CustomTimeInputComponent
-  // ],
+
   providers: [DatePipe],
   bootstrap: [AppComponent],
 })

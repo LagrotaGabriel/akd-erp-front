@@ -9,7 +9,7 @@ const routes: Routes = [
     children: [
       {
         path: 'clientes', 
-        loadChildren: () => import('./modules/clientes/clientes-routing.module').then( m => m.ClientesRoutingModule)
+        loadChildren: () => import('./modules/pages/clientes/clientes-routing.module').then( m => m.ClientesRoutingModule)
       },
       {
         path: 'colaboradores',

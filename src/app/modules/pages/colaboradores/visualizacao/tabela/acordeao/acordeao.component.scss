@@ -1,0 +1,122 @@
+@import '../../../../../../../dist/variables.scss';
+@import "../../../../../../../../node_modules/rfs/scss";
+
+.accordion_container,
+.accordion_linha_principal,
+.avatar_block,
+.avatar_container,
+.avatar_icone,
+.block,
+.accordion_subbloco,
+.accordion_subbloco_titulo,
+.accordion_titulo,
+.accordion_subbloco_texto,
+.accordion_texto,
+.titulo_sessao,
+table,
+thead,
+tbody,
+tr,
+th,
+td,
+.button_container,
+.button_subcontainer,
+.btn {
+    margin: 0;
+    padding: 0;
+}
+
+.block {
+    margin-top: -0.5rem
+}
+
+.titulo_sessao {
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: $font-poppins;
+    color: $primary-color;
+}
+
+.first_hr {
+    margin: 0.5rem 0;
+}
+
+.accordion_container {
+    padding: 0 3rem;
+    padding-bottom: 1rem;
+}
+
+
+.avatar_icone {
+    width: 100%;
+}
+
+.accordion_titulo {
+    font-size: 0.80rem;
+    font-weight: 500;
+    height: 1.2rem;
+    color: $light-white;
+}
+
+.accordion_texto {
+    font-size: 0.70rem;
+    color: $dark-white;
+}
+
+.second_block {
+    margin-top: 0.3rem;
+}
+
+.btn_opcoes_colaborador {
+    font-size: 0.8rem;
+    font-family: $font-poppins;
+    padding: 0.3rem 1rem;
+    margin-right: 0.5rem;
+    background-color: $primary-color;
+    border: 1px solid $primary-color;
+    cursor: pointer;
+    border-radius: 5px;
+    color: $dark-white;
+}
+
+.btn_opcoes_colaborador:focus {
+    outline: none;
+}
+
+.btn_opcoes_colaborador:hover {
+    color: $light-white;
+    transition: 0.2s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 1200px) {
+    .accordion_container {
+        padding: 0;
+        padding-bottom: 0.3rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .accordion_container {
+        padding-bottom: 0.3rem;
+    }
+}

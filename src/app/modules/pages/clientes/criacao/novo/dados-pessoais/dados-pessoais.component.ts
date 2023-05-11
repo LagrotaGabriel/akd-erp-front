@@ -15,7 +15,7 @@ import { Util } from 'src/app/modules/utils/Util';
 @Component({
   selector: 'app-dados-pessoais',
   templateUrl: './dados-pessoais.component.html',
-  styleUrls: ['./dados-pessoais.component.scss']
+  styleUrls: ['../novo.component.scss']
 })
 export class DadosPessoaisComponent {
 

@@ -26,7 +26,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { ClientesModule } from './modules/pages/clientes/clientes.module';
 import { DatePipe } from '@angular/common';
-import { ColaboradoresModule } from './modules/colaboradores/colaboradores.module';
+import { ColaboradoresModule } from './modules/pages/colaboradores/colaboradores.module';
 
 @NgModule({
   declarations: [

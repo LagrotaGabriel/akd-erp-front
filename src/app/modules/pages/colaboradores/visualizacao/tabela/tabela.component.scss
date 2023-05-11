@@ -1,0 +1,111 @@
+@import '../../../../../../dist/variables.scss';
+@import "../../../../../../../node_modules/rfs/scss";
+
+.nome_text {
+    margin: 0;
+    padding: 0;
+}
+
+.td_checkbox, .th_checkbox {
+    width: 10%;
+}
+
+.td_expande, .th_expande {
+    width: 10%;
+}
+
+.th_nome,
+.td_nome {
+    width: 35%;
+}
+
+.th_cpfCnpj,
+.td_cpfCnpj {
+    width: 35%;
+}
+
+.th_status,
+.td_status {
+    width: 30%;
+}
+
+.th_matricula,
+.td_matricula {
+    width: 30%;
+}
+
+.th_ocupacao,
+.td_ocupacao {
+    width: 30%;
+}
+
+.nome_colaborador {
+    padding: 0;
+    margin: 0;
+    color: $light-white;
+}
+
+.dropdown-item {
+    background-color: $light-white;
+}
+
+.icone_tabela_remove,
+.icone_tabela_giro {
+    color: $primary-color;
+}
+
+.icone_tabela_giro {
+    margin-left: 0.3rem;
+}
+
+.accordion-container, app-acordeao {
+    padding: 0;
+}
+
+@media (max-width: 1200px) {
+    .th_ocupacao, .td_ocupacao {
+        width: 35%;
+    }
+}
+
+@media (max-width: 992px) {
+    .th_ocupacao, .td_ocupacao {
+        width: 30%;
+    }
+}
+
+@media (max-width: 768px) {
+    .th_ocupacao,
+    .td_ocupacao {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .th_ocupacao,
+    .td_ocupacao {
+        display: none;
+    }
+
+    .th_status,
+    .td_status {
+        display: none;
+    }
+}
+
+@media (max-width: 470px) {
+    .th_ocupacao,
+    .td_ocupacao {
+        display: none;
+    }
+
+    .th_status,
+    .td_status {
+        display: none;
+    }
+
+    .th_matricula,
+    .td_matricula {
+        display: none;
+    }
+}

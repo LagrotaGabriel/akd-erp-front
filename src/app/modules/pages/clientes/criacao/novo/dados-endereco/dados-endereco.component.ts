@@ -15,7 +15,7 @@ import { Util } from 'src/app/modules/utils/Util';
 @Component({
   selector: 'app-dados-endereco',
   templateUrl: './dados-endereco.component.html',
-  styleUrls: ['./dados-endereco.component.scss']
+  styleUrls: ['../novo.component.scss']
 })
 export class DadosEnderecoComponent {
 

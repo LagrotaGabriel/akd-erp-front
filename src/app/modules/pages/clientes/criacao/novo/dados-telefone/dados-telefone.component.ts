@@ -9,7 +9,7 @@ import { Telefone } from '../../models/telefone';
 @Component({
   selector: 'app-dados-telefone',
   templateUrl: './dados-telefone.component.html',
-  styleUrls: ['./dados-telefone.component.scss']
+  styleUrls: ['../novo.component.scss']
 })
 export class DadosTelefoneComponent {
 

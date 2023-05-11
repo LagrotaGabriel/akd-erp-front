@@ -13,7 +13,7 @@ const routes: Routes = [
       },
       {
         path: 'colaboradores',
-        loadChildren: () => import('./modules/colaboradores/colaboradores-routing.module').then( m => m.ColaboradoresRoutingModule)
+        loadChildren: () => import('./modules/pages/colaboradores/colaboradores-routing.module').then( m => m.ColaboradoresRoutingModule)
       }
     ]
   },

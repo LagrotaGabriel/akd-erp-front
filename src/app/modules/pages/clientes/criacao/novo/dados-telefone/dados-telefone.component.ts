@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-select/custom-select.component';
-import { Telefone } from '../../models/telefone';
+import { Telefone } from '../../../models/telefone';
 
 @Component({
   selector: 'app-dados-telefone',

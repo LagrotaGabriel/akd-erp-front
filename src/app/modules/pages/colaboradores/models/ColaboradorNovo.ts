@@ -1,5 +1,5 @@
-import { AcessoSistema } from "./../../visualizacao/models/AcessoSistema";
-import { Expediente } from "./../../visualizacao/models/Expediente";
+import { AcessoSistema } from "../visualizacao/models/AcessoSistema";
+import { Expediente } from "../visualizacao/models/Expediente";
 import { Telefone } from "src/app/shared/models/Telefone";
 import { Endereco } from "src/app/shared/models/Endereco";
 

@@ -6,7 +6,7 @@ import { API_URL } from 'src/app/config/api-config';
 import { catchError, map, Observable, retry, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageObject } from '../visualizacao/models/PageObject';
-import { ColaboradorNovo } from '../criacao/models/ColaboradorNovo';
+import { ColaboradorNovo } from '../models/ColaboradorNovo';
 
 @Injectable({
   providedIn: 'root'

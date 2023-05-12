@@ -8,10 +8,10 @@ import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
-import { Endereco } from '../../models/endereco';
+import { Endereco } from '../../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
-import { Cliente } from '../../models/cliente';
+import { Cliente } from '../../../models/cliente';
 
 @Component({
   selector: 'app-atualiza-dados-endereco',
@@ -68,12 +68,19 @@ export class AtualizaDadosEnderecoComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (this.stepAtual == 2) {
       setTimeout(() => {
         this.inputCodigoPostal.acionaFoco();
       }, 300);
     }
+
+    if (Util.isNotObjectEmpty(changes['clientePreAtualizacao'])) {
+      let clienteRecebido: Cliente = changes['clientePreAtualizacao'].currentValue;
+      if (Util.isNotObjectEmpty(clienteRecebido))
+        if (Util.isNotObjectEmpty(clienteRecebido.endereco))
+          this.atualizaFormDadosEndereco();
+    }
+
     if (changes['enderecoEncontradoNoCnpj'] != undefined) {
       let endereco: Endereco = changes['enderecoEncontradoNoCnpj'].currentValue;
       if (endereco != undefined) {
@@ -91,106 +98,96 @@ export class AtualizaDadosEnderecoComponent {
 
   createFormDadosEndereco(): FormGroup {
 
-    return (this.isEnderecoPreenchido())
-      ? this.formBuilder.group({
-        logradouro: new FormControl(
-          {
-            value: Util.isEmptyString(this.clientePreAtualizacao.endereco.logradouro) ? '' : this.clientePreAtualizacao.endereco.logradouro,
-            disabled: false
-          }, (Util.isSomeAttributeFilled(this.clientePreAtualizacao.endereco))
-          ? [
-            Validators.required,
-            Validators.maxLength(50)
-          ]
-          : null
-        ),
-        numero: new FormControl(
-          {
-            value: Util.isEmptyNumber(this.clientePreAtualizacao.endereco.numero) ? '' : this.clientePreAtualizacao.endereco.numero,
-            disabled: false
-          }, (Util.isSomeAttributeFilled(this.clientePreAtualizacao.endereco))
-          ? [
-            Validators.required,
-            Validators.pattern(/^\d{1,5}$/)
-          ]
-          : null
-        ),
-        bairro: new FormControl(
-          {
-            value: Util.isEmptyString(this.clientePreAtualizacao.endereco.bairro) ? '' : this.clientePreAtualizacao.endereco.bairro,
-            disabled: false
-          }, Validators.maxLength(50)
-        ),
-        codigoPostal: new FormControl(
-          {
-            value: Util.isEmptyString(this.clientePreAtualizacao.endereco.codigoPostal) ? '' : this.clientePreAtualizacao.endereco.codigoPostal,
-            disabled: false
-          }, Validators.pattern(/^\d{5}\d{3}/)
-        ),
-        cidade: new FormControl(
-          {
-            value: Util.isEmptyString(this.clientePreAtualizacao.endereco.cidade) ? '' : this.clientePreAtualizacao.endereco.cidade,
-            disabled: false
-          }, Validators.maxLength(50)
-        ),
-        complemento: new FormControl(
-          {
-            value: Util.isEmptyString(this.clientePreAtualizacao.endereco.complemento) ? '' : this.clientePreAtualizacao.endereco.complemento,
-            disabled: false
-          }, Validators.maxLength(80)
-        ),
-        estado: new FormControl(
-          {
-            value: Util.isEmptyString(this.clientePreAtualizacao.endereco.estado) ? '' : this.clientePreAtualizacao.endereco.estado,
-            disabled: false
-          }, Validators.maxLength(50)
-        )
-      })
-      : this.formBuilder.group({
-        logradouro: new FormControl(
-          {
-            value: '',
-            disabled: false
-          }, Validators.maxLength(50)
-        ),
-        numero: new FormControl(
-          {
-            value: null,
-            disabled: false
-          }, Validators.pattern(/^\d{1,5}$/)
-        ),
-        bairro: new FormControl(
-          {
-            value: '',
-            disabled: false
-          }, Validators.maxLength(50)
-        ),
-        codigoPostal: new FormControl(
-          {
-            value: '',
-            disabled: false
-          }, Validators.pattern(/^\d{5}\d{3}/)
-        ),
-        cidade: new FormControl(
-          {
-            value: '',
-            disabled: false
-          }, Validators.maxLength(50)
-        ),
-        complemento: new FormControl(
-          {
-            value: '',
-            disabled: false
-          }, Validators.maxLength(80)
-        ),
-        estado: new FormControl(
-          {
-            value: '',
-            disabled: false
-          }, Validators.maxLength(50)
-        )
-      })
+    return this.formBuilder.group({
+      logradouro: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.maxLength(50)
+      ),
+      numero: new FormControl(
+        {
+          value: null,
+          disabled: true
+        }, Validators.pattern(/^\d{1,5}$/)
+      ),
+      bairro: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.maxLength(50)
+      ),
+      codigoPostal: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.pattern(/^\d{5}\d{3}/)
+      ),
+      cidade: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.maxLength(50)
+      ),
+      complemento: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.maxLength(80)
+      ),
+      estado: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.maxLength(50)
+      )
+    })
   }
+
+  private atualizaFormDadosEndereco() {
+    this.setaValoresFormEndereco();
+    this.administraLiberacaoOuBloqueioDosCamposFormEndereco();
+    this.setaValidatorsFormEndereco();
+    this.emissorDeDadosDeEnderecoDoCliente.emit(this.dadosEndereco);
+  }
+
+  private setaValoresFormEndereco() {
+    this.dadosEndereco.setValue({
+      logradouro: Util.isEmptyString(this.clientePreAtualizacao.endereco.logradouro) ? '' : this.clientePreAtualizacao.endereco.logradouro,
+      numero: Util.isEmptyNumber(this.clientePreAtualizacao.endereco.numero) ? '' : this.clientePreAtualizacao.endereco.numero,
+      bairro: Util.isEmptyString(this.clientePreAtualizacao.endereco.bairro) ? '' : this.clientePreAtualizacao.endereco.bairro,
+      codigoPostal: Util.isEmptyString(this.clientePreAtualizacao.endereco.codigoPostal) ? '' : this.clientePreAtualizacao.endereco.codigoPostal,
+      cidade: Util.isEmptyString(this.clientePreAtualizacao.endereco.cidade) ? '' : this.clientePreAtualizacao.endereco.cidade,
+      complemento: Util.isEmptyString(this.clientePreAtualizacao.endereco.complemento) ? '' : this.clientePreAtualizacao.endereco.complemento,
+      estado: Util.isEmptyString(this.clientePreAtualizacao.endereco.estado) ? '' : this.clientePreAtualizacao.endereco.estado
+    })
+  }
+
+  private administraLiberacaoOuBloqueioDosCamposFormEndereco() {
+    this.dadosEndereco.get('logradouro').enable();
+    this.dadosEndereco.get('numero').enable();
+    this.dadosEndereco.get('bairro').enable();
+    this.dadosEndereco.get('codigoPostal').enable();
+    this.dadosEndereco.get('cidade').enable();
+    this.dadosEndereco.get('complemento').enable();
+    this.dadosEndereco.get('estado').enable();
+  }
+
+  private setaValidatorsFormEndereco() {
+    this.dadosEndereco.get('numero').setValidators((Util.isSomeAttributeFilled(this.clientePreAtualizacao.endereco))
+      ? [
+        Validators.required,
+        Validators.pattern(/^\d{1,5}$/)
+      ]
+      : Validators.pattern(/^\d{1,5}$/));
+    this.dadosEndereco.get('logradouro').setValidators((Util.isSomeAttributeFilled(this.clientePreAtualizacao.endereco))
+      ? [
+        Validators.required,
+        Validators.maxLength(50)
+      ]
+      : Validators.maxLength(50));
+  }
+
 
   isEnderecoPreenchido(): boolean {
     if (Util.isNotObjectEmpty(this.clientePreAtualizacao)) {

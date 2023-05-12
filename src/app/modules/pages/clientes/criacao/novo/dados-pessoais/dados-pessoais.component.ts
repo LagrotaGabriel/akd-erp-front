@@ -8,8 +8,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
-import { Telefone } from '../../models/telefone';
-import { Endereco } from '../../models/endereco';
+import { Telefone } from '../../../models/telefone';
+import { Endereco } from '../../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
 
 @Component({

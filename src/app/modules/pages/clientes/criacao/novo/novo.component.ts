@@ -1,13 +1,13 @@
 import { ClienteService } from '../../services/cliente.service';
 import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Cliente } from '../models/cliente';
+import { Cliente } from '../../models/cliente';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { Telefone } from '../models/telefone';
-import { Endereco } from '../models/endereco';
+import { Telefone } from '../../models/telefone';
+import { Endereco } from '../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
 
 @Component({

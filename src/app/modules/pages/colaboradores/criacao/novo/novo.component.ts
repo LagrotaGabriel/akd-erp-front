@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { ColaboradorService } from '../../services/colaborador.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ColaboradorNovo } from '../models/ColaboradorNovo';
+import { ColaboradorNovo } from '../../models/ColaboradorNovo';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

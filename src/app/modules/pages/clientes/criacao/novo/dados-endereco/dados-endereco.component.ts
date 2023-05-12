@@ -9,7 +9,7 @@ import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-respon
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
-import { Endereco } from '../../models/endereco';
+import { Endereco } from '../../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
 
 @Component({

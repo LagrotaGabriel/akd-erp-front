@@ -4,14 +4,13 @@ import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
 import { ClienteService } from '../../../services/cliente.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatePipe } from '@angular/common';
-import { Cliente } from '../../models/cliente';
+import { Cliente } from '../../../models/cliente';
 import { Util } from 'src/app/modules/utils/Util';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { Subscription, debounceTime } from 'rxjs';
-import { Endereco } from '../../models/endereco';
+import { Endereco } from '../../../models/endereco';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
-import { Telefone } from '../../models/telefone';
+import { Telefone } from '../../../models/telefone';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
 
 @Component({
@@ -64,7 +63,6 @@ export class AtualizaDadosPessoaisComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes['clientePreAtualizacao']);
     if (Util.isNotObjectEmpty(changes['clientePreAtualizacao'])) {
       let clienteRecebido: Cliente = changes['clientePreAtualizacao'].currentValue;
       if (Util.isNotObjectEmpty(clienteRecebido)) this.atualizaFormDadosCliente();

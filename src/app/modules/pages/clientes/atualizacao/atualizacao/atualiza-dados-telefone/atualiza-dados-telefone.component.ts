@@ -2,10 +2,10 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChange
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Util } from 'src/app/modules/utils/Util';
-import { Cliente } from '../../models/cliente';
+import { Cliente } from '../../../models/cliente';
 import { Subscription, debounceTime } from 'rxjs';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
-import { Telefone } from '../../models/telefone';
+import { Telefone } from '../../../models/telefone';
 import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-select/custom-select.component';
 
 @Component({
@@ -49,11 +49,19 @@ export class AtualizaDadosTelefoneComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    if (this.stepAtual == 1) {
-      setTimeout(() => {
-        this.selectTipoTelefone.acionaFoco();
-      }, 300);
+    if (Util.isNotObjectEmpty(changes['stepAtual'])) {
+      if (this.stepAtual == 1) {
+        setTimeout(() => {
+          this.selectTipoTelefone.acionaFoco();
+        }, 300);
+      }
+    }
+
+    if (Util.isNotObjectEmpty(changes['clientePreAtualizacao'])) {
+      let clienteRecebido: Cliente = changes['clientePreAtualizacao'].currentValue;
+      if (Util.isNotObjectEmpty(clienteRecebido))
+        if (Util.isNotObjectEmpty(clienteRecebido.telefone))
+          this.atualizaFormDadosTelefone();
     }
 
     if (changes['telefoneEncontradoNoCnpj'] != undefined) {
@@ -100,47 +108,54 @@ export class AtualizaDadosTelefoneComponent {
   }
 
   createFormDadosTelefone(): FormGroup {
-    return (this.isTelefonePreenchido())
-      ? this.formBuilder.group({
-        tipoTelefone: new FormControl(
-          {
-            value: Util.isEmptyString(this.clientePreAtualizacao.telefone.tipoTelefone) ? '' : this.clientePreAtualizacao.telefone.tipoTelefone,
-            disabled: false
-          }, Validators.required
-        ),
-        prefixo: new FormControl(
-          {
-            value: Util.isEmptyString(this.clientePreAtualizacao.telefone.prefixo) ? '' : this.clientePreAtualizacao.telefone.prefixo,
-            disabled: this.clientePreAtualizacao.telefone.tipoTelefone == '' ? true : false
-          }, Validators.pattern(this.inputPrefixoPattern)
-        ),
-        numero: new FormControl(
-          {
-            value: Util.isEmptyString(this.clientePreAtualizacao.telefone.numero) ? '' : this.clientePreAtualizacao.telefone.numero,
-            disabled: this.clientePreAtualizacao.telefone.tipoTelefone == '' ? true : false
-          }, Validators.pattern(this.retornaPatternNumeroTelefoneParaTipoDeTelefoneAtual())
-        )
-      })
-      : this.formBuilder.group({
-        tipoTelefone: new FormControl(
-          {
-            value: '',
-            disabled: false
-          }, Validators.required
-        ),
-        prefixo: new FormControl(
-          {
-            value: '',
-            disabled: true
-          }, Validators.pattern(this.inputPrefixoPattern)
-        ),
-        numero: new FormControl(
-          {
-            value: '',
-            disabled: true
-          }
-        )
-      })
+    return this.formBuilder.group({
+      tipoTelefone: new FormControl(
+        {
+          value: '',
+          disabled: false
+        }
+      ),
+      prefixo: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.pattern(this.inputPrefixoPattern)
+      ),
+      numero: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }
+      )
+    })
+  }
+
+  private atualizaFormDadosTelefone() {
+    this.setaValoresFormTelefone();
+    this.administraLiberacaoOuBloqueioDosCamposFormTelefone();
+    this.setaValidatorsFormTelefone();
+    this.emissorDeDadosDeTelefoneDoCliente.emit(this.dadosTelefone);
+  }
+
+  private setaValoresFormTelefone() {
+    this.dadosTelefone.setValue({
+      tipoTelefone: this.clientePreAtualizacao.telefone.tipoTelefone,
+      prefixo: Util.isEmptyString(this.clientePreAtualizacao.telefone.prefixo) ? '' : this.clientePreAtualizacao.telefone.prefixo,
+      numero: Util.isEmptyString(this.clientePreAtualizacao.telefone.numero) ? '' : this.clientePreAtualizacao.telefone.numero,
+    })
+  }
+
+  private administraLiberacaoOuBloqueioDosCamposFormTelefone() {
+    (this.clientePreAtualizacao.telefone.tipoTelefone == '')
+      ? this.dadosTelefone.get('prefixo').disable()
+      : this.dadosTelefone.get('prefixo').enable();
+    (this.clientePreAtualizacao.telefone.numero == '')
+      ? this.dadosTelefone.get('numero').disable()
+      : this.dadosTelefone.get('numero').enable();
+  }
+
+  private setaValidatorsFormTelefone() {
+    this.dadosTelefone.get('numero').setValidators(Validators.pattern(this.retornaPatternNumeroTelefoneParaTipoDeTelefoneAtual()));
   }
 
   isTelefonePreenchido(): boolean {

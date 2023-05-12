@@ -1,0 +1,69 @@
+<form #dadosEnderecoForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+    [formGroup]="dadosEndereco" (keyup.enter)="botaoProximo.click()" (keyup.escape)="botaoRetorno.click()">
+
+    <!-- INPUT GROUP CEP -->
+    <app-custom-input class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'cep'" [titulo]="'Cep'"
+        [tabIndex]="15" [maxLength]="8" [touched]="dadosEndereco.controls['codigoPostal'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="null" formControlName="codigoPostal"
+        [disabledGroup]="dadosEndereco.controls['codigoPostal'].disabled" (input)="realizaTratamentoCodigoPostal()"
+        #inputCodigoPostal [mensagemErro]="'Mínimo de 8 caracteres numéricos'"
+        [valido]="!(dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid)"></app-custom-input>
+
+    <!-- SELECT GROUP ESTADO -->
+    <app-custom-select class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="estado"
+        (change)="obtemTodosMunicipiosPorEstado()" [tabIndex]="16" [titulo]="'Estado'" #inputEstado
+        [options]="this.estadosOptions"></app-custom-select>
+
+    <!-- INPUT GROUP CIDADE -->
+    <app-custom-input class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cidade'" [titulo]="'Cidade'"
+        [tabIndex]="17" [maxLength]="50" [touched]="dadosEndereco.controls['cidade'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosEndereco.controls['cidade'].disabled" (input)="atualizaValidatorsEndereco()"
+        (change)="atualizaValidatorsEndereco()" [dataList]="dataListCidade"
+        [valido]="!(dadosEndereco.controls['cidade'].touched && dadosEndereco.controls['cidade'].invalid)"
+        [mensagemErro]="'Máximo de 50 caracteres'" formControlName="cidade" #inputCodigoPostal></app-custom-input>
+
+    <!-- INPUT GROUP LOGRADOURO -->
+    <app-custom-input class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12" [id]="'logradouro'" [titulo]="'Logradouro'"
+        [tabIndex]="18" [maxLength]="50" [touched]="dadosEndereco.controls['logradouro'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosEndereco.controls['logradouro'].disabled" (input)="atualizaValidatorsEndereco()"
+        [valido]="!(dadosEndereco.controls['logradouro'].invalid)" [mensagemErro]="'Campo obrigatório'"
+        formControlName="logradouro" #inputLogradouro></app-custom-input>
+
+    <!-- INPUT GROUP NUMERO -->
+    <app-custom-input class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12" [id]="'numeroEndereco'" [titulo]="'Número'"
+        [tabIndex]="19" [maxLength]="5" [touched]="dadosEndereco.controls['numero'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="null"
+        [disabledGroup]="dadosEndereco.controls['numero'].disabled" (input)="realizaTratamentoNumero()"
+        [valido]="!(dadosEndereco.controls['numero'].invalid)" [mensagemErro]="'Campo obrigatório'"
+        formControlName="numero" #inputNumero></app-custom-input>
+
+    <!-- INPUT GROUP BAIRRO -->
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'bairro'" [titulo]="'Bairro'"
+        [tabIndex]="20" [maxLength]="50" [touched]="dadosEndereco.controls['bairro'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosEndereco.controls['bairro'].disabled" (input)="atualizaValidatorsEndereco()"
+        [valido]="!(dadosEndereco.controls['bairro'].touched && dadosEndereco.controls['bairro'].invalid)"
+        [mensagemErro]="'Máximo de 50 caracteres'" formControlName="bairro" #inputBairro></app-custom-input>
+
+    <!-- INPUT GROUP COMPLEMENTO -->
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'complemento'" [titulo]="'Complemento'"
+        [tabIndex]="21" [maxLength]="80" [touched]="dadosEndereco.controls['complemento'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosEndereco.controls['complemento'].disabled" (input)="atualizaValidatorsEndereco()"
+        [valido]="!(dadosEndereco.controls['complemento'].touched && dadosEndereco.controls['complemento'].invalid)"
+        [mensagemErro]="'Esse campo deve possuir no máximo 80 caracteres'" formControlName="complemento"
+        #inputBairro></app-custom-input>
+
+    <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <button #botaoRetorno class="button" type="button" mat-button matStepperPrevious tabindex="22">
+            Voltar
+        </button>
+        <button (click)="solicitarEnvioDeFormulario()" #botaoProximo type="button" tabindex="23" class="button"
+            mat-button>
+            Enviar
+        </button>
+    </div>
+
+</form>

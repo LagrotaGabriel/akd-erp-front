@@ -34,12 +34,15 @@ import { CabecalhoComponent } from './visualizacao/tabela/cabecalho/cabecalho.co
 import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pessoais.component';
 import { DadosTelefoneComponent } from './criacao/novo/dados-telefone/dados-telefone.component';
 import { DadosEnderecoComponent } from './criacao/novo/dados-endereco/dados-endereco.component';
+import { AtualizaDadosPessoaisComponent } from './atualizacao/atualizacao/atualiza-dados-pessoais/atualiza-dados-pessoais.component';
+import { AtualizaDadosTelefoneComponent } from './atualizacao/atualizacao/atualiza-dados-telefone/atualiza-dados-telefone.component';
+import { AtualizaDadosEnderecoComponent } from './atualizacao/atualizacao/atualiza-dados-endereco/atualiza-dados-endereco.component';
 
 registerLocaleData(ptBr);
 
 @NgModule({
   declarations: [MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent, PaginacaoComponent, AcordeaoComponent,
-    CabecalhoComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent],
+    CabecalhoComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosTelefoneComponent, AtualizaDadosEnderecoComponent],
   exports: [MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent],
   imports: [
     CommonModule,

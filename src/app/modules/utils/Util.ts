@@ -6,6 +6,16 @@ export class Util {
         else return null;
     }
 
+    public static isObjectEmpty(object: any): boolean {
+        if (object == null || object == undefined) return true;
+        return false;
+    }
+
+    public static isNotObjectEmpty(object: any): boolean {
+        if (object == null || object == undefined) return false;
+        return true;
+    }
+
     public static isEmptyString(string: string): boolean {
         if (string != null && string != undefined && string != '') return false;
         return true;
@@ -23,6 +33,11 @@ export class Util {
 
     public static isNotEmptyNumber(number: number): boolean {
         if (number != null && number != undefined) return true;
+        return false;
+    }
+
+    public static isSomeAttributeFilled(object: any): boolean {
+        if (Object.keys(object).some(k => !!object[k])) return true;
         return false;
     }
 }

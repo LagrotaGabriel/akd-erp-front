@@ -1,5 +1,6 @@
 @import '../../../../../../dist/variables.scss';
 @import "../../../../../../../node_modules/rfs/scss";
+@import '../../../../shared/inputs/styles/custom-inputs.scss';
 
 .container,
 .titulo,
@@ -12,7 +13,12 @@
 .asterisco,
 .input,
 .error_message_container,
-.error_message {
+.error_message,
+app-custom-input,
+app-custom-select,
+app-custom-title-container,
+app-custom-date-input,
+app-custom-time-input {
     margin: 0;
     padding: 0;
 }
@@ -81,7 +87,7 @@ mat-step {
 }
 
 ::ng-deep.mat-step-header .mat-step-icon {
-    background-color: $primary-color !important;
+    background-color: $dark-grey !important;
 }
 
 ::ng-deep.mat-step-header .mat-step-icon-selected {
@@ -170,6 +176,7 @@ input:focus {
     margin: auto 0;
     right: 0.5rem;
     color: $dark-white;
+    cursor: pointer;
 }
 
 .icone_ok {
@@ -272,32 +279,24 @@ input:focus {
     border-radius: 5px;
     font-weight: 500;
     margin-left: 1rem;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+    cursor: pointer;
 }
 
-.botaoHabilitado:hover,
-.botaoHabilitado:focus {
+.button:hover {
     border: 1px solid $primary-color;
     color: $light-black;
     background-color: $primary-color;
     transition: 0.5s;
 }
 
-.botaoHabilitado {
-    border: 1px solid $primary-color;
-    color: $primary-color;
-    cursor: pointer;
-}
-
-.botaoDesabilitado {
-    border: 1px solid $light-grey;
-    color: $light-grey;
-    cursor: auto;
-}
-
-.botaoHabilitado:focus,
-.botaoDesabilitado:focus {
+.button:focus {
     outline: none;
     box-shadow: none;
+    transition: 0.3s;
+    border: 1px solid $primary-color-dark;
+    color: $primary-color-dark;
 }
 
 @media (max-width: 960px) {

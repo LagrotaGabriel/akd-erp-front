@@ -1,0 +1,172 @@
+<form #dadosColaboradorForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+    [formGroup]="dadosProfissionais" (keyup.enter)="botaoProximo.click()" (keyup.escape)="botaoRetorno.click()">
+
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Dados profissionais'"
+        [descricao]="'Preenchimento dos dados profissionais do colaborador'"
+        (click)="selectSetor.acionaFoco()"></app-custom-title-container>
+
+    <!-- SELECT GROUP SETOR -->
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" formControlName="tipoOcupacaoEnum"
+        [tabIndex]="1" [titulo]="'Setor'" #selectSetor [options]="geraOptionsSetor()"></app-custom-select>
+
+    <!-- INPUT GROUP OCUPAÇÃO -->
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'ocupacao'" [titulo]="'Ocupação'"
+        [tabIndex]="2" [maxLength]="30" [touched]="dadosProfissionais.controls['ocupacao'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null" [dataList]="ocupacoesResponse"
+        [disabledGroup]="dadosProfissionais.controls['ocupacao'].disabled"
+        [valido]="!(dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid)"
+        [mensagemErro]="'Este campo deve possuir no máximo 30 caracteres'" formControlName="ocupacao"
+        #inputOcupacao></app-custom-input>
+
+    <!-- SELECT GROUP STATUS DO COLABORADOR -->
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="statusColaboradorEnum"
+        [tabIndex]="3" [titulo]="'Status atual'" (change)="alteraStatusColaborador()" #selectStatus
+        [options]="geraOptionsStatusColaborador()"></app-custom-select>
+
+    <!-- SELECT GROUP MODELO DE CONTRATAÇÃO -->
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="modeloContratacaoEnum"
+        [tabIndex]="4" [titulo]="'Modelo de contratação'" #selectModeloContratacao
+        [options]="geraOptionsModeloContratacao()"></app-custom-select>
+
+    <!-- SELECT GROUP MODELO DE TABALHO -->
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="modeloTrabalhoEnum"
+        [tabIndex]="5" [titulo]="'Modelo de trabalho'" #selectModeloTrabalho
+        [options]="geraOptionsModeloTrabalho()"></app-custom-select>
+
+    <!-- INPUT GROUP REMUNERAÇÃO -->
+    <div class="row col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 input_group input_group_without_component">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label" [ngClass]="{'label_invalida': dadosProfissionais.controls['salario'].invalid}">
+                Remuneração mensal
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input type="number" formControlName="salario" name="salario" max="9999999.00" min="0.00" step=".01"
+                #inputSalario (input)="realizaTratamentoRemuneracao($event)"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['salario'].invalid}"
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="6">
+            <mat-icon [@fadeInOut] [fontIcon]="'attach_money'" (click)="inputSalario.focus()" [ngClass]="{
+                'icone_error': dadosProfissionais.controls['salario'].invalid, 
+                'icone_ok': dadosProfissionais.controls['salario'].valid}" class="icone"></mat-icon>
+
+        </div>
+
+        <div [@fadeInOut] *ngIf="dadosProfissionais.controls['salario'].invalid"
+            class="error_message_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <h6 class="error_message">{{ 'Este campo deve possuir valor entre 0,00 e 9.999.000,00' }}</h6>
+        </div>
+    </div>
+
+    <!-- INPUT GROUP DATA DE ENTRADA -->
+    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [minDate]="'1900-01-01'"
+        [maxDate]="getHoje()" [disabledGroup]="dadosProfissionais.controls['entradaEmpresa'].disabled"
+        [id]="'entradaEmpresa'" [titulo]="'Data de entrada'" [tabIndex]="7" formControlName="entradaEmpresa"
+        [vazio]="getValueAtributoDadosProfissionais('entradaEmpresa') == '' || getValueAtributoDadosProfissionais('entradaEmpresa') == null"
+        (focusout)="validaDataEntradaEmpresa()" #inputDataEntrada></app-custom-date-input>
+
+    <!-- INPUT GROUP DATA DE SAÍDA -->
+    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [minDate]="'1900-01-01'"
+        [maxDate]="getHoje()" [disabledGroup]="dadosProfissionais.controls['saidaEmpresa'].disabled"
+        [id]="'saidaEmpresa'" [titulo]="'Data de saída'" [tabIndex]="8" formControlName="saidaEmpresa"
+        [vazio]="getValueAtributoDadosProfissionais('saidaEmpresa') == '' || getValueAtributoDadosProfissionais('saidaEmpresa') == null"
+        (focusout)="validaDataSaidaEmpresa()" #inputDataSaida></app-custom-date-input>
+
+    <!-- FILE GROUP CONTRATO DE TRABALHO -->
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group input_group_without_component">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label">Contrato de trabalho</label>
+            <button type="button" class="limpar_file" [@fadeInOut]
+                *ngIf="getValueAtributoDadosProfissionais('contratoContratacao') != null && contratoContratacaoInput.value != ''"
+                (click)="limpaInputContrato()">Limpar</button>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <label class="input input_file col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                for="contratoContratacaoInput">
+                {{ getValueAtributoDadosProfissionais('contratoContratacao') != null &&
+                contratoContratacaoInput.value != ''
+                ? contratoContratacaoInput.value
+                : 'Escolher arquivo (.docx, .pdf, .png, .jpeg)' }}
+                <mat-icon [@fadeInOut] [fontIcon]="getValueAtributoDadosProfissionais('contratoContratacao') != null && contratoContratacaoInput.value != '' 
+                                            ? 'file_download_done' 
+                                            : 'add_box'" class="icone icone_ok"></mat-icon>
+            </label>
+            <input type="file" accept=".pdf,.docx, .png, .jpeg, .jpg" formControlName="contratoContratacao"
+                name="contratoContratacao" style="display: none;" #contratoContratacaoInput
+                id="contratoContratacaoInput" (change)="setaContrato($event)"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
+                class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="25">
+        </div>
+    </div>
+
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Expediente'"
+        [descricao]="'Preenchimento dos dados de expediente do colaborador. Caso qualquer campo seja preenchido,' 
+        + ' todos os campos se tornam obrigatórios; O campo Carga Horária Semanal é preenchido automaticamente'"
+        (click)="inputHoraEntrada.acionaFoco()"></app-custom-title-container>
+
+    <!-- INPUT GROUP HORA DE ENTRADA -->
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12" [id]="'horaEntrada'" [titulo]="'Entrada'"
+        [tabIndex]="9" [disabledGroup]="dadosProfissionais.controls['horaEntrada'].disabled"
+        (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entrada')"
+        (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entrada')"
+        [valido]="!(dadosProfissionais.controls['horaEntrada'].touched && dadosProfissionais.controls['horaEntrada'].invalid)"
+        [mensagemErro]="'Obrigatório'" formControlName="horaEntrada" #inputHoraEntrada></app-custom-time-input>
+
+    <!-- INPUT GROUP HORA DE SAÍDA PARA O ALMOÇO -->
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12" [id]="'horaSaidaAlmoco'"
+        [titulo]="'Saída almoço'" [tabIndex]="10"
+        [disabledGroup]="dadosProfissionais.controls['horaSaidaAlmoco'].disabled"
+        (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saidaAlmoco')"
+        (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saidaAlmoco')"
+        [valido]="!(dadosProfissionais.controls['horaSaidaAlmoco'].touched && dadosProfissionais.controls['horaSaidaAlmoco'].invalid)"
+        [mensagemErro]="'Obrigatório'" formControlName="horaSaidaAlmoco" #inputHoraSaidaAlmoco></app-custom-time-input>
+
+    <!-- INPUT GROUP HORA DE RETORNO DO ALMOÇO -->
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12" [id]="'horaEntradaAlmoco'"
+        [titulo]="'Retorno almoço'" [tabIndex]="11"
+        [disabledGroup]="dadosProfissionais.controls['horaEntradaAlmoco'].disabled"
+        (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entradaAlmoco')"
+        (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('entradaAlmoco')"
+        [valido]="!(dadosProfissionais.controls['horaEntradaAlmoco'].touched && dadosProfissionais.controls['horaEntradaAlmoco'].invalid)"
+        [mensagemErro]="'Obrigatório'" formControlName="horaEntradaAlmoco"
+        #inputHoraEntradaAlmoco></app-custom-time-input>
+
+    <!-- INPUT GROUP HORA DE SAÍDA -->
+    <app-custom-time-input class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12" [id]="'horaSaida'" [titulo]="'Saída'"
+        [tabIndex]="12" [disabledGroup]="dadosProfissionais.controls['horaSaida'].disabled"
+        (change)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saida')"
+        (input)="redirecionaParaMetodoDeValidacaoParaCampoDeExpedienteCorrespondente('saida')"
+        [valido]="!(dadosProfissionais.controls['horaSaida'].touched && dadosProfissionais.controls['horaSaida'].invalid)"
+        [mensagemErro]="'Obrigatório'" formControlName="horaSaida" #inputHoraSaida></app-custom-time-input>
+
+    <!-- SELECT GROUP ESCALA -->
+    <app-custom-select class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" formControlName="escalaEnum" [tabIndex]="13"
+        [titulo]="'Escala'" (change)="realizaCalculoCargaHorariaSemanal()"
+        [disabledGroup]="dadosProfissionais.controls['escalaEnum'].disabled" #selectEscala
+        [options]="geraOptionsEscala()"></app-custom-select>
+
+    <!-- INPUT CARGA HORÁRIA SEMANAL -->
+    <div class="row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 input_group input_group_without_component">
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+            <label class="label"
+                [ngClass]="{'label_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}">
+                Carga horária semanal (h)
+            </label>
+        </div>
+        <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <input type="text" formControlName="cargaHorariaSemanal" name="cargaHorariaSemanal" autocomplete="off"
+                spellcheck="false"
+                [ngClass]="{'input_invalida': dadosProfissionais.controls['cargaHorariaSemanal'].touched && dadosProfissionais.controls['cargaHorariaSemanal'].invalid}"
+                class="input input_desabilitada col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="14">
+        </div>
+    </div>
+
+    <!-- BOTÕES DE NAVEGAÇÃO -->
+    <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <button type="button" class="button botaoHabilitado" #botaoRetorno mat-button tabindex="15" matStepperPrevious>
+            Voltar
+        </button>
+        <button type="button" tabindex="16" class="button botaoHabilitado" (click)="avancaProximaEtapa()" matStepperNext
+            mat-button matStepperNext #botaoProximo>Próximo</button>
+    </div>
+
+</form>

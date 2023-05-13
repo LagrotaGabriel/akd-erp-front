@@ -1,0 +1,139 @@
+<form #dadosColaboradorForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+    [formGroup]="dadosColaborador" (keyup.enter)="botaoProximo.click()" (keyup.escape)="botaoRetorno.click()">
+
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Dados Pessoais'"
+        [descricao]="'Preenchimento dos dados pessoais do colaborador. O campo nome é obrigatório'"
+        (click)="inputNome.acionaFoco()"></app-custom-title-container>
+
+    <!-- INPUT GROUP NOME -->
+    <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'inputNome'" [titulo]="'Nome'"
+        [tabIndex]="1" [maxLength]="50" [touched]="dadosColaborador.controls['nome'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosColaborador.controls['nome'].disabled"
+        [valido]="!(dadosColaborador.controls['nome'].touched && dadosColaborador.controls['nome'].invalid)"
+        [mensagemErro]="'Campo obrigatório'" formControlName="nome" #inputNome></app-custom-input>
+
+    <!-- INPUT GROUP CPF/CNPJ -->
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cpf'" [titulo]="'CPF'" [tabIndex]="2"
+        [maxLength]="20" [touched]="dadosColaborador.controls['cpfCnpj'].touched"
+        [disabledGroup]="dadosColaborador.controls['cpfCnpj'].disabled" [todosCaracteresMaiusculos]="false"
+        [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
+        [valido]="!(dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid)"
+        [mensagemErro]="'Mínimo de ' + inputLengthCpfCnpj + ' caracteres numéricos'" formControlName="cpfCnpj"
+        #inputCpfCnpj></app-custom-input>
+
+    <!-- INPUT GROUP DATA DE NASCIMENTO -->
+    <app-custom-date-input class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [minDate]="'1900-01-01'"
+        [disabledGroup]="dadosColaborador.controls['dataNascimento'].disabled" [id]="'dataNascimento'"
+        [vazio]="getValueAtributoDadosColaborador('dataNascimento') == '' || getValueAtributoDadosColaborador('dataNascimento') == null"
+        [maxDate]="'2023-04-17'" [titulo]="'Data de nascimento'" [tabIndex]="3" formControlName="dataNascimento"
+        (focusout)="validaDataNascimento()" #inputDataNascimento></app-custom-date-input>
+
+    <!-- INPUT GROUP EMAIL -->
+    <app-custom-input class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'email'" [titulo]="'E-mail'"
+        [tabIndex]="4" [maxLength]="50" [touched]="dadosColaborador.controls['email'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="'alternate_email'"
+        [disabledGroup]="dadosColaborador.controls['email'].disabled"
+        [valido]="!(dadosColaborador.controls['email'].touched && dadosColaborador.controls['email'].invalid)"
+        [mensagemErro]="'O e-mail digitado é inválido'" formControlName="email" #inputEmail></app-custom-input>
+
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Telefone'"
+        [descricao]="'Preenchimento dos dados do telefone do colaborador. Caso o tipo seja fixo, móvel ou móvel com whatsapp,' 
+        + ' o preenchimendo do prefixo e do número são obrigatórios'"
+        (click)="inputTipoTelefone.acionaFoco()"></app-custom-title-container>
+
+    <!-- SELECT GROUP TIPO DO TELEFONE -->
+    <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="tipoTelefone"
+        (change)="atualizaValidatorsTelefone()" [tabIndex]="5" [titulo]="'Tipo do telefone'" #inputTipoTelefone
+        [options]="geraOptionsTipoTelefone()"></app-custom-select>
+
+    <!-- INPUT GROUP PREFIXO -->
+    <app-custom-input class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12" [id]="'prefixo'" [titulo]="'Prefixo'"
+        [tabIndex]="6" [maxLength]="2" [touched]="dadosColaborador.controls['prefixo'].touched"
+        [todosCaracteresMaiusculos]="false" customIcon="null"
+        [disabledGroup]="dadosColaborador.controls['prefixo'].disabled"
+        [valido]="!(dadosColaborador.controls['prefixo'].invalid)" [mensagemErro]="'Mínimo de 2 caracteres numéricos'"
+        formControlName="prefixo" #inputPrefixo></app-custom-input>
+
+    <!-- INPUT GROUP NÚMERO -->
+    <app-custom-input class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12" [id]="'numeroTelefone'" [titulo]="'Número'"
+        [tabIndex]="7" [maxLength]="inputLengthTelefone" [touched]="dadosColaborador.controls['numeroTelefone'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="'call'" (input)="realizaTratamentoNumeroTelefone()"
+        [disabledGroup]="dadosColaborador.controls['numeroTelefone'].disabled"
+        [valido]="!(dadosColaborador.controls['numeroTelefone'].invalid)"
+        [mensagemErro]="'Mínimo de ' + inputLengthTelefone + ' caracteres numéricos'" formControlName="numeroTelefone"
+        #inputNumeroTelefone></app-custom-input>
+
+    <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Endereço'"
+        [descricao]="'Preenchimento dos dados de endereço do colaborador. Caso qualquer campo do endereço esteja preenchido,' 
+        + ' os campos logradouro e número se fazem obrigatórios'"
+        (click)="inputCodigoPostal.acionaFoco()"></app-custom-title-container>
+
+    <!-- INPUT GROUP CEP -->
+    <app-custom-input class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'cep'" [titulo]="'Cep'" [tabIndex]="8"
+        [maxLength]="8" [touched]="dadosColaborador.controls['codigoPostal'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="null"
+        [disabledGroup]="dadosColaborador.controls['codigoPostal'].disabled" (input)="realizaTratamentoCodigoPostal()"
+        [valido]="!(dadosColaborador.controls['codigoPostal'].touched && dadosColaborador.controls['codigoPostal'].invalid)"
+        [mensagemErro]="'Mínimo de 8 caracteres numéricos'" formControlName="codigoPostal"
+        #inputCodigoPostal></app-custom-input>
+
+    <!-- SELECT GROUP ESTADO -->
+    <app-custom-select class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="estado"
+        (change)="obtemTodosMunicipiosPorEstado()" [tabIndex]="9" [titulo]="'Estado'" #inputEstado
+        [options]="this.estadosOptions"></app-custom-select>
+
+    <!-- INPUT GROUP CIDADE -->
+    <app-custom-input class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cidade'" [titulo]="'Cidade'"
+        [tabIndex]="10" [maxLength]="50" [touched]="dadosColaborador.controls['cidade'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosColaborador.controls['cidade'].disabled" (input)="atualizaValidatorsEndereco()"
+        (change)="atualizaValidatorsEndereco()" [dataList]="dataListCidade"
+        [valido]="!(dadosColaborador.controls['cidade'].touched && dadosColaborador.controls['cidade'].invalid)"
+        [mensagemErro]="'Este campo deve possuir no máximo 50 caracteres'" formControlName="cidade"
+        #inputCodigoPostal></app-custom-input>
+
+    <!-- INPUT GROUP LOGRADOURO -->
+    <app-custom-input class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12" [id]="'logradouro'" [titulo]="'Logradouro'"
+        [tabIndex]="11" [maxLength]="50" [touched]="dadosColaborador.controls['logradouro'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosColaborador.controls['logradouro'].disabled" (input)="atualizaValidatorsEndereco()"
+        [valido]="!(dadosColaborador.controls['logradouro'].invalid)" [mensagemErro]="'Campo obrigatório'"
+        formControlName="logradouro" #inputLogradouro></app-custom-input>
+
+    <!-- INPUT GROUP NUMERO -->
+    <app-custom-input class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12" [id]="'numeroEndereco'" [titulo]="'Número'"
+        [tabIndex]="12" [maxLength]="5" [touched]="dadosColaborador.controls['numero'].touched"
+        [todosCaracteresMaiusculos]="false" [customIcon]="null"
+        [disabledGroup]="dadosColaborador.controls['numero'].disabled" (input)="realizaTratamentoNumero()"
+        [valido]="!(dadosColaborador.controls['numero'].invalid)" [mensagemErro]="'Campo obrigatório'"
+        formControlName="numero" #inputNumero></app-custom-input>
+
+    <!-- INPUT GROUP BAIRRO -->
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'bairro'" [titulo]="'Bairro'"
+        [tabIndex]="13" [maxLength]="50" [touched]="dadosColaborador.controls['bairro'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosColaborador.controls['bairro'].disabled" (input)="atualizaValidatorsEndereco()"
+        [valido]="!(dadosColaborador.controls['bairro'].touched && dadosColaborador.controls['bairro'].invalid)"
+        [mensagemErro]="'Esse campo deve possuir no máximo 50 caracteres'" formControlName="bairro"
+        #inputBairro></app-custom-input>
+
+    <!-- INPUT GROUP COMPLEMENTO -->
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'complemento'" [titulo]="'Complemento'"
+        [tabIndex]="14" [maxLength]="80" [touched]="dadosColaborador.controls['complemento'].touched"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
+        [disabledGroup]="dadosColaborador.controls['complemento'].disabled" (input)="atualizaValidatorsEndereco()"
+        [valido]="!(dadosColaborador.controls['complemento'].touched && dadosColaborador.controls['complemento'].invalid)"
+        [mensagemErro]="'Esse campo deve possuir no máximo 80 caracteres'" formControlName="complemento"
+        #inputBairro></app-custom-input>
+
+    <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <button type="button" class="button botaoHabilitado" #botaoRetorno mat-button tabindex="15"
+            (click)="retornaParaVisualizacao()" (keypress.enter)="botaoRetorno.click()"
+            (keypress.escape)="botaoRetorno.click()">
+            Voltar
+        </button>
+        <button type="button" class="button botaoHabilitado" tabindex="16" (click)="avancaProximaEtapa()" mat-button
+            matStepperNext #botaoProximo>Próximo</button>
+    </div>
+</form>

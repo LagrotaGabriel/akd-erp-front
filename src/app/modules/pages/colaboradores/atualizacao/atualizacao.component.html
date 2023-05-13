@@ -1,0 +1,46 @@
+<div class="container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mat-elevation-z8">
+
+    <h1 class="titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        Editar colaborador
+    </h1>
+
+    <hr class="hr">
+
+    <mat-horizontal-stepper (selectionChange)="mudaPasso($event)" linear #stepper>
+
+        <ng-template matStepperIcon="edit">
+            <i class="fa fa-check"></i>
+        </ng-template>
+
+        <ng-template matStepperIcon="number">
+            <i class="fa fa-fire"></i>
+        </ng-template>
+
+        <mat-step [stepControl]="dadosColaborador" editable="true">
+            <ng-template matStepLabel>
+                <span>Pessoal</span>
+            </ng-template>
+            <app-atualiza-dados-pessoais [stepAtual]="stepAtual"
+                (emissorDeDadosPessoaisDoColaborador)="recebeFormGroupDadosPessoais($event)"></app-atualiza-dados-pessoais>
+        </mat-step>
+
+        <mat-step [stepControl]="dadosProfissionais" editable="true">
+            <ng-template matStepLabel>
+                <span>Profissional</span>
+            </ng-template>
+            <app-atualiza-dados-profissionais [stepAtual]="stepAtual"
+                (emissorDeContratoContratacao)="recebeContratoContratacao($event)"
+                (emissorDeDadosProfissionaisDoColaborador)="recebeFormGroupDadosProfissionais($event)"></app-atualiza-dados-profissionais>
+        </mat-step>
+
+        <mat-step [stepControl]="dadosAcesso" editable="true">
+            <ng-template matStepLabel>
+                <span>Sistema</span>
+            </ng-template>
+            <app-atualiza-dados-acesso [stepAtual]="stepAtual" (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
+                (emissorDeDadosAcessoDoColaborador)="recebeFormGroupDadosAcesso($event)"></app-atualiza-dados-acesso>
+        </mat-step>
+
+    </mat-horizontal-stepper>
+
+</div>

@@ -23,10 +23,14 @@ import { DadosAcessoComponent } from './criacao/novo/dados-acesso/dados-acesso.c
 
 import { CustomTitleContainerComponent } from './criacao/novo/shared/custom-title-container/custom-title-container.component';
 import { SharedModule } from '../../shared/shared.module';
+import { AtualizacaoComponent } from './atualizacao/atualizacao.component';
+import { AtualizaDadosPessoaisComponent } from './atualizacao/atualiza-dados-pessoais/atualiza-dados-pessoais.component';
+import { AtualizaDadosProfissionaisComponent } from './atualizacao/atualiza-dados-profissionais/atualiza-dados-profissionais.component';
+import { AtualizaDadosAcessoComponent } from './atualizacao/atualiza-dados-acesso/atualiza-dados-acesso.component';
 
 @NgModule({
   declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent,
-    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomTitleContainerComponent],
+    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomTitleContainerComponent, AtualizacaoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosProfissionaisComponent, AtualizaDadosAcessoComponent],
   imports: [
     CommonModule,
     BrowserModule,

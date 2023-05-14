@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { API_URL } from 'src/app/config/api-config';
 
-import { catchError, map, Observable, retry, throwError } from 'rxjs';
+import { catchError, map, Observable, retry, throwError, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageObject } from '../visualizacao/models/PageObject';
 import { ColaboradorNovo } from '../models/ColaboradorNovo';
@@ -24,21 +24,20 @@ export class ColaboradorService {
     body: null
   }
 
-  /*   public atualizaCliente(idCliente: number, clienteNovo: ClienteNovo): Observable<ClienteNovo> {
-       clienteNovo = this.realizaTratamentoDeAtributosNulos(clienteNovo);
-       this.httpOptions.body = null;
-       return this.http.put<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${idCliente}`, clienteNovo, this.httpOptions).pipe(
-         map(resposta => new ClienteNovo(resposta)),
-       )
-     }
-   
-     public obtemClientePorId(id: number): Observable<ClienteNovo> {
-       this.httpOptions.params = new HttpParams();
-       this.httpOptions.body = null;
-       return this.http.get<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
-         map((resposta) => new ClienteNovo(resposta))
-       )
-     } */
+  public atualizaColaborador(idColaborador: number, colaborador: ColaboradorNovo): Observable<ColaboradorNovo> {
+    this.httpOptions.body = null;
+    return this.http.put<ColaboradorNovo>(`${API_URL.baseUrl}api/sistema/v1/colaborador/${idColaborador}`, colaborador, this.httpOptions).pipe(
+      map(resposta => new ColaboradorNovo(resposta)),
+    )
+  }
+
+  public obtemColaboradorPorId(id: number): Observable<ColaboradorNovo> {
+    this.httpOptions.params = new HttpParams();
+    this.httpOptions.body = null;
+    return this.http.get<ColaboradorNovo>(`${API_URL.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
+      map((resposta) => new ColaboradorNovo(resposta))
+    )
+  }
 
   public novoColaborador(colaboradorNovo: ColaboradorNovo, contratoColaborador: Blob): Observable<string> {
     this.httpOptions.body = null;

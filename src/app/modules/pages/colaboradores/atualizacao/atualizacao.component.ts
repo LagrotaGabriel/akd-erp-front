@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { ColaboradorService } from '../services/colaborador.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ColaboradorNovo } from '../models/ColaboradorNovo';
 import { FormGroup } from '@angular/forms';
@@ -16,16 +16,29 @@ export class AtualizacaoComponent {
   constructor(private colaboradorService: ColaboradorService,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private activatedRoute: ActivatedRoute) { }
 
-  private colaborador: ColaboradorNovo;
   protected dadosColaborador: FormGroup;
   protected dadosProfissionais: FormGroup;
   protected dadosAcesso: FormGroup;
   protected contratoContratacao: File;
   private criaNovoColaboradorSubscription$: Subscription;
 
+  colaboradorPreAtualizacao: ColaboradorNovo;
+  private colaborador: ColaboradorNovo;
+
+  // Subscriptions
+  atualizaColaboradorSubscription$: Subscription;
+  obtemColaboradorPorIdSubscription$: Subscription;
+
+  idColaborador: number;
   stepAtual: number = 0;
+
+  ngOnInit(): void {
+    this.realizaValidacaoDoIdColaborador();
+    this.inicializarColaborador();
+  }
 
   ngAfterViewInit(): void {
     const startTime = performance.now();
@@ -40,6 +53,25 @@ export class AtualizacaoComponent {
 
   mudaPasso(event) {
     this.stepAtual = event.selectedIndex;
+  }
+
+  realizaValidacaoDoIdColaborador() {
+    let id = this.activatedRoute.snapshot.paramMap.get('id')
+    if (/^\d+$/.test(id)) this.idColaborador = parseInt(id);
+    else {
+      this.router.navigate(['/clientes']);
+      this._snackBar.open("O cliente que você tentou editar não existe", "Fechar", {
+        duration: 3500
+      });
+    }
+  }
+
+  inicializarColaborador() {
+    this.obtemColaboradorPorIdSubscription$ = this.colaboradorService.obtemColaboradorPorId(this.idColaborador).subscribe({
+      next: (colaborador: ColaboradorNovo) => {
+        this.colaboradorPreAtualizacao = colaborador;
+      }
+    })
   }
 
   // FUNÇÕES QUE RECEBEM EMISSÃO DE EVENTOS DOS COMPONENTES FILHOS

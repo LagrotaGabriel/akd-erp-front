@@ -1,6 +1,6 @@
 import { debounceTime, Subscription } from 'rxjs';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
@@ -9,6 +9,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
+import { ColaboradorNovo } from '../../models/ColaboradorNovo';
+import { Util } from 'src/app/modules/utils/Util';
 
 @Component({
   selector: 'app-atualiza-dados-pessoais',
@@ -25,7 +27,6 @@ export class AtualizaDadosPessoaisComponent {
 
   // Validations colaborador
   protected inputLengthCpfCnpj: number = 11;
-  protected inputPatternCpfCnpj: any = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
 
   // Validations telefone
   protected inputLengthPrefixo: number = 2;
@@ -59,10 +60,20 @@ export class AtualizaDadosPessoaisComponent {
   })
 
   @Input() stepAtual: number;
+  @Input() colaboradorPreAtualizacao: ColaboradorNovo;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.stepAtual == 0 && !changes['stepAtual'].isFirstChange()) {
-      this.inputNome.acionaFoco();
+    if (Util.isNotObjectEmpty(changes['colaboradorPreAtualizacao'])) {
+      let colaboradorRecebido: ColaboradorNovo = changes['colaboradorPreAtualizacao'].currentValue;
+      if (Util.isNotObjectEmpty(colaboradorRecebido)) this.atualizaFormDadosPessoaisColaborador();
+    }
+
+    if (Util.isNotObjectEmpty(changes['stepAtual'])) {
+      if (this.stepAtual == 0 && !changes['stepAtual'].isFirstChange()) {
+        setTimeout(() => {
+          this.inputNome.acionaFoco();
+        }, 300);
+      }
     }
   }
 
@@ -82,22 +93,157 @@ export class AtualizaDadosPessoaisComponent {
 
   private createForm(): FormGroup {
     return this.formBuilder.group({
-      nome: ['', [Validators.required, Validators.maxLength(50)]],
-      cpfCnpj: ['', [Validators.pattern(this.inputPatternCpfCnpj), Validators.maxLength(this.inputLengthCpfCnpj), Validators.minLength(this.inputLengthCpfCnpj)]],
-      email: ['', [Validators.email, Validators.maxLength(50)]],
-      dataNascimento: [''],
-      tipoTelefone: [''],
-      prefixo: [{ value: '', disabled: true }],
-      numeroTelefone: [{ value: '', disabled: true }],
-      logradouro: [''],
-      numero: [null],
-      bairro: ['', Validators.maxLength(50)],
-      codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^\d{5}\d{3}/)]],
-      cidade: ['', Validators.maxLength(50)],
-      complemento: ['', Validators.maxLength(80)],
-      estado: ['', Validators.maxLength(50)]
+      nome: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, [Validators.required, Validators.maxLength(50)]
+      ),
+      cpfCnpj: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.pattern(/^\d{3}.?\d{3}.?\d{3}-?\d{2}/)
+      ),
+      email: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, [Validators.email, Validators.maxLength(50)]
+      ),
+      dataNascimento: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }
+      ),
+      tipoTelefone: new FormControl(
+        {
+          value: '',
+          disabled: false
+        }
+      ),
+      prefixo: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, [Validators.pattern(this.inputPrefixoPattern), Validators.required]
+      ),
+      numeroTelefone: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.required
+      ),
+      logradouro: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }
+      ),
+      numero: new FormControl(
+        {
+          value: null,
+          disabled: true
+        }
+      ),
+      bairro: new FormControl(
+        {
+          value: null,
+          disabled: true
+        }, Validators.maxLength(50)
+      ),
+      codigoPostal: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.pattern(/^\d{5}\d{3}/)
+      ),
+      cidade: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.maxLength(50)
+      ),
+      complemento: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.maxLength(80)
+      ),
+      estado: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.maxLength(50)
+      )
     });
   }
+
+  private atualizaFormDadosPessoaisColaborador() {
+    this.setaValoresFormCliente();
+    this.administraLiberacaoOuBloqueioDosCamposFormCliente();
+    this.setaValidatorsFormCliente();
+    this.emissorDeDadosPessoaisDoColaborador.emit(this.dadosColaborador);
+  }
+
+  private setaValoresFormCliente() {
+    this.dadosColaborador.setValue({
+      nome: this.colaboradorPreAtualizacao.nome,
+      cpfCnpj: Util.isEmptyString(this.colaboradorPreAtualizacao.cpfCnpj) ? '' : this.colaboradorPreAtualizacao.cpfCnpj,
+      email: Util.isEmptyString(this.colaboradorPreAtualizacao.email) ? '' : this.colaboradorPreAtualizacao.email,
+      dataNascimento: Util.isEmptyString(this.colaboradorPreAtualizacao.dataNascimento) ? '' : this.colaboradorPreAtualizacao.dataNascimento,
+      tipoTelefone: Util.isObjectEmpty(this.colaboradorPreAtualizacao.telefone) ? '' : this.colaboradorPreAtualizacao.telefone.tipoTelefone,
+      prefixo: Util.isObjectEmpty(this.colaboradorPreAtualizacao.telefone) ? '' : this.colaboradorPreAtualizacao.telefone.prefixo,
+      numeroTelefone: Util.isObjectEmpty(this.colaboradorPreAtualizacao.telefone) ? '' : this.colaboradorPreAtualizacao.telefone.numero,
+      logradouro: Util.isObjectEmpty(this.colaboradorPreAtualizacao.endereco) ? '' : this.colaboradorPreAtualizacao.endereco.logradouro,
+      numero: Util.isObjectEmpty(this.colaboradorPreAtualizacao.endereco) ? '' : this.colaboradorPreAtualizacao.endereco.numero,
+      bairro: Util.isObjectEmpty(this.colaboradorPreAtualizacao.endereco) ? '' : this.colaboradorPreAtualizacao.endereco.bairro,
+      codigoPostal: Util.isObjectEmpty(this.colaboradorPreAtualizacao.endereco) ? '' : this.colaboradorPreAtualizacao.endereco.codigoPostal,
+      cidade: Util.isObjectEmpty(this.colaboradorPreAtualizacao.endereco) ? '' : this.colaboradorPreAtualizacao.endereco.cidade,
+      complemento: Util.isObjectEmpty(this.colaboradorPreAtualizacao.endereco) ? '' : this.colaboradorPreAtualizacao.endereco.complemento,
+      estado: Util.isObjectEmpty(this.colaboradorPreAtualizacao.endereco) ? '' : this.colaboradorPreAtualizacao.endereco.estado,
+    })
+  }
+
+  private administraLiberacaoOuBloqueioDosCamposFormCliente() {
+    this.dadosColaborador.get('nome').enable();
+    this.dadosColaborador.get('cpfCnpj').enable();
+    this.dadosColaborador.get('email').enable();
+    this.dadosColaborador.get('dataNascimento').enable();
+    this.dadosColaborador.get('tipoTelefone').enable();
+    (this.getValueAtributoDadosColaborador('tipoTelefone') != '')
+      ? this.dadosColaborador.get('prefixo').enable()
+      : this.dadosColaborador.get('prefixo').disable();
+    (this.getValueAtributoDadosColaborador('numeroTelefone') != '')
+      ? this.dadosColaborador.get('numeroTelefone').enable()
+      : this.dadosColaborador.get('numeroTelefone').disable();
+    this.dadosColaborador.get('logradouro').enable()
+    this.dadosColaborador.get('numero').enable()
+    this.dadosColaborador.get('bairro').enable()
+    this.dadosColaborador.get('codigoPostal').enable()
+    this.dadosColaborador.get('cidade').enable()
+    this.dadosColaborador.get('complemento').enable()
+    this.dadosColaborador.get('estado').enable()
+  }
+
+  private setaValidatorsFormCliente() {
+    if (Util.isNotObjectEmpty(this.colaboradorPreAtualizacao.endereco)) {
+      this.dadosColaborador.get('numero').setValidators((Util.isSomeAttributeFilled(this.colaboradorPreAtualizacao.endereco))
+        ? [
+          Validators.required,
+          Validators.pattern(/^\d{1,5}$/)
+        ]
+        : Validators.pattern(/^\d{1,5}$/));
+      this.dadosColaborador.get('logradouro').setValidators((Util.isSomeAttributeFilled(this.colaboradorPreAtualizacao.endereco))
+        ? [
+          Validators.required,
+          Validators.maxLength(50)
+        ]
+        : Validators.maxLength(50));
+    }
+  }
+
 
   protected getValueAtributoDadosColaborador(atributo: string): any {
     return this.dadosColaborador.controls[atributo].value;

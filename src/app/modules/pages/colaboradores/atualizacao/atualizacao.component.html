@@ -21,7 +21,8 @@
                 <span>Pessoal</span>
             </ng-template>
             <app-atualiza-dados-pessoais [stepAtual]="stepAtual"
-                (emissorDeDadosPessoaisDoColaborador)="recebeFormGroupDadosPessoais($event)"></app-atualiza-dados-pessoais>
+                (emissorDeDadosPessoaisDoColaborador)="recebeFormGroupDadosPessoais($event)"
+                [colaboradorPreAtualizacao]="colaboradorPreAtualizacao"></app-atualiza-dados-pessoais>
         </mat-step>
 
         <mat-step [stepControl]="dadosProfissionais" editable="true">
@@ -30,7 +31,8 @@
             </ng-template>
             <app-atualiza-dados-profissionais [stepAtual]="stepAtual"
                 (emissorDeContratoContratacao)="recebeContratoContratacao($event)"
-                (emissorDeDadosProfissionaisDoColaborador)="recebeFormGroupDadosProfissionais($event)"></app-atualiza-dados-profissionais>
+                (emissorDeDadosProfissionaisDoColaborador)="recebeFormGroupDadosProfissionais($event)"
+                [colaboradorPreAtualizacao]="colaboradorPreAtualizacao"></app-atualiza-dados-profissionais>
         </mat-step>
 
         <mat-step [stepControl]="dadosAcesso" editable="true">
@@ -38,7 +40,8 @@
                 <span>Sistema</span>
             </ng-template>
             <app-atualiza-dados-acesso [stepAtual]="stepAtual" (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
-                (emissorDeDadosAcessoDoColaborador)="recebeFormGroupDadosAcesso($event)"></app-atualiza-dados-acesso>
+                (emissorDeDadosAcessoDoColaborador)="recebeFormGroupDadosAcesso($event)"
+                [colaboradorPreAtualizacao]="colaboradorPreAtualizacao"></app-atualiza-dados-acesso>
         </mat-step>
 
     </mat-horizontal-stepper>

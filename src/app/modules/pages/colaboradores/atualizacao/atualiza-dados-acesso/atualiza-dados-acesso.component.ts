@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-select/custom-select.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ColaboradorNovo } from '../../models/ColaboradorNovo';
 
 @Component({
   selector: 'app-atualiza-dados-acesso',
@@ -32,6 +33,7 @@ export class AtualizaDadosAcessoComponent {
   @Output() emissorDeSolicitacaoDeEnvioDeFormulario = new EventEmitter();
 
   @Input() stepAtual: number;
+  @Input() colaboradorPreAtualizacao: ColaboradorNovo;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.stepAtual == 2) {

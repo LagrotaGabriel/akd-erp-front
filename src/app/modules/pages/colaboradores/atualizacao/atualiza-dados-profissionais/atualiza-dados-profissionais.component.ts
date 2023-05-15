@@ -6,6 +6,7 @@ import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ColaboradorService } from '../../services/colaborador.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ColaboradorNovo } from '../../models/ColaboradorNovo';
 
 @Component({
   selector: 'app-atualiza-dados-profissionais',
@@ -52,6 +53,7 @@ export class AtualizaDadosProfissionaisComponent {
   @ViewChild('inputSalario') inputSalario: ElementRef;
 
   @Input() stepAtual: number;
+  @Input() colaboradorPreAtualizacao: ColaboradorNovo;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.stepAtual == 1) {

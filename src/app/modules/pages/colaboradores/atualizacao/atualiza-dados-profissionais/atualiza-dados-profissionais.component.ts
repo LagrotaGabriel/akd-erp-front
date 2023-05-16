@@ -47,8 +47,10 @@ export class AtualizaDadosProfissionaisComponent {
 
   protected ocupacoesResponse: string[] = [];
 
-  protected contratoContratacao: File;
+  protected contratoContratacao: File = null;
   protected contrato: File;
+  protected botaoLimparContratoHabilitado: boolean = false;
+  protected labelContrato: string = 'Escolher arquivo (.docx, .pdf, .png, .jpeg)';
   @Output() emissorDeContratoContratacao = new EventEmitter<File>();
 
   @ViewChild('selectSetor') selectSetor: CustomSelectComponent;
@@ -187,8 +189,8 @@ export class AtualizaDadosProfissionaisComponent {
     this.setaValoresFormDadosProfissionais();
     this.administraLiberacaoOuBloqueioDosCamposFormDadosProfissionais();
     this.setaValidatorsFormDadosProfissionais();
+    this.realizaSetupContratoColaborador();
     this.emissorDeDadosProfissionaisDoColaborador.emit(this.dadosProfissionais);
-    // if (Util.isNotObjectEmpty(this.colaboradorPreAtualizacao)) this.realizaSetupContratoColaborador(); //TODO
   }
 
   private setaValoresFormDadosProfissionais() {
@@ -247,41 +249,19 @@ export class AtualizaDadosProfissionaisComponent {
     }
   }
 
-  /*   private realizaSetupContratoColaborador() { //TODO
-      console.log(this.colaboradorPreAtualizacao.contratoContratacao);
-      let file = new File([this.colaboradorPreAtualizacao.contratoContratacao], "bunda.pdf")
-      this.contratoContratacao = file;
-      this.contrato = file;
-      let nome = this.contratoContratacao.name;
-      this.dadosProfissionais.controls['contratoContratacao'].setValue(nome);
-      this.emissorDeContratoContratacao.emit(this.contratoContratacao);
-      console.log(this.contratoContratacaoInput.nativeElement.value);
-      this.contratoContratacaoInput.nativeElement.value = nome;
-      console.log(this.contratoContratacaoInput.nativeElement.value);
-      console.log(file);
-    } */
-
-  protected labelContrato(): string {
-    let defaultText: string = 'Escolher arquivo (.docx, .pdf, .png, .jpeg)';
-    if (this.contratoContratacaoInput == undefined) {
-      return defaultText;
-    }
-    else if (this.getValueAtributoDadosProfissionais('contratoContratacao') != null && this.contratoContratacaoInput.nativeElement.value != '') {
-      return this.contratoContratacaoInput.nativeElement.value;
-    }
+  protected realizaSetupContratoColaborador() {
+    if (Util.isObjectEmpty(this.colaboradorPreAtualizacao)) return;
+    else if (Util.isObjectEmpty(this.colaboradorPreAtualizacao.contratoContratacao)) return;
     else {
-      if (Util.isObjectEmpty(this.colaboradorPreAtualizacao)) return defaultText;
-      else if (Util.isObjectEmpty(this.colaboradorPreAtualizacao.contratoContratacao)) return defaultText;
-      else {
-        let file = new File([this.colaboradorPreAtualizacao.contratoContratacao], "contrato.pdf")
-        this.contratoContratacao = file;
-        return 'contrato.pdf'
-      };
-    }
+      let file = new File(
+        [this.colaboradorPreAtualizacao.contratoContratacao.arquivo],
+        this.colaboradorPreAtualizacao.contratoContratacao.nome);
+      this.contratoContratacao = file;
+      this.emissorDeContratoContratacao.emit(this.contratoContratacao);
+    };
   }
 
   // GETTERS E SETTERS
-
   protected getValueAtributoDadosProfissionais(atributo: string): any {
     return this.dadosProfissionais.controls[atributo].value;
   }
@@ -446,11 +426,11 @@ export class AtualizaDadosProfissionaisComponent {
   protected setaContrato(event) {
     if (event.target.files[0] == undefined) this.contratoContratacao = null;
     else {
-      const max_size = 2097152;
+      const max_size = 1048576;
       const allowed_types = ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
       if (event.target.files[0].size > max_size) {
-        this._snackBar.open("O tamanho do arquivo não pode ser maior do que 2MB", "Fechar", {
+        this._snackBar.open("O tamanho do arquivo não pode ser maior do que 1MB", "Fechar", {
           duration: 5000
         })
         this.limpaInputContrato();

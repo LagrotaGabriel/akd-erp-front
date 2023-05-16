@@ -2,6 +2,7 @@ import { AcessoSistema } from "../visualizacao/models/AcessoSistema";
 import { Expediente } from "../visualizacao/models/Expediente";
 import { Telefone } from "src/app/shared/models/Telefone";
 import { Endereco } from "src/app/shared/models/Endereco";
+import { Contrato } from "./Contrato";
 
 export class ColaboradorNovo {
     fotoPerfil?: File;
@@ -12,7 +13,7 @@ export class ColaboradorNovo {
     salario?: number;                      
     entradaEmpresa?: string;                                
     saidaEmpresa?: string;
-    contratoContratacao?: File;                                                   
+    contratoContratacao?: Contrato;
     ocupacao?: string;                                      
     tipoOcupacaoEnum?: string;                              
     modeloContratacaoEnum?: string;                         

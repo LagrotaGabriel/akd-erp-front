@@ -256,11 +256,11 @@ export class DadosProfissionaisComponent {
   protected setaContrato(event) {
     if (event.target.files[0] == undefined) this.contratoContratacao = null;
     else {
-      const max_size = 2097152;
+      const max_size = 1048576;
       const allowed_types = ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
       if (event.target.files[0].size > max_size) {
-        this._snackBar.open("O tamanho do arquivo não pode ser maior do que 2MB", "Fechar", {
+        this._snackBar.open("O tamanho do arquivo não pode ser maior do que 1MB", "Fechar", {
           duration: 5000
         })
         this.limpaInputContrato();

@@ -19,7 +19,7 @@ export class ColaboradorService {
     params: new HttpParams({
     }),
     headers: new HttpHeaders({
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MjE5MjA0IiwiZXhwIjoxNjg0NDM0MDMwfQ.TI7kPJNw0eEQDOrbpQVGZO0cruCUBUobklO1VF71GGGi9WUQLBZNILN6kLgXqrMrcpGvix3YGzJKo77hcH1yAA'
+      'Authorization': '	Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NTczMjk3IiwiZXhwIjoxNjg0ODY2OTM2fQ.RQcJSUN9PJxumjA12vD1rYA-Z670fZsR33Qjv8EpBHH4Czpnwrs8q_NK--oPBeshMSeXYcNodhRxYupfxjy0HA'
     }),
     body: null
   }

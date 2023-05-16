@@ -76,21 +76,22 @@
         <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
             <label class="label">Contrato de trabalho</label>
             <button type="button" class="limpar_file" [@fadeInOut]
-                *ngIf="getValueAtributoDadosProfissionais('contratoContratacao') != null && contratoContratacaoInput.value != ''"
+                *ngIf="contratoContratacao != null && contratoContratacao != undefined"
                 (click)="limpaInputContrato()">Limpar</button>
         </div>
         <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <label class="input input_file col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                 for="contratoContratacaoInput">
-                {{ labelContrato() }}
-                <mat-icon [@fadeInOut] [fontIcon]="getValueAtributoDadosProfissionais('contratoContratacao') != null && contratoContratacaoInput.value != '' 
+                {{ contratoContratacao == null || contratoContratacao == undefined
+                ? 'Escolher arquivo (.docx, .pdf, .png, .jpeg)'
+                : contratoContratacao.name }}
+                <mat-icon [@fadeInOut] [fontIcon]="contratoContratacao != null && contratoContratacao != undefined 
                                             ? 'file_download_done' 
                                             : 'add_box'" class="icone icone_ok"></mat-icon>
             </label>
             <input type="file" accept=".pdf,.docx, .png, .jpeg, .jpg" formControlName="contratoContratacao"
                 name="contratoContratacao" style="display: none;" #contratoContratacaoInput
                 id="contratoContratacaoInput" (change)="setaContrato($event)"
-                [ngClass]="{'input_invalida': dadosProfissionais.controls['contratoContratacao'].touched && dadosProfissionais.controls['contratoContratacao'].invalid}"
                 class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="25">
         </div>
     </div>

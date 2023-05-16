@@ -11,7 +11,8 @@ export class ColaboradorNovo {
     cpfCnpj?: string;                      
     salario?: number;                      
     entradaEmpresa?: string;                                
-    saidaEmpresa?: string;                                                        
+    saidaEmpresa?: string;
+    contratoContratacao?: File;                                                   
     ocupacao?: string;                                      
     tipoOcupacaoEnum?: string;                              
     modeloContratacaoEnum?: string;                         
@@ -30,6 +31,7 @@ export class ColaboradorNovo {
         this.salario = item?.salario;
         this.entradaEmpresa = item?.entradaEmpresa;
         this.saidaEmpresa = item?.saidaEmpresa;
+        this.contratoContratacao = item?.contratoContratacao;
         this.ocupacao = item?.ocupacao;
         this.tipoOcupacaoEnum = item?.tipoOcupacaoEnum;
         this.modeloContratacaoEnum = item?.modeloContratacaoEnum;

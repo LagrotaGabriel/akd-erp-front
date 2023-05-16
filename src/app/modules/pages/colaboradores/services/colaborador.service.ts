@@ -24,10 +24,13 @@ export class ColaboradorService {
     body: null
   }
 
-  public atualizaColaborador(idColaborador: number, colaborador: ColaboradorNovo): Observable<ColaboradorNovo> {
+  public atualizaColaborador(idColaborador: number, colaborador: ColaboradorNovo, contratoColaborador: Blob): Observable<string> {
     this.httpOptions.body = null;
-    return this.http.put<ColaboradorNovo>(`${API_URL.baseUrl}api/sistema/v1/colaborador/${idColaborador}`, colaborador, this.httpOptions).pipe(
-      map(resposta => new ColaboradorNovo(resposta)),
+    let formData = new FormData();
+    formData.append("contratoColaborador", contratoColaborador);
+    formData.append("colaborador", JSON.stringify(colaborador));
+    formData.append("id", JSON.stringify(idColaborador));
+    return this.http.put<string>(`${API_URL.baseUrl}api/sistema/v1/colaborador/${idColaborador}`, formData, this.httpOptions).pipe(
     )
   }
 

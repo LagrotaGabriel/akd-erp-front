@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ColaboradorNovo } from '../models/ColaboradorNovo';
 import { FormGroup } from '@angular/forms';
+import { Util } from 'src/app/modules/utils/Util';
 
 @Component({
   selector: 'app-atualizacao',
@@ -89,6 +90,7 @@ export class AtualizacaoComponent {
   }
 
   protected recebeContratoContratacao(event) {
+    console.log('Recebendo contrato...');
     this.contratoContratacao = event;
   }
 
@@ -156,30 +158,39 @@ export class AtualizacaoComponent {
       } : null,
       acessoSistema: {
         acessoSistemaAtivo: this.getValueAtributoDadosAcesso('acessoSistemaAtivo'),
-        senha: this.getValueAtributoDadosAcesso('acessoSistemaAtivo') ? this.getValueAtributoDadosAcesso('senha') : null,
-        permissaoEnum: this.getValueAtributoDadosAcesso('acessoSistemaAtivo') ? this.getValueAtributoDadosAcesso('permissaoEnum') : null,
+        senha: this.trataSenhaColaborador(),
+        permissaoEnum: this.getValueAtributoDadosAcesso('acessoSistemaAtivo') ? this.getValueAtributoDadosAcesso('permissaoEnum') : 'LEITURA_BASICA',
         privilegios: this.getValueAtributoDadosAcesso('acessoSistemaAtivo') ? this.getValueAtributoDadosAcesso('privilegios') : null
       }
     }
   }
 
+  private trataSenhaColaborador(): string {
+    if (this.getValueAtributoDadosAcesso('acessoSistemaAtivo')) {
+      if (Util.isEmptyString(this.getValueAtributoDadosAcesso('acessoSistemaAtivo'))) return null;
+      else return this.getValueAtributoDadosAcesso('senha');
+    }
+    else return null;
+  }
+
   protected enviarFormulario() {
-    let matriculaGerada: string;
     this.construirObjetoColaborador();
-    this.criaNovoColaboradorSubscription$ = this.colaboradorService.novoColaborador(this.colaborador, this.contratoContratacao).subscribe({
+    let matricula: string = '';
+    this.criaNovoColaboradorSubscription$ = this.colaboradorService.atualizaColaborador(this.idColaborador, this.colaborador, this.contratoContratacao).subscribe({
       next: (response: string) => {
-        matriculaGerada = response;
+        console.log(matricula);
+        matricula = response;
       },
       error: (error: HttpErrorResponse) => {
         console.log(error);
         this.router.navigate(['/colaboradores']);
-        this._snackBar.open("Ocorreu um erro durante o cadastro do colaborador. Entre em contato com o suporte", "Fechar", {
+        this._snackBar.open("Ocorreu um erro durante a atualização do colaborador. Entre em contato com o suporte", "Fechar", {
           duration: 5000
         });
       },
       complete: () => {
         this.router.navigate(['/colaboradores']);
-        this._snackBar.open("Matrícula gerada para o colaborador cadastrado: " + matriculaGerada, "Fechar", {
+        this._snackBar.open("Colaborador N°: " + matricula + " atualizado com sucesso", "Fechar", {
           duration: 7500
         });
       }

@@ -12,13 +12,12 @@
         [options]="geraOptionsAcessoSistemaAtivo()"></app-custom-select>
 
     <!-- INPUT GROUP SENHA -->
-    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'senha'" [titulo]="'Senha'"
-        [tabIndex]="2" [maxLength]="30" [touched]="dadosAcesso.controls['senha'].touched"
-        [todosCaracteresMaiusculos]="false" [customIcon]="'lock'"
-        [disabledGroup]="dadosAcesso.controls['senha'].disabled"
+    <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'senha'"
+        [titulo]="tituloSenha()" [tabIndex]="2"
+        [maxLength]="30" [touched]="dadosAcesso.controls['senha'].touched" [todosCaracteresMaiusculos]="false"
+        [customIcon]="'lock'" [disabledGroup]="dadosAcesso.controls['senha'].disabled"
         [valido]="!(dadosAcesso.controls['senha'].touched && dadosAcesso.controls['senha'].invalid)"
-        [mensagemErro]="'Obrigatório no mínimo 6 caracteres'" formControlName="senha"
-        #inputBairro></app-custom-input>
+        [mensagemErro]="'Obrigatório no mínimo 6 caracteres'" formControlName="senha" #inputBairro></app-custom-input>
 
     <!-- SELECT GROUP PERMISSÕES -->
     <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="permissaoEnum"

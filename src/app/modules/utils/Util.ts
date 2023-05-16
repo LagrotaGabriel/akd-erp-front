@@ -6,6 +6,14 @@ export class Util {
         else return null;
     }
 
+    public static isListEmpty(list: any[]): boolean {
+        if(list == null || list == undefined) return true;
+        else {
+            if (list.length == 0) return true;
+            else return false;
+        }
+    }
+
     public static isObjectEmpty(object: any): boolean {
         if (object == null || object == undefined) return true;
         return false;

@@ -1,10 +1,11 @@
 import { Subscription } from 'rxjs';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-select/custom-select.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ColaboradorNovo } from '../../models/ColaboradorNovo';
+import { Util } from 'src/app/modules/utils/Util';
 
 @Component({
   selector: 'app-atualiza-dados-acesso',
@@ -18,7 +19,7 @@ export class AtualizaDadosAcessoComponent {
     private ref: ChangeDetectorRef) { }
 
   modulosLiberados: string[] = ['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS'];
-  privilegioAtual: string = 'CLIENTES';
+  privilegioAtual: string = '';
 
   @ViewChild('selectAcessoSistemaAtivo') selectAcessoSistemaAtivo: CustomSelectComponent;
 
@@ -36,8 +37,17 @@ export class AtualizaDadosAcessoComponent {
   @Input() colaboradorPreAtualizacao: ColaboradorNovo;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.stepAtual == 2) {
-      this.selectAcessoSistemaAtivo.acionaFoco();
+    if (Util.isNotObjectEmpty(changes['colaboradorPreAtualizacao'])) {
+      let colaboradorRecebido: ColaboradorNovo = changes['colaboradorPreAtualizacao'].currentValue;
+      if (Util.isNotObjectEmpty(colaboradorRecebido)) this.atualizaFormDadosAcessoColaborador();
+    }
+
+    if (Util.isNotObjectEmpty(changes['stepAtual'])) {
+      if (this.stepAtual == 2) {
+        setTimeout(() => {
+          this.selectAcessoSistemaAtivo.acionaFoco();
+        }, 300);
+      }
     }
   }
 
@@ -56,11 +66,76 @@ export class AtualizaDadosAcessoComponent {
 
   private createForm(): FormGroup {
     return this.formBuilder.group({
-      acessoSistemaAtivo: [true],
-      senha: ['', [Validators.required, Validators.minLength(6)]],
-      permissaoEnum: ['LEITURA_BASICA'],
-      privilegios: [['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS']]
+      acessoSistemaAtivo: new FormControl(
+        {
+          value: true,
+          disabled: true
+        }
+      ),
+      senha: new FormControl(
+        {
+          value: '',
+          disabled: true
+        }, Validators.minLength(6)
+      ),
+      permissaoEnum: new FormControl(
+        {
+          value: 'LEITURA BASICA',
+          disabled: true
+        }
+      ),
+      privilegios: new FormControl(
+        {
+          value: ['HOME', 'VENDAS', 'PDV', 'ESTOQUE', 'PRECOS'],
+          disabled: true
+        }
+      )
     });
+  }
+
+
+  private atualizaFormDadosAcessoColaborador() {
+    this.setaValoresFormAcesso();
+    this.administraLiberacaoOuBloqueioDosCamposFormAcesso();
+    this.setaValidatorsFormAcesso();
+    this.emissorDeDadosAcessoDoColaborador.emit(this.dadosAcesso);
+  }
+
+  private setaValoresFormAcesso() {
+    this.dadosAcesso.setValue({
+      acessoSistemaAtivo: this.colaboradorPreAtualizacao.acessoSistema.acessoSistemaAtivo,
+      senha: Util.isEmptyString(this.colaboradorPreAtualizacao.acessoSistema.senha) ? '' : this.colaboradorPreAtualizacao.acessoSistema.senha,
+      permissaoEnum: Util.isEmptyString(this.colaboradorPreAtualizacao.acessoSistema.permissaoEnum)
+        ? 'LEITURA_BASICA'
+        : this.colaboradorPreAtualizacao.acessoSistema.permissaoEnum,
+      privilegios: Util.isListEmpty(this.colaboradorPreAtualizacao.acessoSistema.privilegios) ? [] : this.colaboradorPreAtualizacao.acessoSistema.privilegios,
+    })
+    this.modulosLiberados = this.getValueAtributoDadosAcesso('privilegios');
+  }
+
+  private administraLiberacaoOuBloqueioDosCamposFormAcesso() {
+    this.dadosAcesso.get('acessoSistemaAtivo').enable();
+    if (this.getValueAtributoDadosAcesso('acessoSistemaAtivo')) {
+      this.dadosAcesso.get('senha').enable();
+      this.dadosAcesso.get('permissaoEnum').enable();
+      this.dadosAcesso.get('privilegios').enable();
+    }
+    else {
+      this.dadosAcesso.get('senha').disable();
+      this.dadosAcesso.get('permissaoEnum').disable();
+      this.dadosAcesso.get('privilegios').disable();
+    }
+  }
+
+  private setaValidatorsFormAcesso() {
+    if (this.getValueAtributoDadosAcesso('acessoSistemaAtivo') && !this.colaboradorPreAtualizacao.acessoSistema.acessoSistemaAtivo)
+      this.dadosAcesso.get('senha').setValidators(Validators.required);
+  }
+
+  protected tituloSenha(): string {
+    if (Util.isObjectEmpty(this.colaboradorPreAtualizacao)) return 'Senha';
+    else if (this.colaboradorPreAtualizacao.acessoSistema.acessoSistemaAtivo) return 'Mudar senha';
+    else return 'Senha';
   }
 
   protected getValueAtributoDadosAcesso(atributo: string): any {
@@ -139,6 +214,7 @@ export class AtualizaDadosAcessoComponent {
   }
 
   protected solicitarEnvioDeFormulario() {
+    console.log(this.dadosAcesso.valid);
     if (this.dadosAcesso.valid) this.emissorDeSolicitacaoDeEnvioDeFormulario.emit();
     else {
       this.dadosAcesso.markAllAsTouched();

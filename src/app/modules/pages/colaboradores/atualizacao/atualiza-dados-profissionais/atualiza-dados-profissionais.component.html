@@ -82,10 +82,7 @@
         <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <label class="input input_file col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
                 for="contratoContratacaoInput">
-                {{ getValueAtributoDadosProfissionais('contratoContratacao') != null &&
-                contratoContratacaoInput.value != ''
-                ? contratoContratacaoInput.value
-                : 'Escolher arquivo (.docx, .pdf, .png, .jpeg)' }}
+                {{ labelContrato() }}
                 <mat-icon [@fadeInOut] [fontIcon]="getValueAtributoDadosProfissionais('contratoContratacao') != null && contratoContratacaoInput.value != '' 
                                             ? 'file_download_done' 
                                             : 'add_box'" class="icone icone_ok"></mat-icon>

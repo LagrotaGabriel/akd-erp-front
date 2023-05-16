@@ -48,10 +48,12 @@ export class AtualizaDadosProfissionaisComponent {
   protected ocupacoesResponse: string[] = [];
 
   protected contratoContratacao: File;
+  protected contrato: File;
   @Output() emissorDeContratoContratacao = new EventEmitter<File>();
 
   @ViewChild('selectSetor') selectSetor: CustomSelectComponent;
   @ViewChild('inputSalario') inputSalario: ElementRef;
+  @ViewChild('contratoContratacaoInput') contratoContratacaoInput: ElementRef;
 
   @Input() stepAtual: number;
   @Input() colaboradorPreAtualizacao: ColaboradorNovo;
@@ -116,7 +118,7 @@ export class AtualizaDadosProfissionaisComponent {
       ),
       contratoContratacao: new FormControl(
         {
-          value: null,
+          value: '',
           disabled: true
         }
       ),
@@ -182,20 +184,21 @@ export class AtualizaDadosProfissionaisComponent {
   }
 
   private atualizaFormDadosProfissionaisColaborador() {
-    this.setaValoresFormCliente();
-    this.administraLiberacaoOuBloqueioDosCamposFormCliente();
-    this.setaValidatorsFormCliente();
+    this.setaValoresFormDadosProfissionais();
+    this.administraLiberacaoOuBloqueioDosCamposFormDadosProfissionais();
+    this.setaValidatorsFormDadosProfissionais();
     this.emissorDeDadosProfissionaisDoColaborador.emit(this.dadosProfissionais);
+    // if (Util.isNotObjectEmpty(this.colaboradorPreAtualizacao)) this.realizaSetupContratoColaborador(); //TODO
   }
 
-  private setaValoresFormCliente() {
+  private setaValoresFormDadosProfissionais() {
     this.dadosProfissionais.setValue({
       tipoOcupacaoEnum: this.colaboradorPreAtualizacao.tipoOcupacaoEnum,
       ocupacao: Util.isEmptyString(this.colaboradorPreAtualizacao.ocupacao) ? '' : this.colaboradorPreAtualizacao.ocupacao,
       statusColaboradorEnum: this.colaboradorPreAtualizacao.statusColaboradorEnum,
       modeloContratacaoEnum: this.colaboradorPreAtualizacao.modeloContratacaoEnum,
       modeloTrabalhoEnum: this.colaboradorPreAtualizacao.modeloTrabalhoEnum,
-      contratoContratacao: '',
+      contratoContratacao: '', //TODO ARRUMAR
       salario: Util.isEmptyNumber(this.colaboradorPreAtualizacao.salario) ? 0.0 : this.colaboradorPreAtualizacao.salario,
       entradaEmpresa: Util.isEmptyString(this.colaboradorPreAtualizacao.entradaEmpresa) ? '' : this.colaboradorPreAtualizacao.entradaEmpresa,
       saidaEmpresa: Util.isEmptyString(this.colaboradorPreAtualizacao.saidaEmpresa) ? '' : this.colaboradorPreAtualizacao.saidaEmpresa,
@@ -208,7 +211,7 @@ export class AtualizaDadosProfissionaisComponent {
     })
   }
 
-  private administraLiberacaoOuBloqueioDosCamposFormCliente() {
+  private administraLiberacaoOuBloqueioDosCamposFormDadosProfissionais() {
     this.dadosProfissionais.get('tipoOcupacaoEnum').enable();
     this.dadosProfissionais.get('ocupacao').enable();
     this.dadosProfissionais.get('statusColaboradorEnum').enable();
@@ -236,13 +239,48 @@ export class AtualizaDadosProfissionaisComponent {
     }
   }
 
-  private setaValidatorsFormCliente() {
+  private setaValidatorsFormDadosProfissionais() {
     if (Util.isNotEmptyString(this.getValueAtributoDadosProfissionais('horaSaidaAlmoco'))) {
       this.dadosProfissionais.get('horaSaidaAlmoco').setValidators(Validators.required);
       this.dadosProfissionais.get('horaEntradaAlmoco').setValidators(Validators.required);
       this.dadosProfissionais.get('horaSaida').setValidators(Validators.required);
     }
   }
+
+  /*   private realizaSetupContratoColaborador() { //TODO
+      console.log(this.colaboradorPreAtualizacao.contratoContratacao);
+      let file = new File([this.colaboradorPreAtualizacao.contratoContratacao], "bunda.pdf")
+      this.contratoContratacao = file;
+      this.contrato = file;
+      let nome = this.contratoContratacao.name;
+      this.dadosProfissionais.controls['contratoContratacao'].setValue(nome);
+      this.emissorDeContratoContratacao.emit(this.contratoContratacao);
+      console.log(this.contratoContratacaoInput.nativeElement.value);
+      this.contratoContratacaoInput.nativeElement.value = nome;
+      console.log(this.contratoContratacaoInput.nativeElement.value);
+      console.log(file);
+    } */
+
+  protected labelContrato(): string {
+    let defaultText: string = 'Escolher arquivo (.docx, .pdf, .png, .jpeg)';
+    if (this.contratoContratacaoInput == undefined) {
+      return defaultText;
+    }
+    else if (this.getValueAtributoDadosProfissionais('contratoContratacao') != null && this.contratoContratacaoInput.nativeElement.value != '') {
+      return this.contratoContratacaoInput.nativeElement.value;
+    }
+    else {
+      if (Util.isObjectEmpty(this.colaboradorPreAtualizacao)) return defaultText;
+      else if (Util.isObjectEmpty(this.colaboradorPreAtualizacao.contratoContratacao)) return defaultText;
+      else {
+        let file = new File([this.colaboradorPreAtualizacao.contratoContratacao], "contrato.pdf")
+        this.contratoContratacao = file;
+        return 'contrato.pdf'
+      };
+    }
+  }
+
+  // GETTERS E SETTERS
 
   protected getValueAtributoDadosProfissionais(atributo: string): any {
     return this.dadosProfissionais.controls[atributo].value;

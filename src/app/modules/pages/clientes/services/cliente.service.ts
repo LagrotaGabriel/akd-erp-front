@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API_URL } from 'src/app/config/api-config';
+import { API_CONFIG } from 'src/app/config/api-config';
 import { PageObject } from '../visualizacao/models/PageObject';
 import { Cliente as ClienteNovo } from '../models/cliente';
 import { Cliente } from '../visualizacao/models/Cliente';
@@ -19,14 +19,14 @@ export class ClienteService {
     }),
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3MjE5MjA0IiwiZXhwIjoxNjg0NDM0MDMwfQ.TI7kPJNw0eEQDOrbpQVGZO0cruCUBUobklO1VF71GGGi9WUQLBZNILN6kLgXqrMrcpGvix3YGzJKo77hcH1yAA'
+      'Authorization': API_CONFIG.devToken
     }),
     body: null
   }
 
   public validaDuplicidadeInscricaoEstadual(inscricaoEstadual: string) {
     this.httpOptions.body = null;
-    return this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-ie`, inscricaoEstadual, this.httpOptions).pipe(
+    return this.http.post(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/verifica-ie`, inscricaoEstadual, this.httpOptions).pipe(
       catchError(erro => {
         return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")))
       })
@@ -35,7 +35,7 @@ export class ClienteService {
 
   public validaDuplicidadeCpfCnpj(cpfCnpj: string) {
     this.httpOptions.body = null;
-    return this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, cpfCnpj, this.httpOptions).pipe(
+    return this.http.post(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/verifica-cpfCnpj`, cpfCnpj, this.httpOptions).pipe(
       catchError((erro: HttpErrorResponse) => {
         console.log(erro);
         if (erro.status != 403 && erro.status != 0) return throwError(() => new Error((erro.error.error).toString().replace("Error:", "")));
@@ -47,14 +47,14 @@ export class ClienteService {
 
   public atualizaCliente(idCliente: number, clienteNovo: ClienteNovo): Observable<ClienteNovo> {
     this.httpOptions.body = null;
-    return this.http.put<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${idCliente}`, clienteNovo, this.httpOptions).pipe(
+    return this.http.put<ClienteNovo>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/${idCliente}`, clienteNovo, this.httpOptions).pipe(
       map(resposta => new ClienteNovo(resposta)),
     )
   }
 
   public novoCliente(clienteNovo: ClienteNovo): Observable<ClienteNovo> {
     this.httpOptions.body = null;
-    return this.http.post<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
+    return this.http.post<ClienteNovo>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
       map(resposta => new ClienteNovo(resposta)),
     )
   }
@@ -62,7 +62,7 @@ export class ClienteService {
   public obtemClientePorId(id: number): Observable<ClienteNovo> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
-    return this.http.get<ClienteNovo>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
+    return this.http.get<ClienteNovo>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
       map((resposta) => new ClienteNovo(resposta))
     )
   }
@@ -72,7 +72,7 @@ export class ClienteService {
     this.httpOptions.body = null;
     this.buildRequestParams(valorBusca);
     this.buildPageableParams(pageableInfo);
-    return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
+    return this.http.get<PageObject>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
       map(resposta => new PageObject(resposta)),
       catchError((error: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
@@ -85,7 +85,7 @@ export class ClienteService {
 
   public removeClienteEmMassa(listaDeIds: number[]) {
     this.httpOptions.body = listaDeIds;
-    return this.http.delete(`${API_URL.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
+    return this.http.delete(`${API_CONFIG.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
       catchError((httpErrorResponse: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
         return throwError(() => new HttpErrorResponse(httpErrorResponse));
@@ -95,7 +95,7 @@ export class ClienteService {
 
   public removeCliente(id: number): Observable<Cliente> {
     this.httpOptions.body = null;
-    return this.http.delete<Cliente>(`${API_URL.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
+    return this.http.delete<Cliente>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
       map(resposta => new Cliente(resposta)),
       catchError((httpErrorResponse: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
@@ -105,7 +105,7 @@ export class ClienteService {
   }
 
   public obtemRelatorioClientes(listaDeIds: number[]): any {
-    this.http.post(`${API_URL.baseUrl}api/sistema/v1/cliente/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
+    this.http.post(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
       .subscribe(
         ((response) => {
           let blob = new Blob([response], { type: 'application/pdf' });

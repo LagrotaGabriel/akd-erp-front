@@ -1,7 +1,7 @@
 import { Colaborador } from './../visualizacao/models/Colaborador';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API_URL } from 'src/app/config/api-config';
+import { API_CONFIG } from 'src/app/config/api-config';
 
 import { catchError, map, Observable, retry, throwError, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,7 +19,7 @@ export class ColaboradorService {
     params: new HttpParams({
     }),
     headers: new HttpHeaders({
-      'Authorization': '	Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NTczMjk3IiwiZXhwIjoxNjg0ODY2OTM2fQ.RQcJSUN9PJxumjA12vD1rYA-Z670fZsR33Qjv8EpBHH4Czpnwrs8q_NK--oPBeshMSeXYcNodhRxYupfxjy0HA'
+      'Authorization': API_CONFIG.devToken
     }),
     body: null
   }
@@ -30,14 +30,14 @@ export class ColaboradorService {
     formData.append("contratoColaborador", contratoColaborador);
     formData.append("colaborador", JSON.stringify(colaborador));
     formData.append("id", JSON.stringify(idColaborador));
-    return this.http.put<string>(`${API_URL.baseUrl}api/sistema/v1/colaborador/${idColaborador}`, formData, this.httpOptions).pipe(
+    return this.http.put<string>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${idColaborador}`, formData, this.httpOptions).pipe(
     )
   }
 
   public obtemColaboradorPorId(id: number): Observable<ColaboradorNovo> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
-    return this.http.get<ColaboradorNovo>(`${API_URL.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
+    return this.http.get<ColaboradorNovo>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
       map((resposta) => new ColaboradorNovo(resposta))
     )
   }
@@ -48,14 +48,14 @@ export class ColaboradorService {
     formData.append("contratoColaborador", contratoColaborador);
     formData.append("colaborador", JSON.stringify(colaboradorNovo));
 
-    return this.http.post<string>(`${API_URL.baseUrl}api/sistema/v1/colaborador`, formData, this.httpOptions).pipe(
+    return this.http.post<string>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador`, formData, this.httpOptions).pipe(
     )
   }
 
   public obtemTodasOcupacoes(): Observable<string[]> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
-    return this.http.get<string[]>(`${API_URL.baseUrl}api/sistema/v1/colaborador/ocupacoes`, this.httpOptions).pipe()
+    return this.http.get<string[]>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/ocupacoes`, this.httpOptions).pipe()
   }
 
   public getColaboradores(valorBusca: string, pageableInfo: PageObject): Observable<PageObject> {
@@ -63,7 +63,7 @@ export class ColaboradorService {
     this.httpOptions.body = null;
     this.buildRequestParams(valorBusca);
     this.buildPageableParams(pageableInfo);
-    return this.http.get<PageObject>(`${API_URL.baseUrl}api/sistema/v1/colaborador`, this.httpOptions).pipe(
+    return this.http.get<PageObject>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador`, this.httpOptions).pipe(
       map(resposta => new PageObject(resposta)),
       catchError((error: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
@@ -76,7 +76,7 @@ export class ColaboradorService {
 
   public removeColaboradoresEmMassa(listaDeIds: number[]) {
     this.httpOptions.body = listaDeIds;
-    return this.http.delete(`${API_URL.baseUrl}api/sistema/v1/colaborador`, this.httpOptions).pipe(
+    return this.http.delete(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador`, this.httpOptions).pipe(
       catchError((httpErrorResponse: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
         return throwError(() => new HttpErrorResponse(httpErrorResponse));
@@ -86,7 +86,7 @@ export class ColaboradorService {
 
   public removeColaborador(id: number): Observable<Colaborador> {
     this.httpOptions.body = null;
-    return this.http.delete<Colaborador>(`${API_URL.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
+    return this.http.delete<Colaborador>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
       map(resposta => new Colaborador(resposta)),
       catchError((httpErrorResponse: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
@@ -96,7 +96,7 @@ export class ColaboradorService {
   }
 
   public obtemRelatorioColaboradores(listaDeIds: number[]): any {
-    this.http.post(`${API_URL.baseUrl}api/sistema/v1/colaborador/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
+    this.http.post(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/relatorio`, listaDeIds, { headers: this.httpOptions.headers, responseType: "blob" })
       .subscribe(
         ((response) => {
           let blob = new Blob([response], { type: 'application/pdf' });

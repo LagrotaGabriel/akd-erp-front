@@ -214,7 +214,6 @@ export class AtualizaDadosAcessoComponent {
   }
 
   protected solicitarEnvioDeFormulario() {
-    console.log(this.dadosAcesso.valid);
     if (this.dadosAcesso.valid) this.emissorDeSolicitacaoDeEnvioDeFormulario.emit();
     else {
       this.dadosAcesso.markAllAsTouched();

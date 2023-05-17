@@ -120,7 +120,7 @@ export class AtualizaDadosPessoaisComponent {
       tipoTelefone: new FormControl(
         {
           value: '',
-          disabled: false
+          disabled: true
         }
       ),
       prefixo: new FormControl(

@@ -229,9 +229,9 @@ export class DadosProfissionaisComponent {
   }
 
   protected obtemTodasOcupacoes() {
-    this.obtemTodasOcupacoesSubscription$ = this.colaboradorService.obtemTodasOcupacoes().subscribe({
+/*     this.obtemTodasOcupacoesSubscription$ = this.colaboradorService.obtemTodasOcupacoes().subscribe({
       next: (resposta: string[]) => this.ocupacoesResponse = resposta
-    })
+    }) */
   }
 
   protected alteraStatusColaborador() {
@@ -245,6 +245,9 @@ export class DadosProfissionaisComponent {
       this.dadosProfissionais.controls['saidaEmpresa'].setValue('');
       this.dadosProfissionais.get('saidaEmpresa').enable();
     }
+
+    if (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'FREELANCER')
+      this.dadosProfissionais.controls['modeloContratacaoEnum'].setValue('FREELANCER');
   }
 
   protected limpaInputContrato() {

@@ -42,10 +42,7 @@ export class AtualizacaoComponent {
   }
 
   ngAfterViewInit(): void {
-    const startTime = performance.now();
     this.ref.detectChanges();
-    const duration = performance.now() - startTime;
-    console.log(`ngAfterViewInit levou ${duration}ms`);
   }
 
   ngOnDestroy(): void {
@@ -178,7 +175,6 @@ export class AtualizacaoComponent {
     let matricula: string = '';
     this.criaNovoColaboradorSubscription$ = this.colaboradorService.atualizaColaborador(this.idColaborador, this.colaborador, this.contratoContratacao).subscribe({
       next: (response: string) => {
-        console.log(matricula);
         matricula = response;
       },
       error: (error: HttpErrorResponse) => {

@@ -12,7 +12,7 @@
     <!-- INPUT GROUP OCUPAÇÃO -->
     <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'ocupacao'" [titulo]="'Ocupação'"
         [tabIndex]="2" [maxLength]="30" [touched]="dadosProfissionais.controls['ocupacao'].touched"
-        [todosCaracteresMaiusculos]="true" [customIcon]="null" [dataList]="ocupacoesResponse"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
         [disabledGroup]="dadosProfissionais.controls['ocupacao'].disabled"
         [valido]="!(dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid)"
         [mensagemErro]="'Este campo deve possuir no máximo 30 caracteres'" formControlName="ocupacao"

@@ -48,14 +48,10 @@ export class AtualizaDadosProfissionaisComponent {
   protected ocupacoesResponse: string[] = [];
 
   protected contratoContratacao: File = null;
-  protected contrato: File;
-  protected botaoLimparContratoHabilitado: boolean = false;
-  protected labelContrato: string = 'Escolher arquivo (.docx, .pdf, .png, .jpeg)';
   @Output() emissorDeContratoContratacao = new EventEmitter<File>();
 
   @ViewChild('selectSetor') selectSetor: CustomSelectComponent;
   @ViewChild('inputSalario') inputSalario: ElementRef;
-  @ViewChild('contratoContratacaoInput') contratoContratacaoInput: ElementRef;
 
   @Input() stepAtual: number;
   @Input() colaboradorPreAtualizacao: ColaboradorNovo;
@@ -200,7 +196,7 @@ export class AtualizaDadosProfissionaisComponent {
       statusColaboradorEnum: this.colaboradorPreAtualizacao.statusColaboradorEnum,
       modeloContratacaoEnum: this.colaboradorPreAtualizacao.modeloContratacaoEnum,
       modeloTrabalhoEnum: this.colaboradorPreAtualizacao.modeloTrabalhoEnum,
-      contratoContratacao: '', //TODO ARRUMAR
+      contratoContratacao: '',
       salario: Util.isEmptyNumber(this.colaboradorPreAtualizacao.salario) ? 0.0 : this.colaboradorPreAtualizacao.salario,
       entradaEmpresa: Util.isEmptyString(this.colaboradorPreAtualizacao.entradaEmpresa) ? '' : this.colaboradorPreAtualizacao.entradaEmpresa,
       saidaEmpresa: Util.isEmptyString(this.colaboradorPreAtualizacao.saidaEmpresa) ? '' : this.colaboradorPreAtualizacao.saidaEmpresa,
@@ -399,9 +395,9 @@ export class AtualizaDadosProfissionaisComponent {
   }
 
   protected obtemTodasOcupacoes() {
-    this.obtemTodasOcupacoesSubscription$ = this.colaboradorService.obtemTodasOcupacoes().subscribe({
+/*     this.obtemTodasOcupacoesSubscription$ = this.colaboradorService.obtemTodasOcupacoes().subscribe({
       next: (resposta: string[]) => this.ocupacoesResponse = resposta
-    })
+    }) */
   }
 
   protected alteraStatusColaborador() {
@@ -415,6 +411,9 @@ export class AtualizaDadosProfissionaisComponent {
       this.dadosProfissionais.controls['saidaEmpresa'].setValue('');
       this.dadosProfissionais.get('saidaEmpresa').enable();
     }
+
+    if (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'FREELANCER')
+    this.dadosProfissionais.controls['modeloContratacaoEnum'].setValue('FREELANCER');
   }
 
   protected limpaInputContrato() {

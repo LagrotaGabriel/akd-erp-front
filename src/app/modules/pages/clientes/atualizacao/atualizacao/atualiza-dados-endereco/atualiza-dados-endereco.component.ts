@@ -86,6 +86,9 @@ export class AtualizaDadosEnderecoComponent {
       if (endereco != undefined) {
         this.atualizaEnderecoComValoresEncontradosPeloCnpj(endereco);
       }
+      else {
+        this.administraLiberacaoOuBloqueioDosCamposFormEndereco();
+      }
     }
   }
 

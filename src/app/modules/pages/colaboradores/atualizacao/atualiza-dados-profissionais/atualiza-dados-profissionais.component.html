@@ -7,12 +7,13 @@
 
     <!-- SELECT GROUP SETOR -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" formControlName="tipoOcupacaoEnum"
-        [tabIndex]="1" [titulo]="'Setor'" #selectSetor [options]="geraOptionsSetor()"></app-custom-select>
+        [disabledGroup]="dadosProfissionais.controls['tipoOcupacaoEnum'].disabled" [tabIndex]="1" [titulo]="'Setor'"
+        #selectSetor [options]="geraOptionsSetor()"></app-custom-select>
 
     <!-- INPUT GROUP OCUPAÇÃO -->
     <app-custom-input class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" [id]="'ocupacao'" [titulo]="'Ocupação'"
         [tabIndex]="2" [maxLength]="30" [touched]="dadosProfissionais.controls['ocupacao'].touched"
-        [todosCaracteresMaiusculos]="true" [customIcon]="null" [dataList]="ocupacoesResponse"
+        [todosCaracteresMaiusculos]="true" [customIcon]="null"
         [disabledGroup]="dadosProfissionais.controls['ocupacao'].disabled"
         [valido]="!(dadosProfissionais.controls['ocupacao'].touched && dadosProfissionais.controls['ocupacao'].invalid)"
         [mensagemErro]="'Este campo deve possuir no máximo 30 caracteres'" formControlName="ocupacao"
@@ -21,16 +22,19 @@
     <!-- SELECT GROUP STATUS DO COLABORADOR -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="statusColaboradorEnum"
         [tabIndex]="3" [titulo]="'Status atual'" (change)="alteraStatusColaborador()" #selectStatus
+        [disabledGroup]="dadosProfissionais.controls['statusColaboradorEnum'].disabled"
         [options]="geraOptionsStatusColaborador()"></app-custom-select>
 
     <!-- SELECT GROUP MODELO DE CONTRATAÇÃO -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="modeloContratacaoEnum"
         [tabIndex]="4" [titulo]="'Modelo de contratação'" #selectModeloContratacao
+        [disabledGroup]="dadosProfissionais.controls['modeloContratacaoEnum'].disabled"
         [options]="geraOptionsModeloContratacao()"></app-custom-select>
 
     <!-- SELECT GROUP MODELO DE TABALHO -->
     <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="modeloTrabalhoEnum"
         [tabIndex]="5" [titulo]="'Modelo de trabalho'" #selectModeloTrabalho
+        [disabledGroup]="dadosProfissionais.controls['modeloTrabalhoEnum'].disabled"
         [options]="geraOptionsModeloTrabalho()"></app-custom-select>
 
     <!-- INPUT GROUP REMUNERAÇÃO -->

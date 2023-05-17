@@ -44,7 +44,8 @@
 
     <!-- SELECT GROUP TIPO DO TELEFONE -->
     <app-custom-select class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" formControlName="tipoTelefone"
-        (change)="atualizaValidatorsTelefone()" [tabIndex]="5" [titulo]="'Tipo do telefone'" #inputTipoTelefone
+        (change)="atualizaValidatorsTelefone()" [disabledGroup]="dadosColaborador.controls['tipoTelefone'].disabled"
+        [tabIndex]="5" [titulo]="'Tipo do telefone'" #inputTipoTelefone
         [options]="geraOptionsTipoTelefone()"></app-custom-select>
 
     <!-- INPUT GROUP PREFIXO -->
@@ -81,7 +82,7 @@
     <!-- SELECT GROUP ESTADO -->
     <app-custom-select class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" formControlName="estado"
         (change)="obtemTodosMunicipiosPorEstado()" [tabIndex]="9" [titulo]="'Estado'" #inputEstado
-        [options]="this.estadosOptions"></app-custom-select>
+        [options]="this.estadosOptions" [disabledGroup]="dadosColaborador.controls['estado'].disabled"></app-custom-select>
 
     <!-- INPUT GROUP CIDADE -->
     <app-custom-input class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cidade'" [titulo]="'Cidade'"

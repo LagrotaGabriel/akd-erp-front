@@ -1,7 +1,7 @@
 import { ColaboradorService } from './../../services/colaborador.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Subscription, debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
-import { Colaborador } from '../models/Colaborador';
+import { Colaborador } from '../../models/Colaborador';
 import { Component, OnDestroy } from '@angular/core';
 import { Endereco } from 'src/app/shared/models/Endereco';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';
 import { FormControl } from '@angular/forms';
 import { PageObject } from '../models/PageObject';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tabela',
@@ -64,7 +65,10 @@ export class TabelaComponent implements OnDestroy {
 
   botaoCheckAllHabilitado: boolean = JSON.parse(localStorage.getItem("checkAll") || 'false');
 
-  constructor(private colaboradorService: ColaboradorService, private _snackBar: MatSnackBar) { }
+  constructor(
+    private colaboradorService: ColaboradorService, 
+    private _snackBar: MatSnackBar, 
+    private router: Router) { }
 
   ngDoCheck(): void {
     localStorage.setItem('itensSelecionadosNaTabela', JSON.stringify(this.colaboradoresSelecionadosNaTabela));
@@ -181,6 +185,11 @@ export class TabelaComponent implements OnDestroy {
     this.botaoCheckAllHabilitado = !this.botaoCheckAllHabilitado;
 
     localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
+  }
+
+  exibeDetalhes(id: number) {
+    console.log('Acessado');
+    this.router.navigate(['/colaboradores/' + id]);
   }
 
   excluiColaborador(id: number) {

@@ -1,4 +1,3 @@
-import { Colaborador } from './../visualizacao/models/Colaborador';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_CONFIG } from 'src/app/config/api-config';
@@ -7,6 +6,7 @@ import { catchError, map, Observable, retry, throwError, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageObject } from '../visualizacao/models/PageObject';
 import { ColaboradorNovo } from '../models/ColaboradorNovo';
+import { Colaborador } from '../models/Colaborador';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +31,14 @@ export class ColaboradorService {
     formData.append("colaborador", JSON.stringify(colaborador));
     formData.append("id", JSON.stringify(idColaborador));
     return this.http.put<string>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${idColaborador}`, formData, this.httpOptions).pipe(
+    )
+  }
+
+  public obtemDetalhesDoColaboradorPorId(id: number): Observable<Colaborador> {
+    this.httpOptions.params = new HttpParams();
+    this.httpOptions.body = null;
+    return this.http.get<Colaborador>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
+      map((resposta) => new Colaborador(resposta))
     )
   }
 

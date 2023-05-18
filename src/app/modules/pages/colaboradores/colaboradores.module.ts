@@ -27,10 +27,11 @@ import { AtualizacaoComponent } from './atualizacao/atualizacao.component';
 import { AtualizaDadosPessoaisComponent } from './atualizacao/atualiza-dados-pessoais/atualiza-dados-pessoais.component';
 import { AtualizaDadosProfissionaisComponent } from './atualizacao/atualiza-dados-profissionais/atualiza-dados-profissionais.component';
 import { AtualizaDadosAcessoComponent } from './atualizacao/atualiza-dados-acesso/atualiza-dados-acesso.component';
+import { DetalhesComponent } from './detalhes/detalhes.component';
 
 @NgModule({
   declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent,
-    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomTitleContainerComponent, AtualizacaoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosProfissionaisComponent, AtualizaDadosAcessoComponent],
+    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomTitleContainerComponent, AtualizacaoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosProfissionaisComponent, AtualizaDadosAcessoComponent, DetalhesComponent],
   imports: [
     CommonModule,
     BrowserModule,

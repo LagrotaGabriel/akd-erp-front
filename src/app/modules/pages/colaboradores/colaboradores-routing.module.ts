@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { ViewComponent } from "./visualizacao/view/view.component";
 import { NovoComponent } from './criacao/novo/novo.component';
 import { AtualizacaoComponent } from './atualizacao/atualizacao.component';
+import { DetalhesComponent } from './detalhes/detalhes.component';
 
 
 const routes: Routes = [
@@ -15,8 +16,12 @@ const routes: Routes = [
         component: NovoComponent
     },
     {
-        path: ':id',
+        path: 'alterar/:id',
         component: AtualizacaoComponent
+    },
+    {
+        path: ':id',
+        component: DetalhesComponent
     }
 ]
 

@@ -1,0 +1,183 @@
+<div class="container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mat-elevation-z8">
+
+    <div class="subcontainer subcontainer_dados row col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+
+        <div class="block block_opcoes row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="block_opcoes_interno">
+                <button class="botao botao_retornar row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <mat-icon class="icone icone_retornar" fontIcon="arrow_back"></mat-icon>
+                    <h5 class="retornar_text">Retornar</h5>
+                </button>
+            </div>
+            <div class="block_opcoes_interno row">
+                <i class="icone icone_opc bi bi-pencil-square"></i>
+                <i class="icone icone_opc bi bi-trash2"></i>
+            </div>
+        </div>
+
+        <div class="block block_dados_principais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="container_imagem row">
+
+            </div>
+            <div class="container_dados_principais">
+                <div class="text_principal_colaborador nome_colaborador col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ (colaborador?.nome) | titlecase }}
+
+                </div>
+                <div
+                    class="text_principal_colaborador email_colaborador row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ colaborador?.email | lowercase }}
+                </div>
+                <div class="text_principal_colaborador status_colaborador">
+                    {{ colaborador?.statusColaboradorEnum | titlecase }}
+                </div>
+            </div>
+        </div>
+
+        <div class="block block_icones row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <i class="icone icone_icones bi bi-file-earmark-medical"></i>
+            <i class="icone icone_icones bi bi-telephone"></i>
+            <i class="icone icone_icones bi bi-person-dash"></i>
+            <i class="icone icone_icones bi bi-trash2"></i>
+        </div>
+
+        <div class="block block_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+            <div class="dados_pessoais_titulo row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                {{ 'Cod. ' + colaborador?.matricula }}
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Nome
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Gabriel
+                </div>
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Sobrenome
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Lagrota
+                </div>
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    E-mail
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ colaborador?.email | lowercase }}
+                </div>
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Telefone
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ '(' + colaborador?.telefone?.prefixo + ')' + ' ' + colaborador?.telefone?.numero }} <!-- AJUSTAR COM MÉTODO && ADICIONAR SPAN COM TIPO-->
+                </div>
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    CPF
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ colaborador?.cpfCnpj }}
+                </div>
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Data de nascimento
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ colaborador?.dataNascimento | date: 'dd/MM/yyyy' }}
+                </div>
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Setor
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ colaborador?.tipoOcupacaoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+                </div>
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Cargo
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ colaborador?.ocupacao | titlecase }}
+                </div>
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Modelo de contratação
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ colaborador?.modeloContratacaoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+                </div>
+            </div>
+
+            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Modelo de trabalho
+                </div>
+                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ colaborador?.modeloTrabalhoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="subcontainer row col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+
+        <div class="block block_menu row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+            <ul class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <li>Tudo</li>
+                <li>Produtividade</li>
+                <li>Parentescos</li>
+                <li>Advertências</li>
+                <li>Anotações</li>
+            </ul>
+
+        </div>
+
+        <div class="block block_titulo_itens row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+            <div class="block_titulo_itens_titulo">
+                16 Itens encontrados
+            </div>
+            <div class="block_titulo_itens_container_botao">
+                <button class="botao_imprimir">Imprimir</button>
+            </div>
+        </div>
+
+        <div class="block block_itens row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+            <div class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+                Teste
+            </div>
+
+            <div class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+                Teste
+            </div>
+
+            <div class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+                Teste
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

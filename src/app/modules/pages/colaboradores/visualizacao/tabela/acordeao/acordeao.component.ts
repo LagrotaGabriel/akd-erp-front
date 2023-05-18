@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Colaborador } from '../../models/Colaborador';
+import { Colaborador } from '../../../models/Colaborador';
 import { Endereco } from 'src/app/shared/models/Endereco';
-import { Expediente } from '../../models/Expediente';
+import { Expediente } from '../../../models/Expediente';
 
 @Component({
   selector: 'app-acordeao',

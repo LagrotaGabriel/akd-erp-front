@@ -1,0 +1,256 @@
+@import "../../../../../../node_modules/rfs/scss";
+@import '../../../../../dist/variables.scss';
+
+.container,
+.subcontainer,
+.titulo,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+i,
+ul,
+li,
+div,
+span {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    background-color: $light-black;
+    padding: 0;
+    margin: 1rem 0;
+    height: 95%;
+}
+
+.subcontainer {
+    display: block;
+}
+
+.subcontainer_dados {
+    border-right: 1px solid $dark-grey;
+}
+
+// CONTAINER ESQUERDA - MENU SUPERIOR
+
+.block_opcoes {
+    height: 1.5rem;
+    margin-top: 1rem;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.block_opcoes_interno {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+}
+
+.botao {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: normal;
+    color: $light-grey;
+    cursor: pointer;
+}
+
+.icone {
+    color: $light-grey;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.icone_opc {
+    margin-left: 0.4rem;
+    font-size: 1.1rem;
+}
+
+.icone_retornar {
+    margin-right: 0.2rem;
+}
+
+.retornar_text {
+    font-family: $font-poppins;
+    font-size: 0.90rem;
+    font-weight: 500;
+}
+
+// CONTAINER ESQUERDA - DADOS PRINCIPAIS DO COLABORADOR
+
+.block_dados_principais {
+    margin-top: 1rem;
+    padding: 0 1rem;
+}
+
+.container_imagem {
+    width: 30%;
+    height: 5rem;
+    border: 1px solid $dark-grey;
+}
+
+.container_dados_principais {
+    width: 70%;
+    padding-left: 0.5rem;
+}
+
+.text_principal_colaborador {
+    font-family: $font-poppins;
+    color: $dark-white;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    -o-text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.nome_colaborador {
+    font-size: 0.9rem;
+    color: $light-white;
+}
+
+.email_colaborador {
+    font-size: 0.6rem;
+}
+
+.status_colaborador {
+    font-size: 0.7rem;
+    background-color: $dark-grey;
+    padding: 0.1rem 0.5rem;
+    border-radius: 5px;
+    text-align: center;
+}
+
+// CONTAINER DA ESQUERDA - BLOCK ICONES
+
+.block_icones {
+    display: flex;
+    margin-top: 0.5rem;
+    padding: 0 1rem;
+}
+
+.icone_icones {
+    margin-right: 0.3rem;
+    border: 1px solid $dark-grey;
+    color: $dark-grey;
+    border-radius: 5px;
+    padding: 0.3rem;
+}
+
+// CONTAINER DA ESQUERDA - BLOCK DADOS PESSOAIS
+
+.block_dados_pessoais {
+    border-top: 1px solid $dark-grey;
+    margin: 0.8rem 0;
+    padding: 0 1rem;
+}
+
+.dados_pessoais_titulo {
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    font-family: $font-poppins;
+    color: $light-white;
+}
+
+.dados_pessoais_info_block {
+    margin: 0.1rem 0;
+    font-weight: 400;
+    font-size: 0.8rem;
+    font-family: $font-poppins;
+}
+
+.dados_pessoais_info_titulo {
+    color: $light-grey;
+}
+
+.dados_pessoais_info_texto {
+    color: $dark-white;
+    margin-top: -0.3rem;
+}
+
+// CONTAINER DIREITA - MENU SUPERIOR
+
+.block_menu {
+    margin-top: 1rem;
+    padding: 0 1rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+}
+
+ul>li {
+    display: inline-block;
+    font-family: $font-poppins;
+    color: $light-grey;
+    padding: 0 1.2rem;
+    cursor: pointer;
+    border-bottom: 2px solid $dark-grey;
+    padding-bottom: 0.3rem;
+    font-size: 0.8rem;
+}
+
+ul>li:hover {
+    border-bottom: 2px solid $primary-color;
+    padding-bottom: 0.3rem;
+}
+
+// CONTAINER DIREITA - TITULO ITENS
+
+.block_titulo_itens {
+    margin-top: 1rem;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.block_titulo_itens_titulo {
+    font-family: $font-poppins;
+    color: $dark-white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.botao_imprimir {
+    background-color: $primary-color;
+    border: none;
+    color: $dark-white;
+    font-family: $font-poppins;
+    padding: 0.2rem 1rem;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+// CONTAINER DIREITA - ITENS
+
+.block_itens {
+    margin-top: 0.5rem;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.item_container {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid $dark-grey;
+    border-radius: 2px;
+}

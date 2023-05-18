@@ -1,4 +1,4 @@
-import { Colaborador } from "./Colaborador";
+import { Colaborador } from "../../models/Colaborador";
 
 export class PageObject {
     content: Colaborador[];

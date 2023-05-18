@@ -3,7 +3,7 @@ import { ColaboradorService } from '../../../services/colaborador.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageObject } from '../../models/PageObject';
 import { FormControl } from '@angular/forms';
-import { Colaborador } from '../../models/Colaborador';
+import { Colaborador } from '../../../models/Colaborador';
 import { Subscription, debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 
 @Component({

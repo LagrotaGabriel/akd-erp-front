@@ -9,6 +9,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { ViewComponent } from './visualizacao/view/view.component';
 import { MenuComponent } from './visualizacao/menu/menu.component';
@@ -44,6 +45,7 @@ import { DetalhesComponent } from './detalhes/detalhes.component';
     MatTooltipModule,
     MatProgressBarModule,
     MatStepperModule,
+    MatTabsModule
   ],
   exports: [
     MenuComponent, ViewComponent, TabelaComponent

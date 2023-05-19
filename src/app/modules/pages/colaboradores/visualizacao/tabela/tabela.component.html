@@ -56,7 +56,7 @@
                 class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela_container">
                 <div *ngFor="let colaborador of pageableInfo.content; let i = index"
                     [ngClass]="{'linha_tabela_expandida': colaborador.expanded}"
-                    (dblclick)="exibeDetalhes(colaborador.id)"
+                    (dblclick)="navegarParaDetalhesColaborador(colaborador.id)"
                     class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 linha_tabela">
 
                     <tr class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -112,7 +112,7 @@
                                     class="icone icone_tabela icone_tabela_remove dropdown dropleft float-right"
                                     data-toggle="dropdown"></mat-icon>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" [routerLink]="'/colaboradores/' + colaborador.id">
+                                    <a class="dropdown-item" (click)="navegarParaDetalhesColaborador(colaborador.id)">
                                         Detalhes
                                     </a>
                                     <a class="dropdown-item" [routerLink]="'/colaboradores/alterar/' + colaborador.id">

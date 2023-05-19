@@ -1,6 +1,6 @@
 <div class="container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mat-elevation-z8">
 
-    <div class="subcontainer subcontainer_dados row col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+    <div class="subcontainer subcontainer_dados row col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
 
         <div class="block block_opcoes row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="block_opcoes_interno">
@@ -16,9 +16,7 @@
         </div>
 
         <div class="block block_dados_principais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="container_imagem row">
 
-            </div>
             <div class="container_dados_principais">
                 <div class="text_principal_colaborador nome_colaborador col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     {{ (colaborador?.nome) | titlecase }}
@@ -26,7 +24,7 @@
                 </div>
                 <div
                     class="text_principal_colaborador email_colaborador row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.email | lowercase }}
+                    {{ colaborador?.email != null ? (colaborador?.email | lowercase) : 'Sem e-mail cadastrado' }}
                 </div>
                 <div class="text_principal_colaborador status_colaborador">
                     {{ colaborador?.statusColaboradorEnum | titlecase }}
@@ -35,10 +33,10 @@
         </div>
 
         <div class="block block_icones row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <i class="icone icone_icones bi bi-file-earmark-medical"></i>
-            <i class="icone icone_icones bi bi-telephone"></i>
-            <i class="icone icone_icones bi bi-person-dash"></i>
-            <i class="icone icone_icones bi bi-trash2"></i>
+            <i class="icone icone_icones bi bi-file-earmark-medical mat-elevation-z1"></i>
+            <i class="icone icone_icones bi bi-telephone mat-elevation-z1"></i>
+            <i class="icone icone_icones bi bi-eraser mat-elevation-z1"></i>
+            <i class="icone icone_icones bi bi-printer mat-elevation-z1"></i>
         </div>
 
         <div class="block block_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -70,7 +68,7 @@
                     E-mail
                 </div>
                 <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.email | lowercase }}
+                    {{ colaborador?.email != null ? (colaborador?.email | lowercase) : 'Sem e-mail cadastrado' }}
                 </div>
             </div>
 
@@ -79,7 +77,9 @@
                     Telefone
                 </div>
                 <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ '(' + colaborador?.telefone?.prefixo + ')' + ' ' + colaborador?.telefone?.numero }} <!-- AJUSTAR COM MÉTODO && ADICIONAR SPAN COM TIPO-->
+                    {{ colaborador?.telefone != null
+                    ? '(' + colaborador?.telefone?.prefixo + ')' + ' ' + colaborador?.telefone?.numero
+                    : 'Sem telefone cadastrado' }} <!-- AJUSTAR COM MÉTODO && ADICIONAR SPAN COM TIPO-->
                 </div>
             </div>
 
@@ -88,7 +88,7 @@
                     CPF
                 </div>
                 <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.cpfCnpj }}
+                    {{ colaborador?.cpfCnpj != null ? (colaborador?.cpfCnpj) : 'Sem CPF cadastrado' }}
                 </div>
             </div>
 
@@ -140,44 +140,86 @@
         </div>
     </div>
 
-    <div class="subcontainer row col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+    <div class="subcontainer row col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
 
-        <div class="block block_menu row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
-            <ul class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <li>Tudo</li>
-                <li>Produtividade</li>
-                <li>Parentescos</li>
-                <li>Advertências</li>
-                <li>Anotações</li>
-            </ul>
+        <mat-tab-group class="block_menu" dynamicHeight>
+            <mat-tab label="Alterações">
+                <div class="mat-elevation-z4">
+                    <div class="block block_titulo_itens row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+                        <div class="block_titulo_itens_titulo">
+                            {{ historicoAcoes?.content?.length + ' Itens encontrados' }}
+                        </div>
+                    </div>
 
-        </div>
+                    <div class="block block_itens row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-        <div class="block block_titulo_itens row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
-            <div class="block_titulo_itens_titulo">
-                16 Itens encontrados
-            </div>
-            <div class="block_titulo_itens_container_botao">
-                <button class="botao_imprimir">Imprimir</button>
-            </div>
-        </div>
+                        <div *ngFor="let acao of historicoAcoes?.content"
+                            [routerLink]="geraEndPointAcessoItemAcao(acao)"
+                            class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12"
+                            matTooltip="Ação realizada dia {{ acao.dataCriacao | date: 'dd/MM/yyyy' }} às {{ acao.horaCriacao | slice:0:5 }}"
+                            matTooltipPosition="left">
+                            <div class="row item_text">
+                                {{ tituloAcao(acao) }}
+                            </div>
 
-        <div class="block block_itens row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="row item_details">
+                                <div class="item_details_status" [class]="acao.tipoAcaoEnum">
+                                    {{ converteTextoTipoAcao(acao) }}
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
-                Teste
-            </div>
+                        <ul *ngIf="historicoAcoes?.totalPages > 1" class="pagination pagination-sm justify-content-end">
+                            <li (click)="voltarPagina()" [ngClass]="{'disabled': historicoAcoes.pageNumber == 0}"
+                                class="page-item">
+                                <a class="page-link">{{ geraBotaoVoltarPaginacao() }}</a>
+                            </li>
+                            <ng-container
+                                *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(historicoAcoes.totalPages); let i = index">
+                                <li *ngIf="(historicoAcoes.pageNumber - i) <= 3 && (historicoAcoes.pageNumber - i) >= 0
+                        || (i - historicoAcoes.pageNumber) <= 3 && (i - historicoAcoes.pageNumber) >= 0
+                        || historicoAcoes.pageNumber == 0 && (i - historicoAcoes.pageNumber) <= 6 && (i - historicoAcoes.pageNumber) >= 0
+                        || historicoAcoes.pageNumber == 1 && (i - historicoAcoes.pageNumber) <= 5 && (i - historicoAcoes.pageNumber) >= 0
+                        || historicoAcoes.pageNumber == 2 && (i - historicoAcoes.pageNumber) <= 4 && (i - historicoAcoes.pageNumber) >= 0
+                        || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-1)) && (historicoAcoes.pageNumber - i) <= 6
+                        || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-2)) && (historicoAcoes.pageNumber - i) <= 5
+                        || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-3)) && (historicoAcoes.pageNumber - i) <= 4"
+                                    (click)="selecionarPagina(i)" [ngClass]="{'active': historicoAcoes.pageNumber == i}"
+                                    class="page-item">
+                                    <a class="page-link">{{ i+1 }}</a>
+                                </li>
+                            </ng-container>
+                            <li (click)="avancarPagina()"
+                                [ngClass]="{'disabled': historicoAcoes.pageNumber == historicoAcoes.totalPages-1}"
+                                class="page-item"><a class="page-link">{{ geraBotaoAvancarPaginacao() }}</a></li>
+                        </ul>
 
-            <div class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
-                Teste
-            </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Produtividade">
+                <div class="mat-elevation-z4">
+                    Produtividade
+                </div>
+            </mat-tab>
+            <mat-tab label="Advertências">
+                <div class="mat-elevation-z4">
+                    Advertências
+                </div>
+            </mat-tab>
+            <mat-tab label="Acessos">
+                <div class="mat-elevation-z4">
+                    Acessos
+                </div>
+            </mat-tab>
+        </mat-tab-group>
 
-            <div class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
-                Teste
-            </div>
 
-        </div>
 
     </div>
+
+    <!--     <div class="subcontainer subcontainer_comandos row col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+
+    </div> -->
 
 </div>

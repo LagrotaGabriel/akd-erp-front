@@ -187,11 +187,6 @@ export class TabelaComponent implements OnDestroy {
     localStorage.setItem('checkAll', JSON.stringify(this.botaoCheckAllHabilitado));
   }
 
-  exibeDetalhes(id: number) {
-    console.log('Acessado');
-    this.router.navigate(['/colaboradores/' + id]);
-  }
-
   excluiColaborador(id: number) {
     this.removeColaborador$ = this.colaboradorService.removeColaborador(id).subscribe(
       {
@@ -238,6 +233,11 @@ export class TabelaComponent implements OnDestroy {
     this.pageableInfo.pageNumber = 0;
     this.pageableInfo.pageSize = pageSize;
     this.invocaRequisicaoHttpGetParaAtualizarObjetos();
+  }
+
+  navegarParaDetalhesColaborador(idColaborador: number) {
+    let pathUrl: string = 'colaboradores/' + (idColaborador.toString());
+    this.router.navigate([pathUrl], { queryParams: { nav: 'alteracoes' } });
   }
 
 }

@@ -9,6 +9,7 @@ import { Ponto } from "./Ponto";
 import { Ferias } from "./Ferias";
 import { Advertencia } from "./Advertencia";
 import { Parentesco } from "./Parentesco";
+import { Acao } from "./Acao";
 
 export class Colaborador {
     id?: number;
@@ -71,7 +72,7 @@ export class Colaborador {
         this.telefone = item?.telefone;
         this.expediente = item?.expediente;
         this.dispensa = item?.dispensa;
-        this.pontos = item?.pontos
+        this.pontos = item?.pontos;
         this.historicoFerias = item?.historicoFerias;
         this.advertencias = item?.advertencias;
         this.parentescos = item?.parentescos;

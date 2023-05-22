@@ -29,10 +29,14 @@ import { AtualizaDadosPessoaisComponent } from './atualizacao/atualiza-dados-pes
 import { AtualizaDadosProfissionaisComponent } from './atualizacao/atualiza-dados-profissionais/atualiza-dados-profissionais.component';
 import { AtualizaDadosAcessoComponent } from './atualizacao/atualiza-dados-acesso/atualiza-dados-acesso.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
+import { AlteracoesComponent } from './detalhes/alteracoes/alteracoes.component';
+import { ProdutividadeComponent } from './detalhes/produtividade/produtividade.component';
+import { AdvertenciasComponent } from './detalhes/advertencias/advertencias.component';
+import { AcessosComponent } from './detalhes/acessos/acessos.component';
 
 @NgModule({
   declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent,
-    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomTitleContainerComponent, AtualizacaoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosProfissionaisComponent, AtualizaDadosAcessoComponent, DetalhesComponent],
+    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomTitleContainerComponent, AtualizacaoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosProfissionaisComponent, AtualizaDadosAcessoComponent, DetalhesComponent, AlteracoesComponent, ProdutividadeComponent, AdvertenciasComponent, AcessosComponent],
   imports: [
     CommonModule,
     BrowserModule,

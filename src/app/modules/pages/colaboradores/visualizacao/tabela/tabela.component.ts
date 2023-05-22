@@ -66,8 +66,8 @@ export class TabelaComponent implements OnDestroy {
   botaoCheckAllHabilitado: boolean = JSON.parse(localStorage.getItem("checkAll") || 'false');
 
   constructor(
-    private colaboradorService: ColaboradorService, 
-    private _snackBar: MatSnackBar, 
+    private colaboradorService: ColaboradorService,
+    private _snackBar: MatSnackBar,
     private router: Router) { }
 
   ngDoCheck(): void {
@@ -216,7 +216,7 @@ export class TabelaComponent implements OnDestroy {
     this.pageableInfo.pageNumber = paginaAtualizada;
     this.invocaRequisicaoHttpGetParaAtualizarObjetos();
   }
-  
+
   recebeBuscaColaboradoresFormControl(buscaColaboradores: FormControl) {
     this.buscaColaboradores = buscaColaboradores;
   }
@@ -237,7 +237,7 @@ export class TabelaComponent implements OnDestroy {
 
   navegarParaDetalhesColaborador(idColaborador: number) {
     let pathUrl: string = 'colaboradores/' + (idColaborador.toString());
-    this.router.navigate([pathUrl], { queryParams: { nav: 'alteracoes' } });
+    this.router.navigate([pathUrl]);
   }
 
 }

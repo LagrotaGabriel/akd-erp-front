@@ -97,7 +97,8 @@
                     Data de nascimento
                 </div>
                 <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.dataNascimento | date: 'dd/MM/yyyy' }}
+                    {{ colaborador?.dataNascimento != null ? (colaborador?.dataNascimento | date: 'dd/MM/yyyy') : 'Sem '
+                    + 'data de nascimento cadastrada' }}
                 </div>
             </div>
 
@@ -140,72 +141,21 @@
         </div>
     </div>
 
-    <div class="subcontainer row col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
-
-        <mat-tab-group class="block_menu" dynamicHeight>
+    <div class="subcontainer subcontainer_content row col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+        <mat-tab-group class="block_menu" [selectedIndex]="abaSelecionada.value"
+            (selectedIndexChange)="abaSelecionada.setValue($event)" dynamicHeight>
             <mat-tab label="Alterações">
-                <div class="mat-elevation-z4">
-                    <div class="block block_titulo_itens row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
-                        <div class="block_titulo_itens_titulo">
-                            {{ historicoAcoes?.content?.length + ' Itens encontrados' }}
-                        </div>
-                    </div>
-
-                    <div class="block block_itens row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-
-                        <div *ngFor="let acao of historicoAcoes?.content"
-                            [routerLink]="geraEndPointAcessoItemAcao(acao)"
-                            class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12"
-                            matTooltip="Ação realizada dia {{ acao.dataCriacao | date: 'dd/MM/yyyy' }} às {{ acao.horaCriacao | slice:0:5 }}"
-                            matTooltipPosition="left">
-                            <div class="row item_text">
-                                {{ tituloAcao(acao) }}
-                            </div>
-
-                            <div class="row item_details">
-                                <div class="item_details_status" [class]="acao.tipoAcaoEnum">
-                                    {{ converteTextoTipoAcao(acao) }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <ul *ngIf="historicoAcoes?.totalPages > 1" class="pagination pagination-sm justify-content-end">
-                            <li (click)="voltarPagina()" [ngClass]="{'disabled': historicoAcoes.pageNumber == 0}"
-                                class="page-item">
-                                <a class="page-link">{{ geraBotaoVoltarPaginacao() }}</a>
-                            </li>
-                            <ng-container
-                                *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(historicoAcoes.totalPages); let i = index">
-                                <li *ngIf="(historicoAcoes.pageNumber - i) <= 3 && (historicoAcoes.pageNumber - i) >= 0
-                        || (i - historicoAcoes.pageNumber) <= 3 && (i - historicoAcoes.pageNumber) >= 0
-                        || historicoAcoes.pageNumber == 0 && (i - historicoAcoes.pageNumber) <= 6 && (i - historicoAcoes.pageNumber) >= 0
-                        || historicoAcoes.pageNumber == 1 && (i - historicoAcoes.pageNumber) <= 5 && (i - historicoAcoes.pageNumber) >= 0
-                        || historicoAcoes.pageNumber == 2 && (i - historicoAcoes.pageNumber) <= 4 && (i - historicoAcoes.pageNumber) >= 0
-                        || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-1)) && (historicoAcoes.pageNumber - i) <= 6
-                        || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-2)) && (historicoAcoes.pageNumber - i) <= 5
-                        || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-3)) && (historicoAcoes.pageNumber - i) <= 4"
-                                    (click)="selecionarPagina(i)" [ngClass]="{'active': historicoAcoes.pageNumber == i}"
-                                    class="page-item">
-                                    <a class="page-link">{{ i+1 }}</a>
-                                </li>
-                            </ng-container>
-                            <li (click)="avancarPagina()"
-                                [ngClass]="{'disabled': historicoAcoes.pageNumber == historicoAcoes.totalPages-1}"
-                                class="page-item"><a class="page-link">{{ geraBotaoAvancarPaginacao() }}</a></li>
-                        </ul>
-
-                    </div>
-                </div>
+                <ng-template #acoesColaborador matTabContent>
+                    <app-alteracoes></app-alteracoes>
+                </ng-template>
             </mat-tab>
             <mat-tab label="Produtividade">
                 <div class="mat-elevation-z4">
-                    Produtividade
+                    Dependente do módulo de vendas
                 </div>
             </mat-tab>
             <mat-tab label="Advertências">
-                <div class="mat-elevation-z4">
-                    Advertências
-                </div>
+
             </mat-tab>
             <mat-tab label="Acessos">
                 <div class="mat-elevation-z4">
@@ -213,8 +163,6 @@
                 </div>
             </mat-tab>
         </mat-tab-group>
-
-
 
     </div>
 

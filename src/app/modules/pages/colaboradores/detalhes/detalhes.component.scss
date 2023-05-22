@@ -1,26 +1,10 @@
 @import "../../../../../../node_modules/rfs/scss";
 @import '../../../../../dist/variables.scss';
 
-body {
-    min-height: 100%;
-    background: red;
-}
-
-.container,
-.subcontainer,
-.titulo,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
 button,
 i,
-ul,
-li,
 div,
-span {
+app-alteracoes {
     margin: 0;
     padding: 0;
 }
@@ -40,6 +24,10 @@ span {
 .subcontainer_dados {
     display: grid;
     border-right: 1px solid $dark-grey;
+}
+
+.subcontainer_content {
+    overflow-y: auto;
 }
 
 // CONTAINER ESQUERDA - MENU SUPERIOR
@@ -170,16 +158,19 @@ span {
 /* Track */
 ::-webkit-scrollbar-track {
     background: $dark-white;
+    border-radius: 100px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: $primary-color;
+    box-shadow: inset 0 0 2px $dark-black;
+    border-radius: 100px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: $primary-color-dark;
 }
 
 .dados_pessoais_titulo {
@@ -209,108 +200,19 @@ span {
 }
 
 // STEPPER
-::ng-deep.mat-mdc-tab .mdc-tab__text-label, ::ng-deep.mat-mdc-tab-link .mdc-tab__text-label {
+
+::ng-deep.mat-mdc-tab-labels {
+    padding: 0 1rem !important;
+}
+
+::ng-deep.mat-mdc-tab .mdc-tab__text-label,
+::ng-deep.mat-mdc-tab-link .mdc-tab__text-label {
     color: $light-grey !important;
 }
 
-::ng-deep.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label, 
+::ng-deep.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
 ::ng-deep.mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
     color: $primary-color !important;
-}
-
-// CONTAINER MEIO - MENU SUPERIOR
-
-.block_menu {
-    margin-top: 1rem;
-}
-
-// CONTAINER MEIO - TITULO ITENS
-
-.block_titulo_itens {
-    margin-top: 1rem;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: space-between;
-}
-
-.block_titulo_itens_titulo {
-    font-family: $font-poppins;
-    color: $dark-white;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-}
-
-// CONTAINER MEIO - ITENS
-
-.block_itens {
-    margin-top: 0.5rem;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: center;
-}
-
-.item_container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-    padding: 0.8rem 1rem;
-    border: 1px solid $dark-grey;
-    border-radius: 2px;
-    font-family: $font-poppins;
-    color: $light-grey;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-
-.item_container:hover {
-    background-color: $medium-black;
-    border: 1px solid $medium-grey;
-    transition: 0.5s;
-}
-
-.item_details_status {
-    font-size: 0.8rem;
-    padding: 0.1rem 0.6rem;
-    border-radius: 5px;
-    border: 1px solid $primary-color;
-    color: $primary-color;
-}
-
-.item_text {
-    display: flex;
-    align-items: center;
-}
-
-.item_text_time {
-    padding-right: 0.5rem;
-    color: $dark-white;
-}
-
-.CRIACAO {
-    border: 1px solid $success;
-    color: $success;
-}
-
-.ALTERACAO {
-    border: 1px solid $warn;
-    color: $warn;
-}
-
-.REMOCAO,
-.REMOCAO_EM_MASSA {
-    border: 1px solid $error;
-    color: $error;
-}
-
-.RELATORIO,
-.OUTRO {
-    border: 1px solid $common;
-    color: $common;
-}
-
-.icone_item {
-    margin-left: 0.5rem;
 }
 
 // CONTAINER DIREITA
@@ -318,79 +220,4 @@ span {
 .subcontainer_comandos {
     display: grid;
     border-left: 1px solid $dark-grey;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ================ PAGINAÇÃO =============================
-
-.pagination_container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: none;
-    height: 3rem;
-    padding: 0;
-    margin: 0.5rem 0;
-    background-color: $light-black;
-}
-
-.pagination {
-    margin: 0;
-}
-
-.page-item {
-    color: $light-grey;
-    padding: 0 !important;
-    border-bottom: none !important;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.page-link {
-    background-color: $primary-color !Important;
-    font-size: 0.8rem;
-    border: solid 1px #575656 !Important;
-    padding: 0.2rem 1rem !important;
-    -webkit-user-select: none;
-    /* Safari */
-    -ms-user-select: none;
-    /* IE 10 and IE 11 */
-    user-select: none;
-    /* Standard syntax */
-}
-
-.page-link:hover {
-    background-color: #24262c;
-}
-
-.pagination>.active>a,
-.pagination>.active>a:hover {
-    color: $light-white;
-    background-color: $primary-color !Important;
-    border: solid 1px #575656 !Important;
-}
-
-.pagination>.disabled>a,
-.pagination>.disabled>a:hover {
-    color: $dark-grey;
-    background-color: $light-grey !Important;
-    border: solid 1px #575656 !Important;
 }

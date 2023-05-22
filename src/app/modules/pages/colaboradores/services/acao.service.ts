@@ -36,18 +36,11 @@ export class AcaoService {
   }
 
   private buildPageableParams(pageableInfo: AcaoPageObject) {
-    if (pageableInfo != null) {
-      this.httpOptions.params = this.httpOptions.params.set('page', pageableInfo.pageNumber);
-      this.httpOptions.params = this.httpOptions.params.set('size', pageableInfo.pageSize);
-      this.httpOptions.params = this.httpOptions.params.set('sort', 'a.dataCriacao,DESC');
-      this.httpOptions.params = this.httpOptions.params.append('sort', 'a.horaCriacao,DESC');
-    }
-    else {
-      this.httpOptions.params = this.httpOptions.params.set('page', 0);
-      this.httpOptions.params = this.httpOptions.params.set('size', 20);
-      this.httpOptions.params = this.httpOptions.params.set('sort', 'a.dataCriacao,DESC');
-      this.httpOptions.params = this.httpOptions.params.append('sort', 'a.horaCriacao,DESC');
-    }
+    this.httpOptions.params = this.httpOptions.params.set('size', 10);
+    this.httpOptions.params = this.httpOptions.params.set('sort', 'a.dataCriacao,DESC');
+    this.httpOptions.params = this.httpOptions.params.append('sort', 'a.horaCriacao,DESC');
+    if (pageableInfo != null) this.httpOptions.params = this.httpOptions.params.set('page', pageableInfo.pageNumber);
+    else this.httpOptions.params = this.httpOptions.params.set('page', 0);
   }
 
   private implementaLogicaDeCapturaDeErroNaListagemDeItens(error) {

@@ -21,6 +21,15 @@ export class AdvertenciaService {
     body: null
   }
 
+  public atualizaAnexoAdvertencia(anexo: Blob, idColaborador: number, idAdvertencia: number): any {
+    this.httpOptions.body = null;
+    this.httpOptions.params = new HttpParams();
+    let formData = new FormData();
+    formData.append("anexo", anexo);
+    return this.http.put(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/anexa-documento/${idColaborador}/${idAdvertencia}`, formData,
+      { headers: this.httpOptions.headers, responseType: "blob" }).subscribe()
+  }
+
   public obtemPdfPadrao(idColaborador: number, idAdvertencia: number): any {
     this.httpOptions.body = null;
     this.httpOptions.params = new HttpParams();

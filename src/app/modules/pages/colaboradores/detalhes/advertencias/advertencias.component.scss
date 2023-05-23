@@ -125,10 +125,18 @@ app-custom-input {
     color: $red;
 }
 
+.item_details {
+    display: flex;
+    justify-content: space-between;
+}
 
-.icone_opcoes {
-    margin-left: 0.5rem;
+.icone_details {
     color: $light-grey;
+    margin-left: 0.4rem;
+}
+
+.icone_arquivo {
+    margin-left: 0.7rem;
 }
 
 .dropdown-menu {
@@ -146,7 +154,6 @@ app-custom-input {
 
 .dropdown-item-desabilitado {
     color: $dark-grey !important;
-    cursor: default !important;
 }
 
 .dropdown-item:focus,
@@ -159,7 +166,6 @@ app-custom-input {
 .dropdown-item-desabilitado:focus,
 .dropdown-item-desabilitado:hover {
     color: $dark-grey !important;
-    cursor: default !important;
 }
 
 .texto_opcao {

@@ -92,26 +92,19 @@
                     <div class="item_details_status" [class]="advertencia.statusAdvertenciaEnum">
                         {{ advertencia.statusAdvertenciaEnum | titlecase }}
                     </div>
-                    <mat-icon [fontIcon]="'settings'" class="icone_opcoes" data-toggle="dropdown"
+                    <mat-icon [fontIcon]="'folder_open'" class="icone_details icone_arquivo"
+                        (click)="novoArquivo.click()"
+                        [ngClass]="{'dropdown-item-desabilitado': advertencia.advertenciaAssinada == null}"
+                        [matTooltip]="advertencia.advertenciaAssinada == null ? 'Adicionar anexo ' : 'Substituir anexo'"
+                        matTooltipPosition="below"></mat-icon>
+                    <input type="file" #novoArquivo style="display: none;" accept=".pdf,.docx, .png, .jpeg, .jpg"
+                        (change)="atualizaArquivoAdvertencia($event, advertencia)">
+                    <mat-icon [fontIcon]="'settings'" class="icone_details icone_opcoes" data-toggle="dropdown"
                         #opcoesAdvertencia></mat-icon>
                     <div class="dropdown-menu mat-elevation-z3">
                         <a class="row dropdown-item" (click)="chamadaServicoDeObtencaoDePdfPadrao(advertencia.id)">
                             <mat-icon [fontIcon]="'picture_as_pdf'"></mat-icon>
                             <div class="texto_opcao">Gerar PDF padrão</div>
-                        </a>
-                        <a class="row dropdown-item"
-                            [matTooltip]="advertencia.advertenciaAssinada == null ? 'Não há nenhum arquivo em anexo nesta advertência. ' +
-                            'Tente selecionar a opção anexar documento para adicionar um novo anexo à esta advertência.' : null"
-                            matTooltipPosition="left"
-                            [ngClass]="{'dropdown-item-desabilitado': advertencia.advertenciaAssinada == null}">
-                            <mat-icon [fontIcon]="'download'"></mat-icon>
-                            <div class="texto_opcao">Baixar arquivo anexo</div>
-                        </a>
-                        <a class="row dropdown-item">
-                            <mat-icon [fontIcon]="'folder_open'"></mat-icon>
-                            <div class="texto_opcao" (click)="novoArquivo.click()">Anexar documento</div>
-                            <input type="file" #novoArquivo style="display: none;"
-                                accept=".pdf,.docx, .png, .jpeg, .jpg">
                         </a>
                         <a class="row dropdown-item">
                             <mat-icon [fontIcon]="'published_with_changes'"></mat-icon>

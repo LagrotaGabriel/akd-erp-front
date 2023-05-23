@@ -35,6 +35,8 @@ export class AdvertenciasComponent {
   protected dadosNovaAdvertencia: FormGroup = this.createFormDadosCliente();
 
   protected documentoAdvertencia: File;
+  protected documentoAdvertenciaAtualizado: File;
+
   protected advertencias: AdvertenciaPageObject;
 
   ngAfterViewInit(): void {
@@ -175,6 +177,53 @@ export class AdvertenciasComponent {
 
   protected chamadaServicoDeObtencaoDePdfPadrao(idAdvertencia: number) {
     this.advertenciaService.obtemPdfPadrao(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), idAdvertencia);
+  }
+
+  protected atualizaArquivoAdvertencia(event, advertencia: Advertencia) {
+
+    if (advertencia.advertenciaAssinada != null) {
+      if (window.confirm('Tem certeza que deseja substituir o arquivo existente na advertência?')) null;
+      else return;
+    }
+
+    if (event.target.files[0] == undefined) this.documentoAdvertenciaAtualizado = null;
+    else {
+      const max_size = 1048576;
+      const allowed_types = ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
+      if (event.target.files[0].size > max_size) {
+        this._snackBar.open("O tamanho do arquivo não pode ser maior do que 1MB", "Fechar", {
+          duration: 5000
+        })
+        this.limpaInputArquivoAtualizado();
+        return;
+      }
+      else if (!(allowed_types.includes(event.target.files[0].type))) {
+        this._snackBar.open("Tipo de arquivo inválido. Escolha uma imagem, um pdf ou um arquivo word", "Fechar", {
+          duration: 5000
+        })
+        this.limpaInputArquivoAtualizado();
+        return;
+      }
+      else {
+        this.documentoAdvertenciaAtualizado = event.target.files[0];
+        this.advertenciaService.atualizaAnexoAdvertencia(this.documentoAdvertenciaAtualizado,
+          parseInt(this.activatedRoute.snapshot.paramMap.get('id')),
+          advertencia.id);
+        this._snackBar.open('Arquivo anexado à advertência com sucesso!', 'Fechar', {
+          duration: 3000
+        })
+        this.limpaInputArquivoAtualizado();
+        setTimeout(() => {
+          this.realizaObtencaoDasAdvertenciasDoColaborador();
+        }, 0);
+      }
+
+    }
+  }
+
+  protected limpaInputArquivoAtualizado() {
+    this.documentoAdvertenciaAtualizado = null;
   }
 
   geraEndPointAcessoItemAdvertencia(advertencia: Advertencia): string {

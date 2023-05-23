@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { API_CONFIG } from 'src/app/config/api-config';
 import { AdvertenciaPageObject } from '../detalhes/models/AdvertenciaPageObject';
+import { Advertencia } from '../models/Advertencia';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,29 @@ export class AdvertenciaService {
     body: null
   }
 
-  public getAcoes(pageableInfo: AdvertenciaPageObject, idColaborador: number): Observable<AdvertenciaPageObject> {
+  public novaAdvertencia(advertencia: Advertencia, arquivoAdvertencia: Blob, idColaborador: number): any {
+    this.httpOptions.body = null;
+    this.httpOptions.params = new HttpParams();
+    let formData = new FormData();
+    formData.append("arquivoAdvertencia", arquivoAdvertencia);
+    formData.append("advertencia", JSON.stringify(advertencia));
+    return this.http.post(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${idColaborador}/advertencias`,
+      formData, { headers: this.httpOptions.headers, responseType: "blob" }).subscribe(
+        ((response) => {
+          let blob = new Blob([response], { type: 'application/pdf' });
+          let fileUrl = URL.createObjectURL(blob);
+          window.open(fileUrl);
+          let tagUrlPdfAdvertencia = document.createElement('a');
+          tagUrlPdfAdvertencia.href = fileUrl;
+          tagUrlPdfAdvertencia.target = '_blank';
+          tagUrlPdfAdvertencia.download = 'akadion-advertencia-' + new Date().getTime().toString() + '.pdf';
+          document.body.appendChild(tagUrlPdfAdvertencia);
+          tagUrlPdfAdvertencia.click();
+        })
+      )
+  }
+
+  public getAdvertencias(pageableInfo: AdvertenciaPageObject, idColaborador: number): Observable<AdvertenciaPageObject> {
     this.httpOptions.params = new HttpParams();
     this.buildPageableParams(pageableInfo);
     return this.http.get<AdvertenciaPageObject>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${idColaborador}/advertencias`, this.httpOptions).pipe(

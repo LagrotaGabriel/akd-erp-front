@@ -17,10 +17,17 @@ app-custom-input {
 // CONTAINER MEIO - TITULO ITENS
 
 .block_titulo_itens {
-    margin-top: 1.5rem;
     padding: 0 1rem;
     display: flex;
     justify-content: right;
+}
+
+.block_titulo_itens_titulo {
+    font-family: $font-poppins;
+    color: $dark-white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
 }
 
 .block_nova_advertencia {
@@ -45,11 +52,26 @@ app-custom-input {
 // CONTAINER MEIO - ITENS
 
 .block_vazio {
+    margin-top: 1rem;
     padding: 0 1rem;
     text-align: center;
     font-family: $font-poppins;
     color: $light-grey;
 }
+
+
+.hr_container {
+    padding: 0 1rem;
+    margin: 0 auto;
+}
+
+.hr {
+    background-color: $dark-grey;
+    margin: 1rem 0;
+    width: 100%;
+    margin: 0.8rem 0;
+}
+
 
 .block_itens {
     margin-top: 0.5rem;

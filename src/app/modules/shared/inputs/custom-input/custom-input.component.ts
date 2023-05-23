@@ -1,6 +1,5 @@
 import { Component, ElementRef, Input, ViewChild, forwardRef } from '@angular/core';
-import { ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { animate, style, transition, trigger } from '@angular/animations';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fadeInOutAnimation } from 'src/app/shared/animations';
 
 @Component({
@@ -14,7 +13,7 @@ import { fadeInOutAnimation } from 'src/app/shared/animations';
       multi: true
     }
   ],
-  animations: [ fadeInOutAnimation ]
+  animations: [fadeInOutAnimation]
 })
 export class CustomInputComponent implements ControlValueAccessor {
 
@@ -28,6 +27,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   @Input() mensagemErro: string;
   @Input() customIcon: string;
   @Input() disabledGroup: boolean;
+  @Input() iconeOculto: boolean = false;
   @Input() dataList: string[];
 
   private innerValue: any;
@@ -41,7 +41,7 @@ export class CustomInputComponent implements ControlValueAccessor {
   }
 
   public iconeAparente(): boolean {
-    if (!this.disabledGroup) {
+    if (!this.disabledGroup && !this.iconeOculto) {
       if (this.customIcon != null) return true;
       if (!this.valido) return true;
       else if (this.valido && this.value != null && this.value != '') return true;

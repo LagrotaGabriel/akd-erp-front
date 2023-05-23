@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AdvertenciaService } from '../../services/advertencia.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdvertenciaPageObject } from '../models/AdvertenciaPageObject';
@@ -7,13 +7,14 @@ import { Advertencia } from '../../models/Advertencia';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SlideInOutAnimation, fadeInOutAnimation, slideUpDownAnimation } from 'src/app/shared/animations';
+import { fadeInOutAnimation, slideUpDownAnimation } from 'src/app/shared/animations';
+import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
 
 @Component({
   selector: 'app-advertencias',
   templateUrl: './advertencias.component.html',
   styleUrls: ['./advertencias.component.scss'],
-  animations: [SlideInOutAnimation, fadeInOutAnimation, slideUpDownAnimation],
+  animations: [fadeInOutAnimation, slideUpDownAnimation],
 })
 export class AdvertenciasComponent {
 
@@ -26,10 +27,12 @@ export class AdvertenciasComponent {
 
   protected novaAdvertenciaHabilitada: boolean = false;
 
+  @ViewChild('inputMotivo') inputMotivo: CustomInputComponent;
+
+  private novaAdvertencia: Advertencia
   protected dadosNovaAdvertencia: FormGroup = this.createFormDadosCliente();
 
   protected documentoAdvertencia: File;
-
   protected advertencias: AdvertenciaPageObject;
 
   ngAfterViewInit(): void {
@@ -54,20 +57,25 @@ export class AdvertenciasComponent {
           disabled: false
         },
         [
-          Validators.maxLength(120),
+          Validators.maxLength(500),
           Validators.required
         ]
       ),
       status: new FormControl(
         {
-          value: '',
+          value: 'PENDENTE',
           disabled: false
         },
         [
           Validators.required
         ]
       ),
-      advertenciaAssinada: [null]
+      advertenciaAssinada: new FormControl(
+        {
+          value: null,
+          disabled: false
+        }
+      )
     });
   }
 
@@ -123,6 +131,36 @@ export class AdvertenciasComponent {
 
   protected alteraExibicaoNovaAdvertencia() {
     this.novaAdvertenciaHabilitada = !this.novaAdvertenciaHabilitada;
+    if (!this.novaAdvertenciaHabilitada) {
+      this.limpaInputArquivo();
+      this.dadosNovaAdvertencia.reset();
+    }
+    else {
+      setTimeout(() => {
+        this.inputMotivo.acionaFoco();
+      }, 100);
+    }
+  }
+
+  protected gerarAdvertencia() {
+    if (this.dadosNovaAdvertencia.valid) {
+      this.constroiObjetoAdvertencia();
+      this.advertenciaService.novaAdvertencia(this.novaAdvertencia, this.documentoAdvertencia, parseInt(this.activatedRoute.snapshot.paramMap.get('id')));
+    }
+    else {
+      this._snackBar.open('Favor revisar os campos do formulário e tentar novamente', 'Fechar', {
+        duration: 3000
+      })
+      this.dadosNovaAdvertencia.markAllAsTouched();
+    }
+  }
+
+  protected constroiObjetoAdvertencia() {
+    this.novaAdvertencia = {
+      motivo: this.getValueAtributoDadosNovaAdvertencia('motivo'),
+      descricao: this.getValueAtributoDadosNovaAdvertencia('descricao'),
+      statusAdvertenciaEnum: this.getValueAtributoDadosNovaAdvertencia('status')
+    }
   }
 
   geraEndPointAcessoItemAdvertencia(advertencia: Advertencia): string {
@@ -131,7 +169,7 @@ export class AdvertenciasComponent {
   }
 
   realizaObtencaoDasAdvertenciasDoColaborador() {
-    this.advertenciaService.getAcoes(Util.isNotObjectEmpty(this.advertencias) ? this.advertencias : null,
+    this.advertenciaService.getAdvertencias(Util.isNotObjectEmpty(this.advertencias) ? this.advertencias : null,
       parseInt(this.activatedRoute.snapshot.paramMap.get('id'))).subscribe({
         next: (resposta => {
           console.log(resposta);

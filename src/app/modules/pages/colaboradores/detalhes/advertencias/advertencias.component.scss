@@ -75,14 +75,13 @@ app-custom-input {
 
 .block_itens {
     margin-top: 0.5rem;
+    margin-bottom: 1rem;
     padding: 0 1rem;
     display: flex;
     justify-content: center;
 }
 
 .item_container {
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 0.5rem;
     padding: 0.8rem 1rem;
     border: 1px solid $dark-grey;
@@ -99,12 +98,75 @@ app-custom-input {
     transition: 0.5s;
 }
 
+.item_container_titulo {
+    display: flex;
+    justify-content: space-between;
+    color: $dark-white;
+    font-weight: 500;
+}
+
+.item_container_conteudo {
+    margin-top: 0.5rem;
+}
+
 .item_details_status {
     font-size: 0.8rem;
     padding: 0.1rem 0.6rem;
     border-radius: 5px;
-    border: 1px solid $primary-color;
-    color: $primary-color;
+}
+
+.ASSINADA {
+    border: 1px solid $success;
+    color: $success;
+}
+
+.PENDENTE {
+    border: 1px solid $red;
+    color: $red;
+}
+
+
+.icone_opcoes {
+    margin-left: 0.5rem;
+    color: $light-grey;
+}
+
+.dropdown-menu {
+    background-color: $light-black;
+    padding: 0 0.5rem;
+}
+
+.dropdown-item {
+    color: $light-grey !important;
+    padding: 0.5rem 0.5rem !important;
+    margin: 0 !important;
+    font-family: $font-poppins;
+    display: flex;
+}
+
+.dropdown-item-desabilitado {
+    color: $dark-grey !important;
+    cursor: default !important;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    color: $dark-white !important;
+    background-color: $light-black !important;
+    padding: 0.5rem 0.5rem !important;
+}
+
+.dropdown-item-desabilitado:focus,
+.dropdown-item-desabilitado:hover {
+    color: $dark-grey !important;
+    cursor: default !important;
+}
+
+.texto_opcao {
+    display: flex;
+    align-items: flex-end;
+    padding-left: 0.5rem;
+    font-size: 1rem;
 }
 
 .item_text {

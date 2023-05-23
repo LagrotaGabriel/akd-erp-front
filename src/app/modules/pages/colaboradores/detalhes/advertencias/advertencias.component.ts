@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input, SimpleChanges } from '@angular/core';
 import { AdvertenciaService } from '../../services/advertencia.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdvertenciaPageObject } from '../models/AdvertenciaPageObject';
@@ -25,6 +25,8 @@ export class AdvertenciasComponent {
     private router: Router) {
   }
 
+  @Input() abaSelecionada;
+
   protected novaAdvertenciaHabilitada: boolean = false;
 
   @ViewChild('inputMotivo') inputMotivo: CustomInputComponent;
@@ -37,6 +39,11 @@ export class AdvertenciasComponent {
 
   ngAfterViewInit(): void {
     this.realizaObtencaoDasAdvertenciasDoColaborador();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.novaAdvertenciaHabilitada) this.alteraExibicaoNovaAdvertencia();
+
   }
 
   createFormDadosCliente(): FormGroup {
@@ -146,6 +153,9 @@ export class AdvertenciasComponent {
     if (this.dadosNovaAdvertencia.valid) {
       this.constroiObjetoAdvertencia();
       this.advertenciaService.novaAdvertencia(this.novaAdvertencia, this.documentoAdvertencia, parseInt(this.activatedRoute.snapshot.paramMap.get('id')));
+      setTimeout(() => {
+        this.realizaObtencaoDasAdvertenciasDoColaborador();
+      }, 2000);
     }
     else {
       this._snackBar.open('Favor revisar os campos do formulário e tentar novamente', 'Fechar', {
@@ -161,6 +171,10 @@ export class AdvertenciasComponent {
       descricao: this.getValueAtributoDadosNovaAdvertencia('descricao'),
       statusAdvertenciaEnum: this.getValueAtributoDadosNovaAdvertencia('status')
     }
+  }
+
+  protected chamadaServicoDeObtencaoDePdfPadrao(idAdvertencia: number) {
+    this.advertenciaService.obtemPdfPadrao(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), idAdvertencia);
   }
 
   geraEndPointAcessoItemAdvertencia(advertencia: Advertencia): string {

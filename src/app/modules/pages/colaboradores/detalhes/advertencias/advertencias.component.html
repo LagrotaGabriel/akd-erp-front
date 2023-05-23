@@ -70,24 +70,67 @@
     class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
     <div class="block block_titulo_itens row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
         <div class="block_titulo_itens_titulo">
-            {{ advertencias?.totalElements + ' Itens encontrados' }}
+            {{ advertencias?.totalElements == 1
+            ? advertencias?.totalElements + ' advertência encontrada'
+            : advertencias?.totalElements + ' advertências encontradas' }}
         </div>
     </div>
 
     <div class="block block_itens row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
         <div *ngFor="let advertencia of advertencias?.content"
-            [routerLink]="geraEndPointAcessoItemAdvertencia(advertencia)"
+            matTooltip="Advertência emitida dia {{ advertencia.dataCadastro | date: 'dd/MM/yyyy' }} às {{ advertencia.horaCadastro | slice:0:5 }}"
+            matTooltipPosition="left" [routerLink]="geraEndPointAcessoItemAdvertencia(advertencia)"
             class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
-            <div class="row item_text">
-                Teste
-            </div>
 
-            <div class="row item_details">
-                <div class="item_details_status">
-                    Teste
+            <div class="item_container_titulo row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+                <div class="row item_text item_text_titulo">
+                    {{ advertencia.motivo }}
+                </div>
+
+                <div class="row item_details">
+                    <div class="item_details_status" [class]="advertencia.statusAdvertenciaEnum">
+                        {{ advertencia.statusAdvertenciaEnum | titlecase }}
+                    </div>
+                    <mat-icon [fontIcon]="'settings'" class="icone_opcoes" data-toggle="dropdown"
+                        #opcoesAdvertencia></mat-icon>
+                    <div class="dropdown-menu mat-elevation-z3">
+                        <a class="row dropdown-item" (click)="chamadaServicoDeObtencaoDePdfPadrao(advertencia.id)">
+                            <mat-icon [fontIcon]="'picture_as_pdf'"></mat-icon>
+                            <div class="texto_opcao">Gerar PDF padrão</div>
+                        </a>
+                        <a class="row dropdown-item"
+                            [matTooltip]="advertencia.advertenciaAssinada == null ? 'Não há nenhum arquivo em anexo nesta advertência. ' +
+                            'Tente selecionar a opção anexar documento para adicionar um novo anexo à esta advertência.' : null"
+                            matTooltipPosition="left"
+                            [ngClass]="{'dropdown-item-desabilitado': advertencia.advertenciaAssinada == null}">
+                            <mat-icon [fontIcon]="'download'"></mat-icon>
+                            <div class="texto_opcao">Baixar arquivo anexo</div>
+                        </a>
+                        <a class="row dropdown-item">
+                            <mat-icon [fontIcon]="'folder_open'"></mat-icon>
+                            <div class="texto_opcao" (click)="novoArquivo.click()">Anexar documento</div>
+                            <input type="file" #novoArquivo style="display: none;"
+                                accept=".pdf,.docx, .png, .jpeg, .jpg">
+                        </a>
+                        <a class="row dropdown-item">
+                            <mat-icon [fontIcon]="'published_with_changes'"></mat-icon>
+                            <div class="texto_opcao">Alterar status</div>
+                        </a>
+                        <a class="row dropdown-item">
+                            <mat-icon [fontIcon]="'delete'"></mat-icon>
+                            <div class="texto_opcao">Remover</div>
+                        </a>
+                    </div>
                 </div>
             </div>
+
+            <div class="item_container_conteudo row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+                <div class="row item_text">
+                    {{ advertencia.descricao }}
+                </div>
+            </div>
+
         </div>
 
         <ul *ngIf="advertencias?.totalPages > 1" class="pagination pagination-sm justify-content-end">

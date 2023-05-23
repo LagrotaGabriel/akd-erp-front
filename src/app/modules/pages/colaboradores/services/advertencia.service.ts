@@ -21,13 +21,32 @@ export class AdvertenciaService {
     body: null
   }
 
+  public obtemPdfPadrao(idColaborador: number, idAdvertencia: number): any {
+    this.httpOptions.body = null;
+    this.httpOptions.params = new HttpParams();
+
+    return this.http.get(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/pdf-padrao/${idColaborador}/${idAdvertencia}`,
+      { headers: this.httpOptions.headers, responseType: "blob" }).subscribe(
+        ((response) => {
+          let blob = new Blob([response], { type: 'application/pdf' });
+          let fileUrl = URL.createObjectURL(blob);
+          window.open(fileUrl);
+          let tagUrlPdfAdvertencia = document.createElement('a');
+          tagUrlPdfAdvertencia.href = fileUrl;
+          tagUrlPdfAdvertencia.target = '_blank';
+          tagUrlPdfAdvertencia.download = 'akadion-advertencia-' + new Date().getTime().toString() + '.pdf';
+          document.body.appendChild(tagUrlPdfAdvertencia);
+        })
+      )
+  }
+
   public novaAdvertencia(advertencia: Advertencia, arquivoAdvertencia: Blob, idColaborador: number): any {
     this.httpOptions.body = null;
     this.httpOptions.params = new HttpParams();
     let formData = new FormData();
     formData.append("arquivoAdvertencia", arquivoAdvertencia);
     formData.append("advertencia", JSON.stringify(advertencia));
-    return this.http.post(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${idColaborador}/advertencias`,
+    return this.http.post(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/${idColaborador}`,
       formData, { headers: this.httpOptions.headers, responseType: "blob" }).subscribe(
         ((response) => {
           let blob = new Blob([response], { type: 'application/pdf' });
@@ -46,7 +65,7 @@ export class AdvertenciaService {
   public getAdvertencias(pageableInfo: AdvertenciaPageObject, idColaborador: number): Observable<AdvertenciaPageObject> {
     this.httpOptions.params = new HttpParams();
     this.buildPageableParams(pageableInfo);
-    return this.http.get<AdvertenciaPageObject>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${idColaborador}/advertencias`, this.httpOptions).pipe(
+    return this.http.get<AdvertenciaPageObject>(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/${idColaborador}`, this.httpOptions).pipe(
       map(resposta => new AdvertenciaPageObject(resposta)),
       catchError((error: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);

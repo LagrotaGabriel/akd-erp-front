@@ -23,10 +23,12 @@ export class DetalhesComponent {
   }
 
   abaSelecionada: FormControl = new FormControl(0);
+  emiteMudancaDeAba: number = 0;
 
   mudaAbaSelecionadaSubscription$: Subscription = this.abaSelecionada.valueChanges.subscribe({
     next: () => {
       console.log('Aba atual: ' + this.abaSelecionada.value);
+      this.emiteMudancaDeAba = this.abaSelecionada.value;
     }
   })
 

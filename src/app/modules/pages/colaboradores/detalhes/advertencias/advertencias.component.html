@@ -1,1 +1,111 @@
-<p>advertencias works!</p>
+<div *ngIf="advertencias?.content?.length > 0" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="block block_titulo_itens row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+        <div class="block_titulo_itens_titulo">
+            {{ advertencias?.totalElements + ' Itens encontrados' }}
+        </div>
+    </div>
+
+    <div class="block block_itens row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+        <div *ngFor="let advertencia of advertencias?.content"
+            [routerLink]="geraEndPointAcessoItemAdvertencia(advertencia)"
+            class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+            <div class="row item_text">
+                Teste
+            </div>
+
+            <div class="row item_details">
+                <div class="item_details_status">
+                    Teste
+                </div>
+            </div>
+        </div>
+
+        <ul *ngIf="advertencias?.totalPages > 1" class="pagination pagination-sm justify-content-end">
+            <li (click)="voltarPagina()" [ngClass]="{'disabled': advertencias.pageNumber == 0}" class="page-item">
+                <a class="page-link">{{ geraBotaoVoltarPaginacao() }}</a>
+            </li>
+            <ng-container
+                *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(advertencias.totalPages); let i = index">
+                <li *ngIf="(advertencias.pageNumber - i) <= 3 && (advertencias.pageNumber - i) >= 0
+    || (i - advertencias.pageNumber) <= 3 && (i - advertencias.pageNumber) >= 0
+    || advertencias.pageNumber == 0 && (i - advertencias.pageNumber) <= 6 && (i - advertencias.pageNumber) >= 0
+    || advertencias.pageNumber == 1 && (i - advertencias.pageNumber) <= 5 && (i - advertencias.pageNumber) >= 0
+    || advertencias.pageNumber == 2 && (i - advertencias.pageNumber) <= 4 && (i - advertencias.pageNumber) >= 0
+    || (advertencias.pageNumber == (advertencias.totalPages-1)) && (advertencias.pageNumber - i) <= 6
+    || (advertencias.pageNumber == (advertencias.totalPages-2)) && (advertencias.pageNumber - i) <= 5
+    || (advertencias.pageNumber == (advertencias.totalPages-3)) && (advertencias.pageNumber - i) <= 4"
+                    (click)="selecionarPagina(i)" [ngClass]="{'active': advertencias.pageNumber == i}"
+                    class="page-item">
+                    <a class="page-link">{{ i+1 }}</a>
+                </li>
+            </ng-container>
+            <li (click)="avancarPagina()" [ngClass]="{'disabled': advertencias.pageNumber == advertencias.totalPages-1}"
+                class="page-item"><a class="page-link">{{ geraBotaoAvancarPaginacao() }}</a></li>
+        </ul>
+
+    </div>
+</div>
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 nova_advertencia_container">
+
+    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 titulo_sessao_container">
+        <h3 class="titulo_sessao">
+            Gerar nova advertência
+        </h3>
+        <mat-icon [@fadeInOut] [fontIcon]="novaAdvertenciaHabilitada ? 'expand_more' : 'chevron_left'"
+            (click)="alteraExibicaoNovaAdvertencia()" class="icone"></mat-icon>
+    </div>
+
+    <form [@slideUpDown] [formGroup]="dadosNovaAdvertencia" *ngIf="novaAdvertenciaHabilitada"
+        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 nova_advertencia_block">
+        <app-custom-input [id]="'motivo'" [titulo]="'Motivo'" [tabIndex]="0" [maxLength]="40"
+            [todosCaracteresMaiusculos]="false" [mensagemErro]="'Campo obrigatório'"
+            [touched]="dadosNovaAdvertencia.controls['motivo'].touched"
+            [valido]="!(dadosNovaAdvertencia.controls['motivo'].touched && dadosNovaAdvertencia.controls['motivo'].invalid)"
+            [disabledGroup]="false" formControlName="motivo"></app-custom-input>
+
+        <app-custom-input [id]="'descricao'" [titulo]="'Descrição'" [tabIndex]="1" [maxLength]="120"
+            [todosCaracteresMaiusculos]="false" [mensagemErro]="'Campo obrigatório'"
+            [touched]="dadosNovaAdvertencia.controls['descricao'].touched"
+            [valido]="!(dadosNovaAdvertencia.controls['descricao'].touched && dadosNovaAdvertencia.controls['descricao'].invalid)"
+            [disabledGroup]="false" formControlName="descricao"></app-custom-input>
+
+        <app-custom-select [id]="'descricao'" [titulo]="'Status'" [tabIndex]="2" [disabledGroup]="false"
+            [options]="geraOptionsStatusAdvertencia()" formControlName="status"></app-custom-select>
+
+        <!-- FILE GROUP CONTRATO DE TRABALHO -->
+        <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 input_group input_group_without_component">
+            <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 label_container">
+                <label class="label">Contrato de trabalho</label>
+                <button type="button" class="limpar_file" [@fadeInOut]
+                    *ngIf="getValueAtributoDadosNovaAdvertencia('advertenciaAssinada') != null && advertenciaAssinadaInput.value != ''"
+                    (click)="limpaInputArquivo()">Limpar</button>
+            </div>
+            <div class="input_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <label class="input input_file col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                    for="advertenciaAssinadaInput">
+                    {{ getValueAtributoDadosNovaAdvertencia('advertenciaAssinada') != null &&
+                    advertenciaAssinadaInput.value != ''
+                    ? advertenciaAssinadaInput.value
+                    : 'Escolher arquivo (.docx, .pdf, .png, .jpeg)' }}
+                    <mat-icon [@fadeInOut] [fontIcon]="getValueAtributoDadosNovaAdvertencia('advertenciaAssinada') != null && advertenciaAssinadaInput.value != '' 
+                                            ? 'file_download_done' 
+                                            : 'add_box'" class="icone icone_ok"></mat-icon>
+                </label>
+                <input type="file" accept=".pdf,.docx, .png, .jpeg, .jpg" formControlName="advertenciaAssinada"
+                    name="advertenciaAssinada" style="display: none;" #advertenciaAssinadaInput
+                    id="advertenciaAssinadaInput" (change)="setaArquivo($event)" [ngClass]="{'input_invalida': dadosNovaAdvertencia.controls['advertenciaAssinada'].touched 
+                    && dadosNovaAdvertencia.controls['advertenciaAssinada'].invalid}"
+                    class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="25">
+            </div>
+        </div>
+
+        <!-- BOTÕES DE NAVEGAÇÃO -->
+        <div class="button_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <button type="button" tabindex="16" class="button botaoHabilitado" mat-button>
+                Salvar
+            </button>
+        </div>
+    </form>
+</div>

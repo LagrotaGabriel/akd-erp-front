@@ -1,5 +1,4 @@
 import { ColaboradorService } from './../../services/colaborador.service';
-import { trigger, transition, style, animate } from '@angular/animations';
 import { Subscription, debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import { Colaborador } from '../../models/Colaborador';
 import { Component, OnDestroy } from '@angular/core';
@@ -10,22 +9,13 @@ import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado
 import { FormControl } from '@angular/forms';
 import { PageObject } from '../models/PageObject';
 import { Router } from '@angular/router';
+import { fadeInOutAnimation } from 'src/app/shared/animations';
 
 @Component({
   selector: 'app-tabela',
   templateUrl: './tabela.component.html',
   styleUrls: ['../../../../../../dist/styles/table.scss', './tabela.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [   // :enter is alias to 'void => *'
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [   // :leave is alias to '* => void'
-        animate(300, style({ opacity: 0 }))
-      ])
-    ]),
-  ]
+  animations: [fadeInOutAnimation]
 })
 export class TabelaComponent implements OnDestroy {
 

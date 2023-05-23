@@ -1,32 +1,20 @@
 import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, debounceTime } from 'rxjs';
-import { ColaboradorService } from '../../../services/colaborador.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { SelectOption } from '../../../../../shared/inputs/models/select-option';
 import { CustomSelectComponent } from '../../../../../shared/inputs/custom-select/custom-select.component';
+import { fadeInOutAnimation } from 'src/app/shared/animations';
 
 @Component({
   selector: 'app-dados-profissionais',
   templateUrl: './dados-profissionais.component.html',
   styleUrls: ['../novo.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate(300, style({ opacity: 0 }))
-      ])
-    ]),
-  ]
+  animations: [fadeInOutAnimation]
 })
 export class DadosProfissionaisComponent {
 
   constructor(private formBuilder: FormBuilder,
-    private colaboradorService: ColaboradorService,
     private _snackBar: MatSnackBar,
     private ref: ChangeDetectorRef) { }
 
@@ -229,9 +217,9 @@ export class DadosProfissionaisComponent {
   }
 
   protected obtemTodasOcupacoes() {
-/*     this.obtemTodasOcupacoesSubscription$ = this.colaboradorService.obtemTodasOcupacoes().subscribe({
-      next: (resposta: string[]) => this.ocupacoesResponse = resposta
-    }) */
+    /*     this.obtemTodasOcupacoesSubscription$ = this.colaboradorService.obtemTodasOcupacoes().subscribe({
+          next: (resposta: string[]) => this.ocupacoesResponse = resposta
+        }) */
   }
 
   protected alteraStatusColaborador() {

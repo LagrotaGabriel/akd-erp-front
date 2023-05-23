@@ -1,0 +1,327 @@
+@import "../../../../../../../node_modules/rfs/scss";
+@import '../../../../../../dist/variables.scss';
+@import '../../../../shared/inputs/styles/custom-inputs.scss';
+
+div,
+form,
+app-custom-input {
+    margin: 0;
+    padding: 0;
+}
+
+// CONTAINER MEIO - MENU SUPERIOR
+.block_menu {
+    margin-top: 1rem;
+}
+
+// CONTAINER MEIO - TITULO ITENS
+
+.block_titulo_itens {
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: right;
+}
+
+.block_nova_advertencia {
+    font-family: $font-poppins;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 1.5rem;
+    border-radius: 5px;
+    border: 1px solid $primary-color;
+    background-color: $primary-color;
+    color: $dark-white;
+    cursor: pointer;
+}
+
+.block_nova_advertencia:hover {
+    border: 1px solid $primary-color-dark;
+    background-color: $primary-color-dark;
+    transition: 0.3s;
+}
+
+// CONTAINER MEIO - ITENS
+
+.block_vazio {
+    padding: 0 1rem;
+    text-align: center;
+    font-family: $font-poppins;
+    color: $light-grey;
+}
+
+.block_itens {
+    margin-top: 0.5rem;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.item_container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid $dark-grey;
+    border-radius: 2px;
+    font-family: $font-poppins;
+    color: $light-grey;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.item_container:hover {
+    background-color: $medium-black;
+    border: 1px solid $medium-grey;
+    transition: 0.5s;
+}
+
+.item_details_status {
+    font-size: 0.8rem;
+    padding: 0.1rem 0.6rem;
+    border-radius: 5px;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+}
+
+.item_text {
+    display: flex;
+    align-items: center;
+}
+
+.item_text_time {
+    padding-right: 0.5rem;
+    color: $dark-white;
+}
+
+.CRIACAO {
+    border: 1px solid $success;
+    color: $success;
+}
+
+.ALTERACAO {
+    border: 1px solid $warn;
+    color: $warn;
+}
+
+.REMOCAO,
+.REMOCAO_EM_MASSA {
+    border: 1px solid $error;
+    color: $error;
+}
+
+.RELATORIO,
+.OUTRO {
+    border: 1px solid $common;
+    color: $common;
+}
+
+.icone_item {
+    margin-left: 0.5rem;
+}
+
+.nova_advertencia_container {
+    padding: 0 1rem;
+    margin-top: 1rem;
+}
+
+// ================= TITULO NOVA ADVERTÊNCIA ======================
+
+.hr,
+.titulo_sessao_container,
+.titulo_sessao,
+.hr_container {
+    margin: 0;
+    padding: 0;
+}
+
+.hr {
+    background-color: $dark-grey;
+    margin: 1rem 0;
+}
+
+.titulo_sessao_container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    color: $dark-white;
+    border: 1px solid $primary-color-darker;
+    background-color: $primary-color;
+    font-size: 1rem;
+    border-radius: 0;
+    opacity: 0.96;
+    font-family: $font-poppins;
+}
+
+.titulo_sessao_container:hover {
+    border: 1px solid $primary-color-darker;
+    background-color: $primary-color-dark;
+    transition: 0.5s;
+}
+
+.titulo_sessao {
+    padding: 0.3rem 1.5rem;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+// ================ NOVA ADVERTENCIA =============================
+
+.nova_advertencia_block {
+    padding: 0.8rem 0rem;
+    border: 1px solid $dark-grey;
+    border-top: transparent;
+    border-radius: 2px;
+    font-family: $font-poppins;
+    color: $light-grey;
+}
+
+.input_group_without_component {
+    padding-bottom: 1rem;
+}
+
+.input_file {
+    border: 1px solid $dark-grey;
+    background-color: $dark-black;
+    color: $primary-color;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: $font-poppins;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.limpar_file {
+    color: $dark-grey;
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 0.1rem;
+    text-decoration: underline;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: $primary-color;
+}
+
+.limpar_file:focus {
+    outline: none;
+}
+
+option,
+select,
+input {
+    background: $dark-black !important;
+    color: $primary-color !important;
+    border: 1px solid $dark-grey !important;
+    font-family: $font-poppins !important;
+}
+
+option:focus,
+select:focus,
+input:focus {
+    border: 1px solid $primary-color !important;
+    outline: none;
+}
+
+.button_container {
+    display: flex;
+    justify-content: right;
+    padding: 0 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.button {
+    width: 100%;
+    background-color: transparent;
+    font-family: $font-poppins;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: 1px solid $primary-color;
+    color: $dark-white;
+    background-color: $primary-color;
+    cursor: pointer;
+}
+
+.button:hover {
+    border: 1px solid $primary-color-dark;
+    background-color: $primary-color-dark;
+    transition: 0.5s;
+}
+
+.button:focus {
+    outline: none;
+    box-shadow: none;
+    transition: 0.3s;
+    border: 1px solid $primary-color-dark;
+    background-color: $primary-color-dark;
+}
+
+.icone {
+    right: 0.5rem !important;
+}
+
+// ================ PAGINAÇÃO =============================
+
+.pagination_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: none;
+    height: 3rem;
+    padding: 0;
+    margin: 0.5rem 0;
+    background-color: $light-black;
+}
+
+.pagination {
+    margin: 0.5rem 0 1rem 0;
+}
+
+.page-item {
+    color: $light-grey;
+    padding: 0 !important;
+    border-bottom: none !important;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.page-link {
+    background-color: $primary-color !Important;
+    font-size: 0.8rem;
+    border: solid 1px #575656 !Important;
+    padding: 0.2rem 1rem !important;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.page-link:hover {
+    background-color: #24262c;
+}
+
+.pagination>.active>a,
+.pagination>.active>a:hover {
+    color: $light-white;
+    background-color: $primary-color !Important;
+    border: solid 1px #575656 !Important;
+}
+
+.pagination>.disabled>a,
+.pagination>.disabled>a:hover {
+    color: $dark-grey;
+    background-color: $light-grey !Important;
+    border: solid 1px #575656 !Important;
+}

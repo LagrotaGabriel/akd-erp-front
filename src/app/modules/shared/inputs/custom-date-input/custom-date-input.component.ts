@@ -1,6 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, Input, ViewChild, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { fadeInOutAnimation } from 'src/app/shared/animations';
 
 @Component({
   selector: 'app-custom-date-input',
@@ -13,17 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       multi: true
     }
   ],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate(300, style({ opacity: 0 }))
-      ])
-    ]),
-  ]
+  animations: [fadeInOutAnimation]
 })
 export class CustomDateInputComponent implements ControlValueAccessor {
 
@@ -31,7 +22,7 @@ export class CustomDateInputComponent implements ControlValueAccessor {
   @Input() titulo: string = '';
   @Input() tabIndex: number;
   @Input() minDate: string;
-  @Input() maxDate: string; 
+  @Input() maxDate: string;
   @Input() vazio: boolean;
   @Input() disabledGroup: boolean;
 

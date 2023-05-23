@@ -10,22 +10,13 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Telefone } from '../../models/telefone';
 import { Endereco } from '../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
+import { fadeInOutAnimation } from 'src/app/shared/animations';
 
 @Component({
   selector: 'app-atualizacao',
   templateUrl: './atualizacao.component.html',
   styleUrls: ['./atualizacao.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [   // :enter is alias to 'void => *'
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [   // :leave is alias to '* => void'
-        animate(300, style({ opacity: 0 }))
-      ])
-    ]),
-  ]
+  animations: [fadeInOutAnimation]
 })
 export class AtualizacaoComponent implements OnInit, OnDestroy {
 

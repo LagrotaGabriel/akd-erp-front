@@ -131,12 +131,12 @@ export class DadosTelefoneComponent {
 
       if (this.getValueAtributoDadosTelefone('tipoTelefone') == 'FIXO') {
         this.inputLengthTelefone = 8;
-        this.inputTelefonePattern = /^\d{4}\d{4}/;
+        this.inputTelefonePattern = /^\d{8}/;
       }
 
       else if (this.getValueAtributoDadosTelefone('tipoTelefone') == 'MOVEL' || this.getValueAtributoDadosTelefone('tipoTelefone') == 'MOVEL_WHATSAPP') {
         this.inputLengthTelefone = 9;
-        this.inputTelefonePattern = /^\d\d{4}\d{4}/;
+        this.inputTelefonePattern = /^\d{9}/;
       }
 
       this.dadosTelefone.controls['prefixo'].addValidators([

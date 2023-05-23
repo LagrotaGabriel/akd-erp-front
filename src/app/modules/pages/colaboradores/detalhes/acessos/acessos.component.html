@@ -1,1 +1,50 @@
-<p>acessos works!</p>
+<div *ngIf="acessos?.content?.length > 0, else conteudoVazio" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="block block_titulo_itens row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+        <div class="block_titulo_itens_titulo">
+            {{ acessos?.totalElements + ' Itens encontrados' }}
+        </div>
+    </div>
+
+    <div class="block block_itens row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+        <div *ngFor="let acesso of acessos?.content"
+            class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+            <div class="row item_text">
+                {{ acesso.dataCadastro | date: 'dd-MM-yyyy' }} às {{ acesso.horaCadastro | slice:0:8 }}
+            </div>
+
+            <div class="row item_details">
+                <div class="item_details_status">
+                    Login
+                </div>
+            </div>
+        </div>
+
+        <ul *ngIf="acessos?.totalPages > 1" class="pagination pagination-sm justify-content-end">
+            <li (click)="voltarPagina()" [ngClass]="{'disabled': acessos.pageNumber == 0}" class="page-item">
+                <a class="page-link">{{ geraBotaoVoltarPaginacao() }}</a>
+            </li>
+            <ng-container *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(acessos.totalPages); let i = index">
+                <li *ngIf="(acessos.pageNumber - i) <= 3 && (acessos.pageNumber - i) >= 0
+    || (i - acessos.pageNumber) <= 3 && (i - acessos.pageNumber) >= 0
+    || acessos.pageNumber == 0 && (i - acessos.pageNumber) <= 6 && (i - acessos.pageNumber) >= 0
+    || acessos.pageNumber == 1 && (i - acessos.pageNumber) <= 5 && (i - acessos.pageNumber) >= 0
+    || acessos.pageNumber == 2 && (i - acessos.pageNumber) <= 4 && (i - acessos.pageNumber) >= 0
+    || (acessos.pageNumber == (acessos.totalPages-1)) && (acessos.pageNumber - i) <= 6
+    || (acessos.pageNumber == (acessos.totalPages-2)) && (acessos.pageNumber - i) <= 5
+    || (acessos.pageNumber == (acessos.totalPages-3)) && (acessos.pageNumber - i) <= 4" (click)="selecionarPagina(i)"
+                    [ngClass]="{'active': acessos.pageNumber == i}" class="page-item">
+                    <a class="page-link">{{ i+1 }}</a>
+                </li>
+            </ng-container>
+            <li (click)="avancarPagina()" [ngClass]="{'disabled': acessos.pageNumber == acessos.totalPages-1}"
+                class="page-item"><a class="page-link">{{ geraBotaoAvancarPaginacao() }}</a></li>
+        </ul>
+
+    </div>
+</div>
+<ng-template #conteudoVazio class="container_vazio col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="block_vazio col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        Não há nenhum item por aqui
+    </div>
+</ng-template>

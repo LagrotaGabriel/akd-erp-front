@@ -4,5 +4,6 @@ export class Advertencia {
     horaCadastro: string;
     motivo: string;
     descricao: string;
+    statusAdvertenciaEnum: string;
     advertenciaAssinada: File[];
 }

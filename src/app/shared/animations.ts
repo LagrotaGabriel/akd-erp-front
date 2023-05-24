@@ -14,7 +14,7 @@ export const fadeInOutAnimation = [
 
 export const slideUpDownAnimation = [
     trigger('slideUpDown', [
-        transition(':enter', [style({ height: 0 }), animate(80)]),
-        transition(':leave', [animate(80, style({ height: 0 }))]),
+        transition(':enter', [style({ height: 0 }), animate(90)]),
+        transition(':leave', [animate(90, style({ height: 0 }))]),
     ]),
 ]

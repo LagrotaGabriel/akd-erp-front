@@ -6,4 +6,5 @@ export class Advertencia {
     descricao?: string;
     statusAdvertenciaEnum?: string;
     advertenciaAssinada?: File[];
+    expandido?: boolean = false;
 }

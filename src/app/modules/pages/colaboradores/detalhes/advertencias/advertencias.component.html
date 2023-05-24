@@ -80,8 +80,8 @@
 
         <div *ngFor="let advertencia of advertencias?.content"
             matTooltip="Advertência emitida dia {{ advertencia.dataCadastro | date: 'dd/MM/yyyy' }} às {{ advertencia.horaCadastro | slice:0:5 }}"
-            matTooltipPosition="left" [routerLink]="geraEndPointAcessoItemAdvertencia(advertencia)"
-            class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+            matTooltipPosition="left" class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12"
+            [ngClass]="{'item_container_expandido': advertencia.expandido}">
 
             <div class="item_container_titulo row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
                 <div class="row item_text item_text_titulo">
@@ -89,9 +89,11 @@
                 </div>
 
                 <div class="row item_details">
+
                     <div class="item_details_status" [class]="advertencia.statusAdvertenciaEnum">
                         {{ advertencia.statusAdvertenciaEnum | titlecase }}
                     </div>
+
                     <mat-icon [fontIcon]="'folder_open'" class="icone_details icone_arquivo"
                         (click)="novoArquivo.click()"
                         [ngClass]="{'dropdown-item-desabilitado': advertencia.advertenciaAssinada == null}"
@@ -99,6 +101,7 @@
                         matTooltipPosition="below"></mat-icon>
                     <input type="file" #novoArquivo style="display: none;" accept=".pdf,.docx, .png, .jpeg, .jpg"
                         (change)="atualizaArquivoAdvertencia($event, advertencia)">
+
                     <mat-icon [fontIcon]="'settings'" class="icone_details icone_opcoes" data-toggle="dropdown"
                         #opcoesAdvertencia></mat-icon>
                     <div class="dropdown-menu mat-elevation-z3">
@@ -115,10 +118,14 @@
                             <div class="texto_opcao">Remover</div>
                         </a>
                     </div>
+                    <mat-icon [fontIcon]="advertencia.expandido ? 'expand_more' : 'chevron_left'"
+                        (click)="advertencia.expandido = !advertencia.expandido"
+                        class="icone_details icone_drop"></mat-icon>
                 </div>
             </div>
 
-            <div class="item_container_conteudo row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
+            <div [@slideUpDown] class="item_container_conteudo row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12"
+                *ngIf="advertencia.expandido">
                 <div class="row item_text">
                     {{ advertencia.descricao }}
                 </div>

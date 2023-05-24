@@ -45,7 +45,7 @@ export class AdvertenciasComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.novaAdvertenciaHabilitada) this.alteraExibicaoNovaAdvertencia();
-
+    this.fechaTodasAdvertencias();
   }
 
   createFormDadosCliente(): FormGroup {
@@ -226,9 +226,12 @@ export class AdvertenciasComponent {
     this.documentoAdvertenciaAtualizado = null;
   }
 
-  geraEndPointAcessoItemAdvertencia(advertencia: Advertencia): string {
-    //TODO DEVE GERAR UM PDF DA ADVERTÊNCIA GERADA
-    return null;
+  fechaTodasAdvertencias() {
+    if (Util.isNotObjectEmpty(this.advertencias)) {
+      this.advertencias.content.forEach(advertencia => {
+        advertencia.expandido = false;
+      })
+    }
   }
 
   realizaObtencaoDasAdvertenciasDoColaborador() {

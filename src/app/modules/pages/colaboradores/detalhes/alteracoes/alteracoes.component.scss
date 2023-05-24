@@ -55,7 +55,6 @@ div {
     font-family: $font-poppins;
     color: $light-grey;
     font-size: 0.9rem;
-    cursor: pointer;
 }
 
 .item_container:hover {
@@ -75,6 +74,11 @@ div {
 .item_text {
     display: flex;
     align-items: center;
+    cursor: pointer;
+}
+
+.item_text_titulo {
+    color: $dark-white;
 }
 
 .item_text_time {
@@ -106,6 +110,20 @@ div {
 
 .icone_item {
     margin-left: 0.5rem;
+}
+
+.icone_opc {
+    margin-left: 0.3rem;
+    cursor: pointer;
+}
+
+.disabled_icon {
+    color: $dark-grey;
+    cursor: default;
+}
+
+.item_container_conteudo {
+    padding-top: 0.5rem;
 }
 
 // ================ PAGINAÇÃO =============================

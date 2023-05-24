@@ -84,7 +84,7 @@
             [ngClass]="{'item_container_expandido': advertencia.expandido}">
 
             <div class="item_container_titulo row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
-                <div class="row item_text item_text_titulo">
+                <div class="row item_text item_text_titulo" (click)="advertencia.expandido = !advertencia.expandido">
                     {{ advertencia.motivo }}
                 </div>
 
@@ -119,7 +119,7 @@
                             <div class="texto_opcao">Remover</div>
                         </a>
                     </mat-menu>
-                    
+
                     <mat-icon [fontIcon]="advertencia.expandido ? 'expand_more' : 'chevron_left'"
                         (click)="advertencia.expandido = !advertencia.expandido"
                         class="icone_details icone_drop"></mat-icon>

@@ -4,11 +4,13 @@ import { AcaoService } from '../../services/acao.service';
 import { Util } from 'src/app/modules/utils/Util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Acao } from '../../models/Acao';
+import { slideUpDownAnimation } from 'src/app/shared/animations';
 
 @Component({
   selector: 'app-alteracoes',
   templateUrl: './alteracoes.component.html',
-  styleUrls: ['./alteracoes.component.scss']
+  styleUrls: ['./alteracoes.component.scss'],
+  animations: [slideUpDownAnimation]
 })
 export class AlteracoesComponent {
 
@@ -22,27 +24,6 @@ export class AlteracoesComponent {
 
   ngAfterViewInit(): void {
     this.realizaObtencaoDasAcoesDoColaborador();
-  }
-
-  geraEndPointAcessoItemAcao(acao: Acao): string {
-
-    if (Util.isEmptyNumber(acao.idObjeto) || acao.tipoAcaoEnum == 'REMOCAO' || acao.tipoAcaoEnum == 'REMOCAO_EM_MASSA') return null;
-
-    switch (acao.moduloEnum) {
-      case 'HOME': { return '/inicio/' + acao.idObjeto; }
-      case 'CLIENTES': { return '/clientes/' + acao.idObjeto; }
-      case 'VENDAS': { return '/vendas/' + acao.idObjeto; }
-      case 'PDV(': { return '/vendas/' + acao.idObjeto; }
-      case 'ESTOQUE': { return '/estoque/' + acao.idObjeto; }
-      case 'DESPESAS': { return '/despesas/' + acao.idObjeto; }
-      case 'FECHAMENTOS': { return '/fechamento/' + acao.idObjeto; }
-      case 'PATRIMONIOS': { return '/patrimonios/' + acao.idObjeto; }
-      case 'FORNECEDORES': { return '/fornecedores/' + acao.idObjeto; }
-      case 'COMPRAS': { return '/compras/' + acao.idObjeto; }
-      case 'COLABORADORES': { return '/colaboradores/' + acao.idObjeto; }
-      case 'PRECOS': { return '/precos/' + acao.idObjeto; }
-      default: { return null; }
-    }
   }
 
   converteTextoTipoAcao(acao: Acao): string {
@@ -91,6 +72,10 @@ export class AlteracoesComponent {
           this.router.navigate(['/colaboradores/' + this.activatedRoute.snapshot.paramMap.get('id')]);
         }
       })
+  }
+
+  expandeAcao(acao: Acao) {
+    if (Util.isNotEmptyString(acao?.observacao)) acao.expandido = !acao?.expandido;
   }
 
   // ==================== PAGINAÇÃO ==========================

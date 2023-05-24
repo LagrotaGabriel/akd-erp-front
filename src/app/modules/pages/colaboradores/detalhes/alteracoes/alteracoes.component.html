@@ -8,17 +8,27 @@
 
     <div class="block block_itens row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-        <div *ngFor="let acao of historicoAcoes?.content" [routerLink]="geraEndPointAcessoItemAcao(acao)"
+        <div *ngFor="let acao of historicoAcoes?.content"
             class="item_container row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12"
             matTooltip="Ação realizada dia {{ acao.dataCriacao | date: 'dd/MM/yyyy' }} às {{ acao.horaCriacao | slice:0:5 }}"
             matTooltipPosition="left">
-            <div class="row item_text">
+            <div class="row item_text item_text_titulo" (click)="expandeAcao(acao)">
                 {{ tituloAcao(acao) }}
             </div>
 
             <div class="row item_details">
                 <div class="item_details_status" [class]="acao.tipoAcaoEnum">
                     {{ converteTextoTipoAcao(acao) }}
+                </div>
+
+                <mat-icon [fontIcon]="acao.expandido ? 'expand_more' : 'chevron_left'" (click)="expandeAcao(acao)"
+                    class="icone icone_opc" [ngClass]="{'disabled_icon': acao.observacao == null}"></mat-icon>
+            </div>
+
+            <div [@slideUpDown] class="item_container_conteudo row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12"
+                *ngIf="acao.expandido">
+                <div class="row item_text">
+                    {{ acao.observacao }}
                 </div>
             </div>
         </div>

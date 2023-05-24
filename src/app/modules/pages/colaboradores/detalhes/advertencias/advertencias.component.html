@@ -114,7 +114,7 @@
                             <mat-icon [fontIcon]="'published_with_changes'"></mat-icon>
                             <div class="texto_opcao">Alterar status</div>
                         </a>
-                        <a class="row dropdown-item">
+                        <a class="row dropdown-item" (click)="chamadaServicoDeRemocaoDeAdvertencia(advertencia)">
                             <mat-icon [fontIcon]="'delete'"></mat-icon>
                             <div class="texto_opcao">Remover</div>
                         </a>

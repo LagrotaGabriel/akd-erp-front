@@ -193,6 +193,18 @@ export class AdvertenciasComponent {
     });
   }
 
+  protected chamadaServicoDeRemocaoDeAdvertencia(advertencia: Advertencia) {
+
+    this.advertenciaService.removeAdvertencia(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id).subscribe({
+      complete: () => {
+        this._snackBar.open('Advertência removida com sucesso!', 'Fechar', {
+          duration: 3500
+        });
+        this.realizaObtencaoDasAdvertenciasDoColaborador();
+      }
+    });
+  }
+
   protected atualizaArquivoAdvertencia(event, advertencia: Advertencia) {
 
     if (advertencia.advertenciaAssinada != null) {

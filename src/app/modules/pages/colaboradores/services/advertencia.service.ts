@@ -21,6 +21,13 @@ export class AdvertenciaService {
     body: null
   }
 
+  public removeAdvertencia(idColaborador: number, idAdvertencia: number): Observable<any> {
+    this.httpOptions.body = null;
+    this.httpOptions.params = new HttpParams();
+    return this.http.delete<any>(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/${idColaborador}/${idAdvertencia}`, this.httpOptions).pipe(
+    );
+  }
+
   public atualizaStatusAdvertencia(statusAdvertenciaEnum: string, idColaborador: number, idAdvertencia: number): Observable<any> {
     this.httpOptions.body = null;
     this.httpOptions.params = new HttpParams();

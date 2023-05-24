@@ -1,4 +1,4 @@
-import { Observable, map, catchError, throwError, retry } from 'rxjs';
+import { Observable, map, catchError, throwError, retry, tap } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,13 +21,21 @@ export class AdvertenciaService {
     body: null
   }
 
-  public atualizaAnexoAdvertencia(anexo: Blob, idColaborador: number, idAdvertencia: number): any {
+  public atualizaStatusAdvertencia(statusAdvertenciaEnum: string, idColaborador: number, idAdvertencia: number): Observable<any> {
+    this.httpOptions.body = null;
+    this.httpOptions.params = new HttpParams();
+    return this.http.put<any>(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/altera-status/${idColaborador}/${idAdvertencia}`,
+      statusAdvertenciaEnum, this.httpOptions).pipe(
+    );
+  }
+
+  public atualizaAnexoAdvertencia(anexo: Blob, idColaborador: number, idAdvertencia: number): Observable<any> {
     this.httpOptions.body = null;
     this.httpOptions.params = new HttpParams();
     let formData = new FormData();
     formData.append("anexo", anexo);
     return this.http.put(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/anexa-documento/${idColaborador}/${idAdvertencia}`, formData,
-      { headers: this.httpOptions.headers, responseType: "blob" }).subscribe()
+      { headers: this.httpOptions.headers, responseType: "blob" })
   }
 
   public obtemPdfPadrao(idColaborador: number, idAdvertencia: number): any {

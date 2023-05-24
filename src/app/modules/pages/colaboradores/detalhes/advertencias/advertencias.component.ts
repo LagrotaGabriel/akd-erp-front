@@ -179,6 +179,20 @@ export class AdvertenciasComponent {
     this.advertenciaService.obtemPdfPadrao(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), idAdvertencia);
   }
 
+  protected chamadaServicoDeAtualizacaoDeStatusAdvertencia(advertencia: Advertencia) {
+
+    let novoStatusAdvertencia: string = advertencia.statusAdvertenciaEnum == 'PENDENTE' ? 'ASSINADA' : 'PENDENTE';
+
+    this.advertenciaService.atualizaStatusAdvertencia(novoStatusAdvertencia, parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id).subscribe({
+      complete: () => {
+        this._snackBar.open('Status da advertência alterado com sucesso!', 'Fechar', {
+          duration: 3500
+        });
+        this.realizaObtencaoDasAdvertenciasDoColaborador();
+      }
+    });
+  }
+
   protected atualizaArquivoAdvertencia(event, advertencia: Advertencia) {
 
     if (advertencia.advertenciaAssinada != null) {
@@ -209,14 +223,17 @@ export class AdvertenciasComponent {
         this.documentoAdvertenciaAtualizado = event.target.files[0];
         this.advertenciaService.atualizaAnexoAdvertencia(this.documentoAdvertenciaAtualizado,
           parseInt(this.activatedRoute.snapshot.paramMap.get('id')),
-          advertencia.id);
-        this._snackBar.open('Arquivo anexado à advertência com sucesso!', 'Fechar', {
-          duration: 3000
-        })
-        this.limpaInputArquivoAtualizado();
-        setTimeout(() => {
-          this.realizaObtencaoDasAdvertenciasDoColaborador();
-        }, 0);
+          advertencia.id).subscribe({
+            complete: () => {
+              this._snackBar.open('Arquivo anexado à advertência com sucesso!', 'Fechar', {
+                duration: 3000
+              });
+              this.limpaInputArquivoAtualizado();
+              this.realizaObtencaoDasAdvertenciasDoColaborador();
+            }
+          })
+
+
       }
 
     }

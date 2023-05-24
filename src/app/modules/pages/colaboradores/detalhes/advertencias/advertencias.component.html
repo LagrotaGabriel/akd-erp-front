@@ -102,14 +102,15 @@
                     <input type="file" #novoArquivo style="display: none;" accept=".pdf,.docx, .png, .jpeg, .jpg"
                         (change)="atualizaArquivoAdvertencia($event, advertencia)">
 
-                    <mat-icon [fontIcon]="'settings'" class="icone_details icone_opcoes" data-toggle="dropdown"
-                        #opcoesAdvertencia></mat-icon>
-                    <div class="dropdown-menu mat-elevation-z3">
+                    <mat-icon [fontIcon]="'settings'" class="icone_details icone_opcoes" #opcoesAdvertencia
+                        [matMenuTriggerFor]="menu"></mat-icon>
+                    <mat-menu class="menu dropdown-menu mat-elevation-z3" #menu="matMenu">
                         <a class="row dropdown-item" (click)="chamadaServicoDeObtencaoDePdfPadrao(advertencia.id)">
                             <mat-icon [fontIcon]="'picture_as_pdf'"></mat-icon>
                             <div class="texto_opcao">Gerar PDF padrão</div>
                         </a>
-                        <a class="row dropdown-item">
+                        <a class="row dropdown-item"
+                            (click)="chamadaServicoDeAtualizacaoDeStatusAdvertencia(advertencia)">
                             <mat-icon [fontIcon]="'published_with_changes'"></mat-icon>
                             <div class="texto_opcao">Alterar status</div>
                         </a>
@@ -117,7 +118,8 @@
                             <mat-icon [fontIcon]="'delete'"></mat-icon>
                             <div class="texto_opcao">Remover</div>
                         </a>
-                    </div>
+                    </mat-menu>
+                    
                     <mat-icon [fontIcon]="advertencia.expandido ? 'expand_more' : 'chevron_left'"
                         (click)="advertencia.expandido = !advertencia.expandido"
                         class="icone_details icone_drop"></mat-icon>

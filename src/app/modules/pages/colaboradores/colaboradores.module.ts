@@ -10,6 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { ViewComponent } from './visualizacao/view/view.component';
 import { MenuComponent } from './visualizacao/menu/menu.component';
@@ -49,7 +50,8 @@ import { AcessosComponent } from './detalhes/acessos/acessos.component';
     MatTooltipModule,
     MatProgressBarModule,
     MatStepperModule,
-    MatTabsModule
+    MatTabsModule,
+    MatMenuModule
   ],
   exports: [
     MenuComponent, ViewComponent, TabelaComponent

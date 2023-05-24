@@ -144,7 +144,11 @@ app-custom-input {
     margin-left: 0.7rem;
 }
 
-.dropdown-menu {
+::ng-deep.mat-mdc-menu-panel.mat-mdc-menu-panel {
+    top: 0;
+}
+
+::ng-deep.mdc-menu-surface {
     background-color: $light-black;
     padding: 0 0.5rem;
 }
@@ -179,6 +183,10 @@ app-custom-input {
     align-items: flex-end;
     padding-left: 0.5rem;
     font-size: 1rem;
+}
+
+.item_container_conteudo {
+    padding-top: 0.5rem;
 }
 
 .item_text {

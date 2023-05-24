@@ -110,7 +110,7 @@ export class AdvertenciasComponent {
     if (event.target.files[0] == undefined) this.documentoAdvertencia = null;
     else {
       const max_size = 1048576;
-      const allowed_types = ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      const allowed_types = ['application/pdf'];
 
       if (event.target.files[0].size > max_size) {
         this._snackBar.open("O tamanho do arquivo não pode ser maior do que 1MB", "Fechar", {
@@ -175,6 +175,11 @@ export class AdvertenciasComponent {
     }
   }
 
+  protected chamadaServicoDeObtencaoDeAnexoAdvertencia(advertencia: Advertencia) {
+    if (Util.isObjectEmpty(advertencia.advertenciaAssinada)) return null;
+    this.advertenciaService.obtemAnexoAdvertencia(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id);
+  }
+
   protected chamadaServicoDeObtencaoDePdfPadrao(idAdvertencia: number) {
     this.advertenciaService.obtemPdfPadrao(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), idAdvertencia);
   }
@@ -215,7 +220,7 @@ export class AdvertenciasComponent {
     if (event.target.files[0] == undefined) this.documentoAdvertenciaAtualizado = null;
     else {
       const max_size = 1048576;
-      const allowed_types = ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      const allowed_types = ['application/pdf'];
 
       if (event.target.files[0].size > max_size) {
         this._snackBar.open("O tamanho do arquivo não pode ser maior do que 1MB", "Fechar", {

@@ -39,12 +39,12 @@
                     {{ getValueAtributoDadosNovaAdvertencia('advertenciaAssinada') != null &&
                     advertenciaAssinadaInput.value != ''
                     ? advertenciaAssinadaInput.value
-                    : 'Escolher arquivo (.docx, .pdf, .png, .jpeg)' }}
+                    : 'Escolher arquivo (.pdf)' }}
                     <mat-icon [@fadeInOut] [fontIcon]="getValueAtributoDadosNovaAdvertencia('advertenciaAssinada') != null && advertenciaAssinadaInput.value != '' 
                                             ? 'file_download_done' 
                                             : 'add_box'" class="icone icone_ok"></mat-icon>
                 </label>
-                <input type="file" accept=".pdf,.docx, .png, .jpeg, .jpg" formControlName="advertenciaAssinada"
+                <input type="file" accept=".pdf" formControlName="advertenciaAssinada"
                     name="advertenciaAssinada" style="display: none;" #advertenciaAssinadaInput
                     id="advertenciaAssinadaInput" (change)="setaArquivo($event)" [ngClass]="{'input_invalida': dadosNovaAdvertencia.controls['advertenciaAssinada'].touched 
                     && dadosNovaAdvertencia.controls['advertenciaAssinada'].invalid}"
@@ -99,7 +99,7 @@
                         [ngClass]="{'dropdown-item-desabilitado': advertencia.advertenciaAssinada == null}"
                         [matTooltip]="advertencia.advertenciaAssinada == null ? 'Adicionar anexo ' : 'Substituir anexo'"
                         matTooltipPosition="below"></mat-icon>
-                    <input type="file" #novoArquivo style="display: none;" accept=".pdf,.docx, .png, .jpeg, .jpg"
+                    <input type="file" #novoArquivo style="display: none;" accept=".pdf"
                         (change)="atualizaArquivoAdvertencia($event, advertencia)">
 
                     <mat-icon [fontIcon]="'settings'" class="icone_details icone_opcoes" #opcoesAdvertencia
@@ -113,6 +113,12 @@
                             (click)="chamadaServicoDeAtualizacaoDeStatusAdvertencia(advertencia)">
                             <mat-icon [fontIcon]="'published_with_changes'"></mat-icon>
                             <div class="texto_opcao">Alterar status</div>
+                        </a>
+                        <a class="row dropdown-item"
+                            [ngClass]="{'dropdown-item-desabilitado': advertencia.advertenciaAssinada == null}"
+                            (click)="chamadaServicoDeObtencaoDeAnexoAdvertencia(advertencia)">
+                            <mat-icon [fontIcon]="'visibility'"></mat-icon>
+                            <div class="texto_opcao">Visualizar anexo</div>
                         </a>
                         <a class="row dropdown-item" (click)="chamadaServicoDeRemocaoDeAdvertencia(advertencia)">
                             <mat-icon [fontIcon]="'delete'"></mat-icon>

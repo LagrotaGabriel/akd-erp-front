@@ -21,6 +21,22 @@ export class AdvertenciaService {
     body: null
   }
 
+  public obtemAnexoAdvertencia(idColaborador: number, idAdvertencia: number): any {
+    return this.http.get(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/obtem-anexo/${idColaborador}/${idAdvertencia}`,
+      { headers: this.httpOptions.headers, responseType: "blob" }).subscribe(
+        ((response) => {
+          let blob = new Blob([response], { type: 'application/pdf' });
+          let fileUrl = URL.createObjectURL(blob);
+          window.open(fileUrl);
+          let tagUrlPdfAdvertencia = document.createElement('a');
+          tagUrlPdfAdvertencia.href = fileUrl;
+          tagUrlPdfAdvertencia.target = '_blank';
+          tagUrlPdfAdvertencia.download = 'akadion-anexo-advertencia-' + new Date().getTime().toString() + '.pdf';
+          document.body.appendChild(tagUrlPdfAdvertencia);
+        })
+      )
+  }
+
   public removeAdvertencia(idColaborador: number, idAdvertencia: number): Observable<any> {
     this.httpOptions.body = null;
     this.httpOptions.params = new HttpParams();

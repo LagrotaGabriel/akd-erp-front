@@ -164,6 +164,7 @@ app-custom-input {
 
 .dropdown-item-desabilitado {
     color: $dark-grey !important;
+    cursor: default;
 }
 
 .dropdown-item:focus,

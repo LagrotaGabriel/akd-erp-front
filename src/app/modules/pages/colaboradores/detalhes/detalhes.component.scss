@@ -78,28 +78,78 @@ app-alteracoes {
     font-weight: 500;
 }
 
+// CONTAINER ESQUERDA - IMAGEM
+
+.container_imagem_perfil {
+    margin-bottom: 0.4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.block_imagem_perfil {
+    height: 6rem;
+    width: 5.5rem;
+}
+
+.imagem_perfil {
+    background-color: red;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+::ng-deep.mat-mdc-menu-panel.mat-mdc-menu-panel {
+    top: 0;
+}
+
+::ng-deep.mdc-menu-surface {
+    background-color: $light-black;
+    padding: 0 0.5rem;
+}
+
+.dropdown-item {
+    color: $light-grey !important;
+    padding: 0.5rem 0.5rem !important;
+    margin: 0 !important;
+    font-family: $font-poppins;
+    display: flex;
+    cursor: pointer;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    color: $dark-white !important;
+    background-color: $light-black !important;
+    padding: 0.5rem 0.5rem !important;
+}
+
+.texto_opcao {
+    display: flex;
+    align-items: flex-end;
+    padding-left: 0.5rem;
+    font-size: 1rem;
+}
+
 // CONTAINER ESQUERDA - DADOS PRINCIPAIS DO COLABORADOR
+
+.container_dados_principais {
+    display: flex;
+    justify-content: center;
+}
 
 .block_dados_principais {
     margin-top: 1rem;
     padding: 0 1rem;
-}
-
-.container_imagem {
-    width: 30%;
-    height: 5rem;
-    border: 1px solid $dark-grey;
-}
-
-.container_dados_principais {
-    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .text_principal_colaborador {
     font-family: $font-poppins;
     color: $dark-white;
     display: inline-block;
-    max-width: 100%;
+    text-align: center;
 }
 
 .nome_colaborador {
@@ -107,37 +157,37 @@ app-alteracoes {
     color: $light-white;
 }
 
-.email_colaborador {
+.cargo_colaborador {
     font-size: 0.7rem;
     color: $light-grey;
 }
 
 .status_colaborador {
     font-size: 0.8rem;
-    background-color: $dark-grey;
-    padding: 0.1rem 1rem;
+    padding: 0.3rem 1rem;
     margin-top: 0.3rem;
     border-radius: 5px;
     text-align: center;
 }
 
-// CONTAINER DA ESQUERDA - BLOCK ICONES
-
-.block_icones {
-    display: flex;
-    margin-top: 0.5rem;
-    padding: 0 1rem;
+.status_green {
+    border: 1px solid $success;
+    color: $success;
 }
 
-.icone_icones {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 0.3rem;
-    border: 1px solid $primary-color;
-    color: $primary-color;
-    border-radius: 5px;
-    padding: 0.3rem 0.6rem;
+.status_yellow {
+    border: 1px solid $warn;
+    color: $warn;
+}
+
+.status_red {
+    border: 1px solid $error;
+    color: $error;
+}
+
+.status_blue {
+    border: 1px solid $common;
+    color: $common;
 }
 
 // CONTAINER DA ESQUERDA - BLOCK DADOS PESSOAIS

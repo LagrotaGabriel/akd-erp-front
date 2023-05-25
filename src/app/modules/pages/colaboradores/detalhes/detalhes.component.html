@@ -1,6 +1,6 @@
 <div class="container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mat-elevation-z8">
 
-    <div class="subcontainer subcontainer_dados row col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+    <div class="subcontainer subcontainer_dados row col-xl-3 col-lg-4 col-md-4 col-sm-4 col-4">
 
         <div class="block block_opcoes row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="block_opcoes_interno">
@@ -15,28 +15,45 @@
             </div>
         </div>
 
-        <div class="block block_dados_principais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="row block block_dados_principais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-            <div class="container_dados_principais">
+            <div class="container_imagem_perfil col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="block_imagem_perfil">
+                    <img [(src)]="urlImagemPerfil" class="imagem_perfil" [matMenuTriggerFor]="menu" />
+                    <mat-menu [@slideUpDown] class="menu dropdown-menu mat-elevation-z3" #menu="matMenu">
+                        <a class="row dropdown-item" (click)="alterarImagemInput.click()">
+                            <mat-icon [fontIcon]="'add_a_photo'"></mat-icon>
+                            <div class="texto_opcao">
+                                {{ urlImagemPerfil != '/assets/imgs/profile_photo.png'
+                                ? 'Alterar imagem'
+                                : 'Adicionar imagem' }}
+                            </div>
+                            <input type="file" #alterarImagemInput style="display: none;" accept=".jpg, .jpeg, .png"
+                                (change)="realizaChamadaServicoDeAtualizacaoDeImagemDePerfilDoColaborador($event)">
+                        </a>
+                        <a class="row dropdown-item" *ngIf="urlImagemPerfil != '/assets/imgs/profile_photo.png'"
+                            (click)="realizaChamadaServicoDeExclusaoDeImagemDePerfilDoColaborador()">
+                            <mat-icon [fontIcon]="'delete'"></mat-icon>
+                            <div class="texto_opcao">Remover imagem</div>
+                        </a>
+                    </mat-menu>
+                </div>
+            </div>
+
+            <div class="row container_dados_principais col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="text_principal_colaborador nome_colaborador col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     {{ (colaborador?.nome) | titlecase }}
 
                 </div>
                 <div
-                    class="text_principal_colaborador email_colaborador row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.email != null ? (colaborador?.email | lowercase) : 'Sem e-mail cadastrado' }}
+                    class="text_principal_colaborador cargo_colaborador col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ colaborador?.ocupacao != null ? (colaborador?.ocupacao | titlecase) : 'Sem cargo cadastrado' }}
                 </div>
-                <div class="text_principal_colaborador status_colaborador">
+                <div [class]="'text_principal_colaborador status_colaborador col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12 ' 
+                + estiloStatusColaborador(colaborador?.statusColaboradorEnum)">
                     {{ colaborador?.statusColaboradorEnum | titlecase }}
                 </div>
             </div>
-        </div>
-
-        <div class="block block_icones row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <i class="icone icone_icones bi bi-file-earmark-medical mat-elevation-z1"></i>
-            <i class="icone icone_icones bi bi-telephone mat-elevation-z1"></i>
-            <i class="icone icone_icones bi bi-eraser mat-elevation-z1"></i>
-            <i class="icone icone_icones bi bi-printer mat-elevation-z1"></i>
         </div>
 
         <div class="block block_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -141,7 +158,7 @@
         </div>
     </div>
 
-    <div class="subcontainer subcontainer_content row col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+    <div class="subcontainer subcontainer_content row col-xl-9 col-lg-8 col-md-8 col-sm-8 col-8">
         <mat-tab-group class="block_menu" [selectedIndex]="abaSelecionada.value"
             (selectedIndexChange)="abaSelecionada.setValue($event)" dynamicHeight>
             <mat-tab label="Alterações">

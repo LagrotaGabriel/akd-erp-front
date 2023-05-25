@@ -9,14 +9,14 @@ import { Ponto } from "./Ponto";
 import { Ferias } from "./Ferias";
 import { Advertencia } from "./Advertencia";
 import { Parentesco } from "./Parentesco";
-import { Acao } from "./Acao";
+import { Arquivo } from "src/app/modules/shared/models/Arquivo";
 
 export class Colaborador {
     id?: number;
     dataCadastro?: string;
     horaCadastro?: string;
     matricula?: number;
-    fotoPerfil?: File;
+    fotoPerfil?: Arquivo;
     nome: string;
     dataNascimento?: string;
     email?: string;

@@ -6,11 +6,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Util } from 'src/app/modules/utils/Util';
 import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { slideUpDownAnimation } from 'src/app/shared/animations';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-detalhes',
   templateUrl: './detalhes.component.html',
-  styleUrls: ['./detalhes.component.scss']
+  styleUrls: ['./detalhes.component.scss'],
+  animations: [slideUpDownAnimation]
 })
 export class DetalhesComponent {
 
@@ -21,6 +24,8 @@ export class DetalhesComponent {
     private ref: ChangeDetectorRef,
     private _snackBar: MatSnackBar) {
   }
+
+  urlImagemPerfil;
 
   abaSelecionada: FormControl = new FormControl(0);
   emiteMudancaDeAba: number = 0;
@@ -83,6 +88,98 @@ export class DetalhesComponent {
         this.router.navigate(['/colaboradores']);
         this._snackBar.open("O colaborador que você tentou acessar não existe", "Fechar", {
           duration: 3500
+        });
+      },
+      complete: () => {
+        this.obtemSrcImagem(this.colaborador);
+      }
+    })
+  }
+
+  estiloStatusColaborador(statusColaborador: string): string {
+    switch (statusColaborador) {
+      case ('ATIVO'): return 'status_green';
+      case ('AFASTADO' || 'FERIAS'): return 'status_yellow';
+      case ('DISPENSADO' || 'EXCLUIDO'): return 'status_red';
+      case ('FREELANCER'): return 'status_blue';
+      default: return null;
+    }
+  }
+
+  obtemSrcImagem(colaborador: Colaborador) {
+    if (Util.isObjectEmpty(colaborador?.fotoPerfil)) this.urlImagemPerfil = '/assets/imgs/profile_photo.png';
+    else {
+      this.colaboradorService.obtemImagemPerfilColaborador(colaborador.id).subscribe({
+        next: (resposta) => {
+          const reader = new FileReader();
+          reader.onload = (e) => this.urlImagemPerfil = e.target.result;
+          reader.readAsDataURL(new Blob([resposta]));
+        },
+        error: () => {
+          this.urlImagemPerfil = '/assets/imgs/profile_photo.png';
+        }
+      });
+
+    }
+  }
+
+  realizaChamadaServicoDeAtualizacaoDeImagemDePerfilDoColaborador(event) {
+
+    let fotoPerfil: File;
+
+    if (this.colaborador.fotoPerfil != null) {
+      if (window.confirm('Tem certeza que deseja substituir a imagem de perfil atual?')) null;
+      else return;
+    }
+
+    if (event.target.files[0] == undefined) return;
+
+    else {
+      const max_size = 1048576;
+      const allowed_types = ['image/png', 'image/jpeg'];
+
+      if (event.target.files[0].size > max_size) {
+        this._snackBar.open("O tamanho da imagem não pode ser maior do que 1MB", "Fechar", {
+          duration: 5000
+        })
+        return;
+      }
+      else if (!(allowed_types.includes(event.target.files[0].type))) {
+        this._snackBar.open("Tipo de arquivo inválido. Escolha uma imagem de extensão .jpg ou .png", "Fechar", {
+          duration: 5000
+        })
+        return;
+      }
+      else {
+        fotoPerfil = event.target.files[0];
+        this.colaboradorService.atualizaImagemPerfilColaborador(this.colaborador.id, fotoPerfil).subscribe({
+          next: (response: Colaborador) => {
+            this.colaborador = response;
+          },
+          complete: () => {
+            setTimeout(() => {
+              this.obtemSrcImagem(this.colaborador);
+            }, 2000);
+            this._snackBar.open('Imagem de perfil atualizada com sucesso!', 'Fechar', {
+              duration: 3000
+            });
+          }
+        })
+
+      }
+
+    }
+  }
+
+  realizaChamadaServicoDeExclusaoDeImagemDePerfilDoColaborador() {
+    this.colaboradorService.atualizaImagemPerfilColaborador(this.colaborador.id, null).subscribe({
+      next: (response: Colaborador) => {
+        this.colaborador = response;
+      },
+      complete: () => {
+        this.urlImagemPerfil = '/assets/imgs/profile_photo.png'
+        this._snackBar.open('Imagem de perfil removida com sucesso!', 'Fechar', {
+          duration: 3000
         });
       }
     })

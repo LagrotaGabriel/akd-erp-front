@@ -24,6 +24,20 @@ export class ColaboradorService {
     body: null
   }
 
+  public obtemImagemPerfilColaborador(idColaborador: number): Observable<any> {
+    return this.http.get(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/imagem-perfil/${idColaborador}`,
+      { headers: this.httpOptions.headers, responseType: "blob" }).pipe()
+  }
+
+  public atualizaImagemPerfilColaborador(idColaborador: number, imagemPerfil: Blob): Observable<Colaborador> {
+    this.httpOptions.body = null;
+    let formData = new FormData();
+    formData.append("imagemPerfil", imagemPerfil);
+    return this.http.put<Colaborador>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/imagem-perfil/${idColaborador}`, formData, this.httpOptions).pipe(
+      map((response) => new Colaborador(response))
+    )
+  }
+
   public atualizaColaborador(idColaborador: number, colaborador: ColaboradorNovo, contratoColaborador: Blob): Observable<string> {
     this.httpOptions.body = null;
     let formData = new FormData();

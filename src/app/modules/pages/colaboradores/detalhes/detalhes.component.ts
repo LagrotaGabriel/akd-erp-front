@@ -83,15 +83,32 @@ export class DetalhesComponent {
       next: (resposta => {
         console.log(resposta);
         this.colaborador = resposta;
+        this.obtemSrcImagem(resposta);
       }),
       error: () => {
         this.router.navigate(['/colaboradores']);
         this._snackBar.open("O colaborador que você tentou acessar não existe", "Fechar", {
           duration: 3500
         });
-      },
+      }
+    })
+  }
+
+  retornarParaTabela() {
+    this.router.navigate(['/colaboradores'])
+  }
+
+  redirecionaParaEdicaoColaborador() {
+    this.router.navigate(['/colaboradores/alterar/' + this.colaborador.id]);
+  }
+
+  invocaMetodoExclusaoColaborador() {
+    this.colaboradorService.removeColaborador(this.colaborador.id).subscribe({
       complete: () => {
-        this.obtemSrcImagem(this.colaborador);
+        this.router.navigate(['/colaboradores']);
+        this._snackBar.open('Colaborador removido com sucesso', 'Fechar', {
+          duration: 3500
+        })
       }
     })
   }
@@ -99,8 +116,10 @@ export class DetalhesComponent {
   estiloStatusColaborador(statusColaborador: string): string {
     switch (statusColaborador) {
       case ('ATIVO'): return 'status_green';
-      case ('AFASTADO' || 'FERIAS'): return 'status_yellow';
-      case ('DISPENSADO' || 'EXCLUIDO'): return 'status_red';
+      case ('AFASTADO'): return 'status_yellow';
+      case ('FERIAS'): return 'status_yellow';
+      case ('DISPENSADO'): return 'status_red';
+      case ('EXCLUIDO'): return 'status_red';
       case ('FREELANCER'): return 'status_blue';
       default: return null;
     }
@@ -155,11 +174,9 @@ export class DetalhesComponent {
         this.colaboradorService.atualizaImagemPerfilColaborador(this.colaborador.id, fotoPerfil).subscribe({
           next: (response: Colaborador) => {
             this.colaborador = response;
+            this.obtemSrcImagem(response);
           },
           complete: () => {
-            setTimeout(() => {
-              this.obtemSrcImagem(this.colaborador);
-            }, 2000);
             this._snackBar.open('Imagem de perfil atualizada com sucesso!', 'Fechar', {
               duration: 3000
             });

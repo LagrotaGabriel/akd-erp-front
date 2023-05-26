@@ -52,7 +52,7 @@ app-alteracoes {
     background-color: transparent;
     border: none;
     display: flex;
-    align-items: normal;
+    align-items: center;
     color: $light-grey;
     cursor: pointer;
 }
@@ -64,18 +64,29 @@ app-alteracoes {
 }
 
 .icone_opc {
-    margin-left: 0.4rem;
+    margin-left: 0.5rem;
     font-size: 1.1rem;
+}
+
+.icone_opc:hover {
+    color: $dark-white;
 }
 
 .icone_retornar {
     margin-right: 0.2rem;
+    display: flex;
+    align-items: center;
 }
 
 .retornar_text {
     font-family: $font-poppins;
     font-size: 0.90rem;
     font-weight: 500;
+    margin: 0;
+}
+
+.botao_retornar:hover, .botao_retornar:hover > .icone_retornar {
+    color: $dark-white;
 }
 
 // CONTAINER ESQUERDA - IMAGEM
@@ -92,7 +103,6 @@ app-alteracoes {
 }
 
 .imagem_perfil {
-    background-color: red;
     width: 100%;
     height: 100%;
     border-radius: 15px;

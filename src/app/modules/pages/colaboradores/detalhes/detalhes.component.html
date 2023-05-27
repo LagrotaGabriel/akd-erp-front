@@ -1,5 +1,4 @@
 <div class="container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mat-elevation-z8">
-
     <div class="subcontainer subcontainer_dados row col-xl-3 col-lg-4 col-md-4 col-sm-4 col-4">
 
         <div class="block block_opcoes row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -62,101 +61,258 @@
 
         <div class="block block_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-            <div class="dados_pessoais_titulo row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                {{ 'Cod. ' + colaborador?.matricula }}
+            <div class="dados_pessoais_titulo_container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                (click)="dadosPessoais = !dadosPessoais">
+                <div class="dados_pessoais_titulo">Dados pessoais</div>
+                <mat-icon [fontIcon]="dadosPessoais ? 'expand_more' : 'chevron_left'"
+                    class="icone icone_titulo"></mat-icon>
             </div>
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Nome
+            <div *ngIf="dadosPessoais" [@slideUpDown]
+                class="container_dados container_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Nome
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Gabriel
+                    </div>
                 </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Gabriel
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Sobrenome
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Lagrota
+                    </div>
                 </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        E-mail
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.email != null ? (colaborador?.email | lowercase) : 'Não definido' }}
+                    </div>
+                </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Telefone
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.telefone != null
+                        ? '(' + colaborador?.telefone?.prefixo + ')' + ' ' + colaborador?.telefone?.numero
+                        : 'Não definido' }} <!-- AJUSTAR COM MÉTODO && ADICIONAR SPAN COM TIPO-->
+                    </div>
+                </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        CPF
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.cpfCnpj != null ? (colaborador?.cpfCnpj) : 'Não definido' }}
+                    </div>
+                </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Data de nascimento
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.dataNascimento != null
+                        ? (colaborador?.dataNascimento | date: 'dd/MM/yyyy')
+                        : 'Não definido' }}
+                    </div>
+                </div>
+
             </div>
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Sobrenome
-                </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Lagrota
-                </div>
+            <div class="dados_pessoais_titulo_container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                (click)="dadosProfissionais = !dadosProfissionais">
+                <div class="dados_pessoais_titulo">Dados profissionais</div>
+                <mat-icon [fontIcon]="dadosProfissionais ? 'expand_more' : 'chevron_left'"
+                    class="icone icone_titulo"></mat-icon>
             </div>
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    E-mail
+            <div *ngIf="dadosProfissionais" [@slideUpDown]
+                class="container_dados container_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Matrícula
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.matricula }}
+                    </div>
                 </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.email != null ? (colaborador?.email | lowercase) : 'Sem e-mail cadastrado' }}
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Setor
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.tipoOcupacaoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+                    </div>
                 </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Cargo
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.ocupacao | titlecase }}
+                    </div>
+                </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Modelo de contratação
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.modeloContratacaoEnum
+                        ? colaborador?.modeloContratacaoEnum
+                        : 'Não definido' }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+                    </div>
+                </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Modelo de trabalho
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.modeloTrabalhoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+                    </div>
+                </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Remuneração
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.salario ? colaborador?.salario : 'Não definido' }}
+                    </div>
+                </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Data de início
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.entradaEmpresa
+                        ? (colaborador?.entradaEmpresa | date: 'dd/MM/yyyy')
+                        : 'Não definido'
+                        }}
+                    </div>
+                </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Data de saída
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.saidaEmpresa
+                        ? (colaborador?.saidaEmpresa | date: 'dd/MM/yyyy')
+                        : 'Não definido'
+                        }}
+                    </div>
+                </div>
+
             </div>
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Telefone
-                </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.telefone != null
-                    ? '(' + colaborador?.telefone?.prefixo + ')' + ' ' + colaborador?.telefone?.numero
-                    : 'Sem telefone cadastrado' }} <!-- AJUSTAR COM MÉTODO && ADICIONAR SPAN COM TIPO-->
-                </div>
+            <div class="dados_pessoais_titulo_container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                (click)="dadosAcesso = !dadosAcesso">
+                <div class="dados_pessoais_titulo">Dados de acesso</div>
+                <mat-icon [fontIcon]="dadosAcesso ? 'expand_more' : 'chevron_left'"
+                    class="icone icone_titulo"></mat-icon>
             </div>
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    CPF
-                </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.cpfCnpj != null ? (colaborador?.cpfCnpj) : 'Sem CPF cadastrado' }}
-                </div>
-            </div>
+            <div *ngIf="dadosAcesso" [@slideUpDown]
+                class="container_dados container_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Data de nascimento
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Matrícula
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.matricula }}
+                    </div>
                 </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.dataNascimento != null ? (colaborador?.dataNascimento | date: 'dd/MM/yyyy') : 'Sem '
-                    + 'data de nascimento cadastrada' }}
-                </div>
-            </div>
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Setor
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Setor
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.tipoOcupacaoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+                    </div>
                 </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.tipoOcupacaoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
-                </div>
-            </div>
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Cargo
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Cargo
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.ocupacao | titlecase }}
+                    </div>
                 </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.ocupacao | titlecase }}
-                </div>
-            </div>
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Modelo de contratação
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Modelo de contratação
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.modeloContratacaoEnum
+                        ? colaborador?.modeloContratacaoEnum
+                        : 'Não definido' }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+                    </div>
                 </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.modeloContratacaoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
-                </div>
-            </div>
 
-            <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    Modelo de trabalho
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Modelo de trabalho
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.modeloTrabalhoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+                    </div>
                 </div>
-                <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {{ colaborador?.modeloTrabalhoEnum }} <!-- TRATAR COM MÉTODO COM SWICH CASE -->
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Remuneração
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.salario ? colaborador?.salario : 'Não definido' }}
+                    </div>
                 </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Data de início
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.entradaEmpresa
+                        ? (colaborador?.entradaEmpresa | date: 'dd/MM/yyyy')
+                        : 'Não definido'
+                        }}
+                    </div>
+                </div>
+
+                <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Data de saída
+                    </div>
+                    <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{ colaborador?.saidaEmpresa
+                        ? (colaborador?.saidaEmpresa | date: 'dd/MM/yyyy')
+                        : 'Não definido'
+                        }}
+                    </div>
+                </div>
+
             </div>
 
         </div>

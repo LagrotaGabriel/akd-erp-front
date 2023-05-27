@@ -7,7 +7,6 @@ import { Util } from 'src/app/modules/utils/Util';
 import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { slideUpDownAnimation } from 'src/app/shared/animations';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-detalhes',
@@ -29,6 +28,10 @@ export class DetalhesComponent {
 
   abaSelecionada: FormControl = new FormControl(0);
   emiteMudancaDeAba: number = 0;
+
+  dadosPessoais: boolean = false;
+  dadosProfissionais: boolean = false;
+  dadosAcesso: boolean = false;
 
   mudaAbaSelecionadaSubscription$: Subscription = this.abaSelecionada.valueChanges.subscribe({
     next: () => {

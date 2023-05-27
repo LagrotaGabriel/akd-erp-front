@@ -2,7 +2,9 @@
     class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
     <div class="block block_titulo_itens row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
         <div class="block_titulo_itens_titulo">
-            {{ historicoAcoes?.totalElements + ' Itens encontrados' }}
+            {{ historicoAcoes?.totalElements > 1 
+                ? historicoAcoes?.totalElements + ' Alterações realizadas'
+                : historicoAcoes?.totalElements + ' Alteração realizada' }}
         </div>
     </div>
 

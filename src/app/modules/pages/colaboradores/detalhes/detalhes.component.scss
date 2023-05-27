@@ -19,15 +19,11 @@ app-alteracoes {
 .subcontainer {
     display: block;
     height: 100%;
+    overflow-y: auto;
 }
 
 .subcontainer_dados {
-    display: grid;
     border-right: 1px solid $dark-grey;
-}
-
-.subcontainer_content {
-    overflow-y: auto;
 }
 
 // CONTAINER ESQUERDA - MENU SUPERIOR
@@ -83,10 +79,18 @@ app-alteracoes {
     font-size: 0.90rem;
     font-weight: 500;
     margin: 0;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-.botao_retornar:hover, .botao_retornar:hover > .icone_retornar {
+.botao_retornar:hover,
+.botao_retornar:hover>.icone_retornar {
     color: $dark-white;
+}
+
+.botao_retornar:focus {
+    outline: 0;
 }
 
 // CONTAINER ESQUERDA - IMAGEM
@@ -107,6 +111,15 @@ app-alteracoes {
     height: 100%;
     border-radius: 15px;
     cursor: pointer;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+::ng-deep.mdc-tab__text-label {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 ::ng-deep.mat-mdc-menu-panel.mat-mdc-menu-panel {
@@ -160,6 +173,9 @@ app-alteracoes {
     color: $dark-white;
     display: inline-block;
     text-align: center;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .nome_colaborador {
@@ -178,6 +194,9 @@ app-alteracoes {
     margin-top: 0.3rem;
     border-radius: 5px;
     text-align: center;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .status_green {
@@ -203,7 +222,6 @@ app-alteracoes {
 // CONTAINER DA ESQUERDA - BLOCK DADOS PESSOAIS
 
 .block_dados_pessoais {
-    overflow-y: auto;
     border-top: 1px solid $dark-grey;
     padding: 0.8rem 1rem;
     margin-top: 0.8rem;
@@ -233,13 +251,48 @@ app-alteracoes {
     background: $primary-color-dark;
 }
 
-.dados_pessoais_titulo {
+.hr_dados {
+    margin: 0.5rem 0;
+    padding: 0 1rem;
+    width: 100%;
+}
+
+.dados_pessoais_titulo_container {
     margin-top: 0.4rem;
-    margin-bottom: 0.4rem;
+    border: 1px solid $dark-grey;
+    background-color: $primary-color;
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dados_pessoais_titulo_container:hover {
+    background-color: $primary-color-dark;
+    border: 1px solid $primary-color-darker;
+    transition: 0.5s;
+}
+
+.dados_pessoais_titulo {
     font-size: 0.9rem;
     font-weight: 400;
     font-family: $font-poppins;
-    color: $light-white;
+    color: $dark-white;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.icone_titulo {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    color: $dark-white;
+}
+
+.container_dados {
+    padding: 0.2rem 0.2rem;
 }
 
 .dados_pessoais_info_block {
@@ -251,6 +304,9 @@ app-alteracoes {
 
 .dados_pessoais_info_titulo {
     color: $light-grey;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .dados_pessoais_info_texto {

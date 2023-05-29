@@ -205,4 +205,102 @@ export class DetalhesComponent {
     })
   }
 
+  realizaTratamentoTipoOcupacao(tipoOcupacao: string): string {
+    switch (tipoOcupacao) {
+      case 'TECNICO_INTERNO': {
+        return 'Técnico interno';
+      }
+      case 'TECNICO_EXTERNO': {
+        return 'Técnico externo';
+      }
+      case 'ATENDENTE': {
+        return 'Atendendimento';
+      }
+      case 'GERENTE': {
+        return 'Gerência';
+      }
+      case 'DIRETOR': {
+        return 'Diretoria';
+      }
+      case 'FINANCEIRO': {
+        return 'Financeiro';
+      }
+      case 'CONTABIL': {
+        return 'Contabil';
+      }
+      case 'TECNICO': {
+        return 'Técnico';
+      }
+      case 'ADMINISTRATIVO': {
+        return 'Administrativo';
+      }
+      case 'MARKETING': {
+        return 'Marketing';
+      }
+      case 'TECNICO_TI': {
+        return 'Tecnologia';
+      }
+      case 'ADMINISTRADOR': {
+        return 'Administrativo';
+      }
+      default: {
+        return null;
+      }
+    }
+  }
+
+  realizaTratamentoModeloContratacao(modeloContratacao: string): string {
+    switch (modeloContratacao) {
+      case 'CLT': {
+        return 'CLT';
+      }
+      case 'PJ': {
+        return 'PJ';
+      }
+      case 'FREELANCER': {
+        return 'Freelancer';
+      }
+      default: {
+        return null;
+      }
+    }
+  }
+
+  realizaTratamentoModeloTrabalho(modeloTrabalho: string): string {
+    switch (modeloTrabalho) {
+      case 'PRESENCIAL': {
+        return 'Presencial';
+      }
+      case 'HIBRIDO': {
+        return 'Híbrido';
+      }
+      case 'HOME_OFFICE': {
+        return 'Remoto';
+      }
+      default: {
+        return null;
+      }
+    }
+  }
+
+  realizaTratamentoCampoPermissao(permissao: string): string {
+    switch (permissao) {
+      case 'LEITURA_BASICA': {
+        return 'Leitura básica';
+      }
+      case 'LEITURA_AVANCADA': {
+        return 'Leitura avançada';
+      }
+      case 'LEITURA_BASICA_ALTERACAO': {
+        return 'Leitura básica + alteração';
+      }
+      case 'LEITURA_AVANCADA_ALTERACAO': {
+        return 'Leitura avançada + alteração';
+      }
+      default: {
+        return null;
+      }
+    }
+  }
+
 }

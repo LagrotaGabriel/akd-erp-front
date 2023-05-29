@@ -1,0 +1,68 @@
+<div class="dados_titulo_container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+    (click)="dadosPessoais = !dadosPessoais">
+    <div class="dados_pessoais_titulo">Dados pessoais</div>
+    <mat-icon [fontIcon]="dadosPessoais ? 'expand_more' : 'chevron_left'" class="icone icone_titulo"></mat-icon>
+</div>
+
+<div *ngIf="dadosPessoais" [@slideUpDown]
+    class="container_dados container_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+    <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Nome
+        </div>
+        <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Gabriel
+        </div>
+    </div>
+
+    <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Sobrenome
+        </div>
+        <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Lagrota
+        </div>
+    </div>
+
+    <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            E-mail
+        </div>
+        <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {{ colaborador?.email != null ? (colaborador?.email | lowercase) : 'Não definido' }}
+        </div>
+    </div>
+
+    <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Telefone
+        </div>
+        <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {{ colaborador?.telefone != null
+            ? '(' + colaborador?.telefone?.prefixo + ')' + ' ' + colaborador?.telefone?.numero
+            : 'Não definido' }}
+        </div>
+    </div>
+
+    <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            CPF
+        </div>
+        <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {{ colaborador?.cpfCnpj != null ? (colaborador?.cpfCnpj) : 'Não definido' }}
+        </div>
+    </div>
+
+    <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Data de nascimento
+        </div>
+        <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {{ colaborador?.dataNascimento != null
+            ? (colaborador?.dataNascimento | date: 'dd/MM/yyyy')
+            : 'Não definido' }}
+        </div>
+    </div>
+
+</div>

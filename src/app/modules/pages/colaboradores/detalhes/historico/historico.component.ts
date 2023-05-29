@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
-import { Util } from 'src/app/modules/utils/Util';
-import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { slideUpDownAnimation } from 'src/app/shared/animations';
+import { Subscription } from 'rxjs';
+import { Util } from 'src/app/modules/utils/Util';
 
 @Component({
-  selector: 'app-detalhes',
-  templateUrl: './detalhes.component.html',
-  styleUrls: ['./detalhes.component.scss'],
+  selector: 'app-historico',
+  templateUrl: './historico.component.html',
+  styleUrls: ['./historico.component.scss']
 })
-export class DetalhesComponent {
+export class HistoricoComponent {
 
   abaSelecionada: FormControl = new FormControl(0);
   emiteMudancaDeAba: number = 0;

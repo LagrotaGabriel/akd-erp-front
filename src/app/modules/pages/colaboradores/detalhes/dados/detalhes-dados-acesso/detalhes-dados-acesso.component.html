@@ -1,0 +1,52 @@
+<div class="dados_titulo_container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+    (click)="dadosAcesso = !dadosAcesso">
+    <div class="dados_pessoais_titulo">Dados de acesso</div>
+    <mat-icon [fontIcon]="dadosAcesso ? 'expand_more' : 'chevron_left'" class="icone icone_titulo"></mat-icon>
+</div>
+
+<div *ngIf="dadosAcesso" [@slideUpDown]
+    class="container_dados container_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+    <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Acesso ao sistema
+        </div>
+        <div [ngClass]="{'texto_ativo': colaborador?.acessoSistema.acessoSistemaAtivo, 
+        'texto_inativo': !colaborador?.acessoSistema.acessoSistemaAtivo}"
+            class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {{ colaborador?.acessoSistema.acessoSistemaAtivo
+            ? 'Liberado'
+            : 'Bloqueado' }}
+        </div>
+    </div>
+
+    <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Nível de autorização
+        </div>
+        <div class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {{ colaborador?.acessoSistema?.permissaoEnum
+            ? realizaTratamentoCampoPermissao(colaborador?.acessoSistema?.permissaoEnum)
+            : 'Sem acesso ao sistema' }}
+        </div>
+    </div>
+
+    <div class="dados_pessoais_info_block row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="dados_pessoais_info_titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Módulos liberados
+        </div>
+
+        <div *ngIf="colaborador?.acessoSistema?.privilegios == null || colaborador?.acessoSistema?.privilegios.length == 0; 
+    else templateModulosLiberados" class="dados_pessoais_info_texto col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            Sem acesso ao sistema
+        </div>
+
+        <ng-template #templateModulosLiberados>
+            <div *ngFor="let privilegio of colaborador?.acessoSistema?.privilegios"
+                class="dados_pessoais_info_texto texto_bosta col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                {{ '- ' + privilegio | titlecase }}
+            </div>
+        </ng-template>
+    </div>
+
+</div>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AcessoService } from '../../services/acesso.service';
-import { AcessoPageObject } from '../models/AcessoPageObject';
+import { AcessoService } from '../../../services/acesso.service';
+import { AcessoPageObject } from '../../models/AcessoPageObject';
 import { Util } from 'src/app/modules/utils/Util';
 
 @Component({

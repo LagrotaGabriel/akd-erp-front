@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { AcaoPageObject } from '../models/AcaoPageObject';
-import { AcaoService } from '../../services/acao.service';
+import { AcaoPageObject } from '../../models/AcaoPageObject';
+import { AcaoService } from '../../../services/acao.service';
 import { Util } from 'src/app/modules/utils/Util';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Acao } from '../../models/Acao';
+import { Acao } from '../../../models/Acao';
 import { slideUpDownAnimation } from 'src/app/shared/animations';
 
 @Component({

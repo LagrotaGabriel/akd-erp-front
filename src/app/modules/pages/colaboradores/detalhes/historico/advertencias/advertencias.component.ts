@@ -1,9 +1,9 @@
 import { Component, ViewChild, Input, SimpleChanges } from '@angular/core';
-import { AdvertenciaService } from '../../services/advertencia.service';
+import { AdvertenciaService } from '../../../services/advertencia.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdvertenciaPageObject } from '../models/AdvertenciaPageObject';
+import { AdvertenciaPageObject } from '../../models/AdvertenciaPageObject';
 import { Util } from 'src/app/modules/utils/Util';
-import { Advertencia } from '../../models/Advertencia';
+import { Advertencia } from '../../../models/Advertencia';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { MatSnackBar } from '@angular/material/snack-bar';

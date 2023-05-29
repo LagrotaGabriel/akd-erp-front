@@ -1,0 +1,68 @@
+<div class="block block_opcoes row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="block_opcoes_interno">
+        <button class="botao botao_retornar row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+            (click)="retornarParaTabela()">
+            <mat-icon class="icone icone_retornar" fontIcon="arrow_back"></mat-icon>
+            <h5 class="retornar_text">Retornar</h5>
+        </button>
+    </div>
+    <div class="block_opcoes_interno row">
+        <i class="icone icone_opc bi bi-pencil-square" (click)="redirecionaParaEdicaoColaborador()"
+            [matTooltip]="'Editar dados do colaborador'"></i>
+        <i class="icone icone_opc bi bi-trash2" (click)="invocaMetodoExclusaoColaborador()"
+            [matTooltip]="'Remover colaborador'"></i>
+    </div>
+</div>
+
+<div class="row block block_dados_principais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+    <div class="container_imagem_perfil col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="block_imagem_perfil">
+            <img [(src)]="urlImagemPerfil" class="imagem_perfil mat-elevation-z4" [matMenuTriggerFor]="menu" alt=" " />
+            <mat-menu [@slideUpDown] class="menu dropdown-menu mat-elevation-z3" #menu="matMenu">
+                <a class="row dropdown-item" (click)="alterarImagemInput.click()">
+                    <mat-icon [fontIcon]="'add_a_photo'"></mat-icon>
+                    <div class="texto_opcao">
+                        {{ urlImagemPerfil != '/assets/imgs/profile_photo.png'
+                        ? 'Alterar imagem'
+                        : 'Adicionar imagem' }}
+                    </div>
+                    <input type="file" #alterarImagemInput style="display: none;" accept=".jpg, .jpeg, .png"
+                        (change)="realizaChamadaServicoDeAtualizacaoDeImagemDePerfilDoColaborador($event)">
+                </a>
+                <a class="row dropdown-item" *ngIf="urlImagemPerfil != '/assets/imgs/profile_photo.png'"
+                    (click)="realizaChamadaServicoDeExclusaoDeImagemDePerfilDoColaborador()">
+                    <mat-icon [fontIcon]="'delete'"></mat-icon>
+                    <div class="texto_opcao">Remover imagem</div>
+                </a>
+            </mat-menu>
+        </div>
+    </div>
+
+    <div class="row container_dados_principais col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="text_principal_colaborador nome_colaborador col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {{ (colaborador?.nome) | titlecase }}
+
+        </div>
+        <div class="text_principal_colaborador cargo_colaborador col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {{ colaborador?.ocupacao != null ? (colaborador?.ocupacao | titlecase) : 'Sem cargo cadastrado' }}
+        </div>
+        <div [class]="'text_principal_colaborador status_colaborador col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12 ' 
+        + estiloStatusColaborador(colaborador?.statusColaboradorEnum)">
+            {{ colaborador?.statusColaboradorEnum | titlecase }}
+        </div>
+    </div>
+</div>
+
+<div class="block block_dados_pessoais row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+    <app-detalhes-dados-pessoais class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+        [colaborador]="colaborador"></app-detalhes-dados-pessoais>
+
+    <app-detalhes-dados-profissionais class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+        [colaborador]="colaborador"></app-detalhes-dados-profissionais>
+
+    <app-detalhes-dados-acesso class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+        [colaborador]="colaborador"></app-detalhes-dados-acesso>
+
+</div>

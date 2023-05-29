@@ -5,7 +5,7 @@ import { slideUpDownAnimation } from 'src/app/shared/animations';
 @Component({
   selector: 'app-detalhes-dados-profissionais',
   templateUrl: './detalhes-dados-profissionais.component.html',
-  styleUrls: ['./detalhes-dados-profissionais.component.scss'],
+  styleUrls: ['../dados.component.scss'],
   animations: [slideUpDownAnimation]
 })
 export class DetalhesDadosProfissionaisComponent {

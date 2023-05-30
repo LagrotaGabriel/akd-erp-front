@@ -67,56 +67,27 @@ td,
     margin-top: 0.3rem;
 }
 
-.btn_opcoes_colaborador {
-    font-size: 0.8rem;
-    font-family: $font-poppins;
-    padding: 0.3rem 1rem;
-    margin-right: 0.5rem;
-    background-color: $primary-color;
-    border: 1px solid $primary-color;
-    cursor: pointer;
-    border-radius: 5px;
-    color: $dark-white;
-}
-
-.btn_opcoes_colaborador:focus {
-    outline: none;
-}
-
-.btn_opcoes_colaborador:hover {
-    color: $light-white;
-    transition: 0.2s;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @media (max-width: 1200px) {
     .accordion_container {
-        padding: 0;
-        padding-bottom: 0.3rem;
+        padding: 0.5rem 1rem;
+        padding-top: 0;
     }
 }
 
-@media (max-width: 992px) {
-    .accordion_container {
-        padding-bottom: 0.3rem;
+@media (max-width: 576px) {
+    .titulo_sessao {
+        font-size: 0.8rem;
+    }
+    
+    .accordion_titulo {
+        font-size: 0.7rem;
+    }
+    
+    .accordion_texto {
+        font-size: 0.6rem;
+    }
+
+    .first_hr {
+        display: none;
     }
 }

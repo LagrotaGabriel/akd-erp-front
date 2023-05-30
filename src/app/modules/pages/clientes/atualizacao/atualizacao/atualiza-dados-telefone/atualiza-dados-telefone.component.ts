@@ -174,6 +174,8 @@ export class AtualizaDadosTelefoneComponent {
       numero: ''
     })
 
+    this.dadosTelefone.clearValidators();
+
     if (this.getValueAtributoDadosTelefone('tipoTelefone') != '') {
 
       this.dadosTelefone.enable()
@@ -188,11 +190,11 @@ export class AtualizaDadosTelefoneComponent {
         this.inputTelefonePattern = /^\d\d{4}\d{4}/;
       }
 
-      this.dadosTelefone.controls['prefixo'].addValidators([
+      this.dadosTelefone.controls['prefixo'].setValidators([
         Validators.required, Validators.pattern(this.inputPrefixoPattern)
       ])
 
-      this.dadosTelefone.controls['numero'].addValidators([
+      this.dadosTelefone.controls['numero'].setValidators([
         Validators.required, Validators.pattern(this.inputTelefonePattern)
       ])
 

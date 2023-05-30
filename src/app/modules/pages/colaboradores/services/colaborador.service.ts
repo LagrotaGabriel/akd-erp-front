@@ -26,7 +26,13 @@ export class ColaboradorService {
 
   public obtemImagemPerfilColaborador(idColaborador: number): Observable<any> {
     return this.http.get(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/imagem-perfil/${idColaborador}`,
-      { headers: this.httpOptions.headers, responseType: "blob" }).pipe()
+      { headers: this.httpOptions.headers, responseType: "blob" }).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+          console.log(error);
+          return throwError(() => new HttpErrorResponse(error));
+        }),
+      )
   }
 
   public atualizaImagemPerfilColaborador(idColaborador: number, imagemPerfil: Blob): Observable<Colaborador> {
@@ -34,7 +40,12 @@ export class ColaboradorService {
     let formData = new FormData();
     formData.append("imagemPerfil", imagemPerfil);
     return this.http.put<Colaborador>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/imagem-perfil/${idColaborador}`, formData, this.httpOptions).pipe(
-      map((response) => new Colaborador(response))
+      map((response) => new Colaborador(response)),
+      catchError((error: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        console.log(error);
+        return throwError(() => new HttpErrorResponse(error));
+      }),
     )
   }
 
@@ -45,6 +56,11 @@ export class ColaboradorService {
     formData.append("colaborador", JSON.stringify(colaborador));
     formData.append("id", JSON.stringify(idColaborador));
     return this.http.put<string>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${idColaborador}`, formData, this.httpOptions).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        console.log(error);
+        return throwError(() => new HttpErrorResponse(error));
+      }),
     )
   }
 
@@ -52,7 +68,12 @@ export class ColaboradorService {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
     return this.http.get<Colaborador>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
-      map((resposta) => new Colaborador(resposta))
+      map((resposta) => new Colaborador(resposta)),
+      catchError((error: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        console.log(error);
+        return throwError(() => new HttpErrorResponse(error));
+      }),
     )
   }
 
@@ -60,7 +81,12 @@ export class ColaboradorService {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
     return this.http.get<ColaboradorNovo>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
-      map((resposta) => new ColaboradorNovo(resposta))
+      map((resposta) => new ColaboradorNovo(resposta)),
+      catchError((error: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        console.log(error);
+        return throwError(() => new HttpErrorResponse(error));
+      }),
     )
   }
 
@@ -71,13 +97,24 @@ export class ColaboradorService {
     formData.append("colaborador", JSON.stringify(colaboradorNovo));
 
     return this.http.post<string>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador`, formData, this.httpOptions).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        console.log(error);
+        return throwError(() => new HttpErrorResponse(error));
+      }),
     )
   }
 
   public obtemTodasOcupacoes(): Observable<string[]> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
-    return this.http.get<string[]>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/ocupacoes`, this.httpOptions).pipe()
+    return this.http.get<string[]>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/ocupacoes`, this.httpOptions).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        console.log(error);
+        return throwError(() => new HttpErrorResponse(error));
+      }),
+    )
   }
 
   public getColaboradores(valorBusca: string, pageableInfo: PageObject): Observable<PageObject> {

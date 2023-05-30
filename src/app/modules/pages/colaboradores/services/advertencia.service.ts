@@ -23,7 +23,13 @@ export class AdvertenciaService {
 
   public obtemAnexoAdvertencia(idColaborador: number, idAdvertencia: number): any {
     return this.http.get(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/obtem-anexo/${idColaborador}/${idAdvertencia}`,
-      { headers: this.httpOptions.headers, responseType: "blob" }).subscribe(
+      { headers: this.httpOptions.headers, responseType: "blob" }).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+          console.log(error);
+          return throwError(() => new HttpErrorResponse(error));
+        }),
+      ).subscribe(
         ((response) => {
           let blob = new Blob([response], { type: 'application/pdf' });
           let fileUrl = URL.createObjectURL(blob);
@@ -41,6 +47,11 @@ export class AdvertenciaService {
     this.httpOptions.body = null;
     this.httpOptions.params = new HttpParams();
     return this.http.delete<any>(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/${idColaborador}/${idAdvertencia}`, this.httpOptions).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+        console.log(error);
+        return throwError(() => new HttpErrorResponse(error));
+      }),
     );
   }
 
@@ -49,7 +60,12 @@ export class AdvertenciaService {
     this.httpOptions.params = new HttpParams();
     return this.http.put<any>(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/altera-status/${idColaborador}/${idAdvertencia}`,
       statusAdvertenciaEnum, this.httpOptions).pipe(
-    );
+        catchError((error: HttpErrorResponse) => {
+          this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+          console.log(error);
+          return throwError(() => new HttpErrorResponse(error));
+        }),
+      );
   }
 
   public atualizaAnexoAdvertencia(anexo: Blob, idColaborador: number, idAdvertencia: number): Observable<any> {
@@ -58,7 +74,13 @@ export class AdvertenciaService {
     let formData = new FormData();
     formData.append("anexo", anexo);
     return this.http.put(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/anexa-documento/${idColaborador}/${idAdvertencia}`, formData,
-      { headers: this.httpOptions.headers, responseType: "blob" })
+      { headers: this.httpOptions.headers, responseType: "blob" }).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+          console.log(error);
+          return throwError(() => new HttpErrorResponse(error));
+        }),
+      )
   }
 
   public obtemPdfPadrao(idColaborador: number, idAdvertencia: number): any {
@@ -66,7 +88,13 @@ export class AdvertenciaService {
     this.httpOptions.params = new HttpParams();
 
     return this.http.get(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/pdf-padrao/${idColaborador}/${idAdvertencia}`,
-      { headers: this.httpOptions.headers, responseType: "blob" }).subscribe(
+      { headers: this.httpOptions.headers, responseType: "blob" }).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+          console.log(error);
+          return throwError(() => new HttpErrorResponse(error));
+        }),
+      ).subscribe(
         ((response) => {
           let blob = new Blob([response], { type: 'application/pdf' });
           let fileUrl = URL.createObjectURL(blob);
@@ -87,7 +115,13 @@ export class AdvertenciaService {
     formData.append("arquivoAdvertencia", arquivoAdvertencia);
     formData.append("advertencia", JSON.stringify(advertencia));
     return this.http.post(`${API_CONFIG.baseUrl}api/sistema/v1/advertencia/${idColaborador}`,
-      formData, { headers: this.httpOptions.headers, responseType: "blob" }).subscribe(
+      formData, { headers: this.httpOptions.headers, responseType: "blob" }).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
+          console.log(error);
+          return throwError(() => new HttpErrorResponse(error));
+        }),
+      ).subscribe(
         ((response) => {
           let blob = new Blob([response], { type: 'application/pdf' });
           let fileUrl = URL.createObjectURL(blob);

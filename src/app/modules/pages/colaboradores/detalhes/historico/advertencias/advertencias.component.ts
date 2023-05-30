@@ -9,6 +9,7 @@ import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { fadeInOutAnimation, slideUpDownAnimation } from 'src/app/shared/animations';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-advertencias',
@@ -39,6 +40,14 @@ export class AdvertenciasComponent {
 
   protected advertencias: AdvertenciaPageObject;
 
+  protected novaAdvertenciaSubscription$: Subscription;
+  protected obtemAnexoAdvertenciaSubscription$: Subscription;
+  protected obtemPdfPadraoSubscription$: Subscription;
+  protected atualizaStatusAdvertenciaSubscription$: Subscription;
+  protected removeAdvertenciaSubscription$: Subscription;
+  protected atualizaAnexoAdvertenciaSubscription$: Subscription;
+  protected getAdvertenciasSubscription$: Subscription;
+
   ngAfterViewInit(): void {
     this.realizaObtencaoDasAdvertenciasDoColaborador();
   }
@@ -46,6 +55,16 @@ export class AdvertenciasComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.novaAdvertenciaHabilitada) this.alteraExibicaoNovaAdvertencia();
     this.fechaTodasAdvertencias();
+  }
+
+  ngOnDestroy(): void {
+    if (Util.isNotObjectEmpty(this.novaAdvertenciaSubscription$)) this.novaAdvertenciaSubscription$.unsubscribe();
+    if (Util.isNotObjectEmpty(this.obtemAnexoAdvertenciaSubscription$)) this.obtemAnexoAdvertenciaSubscription$.unsubscribe();
+    if (Util.isNotObjectEmpty(this.obtemPdfPadraoSubscription$)) this.obtemPdfPadraoSubscription$.unsubscribe();
+    if (Util.isNotObjectEmpty(this.atualizaStatusAdvertenciaSubscription$)) this.atualizaStatusAdvertenciaSubscription$.unsubscribe();
+    if (Util.isNotObjectEmpty(this.removeAdvertenciaSubscription$)) this.removeAdvertenciaSubscription$.unsubscribe();
+    if (Util.isNotObjectEmpty(this.atualizaAnexoAdvertenciaSubscription$)) this.atualizaAnexoAdvertenciaSubscription$.unsubscribe();
+    if (Util.isNotObjectEmpty(this.getAdvertenciasSubscription$)) this.getAdvertenciasSubscription$.unsubscribe();
   }
 
   createFormDadosCliente(): FormGroup {
@@ -154,7 +173,7 @@ export class AdvertenciasComponent {
   protected gerarAdvertencia() {
     if (this.dadosNovaAdvertencia.valid) {
       this.constroiObjetoAdvertencia();
-      this.advertenciaService.novaAdvertencia(this.novaAdvertencia, this.documentoAdvertencia, parseInt(this.activatedRoute.snapshot.paramMap.get('id')));
+      this.novaAdvertenciaSubscription$ = this.advertenciaService.novaAdvertencia(this.novaAdvertencia, this.documentoAdvertencia, parseInt(this.activatedRoute.snapshot.paramMap.get('id')));
       setTimeout(() => {
         this.realizaObtencaoDasAdvertenciasDoColaborador();
       }, 2000);
@@ -177,18 +196,18 @@ export class AdvertenciasComponent {
 
   protected chamadaServicoDeObtencaoDeAnexoAdvertencia(advertencia: Advertencia) {
     if (Util.isObjectEmpty(advertencia.advertenciaAssinada)) return null;
-    this.advertenciaService.obtemAnexoAdvertencia(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id);
+    this.obtemAnexoAdvertenciaSubscription$ = this.advertenciaService.obtemAnexoAdvertencia(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id);
   }
 
   protected chamadaServicoDeObtencaoDePdfPadrao(idAdvertencia: number) {
-    this.advertenciaService.obtemPdfPadrao(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), idAdvertencia);
+    this.obtemPdfPadraoSubscription$ = this.advertenciaService.obtemPdfPadrao(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), idAdvertencia);
   }
 
   protected chamadaServicoDeAtualizacaoDeStatusAdvertencia(advertencia: Advertencia) {
 
     let novoStatusAdvertencia: string = advertencia.statusAdvertenciaEnum == 'PENDENTE' ? 'ASSINADA' : 'PENDENTE';
 
-    this.advertenciaService.atualizaStatusAdvertencia(novoStatusAdvertencia, parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id).subscribe({
+    this.atualizaStatusAdvertenciaSubscription$ = this.advertenciaService.atualizaStatusAdvertencia(novoStatusAdvertencia, parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id).subscribe({
       complete: () => {
         this._snackBar.open('Status da advertência alterado com sucesso!', 'Fechar', {
           duration: 3500
@@ -200,7 +219,7 @@ export class AdvertenciasComponent {
 
   protected chamadaServicoDeRemocaoDeAdvertencia(advertencia: Advertencia) {
 
-    this.advertenciaService.removeAdvertencia(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id).subscribe({
+    this.removeAdvertenciaSubscription$ = this.advertenciaService.removeAdvertencia(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id).subscribe({
       complete: () => {
         this._snackBar.open('Advertência removida com sucesso!', 'Fechar', {
           duration: 3500
@@ -238,7 +257,7 @@ export class AdvertenciasComponent {
       }
       else {
         this.documentoAdvertenciaAtualizado = event.target.files[0];
-        this.advertenciaService.atualizaAnexoAdvertencia(this.documentoAdvertenciaAtualizado,
+        this.atualizaAnexoAdvertenciaSubscription$ = this.advertenciaService.atualizaAnexoAdvertencia(this.documentoAdvertenciaAtualizado,
           parseInt(this.activatedRoute.snapshot.paramMap.get('id')),
           advertencia.id).subscribe({
             complete: () => {
@@ -269,10 +288,9 @@ export class AdvertenciasComponent {
   }
 
   realizaObtencaoDasAdvertenciasDoColaborador() {
-    this.advertenciaService.getAdvertencias(Util.isNotObjectEmpty(this.advertencias) ? this.advertencias : null,
+    this.getAdvertenciasSubscription$ = this.advertenciaService.getAdvertencias(Util.isNotObjectEmpty(this.advertencias) ? this.advertencias : null,
       parseInt(this.activatedRoute.snapshot.paramMap.get('id'))).subscribe({
         next: (resposta => {
-          console.log(resposta);
           this.advertencias = resposta;
         }),
         error: () => {

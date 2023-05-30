@@ -5,5 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './produtividade.component.html'
 })
 export class ProdutividadeComponent {
-
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AcessoService } from '../../../services/acesso.service';
 import { AcessoPageObject } from '../../models/AcessoPageObject';
 import { Util } from 'src/app/modules/utils/Util';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-acessos',
@@ -18,15 +19,20 @@ export class AcessosComponent {
 
   protected acessos: AcessoPageObject;
 
+  protected getAcoesSubscription$: Subscription;
+
   ngAfterViewInit(): void {
     this.realizaObtencaoDasAdvertenciasDoColaborador();
   }
 
+  ngOnDestroy(): void {
+    if (Util.isNotObjectEmpty(this.getAcoesSubscription$)) this.getAcoesSubscription$.unsubscribe();
+  }
+
   realizaObtencaoDasAdvertenciasDoColaborador() {
-    this.acessoService.getAcoes(Util.isNotObjectEmpty(this.acessos) ? this.acessos : null,
+    this.getAcoesSubscription$ = this.acessoService.getAcoes(Util.isNotObjectEmpty(this.acessos) ? this.acessos : null,
       parseInt(this.activatedRoute.snapshot.paramMap.get('id'))).subscribe({
         next: (resposta => {
-          console.log(resposta);
           this.acessos = resposta;
         }),
         error: () => {

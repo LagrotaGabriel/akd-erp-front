@@ -5,6 +5,7 @@ import { ColaboradorService } from '../../services/colaborador.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { slideUpDownAnimation } from 'src/app/shared/animations';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dados',
@@ -29,10 +30,22 @@ export class DadosComponent {
 
   urlImagemPerfil;
 
+  protected obtemDetalhesDoColaboradorPorIdSubscription$: Subscription;
+  protected removeColaboradorSubscription$: Subscription;
+  protected obtemImagemPerfilColaboradorSubscription$: Subscription;
+  protected atualizaImagemPerfilColaboradorSubscription$: Subscription;
+
   ngAfterViewInit(): void {
     this.ref.detectChanges();
     this.realizaValidacaoDoIdColaborador();
     this.realizaObtencaoDeDadosDoColaborador();
+  }
+
+  ngOnDestroy(): void {
+    if (Util.isNotObjectEmpty(this.obtemDetalhesDoColaboradorPorIdSubscription$)) this.obtemDetalhesDoColaboradorPorIdSubscription$.unsubscribe();
+    if (Util.isNotObjectEmpty(this.removeColaboradorSubscription$)) this.removeColaboradorSubscription$.unsubscribe();
+    if (Util.isNotObjectEmpty(this.obtemImagemPerfilColaboradorSubscription$)) this.obtemImagemPerfilColaboradorSubscription$.unsubscribe();
+    if (Util.isNotObjectEmpty(this.atualizaImagemPerfilColaboradorSubscription$)) this.atualizaImagemPerfilColaboradorSubscription$.unsubscribe();
   }
 
   realizaValidacaoDoIdColaborador() {
@@ -47,9 +60,8 @@ export class DadosComponent {
   }
 
   realizaObtencaoDeDadosDoColaborador() {
-    this.colaboradorService.obtemDetalhesDoColaboradorPorId(this.idColaborador).subscribe({
+    this.obtemDetalhesDoColaboradorPorIdSubscription$ = this.colaboradorService.obtemDetalhesDoColaboradorPorId(this.idColaborador).subscribe({
       next: (resposta => {
-        console.log(resposta);
         this.colaborador = resposta;
         this.obtemSrcImagem(resposta);
       }),
@@ -71,7 +83,7 @@ export class DadosComponent {
   }
 
   invocaMetodoExclusaoColaborador() {
-    this.colaboradorService.removeColaborador(this.colaborador.id).subscribe({
+    this.removeColaboradorSubscription$ = this.colaboradorService.removeColaborador(this.colaborador.id).subscribe({
       complete: () => {
         this.router.navigate(['/colaboradores']);
         this._snackBar.open('Colaborador removido com sucesso', 'Fechar', {
@@ -84,7 +96,7 @@ export class DadosComponent {
   obtemSrcImagem(colaborador: Colaborador) {
     if (Util.isObjectEmpty(colaborador?.fotoPerfil)) this.urlImagemPerfil = '/assets/imgs/profile_photo.png';
     else {
-      this.colaboradorService.obtemImagemPerfilColaborador(colaborador.id).subscribe({
+      this.obtemImagemPerfilColaboradorSubscription$ = this.colaboradorService.obtemImagemPerfilColaborador(colaborador.id).subscribe({
         next: (resposta) => {
           const reader = new FileReader();
           reader.onload = (e) => this.urlImagemPerfil = e.target.result;
@@ -139,7 +151,7 @@ export class DadosComponent {
       }
       else {
         fotoPerfil = event.target.files[0];
-        this.colaboradorService.atualizaImagemPerfilColaborador(this.colaborador.id, fotoPerfil).subscribe({
+        this.atualizaImagemPerfilColaboradorSubscription$ = this.colaboradorService.atualizaImagemPerfilColaborador(this.colaborador.id, fotoPerfil).subscribe({
           next: (response: Colaborador) => {
             this.colaborador = response;
             this.obtemSrcImagem(response);
@@ -157,7 +169,7 @@ export class DadosComponent {
   }
 
   realizaChamadaServicoDeExclusaoDeImagemDePerfilDoColaborador() {
-    this.colaboradorService.atualizaImagemPerfilColaborador(this.colaborador.id, null).subscribe({
+    this.atualizaImagemPerfilColaboradorSubscription$ = this.colaboradorService.atualizaImagemPerfilColaborador(this.colaborador.id, null).subscribe({
       next: (response: Colaborador) => {
         this.colaborador = response;
       },

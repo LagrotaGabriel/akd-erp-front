@@ -16,7 +16,6 @@ export class DetalhesComponent {
 
   mudaAbaSelecionadaSubscription$: Subscription = this.abaSelecionada.valueChanges.subscribe({
     next: () => {
-      console.log('Aba atual: ' + this.abaSelecionada.value);
       this.emiteMudancaDeAba = this.abaSelecionada.value;
     }
   })

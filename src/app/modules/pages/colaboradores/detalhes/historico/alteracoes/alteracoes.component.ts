@@ -5,6 +5,7 @@ import { Util } from 'src/app/modules/utils/Util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Acao } from '../../../models/Acao';
 import { slideUpDownAnimation } from 'src/app/shared/animations';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-alteracoes',
@@ -20,10 +21,16 @@ export class AlteracoesComponent {
     private router: Router) {
   }
 
+  protected getAcoesSubscription$: Subscription;
+
   protected historicoAcoes: AcaoPageObject;
 
   ngAfterViewInit(): void {
     this.realizaObtencaoDasAcoesDoColaborador();
+  }
+
+  ngOnDestroy(): void {
+    if (Util.isNotObjectEmpty(this.getAcoesSubscription$)) this.getAcoesSubscription$.unsubscribe();
   }
 
   converteTextoTipoAcao(acao: Acao): string {
@@ -62,10 +69,9 @@ export class AlteracoesComponent {
   }
 
   realizaObtencaoDasAcoesDoColaborador() {
-    this.acaoService.getAcoes(Util.isNotObjectEmpty(this.historicoAcoes) ? this.historicoAcoes : null,
+    this.getAcoesSubscription$ = this.acaoService.getAcoes(Util.isNotObjectEmpty(this.historicoAcoes) ? this.historicoAcoes : null,
       parseInt(this.activatedRoute.snapshot.paramMap.get('id'))).subscribe({
         next: (resposta => {
-          console.log(resposta);
           this.historicoAcoes = resposta;
         }),
         error: () => {

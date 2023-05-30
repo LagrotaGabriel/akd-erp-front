@@ -9,7 +9,7 @@
             class="icone"></mat-icon>
     </div>
 
-    <form [@slideUpDown] (keydown.enter)="botaoSalvar.click()" [formGroup]="dadosNovaAdvertencia"
+    <form [@slideUpDown] [formGroup]="dadosNovaAdvertencia"
         *ngIf="novaAdvertenciaHabilitada" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 nova_advertencia_block">
         <app-custom-input [id]="'inputMotivo'" [titulo]="'Motivo'" [tabIndex]="1" [maxLength]="40"
             [todosCaracteresMaiusculos]="false" [mensagemErro]="'Campo obrigatório'" #inputMotivo

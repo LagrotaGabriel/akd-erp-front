@@ -1,5 +1,5 @@
 <form #dadosAcessoForm="ngForm" class="row form col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-    [formGroup]="dadosAcesso" (keyup.enter)="submitFormulario.click()" (keyup.escape)="botaoRetorno.click()">
+    [formGroup]="dadosAcesso" (keyup.escape)="botaoRetorno.click()">
 
     <app-custom-title-container class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" [titulo]="'Acesso'"
         [descricao]="'Preenchimento dos dados de acesso ao sistema'"
@@ -98,7 +98,7 @@
         <button type="button" class="button botaoHabilitado" #botaoRetorno mat-button tabindex="6" matStepperPrevious>
             Voltar
         </button>
-        <button type="button" (click)="solicitarEnvioDeFormulario()" tabindex="7" class="button botaoHabilitado"
+        <button type="button" (keyup.enter)="null" (click)="solicitarEnvioDeFormulario()" tabindex="7" class="button botaoHabilitado"
             #submitFormulario mat-button>Enviar</button>
     </div>
 

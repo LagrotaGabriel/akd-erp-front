@@ -1,0 +1,242 @@
+@import "../../../../../../../node_modules/rfs/scss";
+@import '../../../../../../dist/variables.scss';
+
+div,
+form,
+app-custom-input {
+    margin: 0;
+    padding: 0;
+}
+
+.block_itens {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.block_titulo_itens {
+    margin-top: 1rem;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.block_titulo_itens_titulo {
+    font-family: $font-poppins;
+    color: $dark-white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100%;
+    justify-content: right;
+}
+
+.block_vazio {
+    padding: 0 1rem;
+    margin-top: 2rem;
+    text-align: center;
+    font-family: $font-poppins;
+    color: $light-grey;
+}
+
+.item_container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid $dark-grey;
+    border-radius: 2px;
+    font-family: $font-poppins;
+    color: $light-grey;
+    font-size: 0.9rem;
+}
+
+.item_container:last-of-type {
+    margin-bottom: 1rem;
+}
+
+.item_container:hover {
+    background-color: $medium-black;
+    border: 1px solid $medium-grey;
+    transition: 0.5s;
+}
+
+.item_details_status {
+    font-size: 0.8rem;
+    padding: 0.1rem 0.6rem;
+    border-radius: 5px;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.icone_item {
+    margin-left: 0.5rem;
+}
+
+.item_container_conteudo {
+    padding-top: 0.5rem;
+}
+
+.item_text {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.item_text_titulo {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+// ================ PAGINAÇÃO =============================
+
+.pagination_container {
+    margin: 1rem 0;
+}
+
+.pagination {
+    display: contents;
+}
+
+.page-item {
+    color: $light-grey;
+    padding: 0 !important;
+    border-bottom: none !important;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.page-link {
+    background-color: $primary-color !Important;
+    font-size: 0.8rem;
+    border: solid 1px #575656 !Important;
+    padding: 0.1rem 0.7rem !important;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.page-link:hover {
+    background-color: #24262c;
+}
+
+.pagination>.active>a,
+.pagination>.active>a:hover {
+    color: $light-white;
+    background-color: $primary-color !Important;
+    border: solid 1px #575656 !Important;
+}
+
+.pagination>.disabled>a,
+.pagination>.disabled>a:hover {
+    color: $dark-grey;
+    background-color: $light-grey !Important;
+    border: solid 1px #575656 !Important;
+}
+
+@media (max-width: 768px) {
+    .block_titulo_itens_titulo {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .block_titulo_itens_titulo {
+        font-size: 0.8rem;
+    }
+
+    .block_itens {
+        margin-top: 0.2rem;
+    }
+
+    .item_text_titulo {
+        width: 100%;
+        font-size: 0.9rem;
+        margin-bottom: 0.2rem;
+        justify-content: left;
+    }
+
+    .item_container {
+        padding: 0.8rem 1.2rem;
+    }
+
+    .item_container_conteudo {
+        margin-top: 0.8rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid $dark-grey;
+    }
+
+    .item_text {
+        font-size: 0.8rem;
+    }
+
+    .item_details {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .item_details_status {
+        padding: 0 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .page-link {
+        font-size: 0.8rem;
+        padding: 0.1rem 0.5rem !important;
+    }
+}
+
+@media (max-width: 450px) {
+
+    .item_text_titulo {
+        width: 100%;
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+        justify-content: left;
+    }
+
+    .item_container {
+        padding: 0.8rem 1rem;
+    }
+
+    .item_container_conteudo {
+        margin-top: 0.6rem;
+        padding-top: 0.3rem;
+        border-top: 1px solid $dark-grey;
+    }
+
+    .item_text {
+        font-size: 0.7rem;
+    }
+
+    .item_details {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .item_details_status {
+        padding: 0 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .page-link {
+        font-size: 0.7rem;
+        padding: 0.1rem 0.4rem !important;
+    }
+}

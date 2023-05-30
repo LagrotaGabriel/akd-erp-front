@@ -44,9 +44,9 @@
                                             ? 'file_download_done' 
                                             : 'add_box'" class="icone icone_ok"></mat-icon>
                 </label>
-                <input type="file" accept=".pdf" formControlName="advertenciaAssinada"
-                    name="advertenciaAssinada" style="display: none;" #advertenciaAssinadaInput
-                    id="advertenciaAssinadaInput" (change)="setaArquivo($event)" [ngClass]="{'input_invalida': dadosNovaAdvertencia.controls['advertenciaAssinada'].touched 
+                <input type="file" accept=".pdf" formControlName="advertenciaAssinada" name="advertenciaAssinada"
+                    style="display: none;" #advertenciaAssinadaInput id="advertenciaAssinadaInput"
+                    (change)="setaArquivo($event)" [ngClass]="{'input_invalida': dadosNovaAdvertencia.controls['advertenciaAssinada'].touched 
                     && dadosNovaAdvertencia.controls['advertenciaAssinada'].invalid}"
                     class="input col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" tabindex="-1">
             </div>
@@ -141,20 +141,20 @@
 
         </div>
 
-        <ul *ngIf="advertencias?.totalPages > 1" class="pagination pagination-sm justify-content-end">
+        <ul *ngIf="advertencias?.totalPages > 1" class="pagination">
             <li (click)="voltarPagina()" [ngClass]="{'disabled': advertencias.pageNumber == 0}" class="page-item">
                 <a class="page-link">{{ geraBotaoVoltarPaginacao() }}</a>
             </li>
             <ng-container
                 *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(advertencias.totalPages); let i = index">
                 <li *ngIf="(advertencias.pageNumber - i) <= 3 && (advertencias.pageNumber - i) >= 0
-    || (i - advertencias.pageNumber) <= 3 && (i - advertencias.pageNumber) >= 0
-    || advertencias.pageNumber == 0 && (i - advertencias.pageNumber) <= 6 && (i - advertencias.pageNumber) >= 0
-    || advertencias.pageNumber == 1 && (i - advertencias.pageNumber) <= 5 && (i - advertencias.pageNumber) >= 0
-    || advertencias.pageNumber == 2 && (i - advertencias.pageNumber) <= 4 && (i - advertencias.pageNumber) >= 0
-    || (advertencias.pageNumber == (advertencias.totalPages-1)) && (advertencias.pageNumber - i) <= 6
-    || (advertencias.pageNumber == (advertencias.totalPages-2)) && (advertencias.pageNumber - i) <= 5
-    || (advertencias.pageNumber == (advertencias.totalPages-3)) && (advertencias.pageNumber - i) <= 4"
+                    || (i - advertencias.pageNumber) <= 3 && (i - advertencias.pageNumber) >= 0
+                    || advertencias.pageNumber == 0 && (i - advertencias.pageNumber) <= 6 && (i - advertencias.pageNumber) >= 0
+                    || advertencias.pageNumber == 1 && (i - advertencias.pageNumber) <= 5 && (i - advertencias.pageNumber) >= 0
+                    || advertencias.pageNumber == 2 && (i - advertencias.pageNumber) <= 4 && (i - advertencias.pageNumber) >= 0
+                    || (advertencias.pageNumber == (advertencias.totalPages-1)) && (advertencias.pageNumber - i) <= 6
+                    || (advertencias.pageNumber == (advertencias.totalPages-2)) && (advertencias.pageNumber - i) <= 5
+                    || (advertencias.pageNumber == (advertencias.totalPages-3)) && (advertencias.pageNumber - i) <= 4"
                     (click)="selecionarPagina(i)" [ngClass]="{'active': advertencias.pageNumber == i}"
                     class="page-item">
                     <a class="page-link">{{ i+1 }}</a>

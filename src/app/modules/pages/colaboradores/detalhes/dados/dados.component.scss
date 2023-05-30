@@ -12,23 +12,6 @@ app-detalhes-dados-acesso {
     padding: 0;
 }
 
-.container {
-    background-color: $light-black;
-    padding: 0;
-    margin: 1rem 0;
-    height: 95%;
-}
-
-.subcontainer {
-    display: block;
-    height: 100%;
-    overflow-y: auto;
-}
-
-.subcontainer_dados {
-    border-right: 1px solid $dark-grey;
-}
-
 // CONTAINER ESQUERDA - MENU SUPERIOR
 
 .block_opcoes {
@@ -119,6 +102,7 @@ app-detalhes-dados-acesso {
     user-select: none;
 }
 
+// MatMenu da imagem
 ::ng-deep.mdc-tab__text-label {
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -327,29 +311,20 @@ app-detalhes-dados-acesso {
     color: $error;
 }
 
-// STEPPER
+@media (max-width: 576px) {
 
-::ng-deep.mat-mdc-tab-labels {
-    padding: 0 1rem !important;
-}
+    .status_colaborador {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+    }
 
-::ng-deep.mat-mdc-tab .mdc-tab__text-label,
-::ng-deep.mat-mdc-tab-link .mdc-tab__text-label {
-    color: $light-grey !important;
-}
+    .dados_pessoais_titulo {
+        font-size: 0.7rem;
+    }
 
-::ng-deep.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
-::ng-deep.mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
-    color: $primary-color !important;
-}
-
-::ng-deep.mat-mdc-tab-header-pagination-chevron {
-    border-color: $light-grey;
-}
-
-// CONTAINER DIREITA
-
-.subcontainer_comandos {
-    display: grid;
-    border-left: 1px solid $dark-grey;
+    .block_dados_pessoais  {
+        margin-top: 1.2rem;
+        border-bottom: 1px solid $dark-grey;
+        padding-bottom: 1rem;
+    }
 }

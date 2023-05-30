@@ -31,7 +31,7 @@ export class AlteracoesComponent {
       case 'CRIACAO': { return 'Criação'; }
       case 'ALTERACAO': { return 'Alteração'; }
       case 'REMOCAO': { return 'Remoção'; }
-      case 'REMOCAO_EM_MASSA': { return 'Remoção em massa'; }
+      case 'REMOCAO_EM_MASSA': { return 'Remoção'; }
       case 'RELATORIO': { return 'Relatório'; }
       default: { return 'Outro'; }
     }

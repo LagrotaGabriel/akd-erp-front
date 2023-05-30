@@ -47,7 +47,7 @@
         <div class="text_principal_colaborador cargo_colaborador col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             {{ colaborador?.ocupacao != null ? (colaborador?.ocupacao | titlecase) : 'Sem cargo cadastrado' }}
         </div>
-        <div [class]="'text_principal_colaborador status_colaborador col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12 ' 
+        <div [class]="'text_principal_colaborador status_colaborador col-xl-9 col-lg-12 col-md-12 col-sm-12 col-9 ' 
         + estiloStatusColaborador(colaborador?.statusColaboradorEnum)">
             {{ colaborador?.statusColaboradorEnum | titlecase }}
         </div>

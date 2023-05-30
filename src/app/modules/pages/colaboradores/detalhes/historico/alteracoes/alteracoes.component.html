@@ -2,9 +2,9 @@
     class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
     <div class="block block_titulo_itens row col-xl-12 col-lg-12 col-md-l2 col-sm-12 col-12">
         <div class="block_titulo_itens_titulo">
-            {{ historicoAcoes?.totalElements > 1 
-                ? historicoAcoes?.totalElements + ' Alterações realizadas'
-                : historicoAcoes?.totalElements + ' Alteração realizada' }}
+            {{ historicoAcoes?.totalElements > 1
+            ? historicoAcoes?.totalElements + ' Alterações realizadas'
+            : historicoAcoes?.totalElements + ' Alteração realizada' }}
         </div>
     </div>
 
@@ -42,13 +42,13 @@
             <ng-container
                 *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(historicoAcoes.totalPages); let i = index">
                 <li *ngIf="(historicoAcoes.pageNumber - i) <= 3 && (historicoAcoes.pageNumber - i) >= 0
-    || (i - historicoAcoes.pageNumber) <= 3 && (i - historicoAcoes.pageNumber) >= 0
-    || historicoAcoes.pageNumber == 0 && (i - historicoAcoes.pageNumber) <= 6 && (i - historicoAcoes.pageNumber) >= 0
-    || historicoAcoes.pageNumber == 1 && (i - historicoAcoes.pageNumber) <= 5 && (i - historicoAcoes.pageNumber) >= 0
-    || historicoAcoes.pageNumber == 2 && (i - historicoAcoes.pageNumber) <= 4 && (i - historicoAcoes.pageNumber) >= 0
-    || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-1)) && (historicoAcoes.pageNumber - i) <= 6
-    || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-2)) && (historicoAcoes.pageNumber - i) <= 5
-    || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-3)) && (historicoAcoes.pageNumber - i) <= 4"
+                || (i - historicoAcoes.pageNumber) <= 3 && (i - historicoAcoes.pageNumber) >= 0
+                || historicoAcoes.pageNumber == 0 && (i - historicoAcoes.pageNumber) <= 6 && (i - historicoAcoes.pageNumber) >= 0
+                || historicoAcoes.pageNumber == 1 && (i - historicoAcoes.pageNumber) <= 5 && (i - historicoAcoes.pageNumber) >= 0
+                || historicoAcoes.pageNumber == 2 && (i - historicoAcoes.pageNumber) <= 4 && (i - historicoAcoes.pageNumber) >= 0
+                || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-1)) && (historicoAcoes.pageNumber - i) <= 6
+                || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-2)) && (historicoAcoes.pageNumber - i) <= 5
+                || (historicoAcoes.pageNumber == (historicoAcoes.totalPages-3)) && (historicoAcoes.pageNumber - i) <= 4"
                     (click)="selecionarPagina(i)" [ngClass]="{'active': historicoAcoes.pageNumber == i}"
                     class="page-item">
                     <a class="page-link">{{ i+1 }}</a>

@@ -7,7 +7,6 @@ export class AcaoPageObject {
     last: boolean;
     number: number;
     numberOfElements: number;
-    offset: number;
     pageNumber: number;
     pageSize: number;
     paged: boolean;
@@ -24,7 +23,6 @@ export class AcaoPageObject {
         this.last = item?.last;
         this.number = item?.number;
         this.numberOfElements = item?.numberOfElements;
-        this.offset = item?.offset;
         this.pageNumber = item?.pageNumber;
         this.pageSize = item?.pageSize;
         this.paged = item?.paged;

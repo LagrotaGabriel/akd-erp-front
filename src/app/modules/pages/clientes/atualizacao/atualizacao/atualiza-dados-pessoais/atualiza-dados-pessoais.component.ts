@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChange
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
 import { ClienteService } from '../../../services/cliente.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Cliente } from '../../../models/cliente';
 import { Util } from 'src/app/modules/utils/Util';

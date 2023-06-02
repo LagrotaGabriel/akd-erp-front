@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Util } from 'src/app/modules/utils/Util';
 import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { slideUpDownAnimation } from 'src/app/shared/animations';
 
 @Component({
   selector: 'app-detalhes',

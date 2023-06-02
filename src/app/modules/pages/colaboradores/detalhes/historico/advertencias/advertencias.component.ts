@@ -232,8 +232,7 @@ export class AdvertenciasComponent {
   protected atualizaArquivoAdvertencia(event, advertencia: Advertencia) {
 
     if (advertencia.advertenciaAssinada != null) {
-      if (window.confirm('Tem certeza que deseja substituir o arquivo existente na advertência?')) null;
-      else return;
+      if (!window.confirm('Tem certeza que deseja substituir o arquivo existente na advertência?')) return;
     }
 
     if (event.target.files[0] == undefined) this.documentoAdvertenciaAtualizado = null;

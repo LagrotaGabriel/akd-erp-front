@@ -2,7 +2,6 @@ import { ColaboradorService } from './../../services/colaborador.service';
 import { Subscription, debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import { Colaborador } from '../../models/Colaborador';
 import { Component, OnDestroy } from '@angular/core';
-import { Endereco } from 'src/app/shared/models/Endereco';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FiltroAdicionado } from 'src/app/shared/models/filtros/FiltroAdicionado';

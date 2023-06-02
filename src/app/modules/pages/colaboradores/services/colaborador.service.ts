@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { API_CONFIG } from 'src/app/config/api-config';
 
-import { catchError, map, Observable, retry, throwError, tap } from 'rxjs';
+import { catchError, map, Observable, retry, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageObject } from '../visualizacao/models/PageObject';
 import { ColaboradorNovo } from '../models/ColaboradorNovo';

@@ -9,11 +9,6 @@
     padding: 0;
 }
 
-.hr {
-    background-color: $dark-grey;
-    margin: 1rem 0;
-}
-
 .titulo_sessao_container {
     padding: 0 1rem;
     margin-top: 0.5rem;
@@ -43,11 +38,8 @@
 .hr {
     width: 100%;
     margin: 0.8rem 0;
+    background-color: $dark-grey;
 }
-
-@media (max-width: 960px) {}
-
-@media (max-width: 768px) {}
 
 @media (max-width: 576px) {
     .titulo_sessao {

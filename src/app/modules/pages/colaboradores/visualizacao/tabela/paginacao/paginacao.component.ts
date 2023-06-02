@@ -7,7 +7,7 @@ import { PageObject } from '../../models/PageObject';
   styleUrls: ['../../../../../../../dist/styles/paginacao.scss'],
 })
 export class PaginacaoComponent {
-  
+
   @Input() pageableInfo: PageObject;
   @Output() emissorDePageNumberAtualizado = new EventEmitter<number>();
 
@@ -17,7 +17,6 @@ export class PaginacaoComponent {
 
   selecionarPagina(numeroPagina: number) {
     this.pageableInfo.pageNumber = numeroPagina;
-    //this.invocaRequisicaoHttpGetParaAtualizarObjetos();
     this.emissorDePageNumberAtualizado.emit(this.pageableInfo.pageNumber);
   }
 
@@ -34,7 +33,6 @@ export class PaginacaoComponent {
   voltarPagina() {
     if (this.pageableInfo.pageNumber > 0) {
       this.pageableInfo.pageNumber--;
-      //this.invocaRequisicaoHttpGetParaAtualizarObjetos();
       this.emissorDePageNumberAtualizado.emit(this.pageableInfo.pageNumber);
     }
   }
@@ -42,7 +40,6 @@ export class PaginacaoComponent {
   avancarPagina() {
     if (this.pageableInfo.pageNumber < this.pageableInfo.totalPages - 1) {
       this.pageableInfo.pageNumber++;
-      //this.invocaRequisicaoHttpGetParaAtualizarObjetos();
       this.emissorDePageNumberAtualizado.emit(this.pageableInfo.pageNumber);
     }
   }

@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { Telefone } from '../../models/telefone';
 import { Endereco } from '../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';

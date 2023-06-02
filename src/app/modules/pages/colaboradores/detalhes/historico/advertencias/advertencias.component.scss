@@ -37,13 +37,6 @@
     margin: 0 auto;
 }
 
-.hr {
-    background-color: $dark-grey;
-    margin: 1rem 0;
-    width: 100%;
-    margin: 0.8rem 0;
-}
-
 .item_container {
     display: flex;
     justify-content: space-between;
@@ -174,6 +167,7 @@
 .hr {
     background-color: $dark-grey;
     margin: 1rem 0;
+    width: 100%;
 }
 
 .titulo_sessao_container {
@@ -234,7 +228,6 @@
 }
 
 .limpar_file {
-    color: $dark-grey;
     font-weight: 500;
     font-size: 0.9rem;
     margin-bottom: 0.1rem;
@@ -274,7 +267,6 @@ input:focus {
 
 .button {
     width: 100%;
-    background-color: transparent;
     font-family: $font-poppins;
     padding: 0.5rem 1.5rem;
     border-radius: 5px;

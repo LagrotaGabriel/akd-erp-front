@@ -1,0 +1,99 @@
+@import '../../../../dist/variables.scss';
+@import "../../../../../node_modules/rfs/scss.scss";
+
+/* TABLE PAGINATION */
+
+.pagination_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: none;
+    height: 3rem;
+    padding: 0;
+    margin: 0.5rem 0;
+    background-color: $light-black;
+}
+
+.pagination {
+    margin: 0;
+}
+
+.page-item {
+    color: $light-grey;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.page-link {
+    background-color: $primary-color !Important;
+    font-size: 0.8rem;
+    border: solid 1px #575656 !Important;
+    padding: 0.2rem 1rem !important;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.page-link:hover {
+    background-color: #24262c;
+}
+
+.pagination>.active>a,
+.pagination>.active>a:hover {
+    color: $light-white;
+    background-color: $primary-color !Important;
+    border: solid 1px #575656 !Important;
+}
+
+.pagination>.disabled>a,
+.pagination>.disabled>a:hover {
+    color: $dark-grey;
+    background-color: $light-grey !Important;
+    border: solid 1px #575656 !Important;
+}
+
+@media (max-width: 992px) {
+    .page-link {
+        padding: 0.2rem 0.6rem !important;
+        font-size: 0.8rem;
+    }
+
+    .table_container {
+        margin-bottom: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-link {
+        padding: 0.2rem 0.6rem !important;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-link {
+        padding: 0.2rem 0.4rem !important;
+        font-size: 0.7rem;
+    }
+    .pagination_container {
+        align-items: center;
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 470px) {
+    .pagination_container {
+        align-items: center;
+    }
+    .page-link {
+        padding: 0.2rem 0.5rem !important;
+        font-size: 0.7rem;
+    }
+}

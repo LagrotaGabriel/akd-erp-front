@@ -305,11 +305,11 @@ export class AtualizaDadosPessoaisComponent {
 
   private setaClienteComInformacoesPessoaisObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (Util.isNotEmptyString(cnpjResponse.nomeFantasia)) {
-      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.nomeFantasia);
+      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.nomeFantasia.slice(0, 50));
       this.dadosCliente.controls['nome'].markAsTouched();
     }
     else if (Util.isNotEmptyString(cnpjResponse.razaoSocial)) {
-      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.razaoSocial);
+      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.razaoSocial.slice(0, 50));
       this.dadosCliente.controls['nome'].markAsTouched();
     }
 

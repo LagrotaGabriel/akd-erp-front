@@ -1,0 +1,118 @@
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table_container table-responsive"
+    [ngClass]="{'table_container_height_auto': isTableHeightAuto}">
+
+    <table class="table table-borderless table-hover" *ngIf="objetos != null, else loadBarTabela">
+
+        <thead *ngIf="objetos != null && objetos.length > 0">
+
+            <tr>
+
+                <th scope="col" class="header_checkbox align-middle" *ngIf="check">
+                    <input (click)="checkAll()" [checked]="botaoCheckAllHabilitado" type="checkbox">
+                </th>
+
+                <th *ngFor="let thead of theads" scope="col" class="th_content align-middle" [class]="thead.hidden">
+                    {{ thead.campo }}
+                </th>
+
+                <th scope="col" class="header_acoes align-middle" *ngIf="options">
+
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody *ngIf="objetos != null; else: loadBarTabela">
+
+            <ng-container *ngIf="objetos?.length > 0, else tabelaVazia">
+                <tr *ngFor="let objeto of objetos; let i = index"
+                    (dblclick)="dblClickEnabled ? navegarParaDetalhes(objeto) : null">
+
+                    <th scope="row" class="content_checkbox align-middle" *ngIf="check">
+                        <input (click)="alteraEstadoCheckTabela(i)" [checked]="objeto.checked" type="checkbox"
+                            class="checkbox">
+                    </th>
+
+                    <td *ngFor="let tbody of tbodies" class="td_content align-middle" [class]="tbody.hidden">
+                        <ng-container *ngIf="obtemTd(objeto, tbody) as tdContent">
+                            <span [class]="obtemClassePersonalizada(tdContent)">
+                                {{ realizaTratamentoPipe(tdContent) }}
+                            </span>
+                        </ng-container>
+                    </td>
+
+                    <th scope="row" class="content_acoes align-middle" *ngIf="options">
+                        <div class="icon_container">
+                            <mat-icon fontIcon="more_vert"
+                                class="icone icone_tabela icone_tabela_remove dropdown dropleft float-right"
+                                data-toggle="dropdown"></mat-icon>
+                            <div class="dropdown-menu">
+                                <a class="row dropdown-item" (click)="navegarParaDetalhes(objeto)"
+                                    *ngIf="objeto.options.detalhesHabilitado">
+                                    <mat-icon fontIcon="info" class="option_icon"></mat-icon>
+                                    <div class="dropdown-item-text">
+                                        Detalhes
+                                    </div>
+                                </a>
+                                <a class="dropdown-item" (click)="encaminhaParaAlteracaoItem(objeto.id)"
+                                    *ngIf="objeto.options.editarHabilitado">
+                                    <mat-icon fontIcon="settings" class="option_icon"></mat-icon>
+                                    <div class="dropdown-item-text">
+                                        Editar
+                                    </div>
+                                </a>
+                                <a class="dropdown-item" [href]="objeto.linkBoletoAsaas" target="_blank"
+                                    *ngIf="objeto.options.geraBoletoPagamento">
+                                    <mat-icon fontIcon="analytics" class="option_icon"></mat-icon>
+                                    <div class="dropdown-item-text">
+                                        Exibir boleto
+                                    </div>
+                                </a>
+                                <a class="dropdown-item" [href]="objeto.linkCobranca" target="_blank"
+                                    *ngIf="objeto.options.geraLinkCobrancaPagamento">
+                                    <mat-icon fontIcon="link" class="option_icon"></mat-icon>
+                                    <div class="dropdown-item-text">
+                                        Exibir link de pagamento
+                                    </div>
+                                </a>
+                                <a class="dropdown-item" [href]="objeto.linkComprovante" target="_blank"
+                                    *ngIf="objeto.options.geraComprovantePagamento">
+                                    <mat-icon fontIcon="local_atm" class="option_icon"></mat-icon>
+                                    <div class="dropdown-item-text">
+                                        Exibir comprovante de pagamento
+                                    </div>
+                                </a>
+                                <a class="dropdown-item dropdown-item-excluir" *ngIf="objeto.options.removerHabilitado"
+                                    (click)="excluiItem(objeto.id)">
+                                    <mat-icon fontIcon="delete" class="option_icon option_icon-excluir"></mat-icon>
+                                    <div class="dropdown-item-text dropdown-item-text-excluir">
+                                        Excluir
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </th>
+
+                </tr>
+            </ng-container>
+
+        </tbody>
+
+        <ng-template #tabelaVazia>
+            <div class="tabela_vazia_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <mat-icon fontIcon="description" class="icone_nada_encontrado"></mat-icon>
+                <div class="text_nada_encontrado col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Nenhum item encontrado
+                </div>
+            </div>
+        </ng-template>
+
+    </table>
+
+    <ng-template #loadBarTabela>
+        <mat-progress-bar class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9 load-bar-tabela"
+            mode="indeterminate"></mat-progress-bar>
+    </ng-template>
+
+</div>

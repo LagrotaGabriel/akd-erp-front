@@ -1,0 +1,19 @@
+<ul *ngIf="pageObject?.totalPages > 1" class="pagination pagination-sm justify-content-end">
+    <li (click)="voltarPagina()" [ngClass]="{'disabled': pageObject.pageNumber == 0}" class="page-item"><a
+            class="page-link">{{ geraBotaoVoltarPaginacao() }}</a></li>
+    <ng-container *ngFor="let numero of GeraNumerosParaNavegarNaPaginacao(pageObject.totalPages); let i = index">
+        <li *ngIf="(pageObject.pageNumber - i) <= 3 && (pageObject.pageNumber - i) >= 0
+|| (i - pageObject.pageNumber) <= 3 && (i - pageObject.pageNumber) >= 0
+|| pageObject.pageNumber == 0 && (i - pageObject.pageNumber) <= 6 && (i - pageObject.pageNumber) >= 0
+|| pageObject.pageNumber == 1 && (i - pageObject.pageNumber) <= 5 && (i - pageObject.pageNumber) >= 0
+|| pageObject.pageNumber == 2 && (i - pageObject.pageNumber) <= 4 && (i - pageObject.pageNumber) >= 0
+|| (pageObject.pageNumber == (pageObject.totalPages-1)) && (pageObject.pageNumber - i) <= 6
+|| (pageObject.pageNumber == (pageObject.totalPages-2)) && (pageObject.pageNumber - i) <= 5
+|| (pageObject.pageNumber == (pageObject.totalPages-3)) && (pageObject.pageNumber - i) <= 4"
+            (click)="selecionarPagina(i)" [ngClass]="{'active': pageObject.pageNumber == i}" class="page-item">
+            <a class="page-link">{{ i+1 }}</a>
+        </li>
+    </ng-container>
+    <li (click)="avancarPagina()" [ngClass]="{'disabled': pageObject.pageNumber == pageObject.totalPages-1}"
+        class="page-item"><a class="page-link">{{ geraBotaoAvancarPaginacao() }}</a></li>
+</ul>

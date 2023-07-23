@@ -221,11 +221,11 @@ export class DadosPessoaisComponent {
 
   private setaClienteComInformacoesPessoaisObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (Util.isNotEmptyString(cnpjResponse.nomeFantasia)) {
-      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.nomeFantasia);
+      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.nomeFantasia.slice(0, 50));
       this.dadosCliente.controls['nome'].markAsTouched();
     }
     else if (Util.isNotEmptyString(cnpjResponse.razaoSocial)) {
-      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.razaoSocial);
+      this.setValueParaAtributoDadosCliente('nome', cnpjResponse.razaoSocial.slice(0, 50));
       this.dadosCliente.controls['nome'].markAsTouched();
     }
 
@@ -236,7 +236,7 @@ export class DadosPessoaisComponent {
   }
 
   private setaClienteComInformacoesDeTelefoneObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    if (Util.isEmptyString(cnpjResponse.telefonePrincipal)) {
+    if (Util.isNotEmptyString(cnpjResponse.telefonePrincipal)) {
       let telefone: Telefone = new Telefone();
       if (cnpjResponse.telefonePrincipal.length == 10) {
         telefone.tipoTelefone = 'FIXO';

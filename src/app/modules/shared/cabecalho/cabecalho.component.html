@@ -1,0 +1,83 @@
+<div class="row thead_info_icon_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+    <div class="row bt_header_upper_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+        <div class="row bt_header_upper_container_left">
+
+            <div *ngIf="pageableObject != null" class="bt_header_container">
+                <div class="row bt_header bt_header_relatorio"
+                    [ngClass]="{ 'matBadgeInactive': pageableObject == null }" (click)="emiteSolicitacaoDeRelatorio()"
+                    [matBadge]="itensSelecionadosNaTabela.length > 0 ? itensSelecionadosNaTabela.length : null"
+                    [matTooltip]="itensSelecionadosNaTabela.length > 0 ? 'Gerar relatório em PDF' : 'Gerar relatório geral em PDF'"
+                    matBadgePosition="after" matBadgeSize="medium" matBadgeColor="accent" matTooltipPosition="above">
+                    <h5 class="header_icon_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <i class="bi bi-file-pdf-fill header_icon"></i>
+                    </h5>
+                </div>
+            </div>
+
+            <div *ngIf="pageableObject != null" class="bt_header_container">
+                <div class="row bt_header bt_header_exclusao"
+                    [ngClass]="{'matBadgeInactive': itensSelecionadosNaTabela.length == 0}"
+                    [matBadge]="itensSelecionadosNaTabela.length > 0 ? itensSelecionadosNaTabela.length : null"
+                    [matTooltip]="itensSelecionadosNaTabela.length > 0 ? 'Remover itens' : null"
+                    matBadgePosition="after" matBadgeSize="medium" matBadgeColor="accent" matTooltipPosition="above"
+                    (click)="emiteSolicitacaoDeExclusaoEmMassaDeItens()">
+                    <h5 class="header_icon_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <i class="bi bi-file-earmark-x-fill header_icon"></i>
+                    </h5>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row bt_header_upper_container_right">
+            <div *ngIf="pageableObject != null" class="bt_header_container page_size_container">
+                <select [(ngModel)]="pageableObject.pageSize"
+                    class="bt_header bt_header_select col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                    (change)="alteraQuantidadeItensExibidosPorPagina(select)" #select>
+                    <option value="5" class="bt_header_option">5</option>
+                    <option value="10" class="bt_header_option"
+                        [disabled]="pageableObject.totalElements > 5 ? false : true">
+                        10
+                    </option>
+                    <option value="20" class="bt_header_option"
+                        [disabled]="pageableObject.totalElements > 10 ? false : true">
+                        20
+                    </option>
+                    <option value="50" class="bt_header_option"
+                        [disabled]="pageableObject.totalElements > 20 ? false : true">
+                        50
+                    </option>
+                </select>
+            </div>
+
+            <div *ngIf="botaoCriarHabilitado" class="bt_header_container">
+                <div class="row bt_header bt_header_novo" [routerLink]="'/' + modulo + '/update'">
+                    <h5 class="text_novo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        Criar
+                    </h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="pageableObject != null" class="input_filtro_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="sub_container input_filtro_subcontainer col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="input_block col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="input_icon">
+                    <mat-icon fontIcon="search" class="icone icone_filtro"></mat-icon>
+                </div>
+                <input class="input_busca" type="search" [placeholder]="inputPlaceholder" autocomplete="off"
+                    spellcheck="false" (input)="emiteFormControl()" [formControl]="busca" />
+            </div>
+        </div>
+    </div>
+
+    <h5 *ngIf="verificaSeConteudoMaiorQueZero()"
+        class="quantidade_exibida col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        Página {{ pageableObject.pageNumber+1 }} de {{ pageableObject.totalPages }} | {{ pageableObject.totalElements }}
+        {{ 'itens exibido' + (pageableObject?.totalElements > 1 ? 's' : '') }}
+    </h5>
+</div>

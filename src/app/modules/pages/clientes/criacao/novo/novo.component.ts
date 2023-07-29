@@ -1,14 +1,14 @@
 import { ClienteService } from '../../services/cliente.service';
 import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Cliente } from '../../models/cliente';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { Telefone } from '../../models/telefone';
-import { Endereco } from '../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
+import { ClienteRequest } from '../../models/request/ClienteRequest';
+import { TelefoneResponse } from 'src/app/shared/models/telefone/response/TelefoneResponse';
+import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
 
 @Component({
   selector: 'app-novo',
@@ -32,11 +32,11 @@ export class NovoComponent implements OnDestroy {
   protected dadosTelefone: FormGroup;
   protected dadosEndereco: FormGroup;
 
-  cliente: Cliente;
+  cliente: ClienteRequest;
 
   stepAtual: number = 0;
-  telefoneBuscadoCnpj: Telefone;
-  enderecoBuscadoCnpj: Endereco;
+  telefoneBuscadoCnpj: TelefoneResponse;
+  enderecoBuscadoCnpj: EnderecoResponse;
 
   ngAfterViewInit(): void {
     const startTime = performance.now();
@@ -82,12 +82,12 @@ export class NovoComponent implements OnDestroy {
     this.dadosEndereco = event;
   }
 
-  protected recebeTelefoneEncontradoNoCnpj(telefone: Telefone) {
+  protected recebeTelefoneEncontradoNoCnpj(telefone: TelefoneResponse) {
     console.log('Recebendo telefone encontrado pelo CNPJ');
     this.telefoneBuscadoCnpj = telefone;
   }
 
-  protected recebeEnderecoEncontradoNoCnpj(endereco: Endereco) {
+  protected recebeEnderecoEncontradoNoCnpj(endereco: EnderecoResponse) {
     console.log('Recebendo endereço encontrado pelo CNPJ');
     this.enderecoBuscadoCnpj = endereco;
   }

@@ -1,6 +1,6 @@
-export class Endereco {
-    logradouro: string;
-    numero: number;
+export class EnderecoResponse {
+    logradouro?: string;
+    numero?: number;
     bairro?: string;
     codigoPostal?: string;
     cidade?: string;

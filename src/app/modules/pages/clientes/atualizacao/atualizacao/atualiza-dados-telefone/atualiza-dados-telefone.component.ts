@@ -2,11 +2,11 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChange
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Util } from 'src/app/modules/utils/Util';
-import { Cliente } from '../../../models/cliente';
 import { Subscription, debounceTime } from 'rxjs';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
-import { Telefone } from '../../../models/telefone';
 import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-select/custom-select.component';
+import { TelefoneResponse } from 'src/app/shared/models/telefone/response/TelefoneResponse';
+import { ClienteResponse } from '../../../models/response/ClienteResponse';
 
 @Component({
   selector: 'app-atualiza-dados-telefone',
@@ -29,8 +29,8 @@ export class AtualizaDadosTelefoneComponent {
   @ViewChild('SelectTipoTelefone') selectTipoTelefone: CustomSelectComponent;
 
   @Input() stepAtual: number;
-  @Input() telefoneEncontradoNoCnpj: Telefone;
-  @Input() clientePreAtualizacao: Cliente;
+  @Input() telefoneEncontradoNoCnpj: TelefoneResponse;
+  @Input() clientePreAtualizacao: ClienteResponse;
 
   protected dadosTelefone: FormGroup = this.createFormDadosTelefone();
   @Output() emissorDeDadosDeTelefoneDoCliente = new EventEmitter<FormGroup>();
@@ -58,14 +58,14 @@ export class AtualizaDadosTelefoneComponent {
     }
 
     if (Util.isNotObjectEmpty(changes['clientePreAtualizacao'])) {
-      let clienteRecebido: Cliente = changes['clientePreAtualizacao'].currentValue;
+      let clienteRecebido: ClienteResponse = changes['clientePreAtualizacao'].currentValue;
       if (Util.isNotObjectEmpty(clienteRecebido))
         if (Util.isNotObjectEmpty(clienteRecebido.telefone))
           this.atualizaFormDadosTelefone();
     }
 
     if (changes['telefoneEncontradoNoCnpj'] != undefined) {
-      let telefone: Telefone = changes['telefoneEncontradoNoCnpj'].currentValue;
+      let telefone: TelefoneResponse = changes['telefoneEncontradoNoCnpj'].currentValue;
       if (telefone != undefined) {
         this.atualizaTelefoneComTelefoneEncontradoPeloCnpj(telefone);
       }
@@ -209,7 +209,7 @@ export class AtualizaDadosTelefoneComponent {
     this.dadosTelefone.controls['numero'].updateValueAndValidity();
   }
 
-  private atualizaTelefoneComTelefoneEncontradoPeloCnpj(telefone: Telefone) {
+  private atualizaTelefoneComTelefoneEncontradoPeloCnpj(telefone: TelefoneResponse) {
     this.setValueParaAtributoDadosTelefone('tipoTelefone', telefone.tipoTelefone);
     this.atualizaValidatorsTelefone();
     this.dadosTelefone.setValue({

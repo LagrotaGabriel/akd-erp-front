@@ -4,6 +4,16 @@
 
         <div class="row bt_header_upper_container_left">
 
+            <div class="bt_header_container">
+                <div class="row bt_header bt_header_exclusao" [matTooltip]="'Criar novo'" matBadgePosition="after"
+                    matBadgeSize="medium" matBadgeColor="accent" matTooltipPosition="above"
+                    [routerLink]="'/' + modulo + '/novo'">
+                    <h5 class="header_icon_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <i class="bi bi-file-plus-fill header_icon"></i>
+                    </h5>
+                </div>
+            </div>
+
             <div *ngIf="pageableObject != null" class="bt_header_container">
                 <div class="row bt_header bt_header_relatorio"
                     [ngClass]="{ 'matBadgeInactive': pageableObject == null }" (click)="emiteSolicitacaoDeRelatorio()"

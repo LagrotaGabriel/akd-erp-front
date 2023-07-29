@@ -21,7 +21,27 @@ thead {
 }
 
 thead tr th {
-    padding: 0.5rem 0.75rem;
+    padding: 1rem 0.75rem;
+}
+
+tbody tr td {
+    padding: 1rem 0.75rem;
+}
+
+tr th:first-of-type,
+tr th:last-of-type {
+    display: flex;
+    justify-content: center;
+}
+
+tr td:first-of-type {
+    padding: 1.6rem 0 !important;
+}
+
+tr td:first-of-type,
+tr td:last-of-type {
+    display: flex;
+    justify-content: center;
 }
 
 .table td,
@@ -47,18 +67,6 @@ tr:hover {
 
 tr td:first-of-type {
     color: $light-white;
-}
-
-.header_checkbox {
-    padding-left: 0 !important;
-}
-
-tr th:first-of-type {
-    padding-left: 0;
-}
-
-tr th:last-of-type {
-    padding-right: 0;
 }
 
 .icone_tabela {
@@ -111,25 +119,38 @@ input[type=checkbox] {
     margin-bottom: 1.5rem;
 }
 
+span {
+    padding: 0.2rem 0.5rem;
+    font-weight: 400;
+}
+
 .red_span {
-    border: 1px solid $red;
-    color: $red;
-    padding: 0.1rem 0.5rem;
-    border-radius: 3px;
+    border: 1px solid #581212;
+    color: #581212;
+    background-color: #f1b1b1;
 }
 
 .yellow_span {
-    border: 1px solid $warn;
-    color: $warn;
-    padding: 0.1rem 0.5rem;
-    border-radius: 3px;
+    border: 1px solid #75681d;
+    color: #75681d;
+    background-color: #f1e7b1;
 }
 
 .green_span {
     border: 1px solid $success;
     color: $success;
-    padding: 0.1rem 0.5rem;
-    border-radius: 3px;
+}
+
+.purple_span {
+    border: 1px solid #663874;
+    color: #663874;
+    background-color: #e2b1f1;
+}
+
+.blue_span {
+    border: 1px solid #1c3475;
+    color: #1c3475;
+    background-color: #b1bdf1;
 }
 
 .dropdown-menu,

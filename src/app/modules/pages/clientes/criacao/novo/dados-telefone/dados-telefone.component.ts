@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-select/custom-select.component';
-import { Telefone } from '../../../models/telefone';
+import { TelefoneResponse } from 'src/app/shared/models/telefone/response/TelefoneResponse';
 
 @Component({
   selector: 'app-dados-telefone',
@@ -27,7 +27,7 @@ export class DadosTelefoneComponent {
   @ViewChild('SelectTipoTelefone') selectTipoTelefone: CustomSelectComponent;
 
   @Input() stepAtual: number;
-  @Input() telefoneEncontradoNoCnpj: Telefone;
+  @Input() telefoneEncontradoNoCnpj: TelefoneResponse;
 
   protected dadosTelefone: FormGroup = this.createFormDadosTelefone();
   @Output() emissorDeDadosDeTelefoneDoCliente = new EventEmitter<FormGroup>();
@@ -53,7 +53,7 @@ export class DadosTelefoneComponent {
     }
 
     if (changes['telefoneEncontradoNoCnpj'] != undefined) {
-      let telefone: Telefone = changes['telefoneEncontradoNoCnpj'].currentValue;
+      let telefone: TelefoneResponse = changes['telefoneEncontradoNoCnpj'].currentValue;
       if (telefone != undefined) {
         this.atualizaTelefoneComTelefoneEncontradoPeloCnpj(telefone);
       }
@@ -160,7 +160,7 @@ export class DadosTelefoneComponent {
     this.dadosTelefone.controls['numero'].updateValueAndValidity();
   }
 
-  private atualizaTelefoneComTelefoneEncontradoPeloCnpj(telefone: Telefone) {
+  private atualizaTelefoneComTelefoneEncontradoPeloCnpj(telefone: TelefoneResponse) {
     this.setValueParaAtributoDadosTelefone('tipoTelefone', telefone.tipoTelefone);
     this.atualizaValidatorsTelefone();
     this.dadosTelefone.setValue({

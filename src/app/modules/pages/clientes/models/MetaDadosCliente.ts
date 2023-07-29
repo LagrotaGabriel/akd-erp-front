@@ -1,9 +1,9 @@
-import { Cliente } from "./Cliente";
+import { ClienteResponse } from "../../models/response/ClienteResponse";
 
 export class MetaDadosCliente {
     totalClientesCadastrados: any;
-    clienteComMaiorGiro: Cliente;
-    clienteComMaisOrdens: Cliente;
+    clienteComMaiorGiro: ClienteResponse;
+    clienteComMaisOrdens: ClienteResponse;
     bairroComMaisClientes: string;
 
     constructor(item) {

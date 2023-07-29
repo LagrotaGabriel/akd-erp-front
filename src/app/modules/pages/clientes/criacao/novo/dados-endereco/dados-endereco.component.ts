@@ -9,8 +9,8 @@ import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-respon
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
-import { Endereco } from '../../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
+import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
 
 @Component({
   selector: 'app-dados-endereco',
@@ -41,7 +41,7 @@ export class DadosEnderecoComponent {
   @ViewChild('inputNumero') inputNumero: CustomInputComponent;
 
   @Input() stepAtual: number;
-  @Input() enderecoEncontradoNoCnpj: Endereco;
+  @Input() enderecoEncontradoNoCnpj: EnderecoResponse;
 
   @Output() emissorDeSolicitacaoDeEnvioDeFormulario = new EventEmitter();
 
@@ -72,7 +72,7 @@ export class DadosEnderecoComponent {
       }, 300);
     }
     if (changes['enderecoEncontradoNoCnpj'] != undefined) {
-      let endereco: Endereco = changes['enderecoEncontradoNoCnpj'].currentValue;
+      let endereco: EnderecoResponse = changes['enderecoEncontradoNoCnpj'].currentValue;
       if (endereco != undefined) {
         this.atualizaEnderecoComValoresEncontradosPeloCnpj(endereco);
       }
@@ -283,7 +283,7 @@ export class DadosEnderecoComponent {
     }
   }
 
-  private atualizaEnderecoComValoresEncontradosPeloCnpj(endereco: Endereco) {
+  private atualizaEnderecoComValoresEncontradosPeloCnpj(endereco: EnderecoResponse) {
     this.dadosEndereco.setValue({
       codigoPostal: (Util.isNotEmptyString(endereco.codigoPostal)) ? endereco.codigoPostal : this.getValueAtributoDadosEndereco('codigoPostal'),
       logradouro: (Util.isNotEmptyString(endereco.logradouro)) ? endereco.logradouro : this.getValueAtributoDadosEndereco('logradouro'),

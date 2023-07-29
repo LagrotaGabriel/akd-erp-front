@@ -23,14 +23,11 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MenuComponent } from './visualizacao/menu/menu.component';
 import { ViewComponent } from './visualizacao/view/view.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { TabelaComponent } from './visualizacao/tabela/tabela.component';
 
 import ptBr from '@angular/common/locales/pt';
 import { NovoComponent } from './criacao/novo/novo.component';
 import { AtualizacaoComponent } from './atualizacao/atualizacao/atualizacao.component';
-import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.component';
-import { AcordeaoComponent } from './visualizacao/tabela/acordeao/acordeao.component';
-import { CabecalhoComponent } from './visualizacao/tabela/cabecalho/cabecalho.component';
+
 import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pessoais.component';
 import { DadosTelefoneComponent } from './criacao/novo/dados-telefone/dados-telefone.component';
 import { DadosEnderecoComponent } from './criacao/novo/dados-endereco/dados-endereco.component';
@@ -41,9 +38,9 @@ import { AtualizaDadosEnderecoComponent } from './atualizacao/atualizacao/atuali
 registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent, PaginacaoComponent, AcordeaoComponent,
-    CabecalhoComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosTelefoneComponent, AtualizaDadosEnderecoComponent],
-  exports: [MenuComponent, ViewComponent, TabelaComponent, NovoComponent, AtualizacaoComponent],
+  declarations: [MenuComponent, ViewComponent, NovoComponent, AtualizacaoComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent, 
+    AtualizaDadosPessoaisComponent, AtualizaDadosTelefoneComponent, AtualizaDadosEnderecoComponent],
+  exports: [MenuComponent, ViewComponent, NovoComponent, AtualizacaoComponent],
   imports: [
     CommonModule,
     SharedModule,

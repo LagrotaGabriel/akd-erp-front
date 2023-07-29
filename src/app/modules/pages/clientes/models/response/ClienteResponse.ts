@@ -1,13 +1,16 @@
-import { Endereco } from "src/app/shared/models/Endereco";
-import { Telefone } from "src/app/shared/models/Telefone";
-import { ExclusaoCliente } from "./ExclusaoCliente";
+import { TableOptions } from "src/app/modules/shared/tabela/models/TableOptions";
+import { EnderecoResponse } from "src/app/shared/models/endereco/response/EnderecoResponse";
+import { TelefoneResponse } from "src/app/shared/models/telefone/response/TelefoneResponse";
+import { ExclusaoCliente } from "../ExclusaoCliente";
 
-export class Cliente {
+export class ClienteResponse {
+
     id: number;
     dataCadastro: string;
     horaCadastro: string;
     dataNascimento: string;
     nome: string;
+    tipoPessoa: string;
     cpfCnpj: string;
     inscricaoEstadual: string;
     email: string;
@@ -15,11 +18,12 @@ export class Cliente {
     qtdOrdensRealizadas: number;
     giroTotal: number;
     exclusaoCliente: ExclusaoCliente;
-    endereco: Endereco;
-    telefone: Telefone;
+    endereco: EnderecoResponse;
+    telefone: TelefoneResponse;
     nomeColaboradorResponsavel: string;
     checked: boolean;
     expanded: boolean;
+    options?: TableOptions;
 
     constructor(item) {
         this.id = item?.id;
@@ -27,6 +31,7 @@ export class Cliente {
         this.horaCadastro = item?.horaCadastro;
         this.dataNascimento = item?.dataNascimento;
         this.nome = item?.nome;
+        this.tipoPessoa = item?.tipoPessoa;
         this.cpfCnpj = item?.cpfCnpj;
         this.inscricaoEstadual = item?.inscricaoEstadual;
         this.email = item?.email;
@@ -37,9 +42,10 @@ export class Cliente {
         this.endereco = item?.endereco;
         this.telefone = item?.telefone;
         this.nomeColaboradorResponsavel = item?.nomeColaboradorResponsavel;
-    }
-
-    isChecked(): boolean {
-        return this.checked;
+        this.options = {
+            detalhesHabilitado: true,
+            editarHabilitado: true,
+            removerHabilitado: false
+        }
     }
 }

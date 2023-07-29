@@ -8,10 +8,10 @@ import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
-import { Endereco } from '../../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
-import { Cliente } from '../../../models/cliente';
+import { ClienteResponse } from '../../../models/response/ClienteResponse';
+import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
 
 @Component({
   selector: 'app-atualiza-dados-endereco',
@@ -42,8 +42,8 @@ export class AtualizaDadosEnderecoComponent {
   @ViewChild('inputNumero') inputNumero: CustomInputComponent;
 
   @Input() stepAtual: number;
-  @Input() clientePreAtualizacao: Cliente;
-  @Input() enderecoEncontradoNoCnpj: Endereco;
+  @Input() clientePreAtualizacao: ClienteResponse;
+  @Input() enderecoEncontradoNoCnpj: EnderecoResponse;
 
   @Output() emissorDeSolicitacaoDeEnvioDeFormulario = new EventEmitter();
 
@@ -75,14 +75,14 @@ export class AtualizaDadosEnderecoComponent {
     }
 
     if (Util.isNotObjectEmpty(changes['clientePreAtualizacao'])) {
-      let clienteRecebido: Cliente = changes['clientePreAtualizacao'].currentValue;
+      let clienteRecebido: ClienteResponse = changes['clientePreAtualizacao'].currentValue;
       if (Util.isNotObjectEmpty(clienteRecebido))
         if (Util.isNotObjectEmpty(clienteRecebido.endereco))
           this.atualizaFormDadosEndereco();
     }
 
     if (changes['enderecoEncontradoNoCnpj'] != undefined) {
-      let endereco: Endereco = changes['enderecoEncontradoNoCnpj'].currentValue;
+      let endereco: EnderecoResponse = changes['enderecoEncontradoNoCnpj'].currentValue;
       if (endereco != undefined) {
         this.atualizaEnderecoComValoresEncontradosPeloCnpj(endereco);
       }
@@ -329,7 +329,7 @@ export class AtualizaDadosEnderecoComponent {
     }
   }
 
-  private atualizaEnderecoComValoresEncontradosPeloCnpj(endereco: Endereco) {
+  private atualizaEnderecoComValoresEncontradosPeloCnpj(endereco: EnderecoResponse) {
     this.dadosEndereco.setValue({
       codigoPostal: (Util.isNotEmptyString(endereco.codigoPostal)) ? endereco.codigoPostal : this.getValueAtributoDadosEndereco('codigoPostal'),
       logradouro: (Util.isNotEmptyString(endereco.logradouro)) ? endereco.logradouro : this.getValueAtributoDadosEndereco('logradouro'),

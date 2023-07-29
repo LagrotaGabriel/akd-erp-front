@@ -1,11 +1,11 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_CONFIG } from 'src/app/config/api-config';
-import { PageObject } from '../visualizacao/models/PageObject';
-import { Cliente as ClienteNovo } from '../models/cliente';
-import { Cliente } from '../visualizacao/models/Cliente';
 import { catchError, map, Observable, retry, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ClientePageObject } from '../models/ClientePageObject';
+import { ClienteRequest } from '../models/request/ClienteRequest';
+import { ClienteResponse } from '../models/response/ClienteResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -45,35 +45,36 @@ export class ClienteService {
     )
   }
 
-  public atualizaCliente(idCliente: number, clienteNovo: ClienteNovo): Observable<ClienteNovo> {
+  public atualizaCliente(idCliente: number, clienteNovo: ClienteRequest): Observable<ClienteResponse> {
     this.httpOptions.body = null;
-    return this.http.put<ClienteNovo>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/${idCliente}`, clienteNovo, this.httpOptions).pipe(
-      map(resposta => new ClienteNovo(resposta)),
+    return this.http.put<ClienteResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/${idCliente}`, clienteNovo, this.httpOptions).pipe(
+      map(resposta => new ClienteResponse(resposta)),
     )
   }
 
-  public novoCliente(clienteNovo: ClienteNovo): Observable<ClienteNovo> {
+  public novoCliente(clienteNovo: ClienteRequest): Observable<ClienteResponse> {
     this.httpOptions.body = null;
-    return this.http.post<ClienteNovo>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
-      map(resposta => new ClienteNovo(resposta)),
+    return this.http.post<ClienteResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente`, clienteNovo, this.httpOptions).pipe(
+      map(resposta => new ClienteResponse(resposta)),
     )
   }
 
-  public obtemClientePorId(id: number): Observable<ClienteNovo> {
+  public obtemClientePorId(id: number): Observable<ClienteResponse> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
-    return this.http.get<ClienteNovo>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
-      map((resposta) => new ClienteNovo(resposta))
+    return this.http.get<ClienteResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
+      map((resposta) => new ClienteResponse(resposta))
     )
   }
 
-  public getClientes(valorBusca: string, pageableInfo: PageObject): Observable<PageObject> {
+  public getClientes(valorBusca: string, pageableInfo: ClientePageObject): Observable<ClientePageObject> {
+    console.log('Service getClientes acessado');
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
     this.buildRequestParams(valorBusca);
     this.buildPageableParams(pageableInfo);
-    return this.http.get<PageObject>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
-      map(resposta => new PageObject(resposta)),
+    return this.http.get<ClientePageObject>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente`, this.httpOptions).pipe(
+      map(resposta => new ClientePageObject(resposta)),
       catchError((error: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
         console.log(error);
@@ -93,10 +94,10 @@ export class ClienteService {
     )
   }
 
-  public removeCliente(id: number): Observable<Cliente> {
+  public removeCliente(id: number): Observable<ClienteResponse> {
     this.httpOptions.body = null;
-    return this.http.delete<Cliente>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
-      map(resposta => new Cliente(resposta)),
+    return this.http.delete<ClienteResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/cliente/${id}`, this.httpOptions).pipe(
+      map(resposta => new ClienteResponse(resposta)),
       catchError((httpErrorResponse: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
         return throwError(() => new HttpErrorResponse(httpErrorResponse));
@@ -161,7 +162,7 @@ export class ClienteService {
     }
   }
 
-  private buildPageableParams(pageableInfo: PageObject) {
+  private buildPageableParams(pageableInfo: ClientePageObject) {
     if (pageableInfo != null) {
       this.httpOptions.params = this.httpOptions.params.set('page', pageableInfo.pageNumber);
       this.httpOptions.params = this.httpOptions.params.set('size', pageableInfo.pageSize);

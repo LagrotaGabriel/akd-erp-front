@@ -14,7 +14,7 @@ const routes: Routes = [
     component: NovoComponent
   },
   {
-    path: ':id',
+    path: 'update',
     component: AtualizacaoComponent
   }
 ];

@@ -4,14 +4,14 @@ import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
 import { ClienteService } from '../../../services/cliente.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Cliente } from '../../../models/cliente';
 import { Util } from 'src/app/modules/utils/Util';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { Subscription, debounceTime } from 'rxjs';
-import { Endereco } from '../../../models/endereco';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
-import { Telefone } from '../../../models/telefone';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
+import { ClienteResponse } from '../../../models/response/ClienteResponse';
+import { TelefoneResponse } from 'src/app/shared/models/telefone/response/TelefoneResponse';
+import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
 
 @Component({
   selector: 'app-atualiza-dados-pessoais',
@@ -40,10 +40,10 @@ export class AtualizaDadosPessoaisComponent {
   validaDuplicidadeInscricaoEstadualSubscription$: Subscription;
 
   @Input() stepAtual: number;
-  @Input() clientePreAtualizacao: Cliente;
+  @Input() clientePreAtualizacao: ClienteResponse;
 
-  @Output() emissorDeTelefoneEncontradoNoCnpj = new EventEmitter<Telefone>();
-  @Output() emissorDeEnderecoEncontradoNoCnpj = new EventEmitter<Endereco>();
+  @Output() emissorDeTelefoneEncontradoNoCnpj = new EventEmitter<TelefoneResponse>();
+  @Output() emissorDeEnderecoEncontradoNoCnpj = new EventEmitter<EnderecoResponse>();
 
   protected dadosCliente: FormGroup = this.inicializaFormulario();
   @Output() emissorDeDadosPessoaisDoCliente = new EventEmitter<FormGroup>();
@@ -64,7 +64,7 @@ export class AtualizaDadosPessoaisComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (Util.isNotObjectEmpty(changes['clientePreAtualizacao'])) {
-      let clienteRecebido: Cliente = changes['clientePreAtualizacao'].currentValue;
+      let clienteRecebido: ClienteResponse = changes['clientePreAtualizacao'].currentValue;
       if (Util.isNotObjectEmpty(clienteRecebido)) this.atualizaFormDadosCliente();
     }
 
@@ -321,7 +321,7 @@ export class AtualizaDadosPessoaisComponent {
 
   private setaClienteComInformacoesDeTelefoneObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (Util.isEmptyString(cnpjResponse.telefonePrincipal)) {
-      let telefone: Telefone = new Telefone();
+      let telefone: TelefoneResponse = new TelefoneResponse();
       if (cnpjResponse.telefonePrincipal.length == 10) {
         telefone.tipoTelefone = 'FIXO';
         telefone.prefixo = cnpjResponse.telefonePrincipal.slice(0, 2);
@@ -342,7 +342,7 @@ export class AtualizaDadosPessoaisComponent {
   }
 
   private setaClienteComInformacoesDeEnderecoObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    let endereco: Endereco = new Endereco();
+    let endereco: EnderecoResponse = new EnderecoResponse();
     if (Util.isNotEmptyString(cnpjResponse.logradouro)) endereco.logradouro = cnpjResponse.logradouro;
     if (Util.isNotEmptyString(cnpjResponse.numero)) endereco.numero = Util.transformStringToNumber(cnpjResponse.numero);
     if (Util.isNotEmptyString(cnpjResponse.bairro)) endereco.bairro = cnpjResponse.bairro;

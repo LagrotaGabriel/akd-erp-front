@@ -5,7 +5,7 @@ import { ClienteService } from '../../pages/clientes/services/cliente.service';
 import { ColaboradorService } from '../../pages/colaboradores/services/colaborador.service';
 
 @Component({
-  selector: 'app-cabecalho',
+  selector: 'custom-table-header',
   templateUrl: './cabecalho.component.html',
   styleUrls: ['./cabecalho.component.scss']
 })

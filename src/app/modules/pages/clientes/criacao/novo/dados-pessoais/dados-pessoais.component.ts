@@ -8,9 +8,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
-import { Telefone } from '../../../models/telefone';
-import { Endereco } from '../../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
+import { TelefoneResponse } from 'src/app/shared/models/telefone/response/TelefoneResponse';
+import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
 
 @Component({
   selector: 'app-dados-pessoais',
@@ -40,8 +40,8 @@ export class DadosPessoaisComponent {
 
   @Input() stepAtual: number;
 
-  @Output() emissorDeTelefoneEncontradoNoCnpj = new EventEmitter<Telefone>();
-  @Output() emissorDeEnderecoEncontradoNoCnpj = new EventEmitter<Endereco>();
+  @Output() emissorDeTelefoneEncontradoNoCnpj = new EventEmitter<TelefoneResponse>();
+  @Output() emissorDeEnderecoEncontradoNoCnpj = new EventEmitter<EnderecoResponse>();
 
   protected dadosCliente: FormGroup = this.createFormDadosCliente();
   @Output() emissorDeDadosPessoaisDoCliente = new EventEmitter<FormGroup>();
@@ -237,7 +237,7 @@ export class DadosPessoaisComponent {
 
   private setaClienteComInformacoesDeTelefoneObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
     if (Util.isNotEmptyString(cnpjResponse.telefonePrincipal)) {
-      let telefone: Telefone = new Telefone();
+      let telefone: TelefoneResponse = new TelefoneResponse();
       if (cnpjResponse.telefonePrincipal.length == 10) {
         telefone.tipoTelefone = 'FIXO';
         telefone.prefixo = cnpjResponse.telefonePrincipal.slice(0, 2);
@@ -258,7 +258,7 @@ export class DadosPessoaisComponent {
   }
 
   private setaClienteComInformacoesDeEnderecoObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    let endereco: Endereco = new Endereco();
+    let endereco: EnderecoResponse = new EnderecoResponse();
     if (Util.isNotEmptyString(cnpjResponse.logradouro)) endereco.logradouro = cnpjResponse.logradouro;
     if (Util.isNotEmptyString(cnpjResponse.numero)) endereco.numero = Util.transformStringToNumber(cnpjResponse.numero);
     if (Util.isNotEmptyString(cnpjResponse.bairro)) endereco.bairro = cnpjResponse.bairro;

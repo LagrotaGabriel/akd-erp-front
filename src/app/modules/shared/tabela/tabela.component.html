@@ -29,10 +29,10 @@
                 <tr *ngFor="let objeto of objetos; let i = index"
                     (dblclick)="dblClickEnabled ? navegarParaDetalhes(objeto) : null">
 
-                    <th scope="row" class="content_checkbox align-middle" *ngIf="check">
+                    <td scope="row" class="content_checkbox align-middle" *ngIf="check">
                         <input (click)="alteraEstadoCheckTabela(i)" [checked]="objeto.checked" type="checkbox"
                             class="checkbox">
-                    </th>
+                    </td>
 
                     <td *ngFor="let tbody of tbodies" class="td_content align-middle" [class]="tbody.hidden">
                         <ng-container *ngIf="obtemTd(objeto, tbody) as tdContent">
@@ -42,7 +42,7 @@
                         </ng-container>
                     </td>
 
-                    <th scope="row" class="content_acoes align-middle" *ngIf="options">
+                    <td scope="row" class="content_acoes align-middle" *ngIf="options">
                         <div class="icon_container">
                             <mat-icon fontIcon="more_vert"
                                 class="icone icone_tabela icone_tabela_remove dropdown dropleft float-right"
@@ -62,27 +62,6 @@
                                         Editar
                                     </div>
                                 </a>
-                                <a class="dropdown-item" [href]="objeto.linkBoletoAsaas" target="_blank"
-                                    *ngIf="objeto.options.geraBoletoPagamento">
-                                    <mat-icon fontIcon="analytics" class="option_icon"></mat-icon>
-                                    <div class="dropdown-item-text">
-                                        Exibir boleto
-                                    </div>
-                                </a>
-                                <a class="dropdown-item" [href]="objeto.linkCobranca" target="_blank"
-                                    *ngIf="objeto.options.geraLinkCobrancaPagamento">
-                                    <mat-icon fontIcon="link" class="option_icon"></mat-icon>
-                                    <div class="dropdown-item-text">
-                                        Exibir link de pagamento
-                                    </div>
-                                </a>
-                                <a class="dropdown-item" [href]="objeto.linkComprovante" target="_blank"
-                                    *ngIf="objeto.options.geraComprovantePagamento">
-                                    <mat-icon fontIcon="local_atm" class="option_icon"></mat-icon>
-                                    <div class="dropdown-item-text">
-                                        Exibir comprovante de pagamento
-                                    </div>
-                                </a>
                                 <a class="dropdown-item dropdown-item-excluir" *ngIf="objeto.options.removerHabilitado"
                                     (click)="excluiItem(objeto.id)">
                                     <mat-icon fontIcon="delete" class="option_icon option_icon-excluir"></mat-icon>
@@ -92,7 +71,7 @@
                                 </a>
                             </div>
                         </div>
-                    </th>
+                    </td>
 
                 </tr>
             </ng-container>

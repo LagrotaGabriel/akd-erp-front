@@ -1,5 +1,19 @@
-<app-menu></app-menu>
+<app-titulo-modulo [texto]="'Clientes'"></app-titulo-modulo>
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 container">
-  <app-tabela></app-tabela>
+    <custom-table-header (emissorDeBuscaFormControl)="recebeBuscaFormControl($event)" [@fadeInOut]
+        (emissorDeObjetoPageableAposTypeAhead)="recebeObjetoPageableInfoAtualizadoPosTypeAhead($event)"
+        (emissorDePageSizeComQuantidadeDeItensPorPaginaAlterada)="recebeQtdItensPorPaginaAlterada($event)"
+        (emissorDeSolicitacaoDeAtualizacaoDeTabela)="recebeSolicitacaoDeAtualizacaoDaTabela()"
+        (emissorDeSolicitacaoDeRelatorio)="recebeSolicitacaoDeRelatorio($event)" [pageableObject]="clientePageObject"
+        [itensSelecionadosNaTabela]="clientesSelecionadosNaTabela" [modulo]="'clientes'"
+        [inputPlaceholder]="'Busca por descrição, Cpf ou Cnpj...'" [botaoCriarHabilitado]="false"></custom-table-header>
+
+    <custom-table (emiteSolicitacaoDeExclusaoDoItem)="recebeSolicitacaoDeExclusao($event)"
+        (emiteAlteracaoDoEstadoDeCheckDaTabela)="recebeAtualizacaoNosChecksDaTabela($event)" [@fadeInOut]
+        [tbodies]="obtemTdsTabela()" [theads]="obtemThsTabela()" [objetos]="clientePageObject?.content"
+        [modulo]="'clientes'"></custom-table>
+
+    <custom-table-pagination [pageObject]="clientePageObject"
+        (emissorDePageNumberAtualizado)="recebePageNumberAtualizado($event)" [@fadeInOut]></custom-table-pagination>
 </div>

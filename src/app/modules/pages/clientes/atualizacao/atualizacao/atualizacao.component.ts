@@ -1,15 +1,16 @@
 import { ClienteService } from '../../services/cliente.service';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Cliente } from '../../models/cliente';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { Telefone } from '../../models/telefone';
-import { Endereco } from '../../models/endereco';
 import { Util } from 'src/app/modules/utils/Util';
 import { fadeInOutAnimation } from 'src/app/shared/animations';
+import { TelefoneResponse } from 'src/app/shared/models/telefone/response/TelefoneResponse';
+import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
+import { ClienteRequest } from '../../models/request/ClienteRequest';
+import { ClienteResponse } from '../../models/response/ClienteResponse';
 
 @Component({
   selector: 'app-atualizacao',
@@ -30,8 +31,8 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
   idCliente: number;
 
   stepAtual: number = 0;
-  telefoneBuscadoCnpj: Telefone;
-  enderecoBuscadoCnpj: Endereco;
+  telefoneBuscadoCnpj: TelefoneResponse;
+  enderecoBuscadoCnpj: EnderecoResponse;
 
   // Subscriptions
   atualizaClienteSubscription$: Subscription;
@@ -42,12 +43,11 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
   dadosTelefone: FormGroup;
   dadosEndereco: FormGroup;
 
-  clientePreAtualizacao: Cliente;
-  cliente: Cliente;
+  clientePreAtualizacao: ClienteResponse;
+  cliente: ClienteRequest;
 
   ngOnInit(): void {
     this.realizaValidacaoDoIdCliente();
-    this.inicializarCliente();
   }
 
   ngAfterViewInit(): void {
@@ -79,19 +79,26 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
   }
 
   realizaValidacaoDoIdCliente() {
-    let id = this.activatedRoute.snapshot.paramMap.get('id')
-    if (/^\d+$/.test(id)) this.idCliente = parseInt(id);
-    else {
-      this.router.navigate(['/clientes']);
-      this._snackBar.open("O cliente que você tentou editar não existe", "Fechar", {
-        duration: 3500
-      });
-    }
+    this.activatedRoute.queryParamMap.subscribe((params) => {
+      if (params.has('id')) {
+        let id = params.get('id');
+        if (/^\d+$/.test(id)) {
+          this.idCliente = parseInt(id);
+          this.inicializarCliente();
+        }
+        else {
+          this.router.navigate(['/clientes']);
+          this._snackBar.open("O cliente que você tentou editar não existe", "Fechar", {
+            duration: 3500
+          });
+        }
+      }
+    });
   }
 
   inicializarCliente() {
     this.obtemClientePorIdSubscription$ = this.clienteService.obtemClientePorId(this.idCliente).subscribe({
-      next: (cliente: Cliente) => {
+      next: (cliente: ClienteResponse) => {
         this.clientePreAtualizacao = cliente;
       }
     })
@@ -113,12 +120,12 @@ export class AtualizacaoComponent implements OnInit, OnDestroy {
     this.dadosEndereco = event;
   }
 
-  protected recebeTelefoneEncontradoNoCnpj(telefone: Telefone) {
+  protected recebeTelefoneEncontradoNoCnpj(telefone: TelefoneResponse) {
     console.log('Recebendo telefone encontrado pelo CNPJ');
     this.telefoneBuscadoCnpj = telefone;
   }
 
-  protected recebeEnderecoEncontradoNoCnpj(endereco: Endereco) {
+  protected recebeEnderecoEncontradoNoCnpj(endereco: EnderecoResponse) {
     console.log('Recebendo endereço encontrado pelo CNPJ');
     this.enderecoBuscadoCnpj = endereco;
   }

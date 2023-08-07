@@ -1,4 +1,4 @@
-import { ClienteService } from '../../services/cliente.service';
+import { ClienteService } from '../services/cliente.service';
 import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,20 +6,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { Util } from 'src/app/modules/utils/Util';
-import { ClienteRequest } from '../../models/request/ClienteRequest';
+import { ClienteRequest } from '../models/request/ClienteRequest';
 import { TelefoneResponse } from 'src/app/shared/models/telefone/response/TelefoneResponse';
 import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
-import { Telefone } from 'src/app/shared/models/Telefone';
-import { ClienteResponse } from '../../models/response/ClienteResponse';
+import { ClienteResponse } from '../models/response/ClienteResponse';
 import { Endereco } from 'src/app/shared/models/Endereco';
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 
 @Component({
-  selector: 'app-novo',
-  templateUrl: './novo.component.html',
-  styleUrls: ['./novo.component.scss'],
+  selector: 'app-new',
+  templateUrl: './new.component.html',
+  styleUrls: ['./new.component.scss'],
 })
-export class NovoComponent implements OnDestroy {
+export class NewComponent implements OnDestroy {
 
   constructor(
     private clienteService: ClienteService,

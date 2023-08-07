@@ -37,5 +37,19 @@ export class Mask {
         return string;
     }
 
+    public static cepMask(string: string): string {
+        if (string.length >= 5 && string.charAt(5) != '-') {
+            string = [string.slice(0, 5), '-', string.slice(5)].join('')
+        }
+
+        string = string.replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}]/g, "")
+            .replace(/[^0-9-]/g, '')
+            .trim();
+
+        if (string.length > 9) string = string.slice(0, 9);
+
+        return string;
+    }
+
 
 }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NovoComponent } from './criacao/novo/novo.component';
-import { ViewComponent } from './visualizacao/view/view.component';
+import { ViewComponent } from './view/view.component';
+import { NewComponent } from './new/new.component';
 
 const routes: Routes = [
   {
@@ -10,9 +10,9 @@ const routes: Routes = [
   },
   {
     path: 'update',
-    component: NovoComponent
+    component: NewComponent
   }
-];
+]
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

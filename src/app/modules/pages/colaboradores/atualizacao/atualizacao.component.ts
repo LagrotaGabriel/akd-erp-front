@@ -114,6 +114,7 @@ export class AtualizacaoComponent {
       email: this.getValueAtributoDadosColaborador('email') != '' ? this.getValueAtributoDadosColaborador('email') : null,
       telefone: this.getValueAtributoDadosColaborador('tipoTelefone') != ''
         ? {
+          telefoneCompleto: '(' + (this.getValueAtributoDadosColaborador('prefixo')) + ') ' + this.getValueAtributoDadosColaborador('numeroTelefone'),
           tipoTelefone: this.getValueAtributoDadosColaborador('tipoTelefone'),
           prefixo: this.getValueAtributoDadosColaborador('prefixo'),
           numero: this.getValueAtributoDadosColaborador('numeroTelefone')

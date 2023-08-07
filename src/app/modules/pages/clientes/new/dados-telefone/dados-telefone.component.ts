@@ -10,7 +10,7 @@ import { Util } from 'src/app/modules/utils/Util';
 @Component({
   selector: 'app-dados-telefone',
   templateUrl: './dados-telefone.component.html',
-  styleUrls: ['../novo.component.scss']
+  styleUrls: ['../new.component.scss']
 })
 export class DadosTelefoneComponent {
 

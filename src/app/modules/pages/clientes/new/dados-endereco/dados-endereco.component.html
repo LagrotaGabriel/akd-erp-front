@@ -3,10 +3,10 @@
 
     <!-- INPUT GROUP CEP -->
     <app-custom-input class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'cep'" [titulo]="'Cep'"
-        [tabIndex]="15" [maxLength]="8" [touched]="dadosEndereco.controls['codigoPostal'].touched"
+        [tabIndex]="15" [maxLength]="9" [touched]="dadosEndereco.controls['codigoPostal'].touched"
         [todosCaracteresMaiusculos]="false" [customIcon]="null" formControlName="codigoPostal"
-        [disabledGroup]="dadosEndereco.controls['codigoPostal'].disabled" (input)="realizaTratamentoCodigoPostal()"
-        #inputCodigoPostal [mensagemErro]="'Mínimo de 8 caracteres numéricos'"
+        [disabledGroup]="dadosEndereco.controls['codigoPostal'].disabled" (input)="realizaTratamentoCodigoPostal($event)"
+        #inputCodigoPostal [mensagemErro]="'Mínimo de 9 caracteres'"
         [valido]="!(dadosEndereco.controls['codigoPostal'].touched && dadosEndereco.controls['codigoPostal'].invalid)"></app-custom-input>
 
     <!-- SELECT GROUP ESTADO -->

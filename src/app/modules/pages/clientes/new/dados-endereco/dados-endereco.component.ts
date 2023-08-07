@@ -11,11 +11,12 @@ import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-c
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
 import { Util } from 'src/app/modules/utils/Util';
 import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
+import { Mask } from 'src/app/modules/utils/Mask';
 
 @Component({
   selector: 'app-dados-endereco',
   templateUrl: './dados-endereco.component.html',
-  styleUrls: ['../novo.component.scss']
+  styleUrls: ['../new.component.scss']
 })
 export class DadosEnderecoComponent {
 
@@ -122,8 +123,8 @@ export class DadosEnderecoComponent {
           disabled: false
         },
         [
-          Validators.maxLength(8),
-          Validators.pattern(/^\d{5}\d{3}/)
+          Validators.maxLength(9),
+          Validators.pattern(/^\d{5}\-\d{3}$/)
         ]
       ),
       cidade: new FormControl(
@@ -232,16 +233,15 @@ export class DadosEnderecoComponent {
       });
   }
 
-  realizaTratamentoCodigoPostal() {
+  realizaTratamentoCodigoPostal(tecla) {
 
-    this.setValueParaAtributoDadosEndereco('codigoPostal', this.getValueAtributoDadosEndereco('codigoPostal')
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
-      .replace(/[^0-9.]/g, '')
-      .trim());
+    if (tecla?.inputType != 'deleteContentBackward' || tecla == null) {
+      this.setValueParaAtributoDadosEndereco('codigoPostal', Mask.cepMask(this.getValueAtributoDadosEndereco('codigoPostal')));
+    }
 
-    if (this.dadosEndereco.controls['codigoPostal'].valid && this.getValueAtributoDadosEndereco('codigoPostal').length == 8) {
+    if (this.dadosEndereco.controls['codigoPostal'].valid && this.getValueAtributoDadosEndereco('codigoPostal').length == 9) {
       this.getEnderecoPeloCepSubscription$ =
-        this.brasilApiService.getEnderecoPeloCep(this.getValueAtributoDadosEndereco('codigoPostal')).subscribe({
+        this.brasilApiService.getEnderecoPeloCep(this.getValueAtributoDadosEndereco('codigoPostal').replace('-', '')).subscribe({
           next: resposta => this.setaEnderecoComInformacoesObtidasPeloCep(resposta),
           error: error => {
             this._snackBar.open(error, "Fechar", {

@@ -3,13 +3,13 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TableTd } from 'src/app/modules/shared/tabela/models/TableTd';
 import { TableTh } from 'src/app/modules/shared/tabela/models/TableTh';
-import { ClienteService } from '../../services/cliente.service';
+import { ClienteService } from '../services/cliente.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@angular/forms';
-import { ClientePageObject } from '../../models/ClientePageObject';
+import { ClientePageObject } from '../models/ClientePageObject';
 import { fadeInOutAnimation } from 'src/app/shared/animations';
 import { Util } from 'src/app/modules/utils/Util';
-import { ClienteResponse } from '../../models/response/ClienteResponse';
+import { ClienteResponse } from '../models/response/ClienteResponse';
 
 @Component({
   selector: 'app-view',

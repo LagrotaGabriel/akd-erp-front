@@ -20,22 +20,21 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 
-import { MenuComponent } from './visualizacao/menu/menu.component';
-import { ViewComponent } from './visualizacao/view/view.component';
+import { ViewComponent } from './view/view.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 import ptBr from '@angular/common/locales/pt';
-import { NovoComponent } from './criacao/novo/novo.component';
 
-import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pessoais.component';
-import { DadosTelefoneComponent } from './criacao/novo/dados-telefone/dados-telefone.component';
-import { DadosEnderecoComponent } from './criacao/novo/dados-endereco/dados-endereco.component';
+import { DadosPessoaisComponent } from './new/dados-pessoais/dados-pessoais.component';
+import { DadosTelefoneComponent } from './new/dados-telefone/dados-telefone.component';
+import { DadosEnderecoComponent } from './new/dados-endereco/dados-endereco.component';
+import { NewComponent } from './new/new.component';
 
 registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, NovoComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent],
-  exports: [MenuComponent, ViewComponent, NovoComponent],
+  declarations: [ViewComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent, NewComponent],
+  exports: [ViewComponent],
   imports: [
     CommonModule,
     SharedModule,

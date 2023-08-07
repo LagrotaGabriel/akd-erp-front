@@ -2,7 +2,7 @@ import { Subscription, debounceTime } from 'rxjs';
 import { Component, ChangeDetectorRef, Input, SimpleChanges, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
-import { ClienteService } from '../../../services/cliente.service';
+import { ClienteService } from '../../services/cliente.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CnpjResponse } from 'src/app/shared/models/brasil-api/cnpj-response';
@@ -12,14 +12,14 @@ import { Util } from 'src/app/modules/utils/Util';
 import { TelefoneResponse } from 'src/app/shared/models/telefone/response/TelefoneResponse';
 import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
 import { Mask } from 'src/app/modules/utils/Mask';
-import { ClienteResponse } from '../../../models/response/ClienteResponse';
+import { ClienteResponse } from '../../models/response/ClienteResponse';
 import { Endereco } from 'src/app/shared/models/Endereco';
 import { Telefone } from 'src/app/shared/models/Telefone';
 
 @Component({
   selector: 'app-dados-pessoais',
   templateUrl: './dados-pessoais.component.html',
-  styleUrls: ['../novo.component.scss']
+  styleUrls: ['../new.component.scss']
 })
 export class DadosPessoaisComponent {
 

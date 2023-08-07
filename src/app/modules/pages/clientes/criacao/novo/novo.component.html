@@ -21,7 +21,8 @@
             <ng-template matStepLabel>
                 <span>Dados</span>
             </ng-template>
-            <app-dados-pessoais [stepAtual]="stepAtual"
+            <app-dados-pessoais [stepAtual]="stepAtual" [estados]="estados"
+                [setupDadosAtualizacao]="clientePreAtualizacao ? clientePreAtualizacao : null"
                 (emissorDeEnderecoEncontradoNoCnpj)="recebeEnderecoEncontradoNoCnpj($event)"
                 (emissorDeTelefoneEncontradoNoCnpj)="recebeTelefoneEncontradoNoCnpj($event)"
                 (emissorDeDadosPessoaisDoCliente)="recebeFormGroupDadosPessoais($event)"></app-dados-pessoais>
@@ -32,7 +33,9 @@
             <ng-template matStepLabel>
                 <span>Telefone</span>
             </ng-template>
-            <app-dados-telefone [stepAtual]="stepAtual" [telefoneEncontradoNoCnpj]="telefoneBuscadoCnpj"
+            <app-dados-telefone [stepAtual]="stepAtual"
+                [setupTelefoneAtualizacao]="clientePreAtualizacao ? clientePreAtualizacao.telefone : null"
+                [telefoneEncontradoNoCnpj]="telefoneBuscadoCnpj"
                 (emissorDeDadosDeTelefoneDoCliente)="recebeFormGroupDadosTelefone($event)"></app-dados-telefone>
         </mat-step>
 
@@ -41,8 +44,10 @@
             <ng-template matStepLabel>
                 <span>Endereço</span>
             </ng-template>
-            <app-dados-endereco [stepAtual]="stepAtual" [enderecoEncontradoNoCnpj]="enderecoBuscadoCnpj"
-                (emissorDeSolicitacaoDeEnvioDeFormulario)="enviarFormulario()"
+            <app-dados-endereco [stepAtual]="stepAtual"
+                [setupEnderecoAtualizacao]="clientePreAtualizacao ? clientePreAtualizacao.endereco : null"
+                [enderecoEncontradoNoCnpj]="enderecoBuscadoCnpj" (emissorDeEstados)="recebeEstados($event)"
+                (emissorDeSolicitacaoDeEnvioDeFormulario)="direcionaEnvioDeFormulario()"
                 (emissorDeDadosDeEnderecoDoCliente)="recebeFormGroupDadosEndereco($event)"></app-dados-endereco>
         </mat-step>
 

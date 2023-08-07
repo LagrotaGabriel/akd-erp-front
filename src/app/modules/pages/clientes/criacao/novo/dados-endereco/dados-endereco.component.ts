@@ -42,8 +42,10 @@ export class DadosEnderecoComponent {
 
   @Input() stepAtual: number;
   @Input() enderecoEncontradoNoCnpj: EnderecoResponse;
+  @Input() setupEnderecoAtualizacao: EnderecoResponse = null;
 
   @Output() emissorDeSolicitacaoDeEnvioDeFormulario = new EventEmitter();
+  @Output() emissorDeEstados = new EventEmitter();
 
   protected dadosEndereco: FormGroup = this.createFormDadosEndereco();
   @Output() emissorDeDadosDeEnderecoDoCliente = new EventEmitter<FormGroup>();
@@ -66,6 +68,11 @@ export class DadosEnderecoComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    let setupEnderecoAtualizacao = changes['setupEnderecoAtualizacao'];
+    if (Util.isNotObjectEmpty(setupEnderecoAtualizacao)) {
+      if (Util.isNotObjectEmpty(setupEnderecoAtualizacao.currentValue)) this.realizaSetupEndereco(setupEnderecoAtualizacao.currentValue);
+    }
+
     if (this.stepAtual == 2) {
       setTimeout(() => {
         this.inputCodigoPostal.acionaFoco();
@@ -219,6 +226,7 @@ export class DadosEnderecoComponent {
         },
         complete: () => {
           this.geraOptionsEstado();
+          this.emissorDeEstados.emit(this.estadosResponse);
           console.log("Estados carregados com sucesso");
         }
       });
@@ -305,6 +313,19 @@ export class DadosEnderecoComponent {
         .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
         .replace(/[^0-9.]/g, '')
         .trim())
+  }
+
+  protected realizaSetupEndereco(endereco: EnderecoResponse) {
+    this.dadosEndereco.setValue({
+      logradouro: endereco.logradouro,
+      numero: endereco.numero,
+      bairro: endereco.bairro,
+      codigoPostal: endereco.codigoPostal,
+      cidade: endereco.cidade,
+      complemento: endereco.complemento,
+      estado: endereco.estado,
+    })
+    this.atualizaValidatorsEndereco();
   }
 
   protected solicitarEnvioDeFormulario() {

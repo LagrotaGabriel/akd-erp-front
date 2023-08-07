@@ -39,8 +39,8 @@ export class TabelaComponent {
   obtemTd(objeto: any, tbody: TableTd): TableTd {
     let valorCampo = objeto[tbody.campo] || '-';
 
-    if (tbody.campo == 'telefones' && objeto['telefones'].length > 0) {
-      valorCampo = '(' + (objeto['telefones'][0].prefixo) + ')' + ' ' + (objeto['telefones'][0].numero);
+    if (tbody.campo == 'telefone') {
+      valorCampo = objeto['telefone'].telefoneCompleto;
     }
 
     let td: TableTd = {

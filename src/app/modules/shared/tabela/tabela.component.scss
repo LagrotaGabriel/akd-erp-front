@@ -65,10 +65,6 @@ tr:hover {
     cursor: pointer;
 }
 
-tr td:first-of-type {
-    color: $light-white;
-}
-
 .icone_tabela {
     color: $primary-color;
     cursor: pointer;
@@ -120,8 +116,12 @@ input[type=checkbox] {
 }
 
 span {
-    padding: 0.2rem 0.5rem;
+    padding: 0.2rem 0rem;
     font-weight: 400;
+}
+
+.red_span, .yellow_span, .green_span, .purple_span, .blue_span {
+    padding: 0.2rem 0.5rem;
 }
 
 .red_span {

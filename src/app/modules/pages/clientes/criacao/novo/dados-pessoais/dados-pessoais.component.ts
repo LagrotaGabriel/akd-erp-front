@@ -11,6 +11,10 @@ import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input
 import { Util } from 'src/app/modules/utils/Util';
 import { TelefoneResponse } from 'src/app/shared/models/telefone/response/TelefoneResponse';
 import { EnderecoResponse } from 'src/app/shared/models/endereco/response/EnderecoResponse';
+import { Mask } from 'src/app/modules/utils/Mask';
+import { ClienteResponse } from '../../../models/response/ClienteResponse';
+import { Endereco } from 'src/app/shared/models/Endereco';
+import { Telefone } from 'src/app/shared/models/Telefone';
 
 @Component({
   selector: 'app-dados-pessoais',
@@ -27,8 +31,8 @@ export class DadosPessoaisComponent {
     private ref: ChangeDetectorRef) { }
 
   // Validations
-  inputLengthCpfCnpj: number = 11;
-  inputPatternCpfCnpj: any = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
+  inputLengthCpfCnpj: number = 14;
+  inputPatternCpfCnpj: any = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
 
   // Tags html
   @ViewChild('inputNome') inputNome: CustomInputComponent;
@@ -39,6 +43,9 @@ export class DadosPessoaisComponent {
   validaDuplicidadeInscricaoEstadualSubscription$: Subscription;
 
   @Input() stepAtual: number;
+
+  @Input() setupDadosAtualizacao: ClienteResponse;
+  @Input() estados;
 
   @Output() emissorDeTelefoneEncontradoNoCnpj = new EventEmitter<TelefoneResponse>();
   @Output() emissorDeEnderecoEncontradoNoCnpj = new EventEmitter<EnderecoResponse>();
@@ -61,10 +68,19 @@ export class DadosPessoaisComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.stepAtual == 0 && !changes['stepAtual'].isFirstChange()) {
-      setTimeout(() => {
-        this.inputNome.acionaFoco();
-      }, 300);
+    let setupDadosAtualizacao = changes['setupDadosAtualizacao'];
+    if (Util.isNotObjectEmpty(setupDadosAtualizacao)) {
+      if (Util.isNotObjectEmpty(setupDadosAtualizacao.currentValue)) {
+        this.realizaSetupDados(setupDadosAtualizacao.currentValue);
+      }
+    }
+
+    if (Util.isNotObjectEmpty(changes['stepAtual'])) {
+      if (this.stepAtual == 0 && !changes['stepAtual'].isFirstChange()) {
+        setTimeout(() => {
+          this.inputNome.acionaFoco();
+        }, 300);
+      }
     }
   }
 
@@ -141,14 +157,14 @@ export class DadosPessoaisComponent {
   atualizaTipoPessoa() {
 
     if (this.getValueAtributoDadosCliente('tipoPessoa') == 'FISICA') {
-      this.inputLengthCpfCnpj = 11;
-      this.inputPatternCpfCnpj = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
+      this.inputLengthCpfCnpj = 14;
+      this.inputPatternCpfCnpj = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
       this.dadosCliente.controls['inscricaoEstadual'].disable();
       this.dadosCliente.controls['dataNascimento'].enable();
     }
     else if (this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA') {
-      this.inputLengthCpfCnpj = 14;
-      this.inputPatternCpfCnpj = /^\d{2}\d{3}\d{3}\d{4}\d{2}/
+      this.inputLengthCpfCnpj = 18;
+      this.inputPatternCpfCnpj = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/
       this.dadosCliente.controls['inscricaoEstadual'].enable();
       this.dadosCliente.controls['dataNascimento'].disable();
     }
@@ -160,21 +176,25 @@ export class DadosPessoaisComponent {
     this.setValueParaAtributoDadosCliente('cpfCnpj', '')
   }
 
-  realizaTratamentoCpfCnpj() {
-    this.setValueParaAtributoDadosCliente('cpfCnpj', this.getValueAtributoDadosCliente('cpfCnpj')
-      .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
-      .replace(/[^0-9.]/g, '')
-      .trim());
+  realizaTratamentoCpfCnpj(tecla) {
+    if (this.getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' && tecla?.inputType != 'deleteContentBackward'
+      || this.getValueAtributoDadosCliente('tipoPessoa') == 'FISICA' && tecla == null) {
+      this.setValueParaAtributoDadosCliente('cpfCnpj', Mask.cpfMask(this.getValueAtributoDadosCliente('cpfCnpj')));
+    }
+    else if (this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA' && tecla?.inputType != 'deleteContentBackward'
+      || this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA' && tecla == null) {
+      this.setValueParaAtributoDadosCliente('cpfCnpj', Mask.cnpjMask(this.getValueAtributoDadosCliente('cpfCnpj')));
+    }
     this.invocaValidacaoDuplicidadeCpfCnpj();
   }
 
   invocaValidacaoDuplicidadeCpfCnpj() {
     if (
       this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA'
-      && this.getValueAtributoDadosCliente('cpfCnpj').length == 14
+      && this.getValueAtributoDadosCliente('cpfCnpj').length == 18
       && this.dadosCliente.controls['cpfCnpj'].valid ||
       this.getValueAtributoDadosCliente('tipoPessoa') == 'FISICA'
-      && this.getValueAtributoDadosCliente('cpfCnpj').length == 11
+      && this.getValueAtributoDadosCliente('cpfCnpj').length == 14
       && this.dadosCliente.controls['cpfCnpj'].valid) {
 
       this.validaDuplicidadeCpfCnpjSubscription$ = this.clienteService.validaDuplicidadeCpfCnpj(this.getValueAtributoDadosCliente('cpfCnpj')).subscribe({
@@ -196,20 +216,21 @@ export class DadosPessoaisComponent {
   }
 
   obtemDadosDoClientePeloCnpj() {
-    this.obtemDadosClientePeloCnpjSubscription$ = this.brasilApiService.obtemDadosClientePeloCnpj(this.getValueAtributoDadosCliente('cpfCnpj')).subscribe({
-      next: retornoApi => this.setaClienteComInformacoesObtidasPeloCnpj(retornoApi),
-      error: error => {
-        this._snackBar.open('Ocorreu um erro na obtenção das informações do CNPJ', "Fechar", {
-          duration: 3500
-        })
-      },
-      complete: () => {
-        console.log('Informações do CNPJ digitado obtidas com sucesso');
-        this._snackBar.open('Informações do CNPJ obtidas', "Fechar", {
-          duration: 3500
-        });
-      }
-    })
+    this.obtemDadosClientePeloCnpjSubscription$ = this.brasilApiService.obtemDadosClientePeloCnpj(
+      this.getValueAtributoDadosCliente('cpfCnpj').replace('.', '').replace('-', '').replace('/', '')).subscribe({
+        next: retornoApi => this.setaClienteComInformacoesObtidasPeloCnpj(retornoApi),
+        error: error => {
+          this._snackBar.open('Nenhum CNPJ foi encontrado para obtenção automática de dados', "Fechar", {
+            duration: 3500
+          })
+        },
+        complete: () => {
+          console.log('Informações do CNPJ digitado obtidas com sucesso');
+          this._snackBar.open('Informações do CNPJ obtidas', "Fechar", {
+            duration: 3500
+          });
+        }
+      })
   }
 
   setaClienteComInformacoesObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
@@ -254,18 +275,38 @@ export class DadosPessoaisComponent {
         telefone.numero = '';
       }
       this.emissorDeTelefoneEncontradoNoCnpj.emit(telefone);
+      
     }
   }
 
   private setaClienteComInformacoesDeEnderecoObtidasPeloCnpj(cnpjResponse: CnpjResponse) {
-    let endereco: EnderecoResponse = new EnderecoResponse();
-    if (Util.isNotEmptyString(cnpjResponse.logradouro)) endereco.logradouro = cnpjResponse.logradouro;
-    if (Util.isNotEmptyString(cnpjResponse.numero)) endereco.numero = Util.transformStringToNumber(cnpjResponse.numero);
-    if (Util.isNotEmptyString(cnpjResponse.bairro)) endereco.bairro = cnpjResponse.bairro;
-    if (Util.isNotEmptyString(cnpjResponse.municipio)) endereco.cidade = cnpjResponse.municipio;
-    if (Util.isNotEmptyNumber(cnpjResponse.cep)) endereco.codigoPostal = cnpjResponse.cep.toString();
-    if (Util.isNotEmptyString(cnpjResponse.uf)) endereco.estado = cnpjResponse.uf;
-    if (Util.isNotEmptyString(cnpjResponse.complemento)) endereco.complemento = cnpjResponse.complemento;
+
+    if ((Util.isNotEmptyString(cnpjResponse.uf))) {
+      let estadosBrasileiros: string[] = [];
+      this.estados.forEach(estado => {
+        estadosBrasileiros.push(
+          estado.sigla
+        )
+      })
+
+      if (estadosBrasileiros.indexOf(cnpjResponse.uf) == -1) {
+        cnpjResponse.uf = null;
+      }
+
+    }
+    else {
+      cnpjResponse.uf = null;
+    }
+
+    let endereco: EnderecoResponse = {
+      logradouro: (Util.isNotEmptyString(cnpjResponse.logradouro)) ? cnpjResponse.logradouro : null,
+      numero: (Util.isNotEmptyString(cnpjResponse.numero)) ? Util.transformStringToNumber(cnpjResponse.numero) : null,
+      bairro: (Util.isNotEmptyString(cnpjResponse.bairro)) ? cnpjResponse.bairro : null,
+      cidade: (Util.isNotEmptyString(cnpjResponse.municipio)) ? cnpjResponse.municipio : null,
+      codigoPostal: (Util.isNotEmptyNumber(cnpjResponse.cep)) ? cnpjResponse.cep.toString() : null,
+      estado: cnpjResponse.uf,
+      complemento: (Util.isNotEmptyString(cnpjResponse.complemento)) ? cnpjResponse.complemento : null,
+    };
     this.emissorDeEnderecoEncontradoNoCnpj.emit(endereco);
   }
 
@@ -309,6 +350,44 @@ export class DadosPessoaisComponent {
         return;
       }
     }
+  }
+
+  realizaSetupDados(cliente: ClienteResponse) {
+    this.dadosCliente.setValue({
+      nome: cliente.nome,
+      tipoPessoa: cliente.tipoPessoa,
+      cpfCnpj: cliente.cpfCnpj,
+      inscricaoEstadual: cliente.inscricaoEstadual,
+      email: cliente.email,
+      dataNascimento: cliente.dataNascimento,
+      statusCliente: cliente.statusCliente
+    })
+    this.atualizaValidatorsTipoPessoaSetupAtualizacao();
+  }
+
+  atualizaValidatorsTipoPessoaSetupAtualizacao() {
+    if (this.getValueAtributoDadosCliente('tipoPessoa') == 'FISICA') {
+      this.inputLengthCpfCnpj = 14;
+      this.inputPatternCpfCnpj = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+      this.dadosCliente.controls['inscricaoEstadual'].disable();
+      this.dadosCliente.controls['dataNascimento'].enable();
+    }
+    else if (this.getValueAtributoDadosCliente('tipoPessoa') == 'JURIDICA') {
+      this.inputLengthCpfCnpj = 18;
+      this.inputPatternCpfCnpj = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/
+      this.dadosCliente.controls['inscricaoEstadual'].enable();
+      this.dadosCliente.controls['dataNascimento'].disable();
+    }
+
+    this.dadosCliente.controls['cpfCnpj'].setValidators(
+      [
+        Validators.maxLength(this.inputLengthCpfCnpj),
+        Validators.minLength(this.inputLengthCpfCnpj),
+        Validators.pattern(this.inputPatternCpfCnpj)
+      ]
+    );
+
+    this.dadosCliente.controls['cpfCnpj'].updateValueAndValidity();
   }
 
   retornaParaVisualizacaoDeClientes() {

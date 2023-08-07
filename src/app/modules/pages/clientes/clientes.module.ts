@@ -26,21 +26,16 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 
 import ptBr from '@angular/common/locales/pt';
 import { NovoComponent } from './criacao/novo/novo.component';
-import { AtualizacaoComponent } from './atualizacao/atualizacao/atualizacao.component';
 
 import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pessoais.component';
 import { DadosTelefoneComponent } from './criacao/novo/dados-telefone/dados-telefone.component';
 import { DadosEnderecoComponent } from './criacao/novo/dados-endereco/dados-endereco.component';
-import { AtualizaDadosPessoaisComponent } from './atualizacao/atualizacao/atualiza-dados-pessoais/atualiza-dados-pessoais.component';
-import { AtualizaDadosTelefoneComponent } from './atualizacao/atualizacao/atualiza-dados-telefone/atualiza-dados-telefone.component';
-import { AtualizaDadosEnderecoComponent } from './atualizacao/atualizacao/atualiza-dados-endereco/atualiza-dados-endereco.component';
 
 registerLocaleData(ptBr);
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, NovoComponent, AtualizacaoComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent, 
-    AtualizaDadosPessoaisComponent, AtualizaDadosTelefoneComponent, AtualizaDadosEnderecoComponent],
-  exports: [MenuComponent, ViewComponent, NovoComponent, AtualizacaoComponent],
+  declarations: [MenuComponent, ViewComponent, NovoComponent, DadosPessoaisComponent, DadosTelefoneComponent, DadosEnderecoComponent],
+  exports: [MenuComponent, ViewComponent, NovoComponent],
   imports: [
     CommonModule,
     SharedModule,

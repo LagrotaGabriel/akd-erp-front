@@ -1,4 +1,4 @@
 export const API_CONFIG = {
     baseUrl: 'http://localhost:8080/',
-    devToken: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0MjA3MDMyIiwiZXhwIjoxNjkwNzE0NDA2fQ.ID8KGNyYBizpWShPJN36Q8nKZCYThjEhVfoOLcNDv2k25hN8XiKEhCzTSmoKwttJcuWoQmm47MONUEe1be6L9A'
+    devToken: '	Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3NTAxODUwIiwiZXhwIjoxNjkxNzUwNjY2fQ.9RamjWW8kggCZMn6N1awgmTVd5YGlCeD3_su-RUVIuELNwrCzqvyup1hIUfVxAjVoCeIS-q-WVfCD7MOEOFCQQ'
 }

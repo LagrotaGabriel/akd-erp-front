@@ -2,6 +2,7 @@ import { EnderecoResponse } from "src/app/shared/models/endereco/response/Endere
 import { TelefoneRequest } from "src/app/shared/models/telefone/request/TelefoneRequest";
 
 export class ClienteRequest {
+    id: number;
     nome: string;
     tipoPessoa: string;
     statusCliente: string;
@@ -13,6 +14,7 @@ export class ClienteRequest {
     endereco: EnderecoResponse; 
 
     constructor(item) {
+        this.id = item?.id;
         this.nome = item?.nome;
         this.tipoPessoa = item?.tipoPessoa;
         this.statusCliente = item?.statusCliente;

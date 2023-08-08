@@ -4,8 +4,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-select/custom-select.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ColaboradorNovo } from '../../models/ColaboradorNovo';
 import { Util } from 'src/app/modules/utils/Util';
+import { ColaboradorResponse } from '../../models/response/colaborador/ColaboradorResponse';
+import { ColaboradorRequest } from '../../models/request/colaborador/ColaboradorRequest';
 
 @Component({
   selector: 'app-atualiza-dados-acesso',
@@ -34,11 +35,11 @@ export class AtualizaDadosAcessoComponent {
   @Output() emissorDeSolicitacaoDeEnvioDeFormulario = new EventEmitter();
 
   @Input() stepAtual: number;
-  @Input() colaboradorPreAtualizacao: ColaboradorNovo;
+  @Input() colaboradorPreAtualizacao: ColaboradorResponse;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (Util.isNotObjectEmpty(changes['colaboradorPreAtualizacao'])) {
-      let colaboradorRecebido: ColaboradorNovo = changes['colaboradorPreAtualizacao'].currentValue;
+      let colaboradorRecebido: ColaboradorRequest = changes['colaboradorPreAtualizacao'].currentValue;
       if (Util.isNotObjectEmpty(colaboradorRecebido)) this.atualizaFormDadosAcessoColaborador();
     }
 

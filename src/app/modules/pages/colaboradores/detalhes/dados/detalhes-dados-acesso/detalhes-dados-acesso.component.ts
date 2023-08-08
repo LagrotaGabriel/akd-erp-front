@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Colaborador } from '../../../models/Colaborador';
 import { slideUpDownAnimation } from 'src/app/shared/animations';
+import { ColaboradorResponse } from '../../../models/response/colaborador/ColaboradorResponse';
 
 @Component({
   selector: 'app-detalhes-dados-acesso',
@@ -9,7 +9,7 @@ import { slideUpDownAnimation } from 'src/app/shared/animations';
   animations: [slideUpDownAnimation]
 })
 export class DetalhesDadosAcessoComponent {
-  @Input() colaborador: Colaborador;
+  @Input() colaborador: ColaboradorResponse;
   dadosAcesso: boolean = false;
 
   realizaTratamentoCampoPermissao(permissao: string): string {

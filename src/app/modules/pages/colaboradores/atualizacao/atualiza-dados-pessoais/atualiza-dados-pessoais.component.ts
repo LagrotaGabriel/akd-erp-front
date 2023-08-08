@@ -9,8 +9,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-cep-response';
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
-import { ColaboradorNovo } from '../../models/ColaboradorNovo';
 import { Util } from 'src/app/modules/utils/Util';
+import { ColaboradorResponse } from '../../models/response/colaborador/ColaboradorResponse';
+import { ColaboradorRequest } from '../../models/request/colaborador/ColaboradorRequest';
 
 @Component({
   selector: 'app-atualiza-dados-pessoais',
@@ -60,11 +61,11 @@ export class AtualizaDadosPessoaisComponent {
   })
 
   @Input() stepAtual: number;
-  @Input() colaboradorPreAtualizacao: ColaboradorNovo;
+  @Input() colaboradorPreAtualizacao: ColaboradorResponse;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (Util.isNotObjectEmpty(changes['colaboradorPreAtualizacao'])) {
-      let colaboradorRecebido: ColaboradorNovo = changes['colaboradorPreAtualizacao'].currentValue;
+      let colaboradorRecebido: ColaboradorRequest = changes['colaboradorPreAtualizacao'].currentValue;
       if (Util.isNotObjectEmpty(colaboradorRecebido)) this.atualizaFormDadosPessoaisColaborador();
     }
 

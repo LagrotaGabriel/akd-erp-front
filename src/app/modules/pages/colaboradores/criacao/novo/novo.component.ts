@@ -4,8 +4,8 @@ import { FormGroup } from '@angular/forms';
 import { ColaboradorService } from '../../services/colaborador.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ColaboradorNovo } from '../../models/ColaboradorNovo';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ColaboradorRequest } from '../../models/request/colaborador/ColaboradorRequest';
 
 @Component({
   selector: 'app-novo',
@@ -19,7 +19,7 @@ export class NovoComponent {
     private _snackBar: MatSnackBar,
     private ref: ChangeDetectorRef) { }
 
-  private colaborador: ColaboradorNovo;
+  private colaborador: ColaboradorRequest;
   protected dadosColaborador: FormGroup;
   protected dadosProfissionais: FormGroup;
   protected dadosAcesso: FormGroup;
@@ -84,7 +84,6 @@ export class NovoComponent {
       email: this.getValueAtributoDadosColaborador('email') != '' ? this.getValueAtributoDadosColaborador('email') : null,
       telefone: this.getValueAtributoDadosColaborador('tipoTelefone') != ''
         ? {
-          telefoneCompleto: '(' + (this.getValueAtributoDadosColaborador('prefixo')) + ') ' + this.getValueAtributoDadosColaborador('numeroTelefone'),
           tipoTelefone: this.getValueAtributoDadosColaborador('tipoTelefone'),
           prefixo: this.getValueAtributoDadosColaborador('prefixo'),
           numero: this.getValueAtributoDadosColaborador('numeroTelefone')
@@ -92,7 +91,6 @@ export class NovoComponent {
         : null,
       endereco: this.getValueAtributoDadosColaborador('logradouro') != null && this.getValueAtributoDadosColaborador('logradouro') != ''
         ? {
-          id: null,
           codigoPostal: this.getValueAtributoDadosColaborador('codigoPostal') != '' ? this.getValueAtributoDadosColaborador('codigoPostal') : null,
           estado: this.getValueAtributoDadosColaborador('estado') != '' ? this.getValueAtributoDadosColaborador('estado') : null,
           cidade: this.getValueAtributoDadosColaborador('cidade') != '' ? this.getValueAtributoDadosColaborador('cidade') : null,

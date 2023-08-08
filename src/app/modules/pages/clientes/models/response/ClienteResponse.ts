@@ -45,7 +45,7 @@ export class ClienteResponse {
         this.options = {
             detalhesHabilitado: true,
             editarHabilitado: true,
-            removerHabilitado: false
+            removerHabilitado: true
         }
     }
 }

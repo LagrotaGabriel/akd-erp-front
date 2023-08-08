@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TableTd } from 'src/app/modules/shared/tabela/models/TableTd';

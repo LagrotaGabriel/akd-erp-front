@@ -3,8 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { API_CONFIG } from 'src/app/config/api-config';
-import { AdvertenciaPageObject } from '../detalhes/models/AdvertenciaPageObject';
-import { Advertencia } from '../models/Advertencia';
+import { AdvertenciaPageObject } from '../models/response/advertencia/AdvertenciaPageObject';
+import { AdvertenciaRequest } from '../models/request/advertencia/AdvertenciaRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -108,7 +108,7 @@ export class AdvertenciaService {
       )
   }
 
-  public novaAdvertencia(advertencia: Advertencia, arquivoAdvertencia: Blob, idColaborador: number): any {
+  public novaAdvertencia(advertencia: AdvertenciaRequest, arquivoAdvertencia: Blob, idColaborador: number): any {
     this.httpOptions.body = null;
     this.httpOptions.params = new HttpParams();
     let formData = new FormData();

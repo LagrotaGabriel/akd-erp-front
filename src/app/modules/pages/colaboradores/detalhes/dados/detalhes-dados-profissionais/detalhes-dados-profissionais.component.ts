@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Colaborador } from '../../../models/Colaborador';
 import { slideUpDownAnimation } from 'src/app/shared/animations';
+import { ColaboradorResponse } from '../../../models/response/colaborador/ColaboradorResponse';
 
 @Component({
   selector: 'app-detalhes-dados-profissionais',
@@ -10,7 +10,7 @@ import { slideUpDownAnimation } from 'src/app/shared/animations';
 })
 export class DetalhesDadosProfissionaisComponent {
   dadosProfissionais: boolean = false;
-  @Input() colaborador: Colaborador;
+  @Input() colaborador: ColaboradorResponse;
 
   realizaTratamentoTipoOcupacao(tipoOcupacao: string): string {
     switch (tipoOcupacao) {

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { AcaoPageObject } from '../../models/AcaoPageObject';
+import { AcaoPageObject } from '../../../models/response/acao/AcaoPageObject';
 import { AcaoService } from '../../../services/acao.service';
 import { Util } from 'src/app/modules/utils/Util';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Acao } from '../../../models/Acao';
 import { slideUpDownAnimation } from 'src/app/shared/animations';
 import { Subscription } from 'rxjs';
+import { AcaoResponse } from '../../../models/response/acao/AcaoResponse';
 
 @Component({
   selector: 'app-alteracoes',
@@ -33,7 +33,7 @@ export class AlteracoesComponent {
     if (Util.isNotObjectEmpty(this.getAcoesSubscription$)) this.getAcoesSubscription$.unsubscribe();
   }
 
-  converteTextoTipoAcao(acao: Acao): string {
+  converteTextoTipoAcao(acao: AcaoResponse): string {
     switch (acao.tipoAcaoEnum) {
       case 'CRIACAO': { return 'Criação'; }
       case 'ALTERACAO': { return 'Alteração'; }
@@ -44,7 +44,7 @@ export class AlteracoesComponent {
     }
   }
 
-  converteTextoTipoModulo(acao: Acao): string {
+  converteTextoTipoModulo(acao: AcaoResponse): string {
     switch (acao.moduloEnum) {
       case 'HOME': { return 'Home'; }
       case 'CLIENTES': { return 'Cliente'; }
@@ -62,7 +62,7 @@ export class AlteracoesComponent {
     }
   }
 
-  tituloAcao(acao: Acao): string {
+  tituloAcao(acao: AcaoResponse): string {
     let texto: string = '';
     texto += this.converteTextoTipoAcao(acao) + ' de ' + this.converteTextoTipoModulo(acao);
     return texto;
@@ -80,7 +80,7 @@ export class AlteracoesComponent {
       })
   }
 
-  expandeAcao(acao: Acao) {
+  expandeAcao(acao: AcaoResponse) {
     if (Util.isNotEmptyString(acao?.observacao)) acao.expandido = !acao?.expandido;
   }
 

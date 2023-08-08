@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { API_CONFIG } from 'src/app/config/api-config';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AcaoPageObject } from '../detalhes/models/AcaoPageObject';
+import { AcaoPageObject } from '../models/response/acao/AcaoPageObject';
 
 @Injectable({
   providedIn: 'root'

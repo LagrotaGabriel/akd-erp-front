@@ -118,7 +118,7 @@ export class TabelaComponent {
   alteraEstadoCheckTabela(indice: number) {
     if (this.objetos[indice].checked) {
       let indiceNaListaDeSelecionados: number =
-        this.itensSelecionadosNaTabela.findIndex(clienteSelecionado => clienteSelecionado.id === this.objetos[indice].id);
+        this.itensSelecionadosNaTabela.findIndex(itemSelecionado => itemSelecionado.id === this.objetos[indice].id);
       this.itensSelecionadosNaTabela =
         this.itensSelecionadosNaTabela.filter((_, item) => item < indiceNaListaDeSelecionados || item >= indiceNaListaDeSelecionados + 1);
     }

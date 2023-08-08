@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
-import { ViewComponent } from "./visualizacao/view/view.component";
+import { ViewComponent } from "./view/view.component";
 import { NovoComponent } from './criacao/novo/novo.component';
 import { AtualizacaoComponent } from './atualizacao/atualizacao.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';

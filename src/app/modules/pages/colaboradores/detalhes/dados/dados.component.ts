@@ -1,11 +1,11 @@
 import { Component, Input, ChangeDetectorRef } from '@angular/core';
-import { Colaborador } from '../../models/Colaborador';
 import { Util } from 'src/app/modules/utils/Util';
 import { ColaboradorService } from '../../services/colaborador.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { slideUpDownAnimation } from 'src/app/shared/animations';
 import { Subscription } from 'rxjs';
+import { ColaboradorResponse } from '../../models/response/colaborador/ColaboradorResponse';
 
 @Component({
   selector: 'app-dados',
@@ -24,7 +24,7 @@ export class DadosComponent {
   }
 
   private idColaborador: number;
-  @Input() colaborador: Colaborador;
+  @Input() colaborador: ColaboradorResponse;
 
   dadosAcesso: boolean = false;
 
@@ -93,7 +93,7 @@ export class DadosComponent {
     })
   }
 
-  obtemSrcImagem(colaborador: Colaborador) {
+  obtemSrcImagem(colaborador: ColaboradorResponse) {
     if (Util.isObjectEmpty(colaborador?.fotoPerfil)) this.urlImagemPerfil = '/assets/imgs/profile_photo.png';
     else {
       this.obtemImagemPerfilColaboradorSubscription$ = this.colaboradorService.obtemImagemPerfilColaborador(colaborador.id).subscribe({
@@ -152,7 +152,7 @@ export class DadosComponent {
       else {
         fotoPerfil = event.target.files[0];
         this.atualizaImagemPerfilColaboradorSubscription$ = this.colaboradorService.atualizaImagemPerfilColaborador(this.colaborador.id, fotoPerfil).subscribe({
-          next: (response: Colaborador) => {
+          next: (response: ColaboradorResponse) => {
             this.colaborador = response;
             this.obtemSrcImagem(response);
           },
@@ -170,7 +170,7 @@ export class DadosComponent {
 
   realizaChamadaServicoDeExclusaoDeImagemDePerfilDoColaborador() {
     this.atualizaImagemPerfilColaboradorSubscription$ = this.colaboradorService.atualizaImagemPerfilColaborador(this.colaborador.id, null).subscribe({
-      next: (response: Colaborador) => {
+      next: (response: ColaboradorResponse) => {
         this.colaborador = response;
       },
       complete: () => {

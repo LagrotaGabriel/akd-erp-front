@@ -4,9 +4,10 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { ColaboradorService } from '../services/colaborador.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ColaboradorNovo } from '../models/ColaboradorNovo';
 import { FormGroup } from '@angular/forms';
 import { Util } from 'src/app/modules/utils/Util';
+import { ColaboradorResponse } from '../models/response/colaborador/ColaboradorResponse';
+import { ColaboradorRequest } from '../models/request/colaborador/ColaboradorRequest';
 
 @Component({
   selector: 'app-atualizacao',
@@ -26,8 +27,8 @@ export class AtualizacaoComponent {
   protected contratoContratacao: File;
   private criaNovoColaboradorSubscription$: Subscription;
 
-  colaboradorPreAtualizacao: ColaboradorNovo;
-  private colaborador: ColaboradorNovo;
+  colaboradorPreAtualizacao: ColaboradorResponse;
+  private colaborador: ColaboradorRequest;
 
   // Subscriptions
   atualizaColaboradorSubscription$: Subscription;
@@ -66,7 +67,7 @@ export class AtualizacaoComponent {
 
   inicializarColaborador() {
     this.obtemColaboradorPorIdSubscription$ = this.colaboradorService.obtemColaboradorPorId(this.idColaborador).subscribe({
-      next: (colaborador: ColaboradorNovo) => {
+      next: (colaborador: ColaboradorResponse) => {
         this.colaboradorPreAtualizacao = colaborador;
       }
     })
@@ -114,7 +115,6 @@ export class AtualizacaoComponent {
       email: this.getValueAtributoDadosColaborador('email') != '' ? this.getValueAtributoDadosColaborador('email') : null,
       telefone: this.getValueAtributoDadosColaborador('tipoTelefone') != ''
         ? {
-          telefoneCompleto: '(' + (this.getValueAtributoDadosColaborador('prefixo')) + ') ' + this.getValueAtributoDadosColaborador('numeroTelefone'),
           tipoTelefone: this.getValueAtributoDadosColaborador('tipoTelefone'),
           prefixo: this.getValueAtributoDadosColaborador('prefixo'),
           numero: this.getValueAtributoDadosColaborador('numeroTelefone')
@@ -122,7 +122,6 @@ export class AtualizacaoComponent {
         : null,
       endereco: this.getValueAtributoDadosColaborador('logradouro') != null && this.getValueAtributoDadosColaborador('logradouro') != ''
         ? {
-          id: null,
           codigoPostal: this.getValueAtributoDadosColaborador('codigoPostal') != '' ? this.getValueAtributoDadosColaborador('codigoPostal') : null,
           estado: this.getValueAtributoDadosColaborador('estado') != '' ? this.getValueAtributoDadosColaborador('estado') : null,
           cidade: this.getValueAtributoDadosColaborador('cidade') != '' ? this.getValueAtributoDadosColaborador('cidade') : null,

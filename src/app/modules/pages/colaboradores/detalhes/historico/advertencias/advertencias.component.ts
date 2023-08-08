@@ -1,15 +1,16 @@
 import { Component, ViewChild, Input, SimpleChanges } from '@angular/core';
 import { AdvertenciaService } from '../../../services/advertencia.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdvertenciaPageObject } from '../../models/AdvertenciaPageObject';
+import { AdvertenciaPageObject } from '../../../models/response/advertencia/AdvertenciaPageObject';
 import { Util } from 'src/app/modules/utils/Util';
-import { Advertencia } from '../../../models/Advertencia';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { fadeInOutAnimation, slideUpDownAnimation } from 'src/app/shared/animations';
 import { CustomInputComponent } from 'src/app/modules/shared/inputs/custom-input/custom-input.component';
 import { Subscription } from 'rxjs';
+import { AdvertenciaRequest } from '../../../models/request/advertencia/AdvertenciaRequest';
+import { AdvertenciaResponse } from '../../../models/response/advertencia/AdvertenciaResponse';
 
 @Component({
   selector: 'app-advertencias',
@@ -32,7 +33,7 @@ export class AdvertenciasComponent {
 
   @ViewChild('inputMotivo') inputMotivo: CustomInputComponent;
 
-  private novaAdvertencia: Advertencia
+  private advertenciaRequest: AdvertenciaRequest;
   protected dadosNovaAdvertencia: FormGroup = this.createFormDadosCliente();
 
   protected documentoAdvertencia: File;
@@ -173,7 +174,7 @@ export class AdvertenciasComponent {
   protected gerarAdvertencia() {
     if (this.dadosNovaAdvertencia.valid) {
       this.constroiObjetoAdvertencia();
-      this.novaAdvertenciaSubscription$ = this.advertenciaService.novaAdvertencia(this.novaAdvertencia, this.documentoAdvertencia, parseInt(this.activatedRoute.snapshot.paramMap.get('id')));
+      this.novaAdvertenciaSubscription$ = this.advertenciaService.novaAdvertencia(this.advertenciaRequest, this.documentoAdvertencia, parseInt(this.activatedRoute.snapshot.paramMap.get('id')));
       setTimeout(() => {
         this.realizaObtencaoDasAdvertenciasDoColaborador();
       }, 2000);
@@ -187,14 +188,14 @@ export class AdvertenciasComponent {
   }
 
   protected constroiObjetoAdvertencia() {
-    this.novaAdvertencia = {
+    this.advertenciaRequest = {
       motivo: this.getValueAtributoDadosNovaAdvertencia('motivo'),
       descricao: this.getValueAtributoDadosNovaAdvertencia('descricao'),
       statusAdvertenciaEnum: this.getValueAtributoDadosNovaAdvertencia('status')
     }
   }
 
-  protected chamadaServicoDeObtencaoDeAnexoAdvertencia(advertencia: Advertencia) {
+  protected chamadaServicoDeObtencaoDeAnexoAdvertencia(advertencia: AdvertenciaResponse) {
     if (Util.isObjectEmpty(advertencia.advertenciaAssinada)) return null;
     this.obtemAnexoAdvertenciaSubscription$ = this.advertenciaService.obtemAnexoAdvertencia(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id);
   }
@@ -203,7 +204,7 @@ export class AdvertenciasComponent {
     this.obtemPdfPadraoSubscription$ = this.advertenciaService.obtemPdfPadrao(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), idAdvertencia);
   }
 
-  protected chamadaServicoDeAtualizacaoDeStatusAdvertencia(advertencia: Advertencia) {
+  protected chamadaServicoDeAtualizacaoDeStatusAdvertencia(advertencia: AdvertenciaResponse) {
 
     let novoStatusAdvertencia: string = advertencia.statusAdvertenciaEnum == 'PENDENTE' ? 'ASSINADA' : 'PENDENTE';
 
@@ -217,7 +218,7 @@ export class AdvertenciasComponent {
     });
   }
 
-  protected chamadaServicoDeRemocaoDeAdvertencia(advertencia: Advertencia) {
+  protected chamadaServicoDeRemocaoDeAdvertencia(advertencia: AdvertenciaResponse) {
 
     this.removeAdvertenciaSubscription$ = this.advertenciaService.removeAdvertencia(parseInt(this.activatedRoute.snapshot.paramMap.get('id')), advertencia.id).subscribe({
       complete: () => {
@@ -229,7 +230,7 @@ export class AdvertenciasComponent {
     });
   }
 
-  protected atualizaArquivoAdvertencia(event, advertencia: Advertencia) {
+  protected atualizaArquivoAdvertencia(event, advertencia: AdvertenciaResponse) {
 
     if (advertencia.advertenciaAssinada != null) {
       if (!window.confirm('Tem certeza que deseja substituir o arquivo existente na advertência?')) return;

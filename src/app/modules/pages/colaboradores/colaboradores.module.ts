@@ -12,12 +12,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { ViewComponent } from './visualizacao/view/view.component';
-import { MenuComponent } from './visualizacao/menu/menu.component';
-import { TabelaComponent } from './visualizacao/tabela/tabela.component';
-import { PaginacaoComponent } from './visualizacao/tabela/paginacao/paginacao.component';
-import { CabecalhoComponent } from './visualizacao/tabela/cabecalho/cabecalho.component';
-import { AcordeaoComponent } from './visualizacao/tabela/acordeao/acordeao.component';
+import { ViewComponent } from './view/view.component';
 import { NovoComponent } from './criacao/novo/novo.component';
 import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pessoais.component';
 import { DadosProfissionaisComponent } from './criacao/novo/dados-profissionais/dados-profissionais.component';
@@ -41,8 +36,10 @@ import { DetalhesDadosProfissionaisComponent } from './detalhes/dados/detalhes-d
 import { DetalhesDadosAcessoComponent } from './detalhes/dados/detalhes-dados-acesso/detalhes-dados-acesso.component';
 
 @NgModule({
-  declarations: [MenuComponent, ViewComponent, TabelaComponent, PaginacaoComponent, CabecalhoComponent, AcordeaoComponent, NovoComponent,
-    DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent, CustomTitleContainerComponent, AtualizacaoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosProfissionaisComponent, AtualizaDadosAcessoComponent, DetalhesComponent, AlteracoesComponent, ProdutividadeComponent, AdvertenciasComponent, AcessosComponent, DadosComponent, HistoricoComponent, DetalhesDadosPessoaisComponent, DetalhesDadosProfissionaisComponent, DetalhesDadosAcessoComponent],
+  declarations: [ViewComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent,
+    CustomTitleContainerComponent, AtualizacaoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosProfissionaisComponent,
+    AtualizaDadosAcessoComponent, DetalhesComponent, AlteracoesComponent, ProdutividadeComponent, AdvertenciasComponent, AcessosComponent,
+    DadosComponent, HistoricoComponent, DetalhesDadosPessoaisComponent, DetalhesDadosProfissionaisComponent, DetalhesDadosAcessoComponent],
   imports: [
     CommonModule,
     BrowserModule,
@@ -58,9 +55,7 @@ import { DetalhesDadosAcessoComponent } from './detalhes/dados/detalhes-dados-ac
     MatTabsModule,
     MatMenuModule
   ],
-  exports: [
-    MenuComponent, ViewComponent, TabelaComponent
-  ],
+  exports: [ViewComponent],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt' },
   ],

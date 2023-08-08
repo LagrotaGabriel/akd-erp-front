@@ -4,9 +4,9 @@ import { API_CONFIG } from 'src/app/config/api-config';
 
 import { catchError, map, Observable, retry, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PageObject } from '../visualizacao/models/PageObject';
-import { ColaboradorNovo } from '../models/ColaboradorNovo';
-import { Colaborador } from '../models/Colaborador';
+import { ColaboradorRequest } from '../models/request/colaborador/ColaboradorRequest';
+import { ColaboradorResponse } from '../models/response/colaborador/ColaboradorResponse';
+import { ColaboradorPageObject } from '../models/response/colaborador/ColaboradorPageObject';
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +35,12 @@ export class ColaboradorService {
       )
   }
 
-  public atualizaImagemPerfilColaborador(idColaborador: number, imagemPerfil: Blob): Observable<Colaborador> {
+  public atualizaImagemPerfilColaborador(idColaborador: number, imagemPerfil: Blob): Observable<ColaboradorResponse> {
     this.httpOptions.body = null;
     let formData = new FormData();
     formData.append("imagemPerfil", imagemPerfil);
-    return this.http.put<Colaborador>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/imagem-perfil/${idColaborador}`, formData, this.httpOptions).pipe(
-      map((response) => new Colaborador(response)),
+    return this.http.put<ColaboradorResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/imagem-perfil/${idColaborador}`, formData, this.httpOptions).pipe(
+      map((response) => new ColaboradorResponse(response)),
       catchError((error: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
         console.log(error);
@@ -49,7 +49,7 @@ export class ColaboradorService {
     )
   }
 
-  public atualizaColaborador(idColaborador: number, colaborador: ColaboradorNovo, contratoColaborador: Blob): Observable<string> {
+  public atualizaColaborador(idColaborador: number, colaborador: ColaboradorRequest, contratoColaborador: Blob): Observable<string> {
     this.httpOptions.body = null;
     let formData = new FormData();
     formData.append("contratoColaborador", contratoColaborador);
@@ -64,11 +64,11 @@ export class ColaboradorService {
     )
   }
 
-  public obtemDetalhesDoColaboradorPorId(id: number): Observable<Colaborador> {
+  public obtemDetalhesDoColaboradorPorId(id: number): Observable<ColaboradorResponse> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
-    return this.http.get<Colaborador>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
-      map((resposta) => new Colaborador(resposta)),
+    return this.http.get<ColaboradorResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
+      map((resposta) => new ColaboradorResponse(resposta)),
       catchError((error: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
         console.log(error);
@@ -77,11 +77,11 @@ export class ColaboradorService {
     )
   }
 
-  public obtemColaboradorPorId(id: number): Observable<ColaboradorNovo> {
+  public obtemColaboradorPorId(id: number): Observable<ColaboradorResponse> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
-    return this.http.get<ColaboradorNovo>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
-      map((resposta) => new ColaboradorNovo(resposta)),
+    return this.http.get<ColaboradorResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
+      map((resposta) => new ColaboradorResponse(resposta)),
       catchError((error: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
         console.log(error);
@@ -90,11 +90,11 @@ export class ColaboradorService {
     )
   }
 
-  public novoColaborador(colaboradorNovo: ColaboradorNovo, contratoColaborador: Blob): Observable<string> {
+  public novoColaborador(colaboradorRequest: ColaboradorRequest, contratoColaborador: Blob): Observable<string> {
     this.httpOptions.body = null;
     let formData = new FormData();
     formData.append("contratoColaborador", contratoColaborador);
-    formData.append("colaborador", JSON.stringify(colaboradorNovo));
+    formData.append("colaborador", JSON.stringify(colaboradorRequest));
 
     return this.http.post<string>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador`, formData, this.httpOptions).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -117,13 +117,13 @@ export class ColaboradorService {
     )
   }
 
-  public getColaboradores(valorBusca: string, pageableInfo: PageObject): Observable<PageObject> {
+  public getColaboradores(valorBusca: string, pageableInfo: ColaboradorPageObject): Observable<ColaboradorPageObject> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
     this.buildRequestParams(valorBusca);
     this.buildPageableParams(pageableInfo);
-    return this.http.get<PageObject>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador`, this.httpOptions).pipe(
-      map(resposta => new PageObject(resposta)),
+    return this.http.get<ColaboradorPageObject>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador`, this.httpOptions).pipe(
+      map(resposta => new ColaboradorPageObject(resposta)),
       catchError((error: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaListagemDeItens(error);
         console.log(error);
@@ -143,10 +143,10 @@ export class ColaboradorService {
     )
   }
 
-  public removeColaborador(id: number): Observable<Colaborador> {
+  public removeColaborador(id: number): Observable<ColaboradorResponse> {
     this.httpOptions.body = null;
-    return this.http.delete<Colaborador>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
-      map(resposta => new Colaborador(resposta)),
+    return this.http.delete<ColaboradorResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/colaborador/${id}`, this.httpOptions).pipe(
+      map(resposta => new ColaboradorResponse(resposta)),
       catchError((httpErrorResponse: HttpErrorResponse) => {
         this.implementaLogicaDeCapturaDeErroNaExclusaoDeItens(httpErrorResponse);
         return throwError(() => new HttpErrorResponse(httpErrorResponse));
@@ -211,7 +211,7 @@ export class ColaboradorService {
     }
   }
 
-  private buildPageableParams(pageableInfo: PageObject) {
+  private buildPageableParams(pageableInfo: ColaboradorPageObject) {
     if (pageableInfo != null) {
       this.httpOptions.params = this.httpOptions.params.set('page', pageableInfo.pageNumber);
       this.httpOptions.params = this.httpOptions.params.set('size', pageableInfo.pageSize);

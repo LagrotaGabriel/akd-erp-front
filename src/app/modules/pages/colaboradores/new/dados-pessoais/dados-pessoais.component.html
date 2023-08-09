@@ -18,7 +18,7 @@
     <app-custom-input class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [id]="'cpf'" [titulo]="'CPF'" [tabIndex]="2"
         [maxLength]="20" [touched]="dadosColaborador.controls['cpfCnpj'].touched"
         [disabledGroup]="dadosColaborador.controls['cpfCnpj'].disabled" [todosCaracteresMaiusculos]="false"
-        [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj()"
+        [customIcon]="'badge'" (input)="realizaTratamentoCpfCnpj($event)"
         [valido]="!(dadosColaborador.controls['cpfCnpj'].touched && dadosColaborador.controls['cpfCnpj'].invalid)"
         [mensagemErro]="'Mínimo de ' + inputLengthCpfCnpj + ' caracteres numéricos'"
         formControlName="cpfCnpj" #inputCpfCnpj></app-custom-input>
@@ -73,11 +73,11 @@
 
     <!-- INPUT GROUP CEP -->
     <app-custom-input class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12" [id]="'cep'" [titulo]="'Cep'" [tabIndex]="8"
-        [maxLength]="8" [touched]="dadosColaborador.controls['codigoPostal'].touched"
+        [maxLength]="9" [touched]="dadosColaborador.controls['codigoPostal'].touched"
         [todosCaracteresMaiusculos]="false" [customIcon]="null"
-        [disabledGroup]="dadosColaborador.controls['codigoPostal'].disabled" (input)="realizaTratamentoCodigoPostal()"
+        [disabledGroup]="dadosColaborador.controls['codigoPostal'].disabled" (input)="realizaTratamentoCodigoPostal($event)"
         [valido]="!(dadosColaborador.controls['codigoPostal'].touched && dadosColaborador.controls['codigoPostal'].invalid)"
-        [mensagemErro]="'Mínimo de 8 caracteres numéricos'" formControlName="codigoPostal"
+        [mensagemErro]="'Mínimo de 9 caracteres numéricos'" formControlName="codigoPostal"
         #inputCodigoPostal></app-custom-input>
 
     <!-- SELECT GROUP ESTADO -->

@@ -13,17 +13,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { ViewComponent } from './view/view.component';
-import { NovoComponent } from './criacao/novo/novo.component';
-import { DadosPessoaisComponent } from './criacao/novo/dados-pessoais/dados-pessoais.component';
-import { DadosProfissionaisComponent } from './criacao/novo/dados-profissionais/dados-profissionais.component';
-import { DadosAcessoComponent } from './criacao/novo/dados-acesso/dados-acesso.component';
 
-import { CustomTitleContainerComponent } from './criacao/novo/shared/custom-title-container/custom-title-container.component';
 import { SharedModule } from '../../shared/shared.module';
-import { AtualizacaoComponent } from './atualizacao/atualizacao.component';
-import { AtualizaDadosPessoaisComponent } from './atualizacao/atualiza-dados-pessoais/atualiza-dados-pessoais.component';
-import { AtualizaDadosProfissionaisComponent } from './atualizacao/atualiza-dados-profissionais/atualiza-dados-profissionais.component';
-import { AtualizaDadosAcessoComponent } from './atualizacao/atualiza-dados-acesso/atualiza-dados-acesso.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { AlteracoesComponent } from './detalhes/historico/alteracoes/alteracoes.component';
 import { ProdutividadeComponent } from './detalhes/historico/produtividade/produtividade.component';
@@ -34,12 +25,16 @@ import { HistoricoComponent } from './detalhes/historico/historico.component';
 import { DetalhesDadosPessoaisComponent } from './detalhes/dados/detalhes-dados-pessoais/detalhes-dados-pessoais.component';
 import { DetalhesDadosProfissionaisComponent } from './detalhes/dados/detalhes-dados-profissionais/detalhes-dados-profissionais.component';
 import { DetalhesDadosAcessoComponent } from './detalhes/dados/detalhes-dados-acesso/detalhes-dados-acesso.component';
+import { NewComponent } from './new/new.component';
+import { DadosPessoaisComponent } from './new/dados-pessoais/dados-pessoais.component';
+import { DadosProfissionaisComponent } from './new/dados-profissionais/dados-profissionais.component';
+import { DadosAcessoComponent } from './new/dados-acesso/dados-acesso.component';
+import { CustomTitleContainerComponent } from './new/custom-title-container/custom-title-container.component';
 
 @NgModule({
-  declarations: [ViewComponent, NovoComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent,
-    CustomTitleContainerComponent, AtualizacaoComponent, AtualizaDadosPessoaisComponent, AtualizaDadosProfissionaisComponent,
-    AtualizaDadosAcessoComponent, DetalhesComponent, AlteracoesComponent, ProdutividadeComponent, AdvertenciasComponent, AcessosComponent,
-    DadosComponent, HistoricoComponent, DetalhesDadosPessoaisComponent, DetalhesDadosProfissionaisComponent, DetalhesDadosAcessoComponent],
+  declarations: [ViewComponent, DadosPessoaisComponent, DadosProfissionaisComponent, DadosAcessoComponent,
+    CustomTitleContainerComponent, DetalhesComponent, AlteracoesComponent, ProdutividadeComponent, AdvertenciasComponent, AcessosComponent,
+    DadosComponent, HistoricoComponent, DetalhesDadosPessoaisComponent, DetalhesDadosProfissionaisComponent, DetalhesDadosAcessoComponent, NewComponent],
   imports: [
     CommonModule,
     BrowserModule,

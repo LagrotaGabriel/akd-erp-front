@@ -1,14 +1,16 @@
 import { Subscription } from 'rxjs';
 import { Component, ViewChild, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SelectOption } from '../../../../../shared/inputs/models/select-option';
-import { CustomSelectComponent } from '../../../../../shared/inputs/custom-select/custom-select.component';
+import { SelectOption } from '../../../../shared/inputs/models/select-option';
+import { CustomSelectComponent } from '../../../../shared/inputs/custom-select/custom-select.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ColaboradorResponse } from '../../models/response/colaborador/ColaboradorResponse';
+import { Util } from 'src/app/modules/utils/Util';
 
 @Component({
   selector: 'app-dados-acesso',
   templateUrl: './dados-acesso.component.html',
-  styleUrls: ['../novo.component.scss']
+  styleUrls: ['../new.component.scss']
 })
 export class DadosAcessoComponent {
 
@@ -32,10 +34,20 @@ export class DadosAcessoComponent {
   @Output() emissorDeSolicitacaoDeEnvioDeFormulario = new EventEmitter();
 
   @Input() stepAtual: number;
+  @Input() setupDadosAcessoAtualizacao: ColaboradorResponse;
 
   ngOnChanges(changes: SimpleChanges): void {
+    let setupDadosAcessoAtualizacao = changes['setupDadosAcessoAtualizacao'];
+    if (Util.isNotObjectEmpty(setupDadosAcessoAtualizacao)) {
+      if (Util.isNotObjectEmpty(setupDadosAcessoAtualizacao.currentValue)) {
+        this.realizaSetupDadosAcesso(setupDadosAcessoAtualizacao.currentValue);
+      }
+    }
+
     if (this.stepAtual == 2) {
-      this.selectAcessoSistemaAtivo.acionaFoco();
+      setTimeout(() => {
+        this.selectAcessoSistemaAtivo.acionaFoco();
+      }, 300);
     }
   }
 
@@ -134,6 +146,29 @@ export class DadosAcessoComponent {
       if (this.getValueAtributoDadosAcesso('senha') == '' || this.getValueAtributoDadosAcesso('senha') == null) return 'lock';
       else return 'check';
     }
+  }
+
+  realizaSetupDadosAcesso(colaborador: ColaboradorResponse) {
+
+    if (!colaborador.acessoSistema.acessoSistemaAtivo) {
+      this.dadosAcesso.controls['senha'].disable();
+      this.dadosAcesso.controls['permissaoEnum'].disable();
+      this.dadosAcesso.controls['privilegios'].disable();
+      this.modulosLiberados = [];
+    }
+    else {
+      this.dadosAcesso.controls['senha'].clearValidators();
+      this.modulosLiberados = colaborador.acessoSistema.privilegios;
+    }
+
+    console.log(colaborador.acessoSistema);
+
+    this.dadosAcesso.setValue({
+      acessoSistemaAtivo: colaborador.acessoSistema.acessoSistemaAtivo,
+      senha: '',
+      permissaoEnum: colaborador.acessoSistema.permissaoEnum,
+      privilegios: colaborador.acessoSistema.privilegios
+    })
   }
 
   protected solicitarEnvioDeFormulario() {

@@ -2,6 +2,7 @@ import { EnderecoRequest } from "src/app/shared/models/endereco/request/Endereco
 import { TelefoneRequest } from "src/app/shared/models/telefone/request/TelefoneRequest";
 import { ExpedienteRequest } from "../expediente/ExpedienteRequest";
 import { AcessoSistemaRequest } from "../acessoSistema/AcessoSistemaRequest";
+import { Arquivo } from "src/app/modules/shared/models/Arquivo";
 
 export class ColaboradorRequest {
     id?: number;
@@ -19,7 +20,7 @@ export class ColaboradorRequest {
     salario?: number;
     entradaEmpresa?: string;
     saidaEmpresa?: string;
-    contratoContratacao?: File;
+    contratoContratacao?: Arquivo;
     expediente?: ExpedienteRequest;
     acessoSistema?: AcessoSistemaRequest;
 

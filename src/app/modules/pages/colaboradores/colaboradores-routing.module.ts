@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
 import { ViewComponent } from "./view/view.component";
-import { NovoComponent } from './criacao/novo/novo.component';
-import { AtualizacaoComponent } from './atualizacao/atualizacao.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
+import { NewComponent } from './new/new.component';
 
 
 const routes: Routes = [
@@ -12,12 +11,8 @@ const routes: Routes = [
         component: ViewComponent
     },
     {
-        path: 'novo',
-        component: NovoComponent
-    },
-    {
-        path: 'alterar/:id',
-        component: AtualizacaoComponent
+        path: 'update',
+        component: NewComponent
     },
     {
         path: ':id',
@@ -28,5 +23,5 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-  })
-export class ColaboradoresRoutingModule {}
+})
+export class ColaboradoresRoutingModule { }

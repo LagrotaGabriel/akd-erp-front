@@ -8,13 +8,16 @@ import { ConsultaCepResponse } from 'src/app/shared/models/brasil-api/consulta-c
 import { EstadosResponse } from 'src/app/shared/models/brasil-api/estados-response';
 import { MunicipiosResponse } from 'src/app/shared/models/brasil-api/municipios-response';
 import { BrasilApiService } from 'src/app/shared/services/brasil-api.service';
-import { SelectOption } from '../../../../../shared/inputs/models/select-option';
-import { CustomInputComponent } from '../../../../../shared/inputs/custom-input/custom-input.component';
+import { SelectOption } from '../../../../shared/inputs/models/select-option';
+import { CustomInputComponent } from '../../../../shared/inputs/custom-input/custom-input.component';
+import { ColaboradorResponse } from '../../models/response/colaborador/ColaboradorResponse';
+import { Util } from 'src/app/modules/utils/Util';
+import { Mask } from 'src/app/modules/utils/Mask';
 
 @Component({
   selector: 'app-dados-pessoais',
   templateUrl: './dados-pessoais.component.html',
-  styleUrls: ['../novo.component.scss'],
+  styleUrls: ['../new.component.scss'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
@@ -36,8 +39,8 @@ export class DadosPessoaisComponent {
     private ref: ChangeDetectorRef) { }
 
   // Validations colaborador
-  protected inputLengthCpfCnpj: number = 11;
-  protected inputPatternCpfCnpj: any = /^\d{3}.?\d{3}.?\d{3}-?\d{2}/;
+  protected inputLengthCpfCnpj: number = 14;
+  protected inputPatternCpfCnpj: any = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
 
   // Validations telefone
   protected inputLengthPrefixo: number = 2;
@@ -71,10 +74,22 @@ export class DadosPessoaisComponent {
   })
 
   @Input() stepAtual: number;
+  @Input() setupDadosAtualizacao: ColaboradorResponse;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.stepAtual == 0 && !changes['stepAtual'].isFirstChange()) {
-      this.inputNome.acionaFoco();
+    let setupDadosAtualizacao = changes['setupDadosAtualizacao'];
+    if (Util.isNotObjectEmpty(setupDadosAtualizacao)) {
+      if (Util.isNotObjectEmpty(setupDadosAtualizacao.currentValue)) {
+        this.realizaSetupDados(setupDadosAtualizacao.currentValue);
+      }
+    }
+
+    if (Util.isNotObjectEmpty(changes['stepAtual'])) {
+      if (this.stepAtual == 0 && !changes['stepAtual'].isFirstChange()) {
+        setTimeout(() => {
+          this.inputNome.acionaFoco();
+        }, 300);
+      }
     }
   }
 
@@ -104,7 +119,14 @@ export class DadosPessoaisComponent {
       logradouro: [''],
       numero: [null],
       bairro: ['', Validators.maxLength(50)],
-      codigoPostal: ['', [Validators.maxLength(8), Validators.pattern(/^\d{5}\d{3}/)]],
+      codigoPostal:
+        ['',
+          [
+            Validators.minLength(9),
+            Validators.maxLength(9),
+            Validators.pattern(/^\d{5}\-\d{3}$/)
+          ]
+        ],
       cidade: ['', Validators.maxLength(50)],
       complemento: ['', Validators.maxLength(80)],
       estado: ['', Validators.maxLength(50)]
@@ -113,6 +135,10 @@ export class DadosPessoaisComponent {
 
   protected getValueAtributoDadosColaborador(atributo: string): any {
     return this.dadosColaborador.controls[atributo].value;
+  }
+
+  protected setValueParaAtributoDadosColaborador(atributo: string, valor: any) {
+    this.dadosColaborador.controls[atributo].setValue(valor);
   }
 
   // CPFCNPJ
@@ -126,12 +152,9 @@ export class DadosPessoaisComponent {
     }
   }
 
-  protected realizaTratamentoCpfCnpj() {
-    this.dadosColaborador.controls['cpfCnpj']
-      .setValue(this.getValueAtributoDadosColaborador('cpfCnpj')
-        .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
-        .replace(/[^0-9.]/g, '')
-        .trim())
+  realizaTratamentoCpfCnpj(tecla) {
+    if (tecla?.inputType != 'deleteContentBackward' || tecla == null)
+      this.setValueParaAtributoDadosColaborador('cpfCnpj', Mask.cpfMask(this.getValueAtributoDadosColaborador('cpfCnpj')));
   }
 
   // EMAIL
@@ -279,20 +302,17 @@ export class DadosPessoaisComponent {
     }
   }
 
-  // ENDEREÇO
-  protected realizaTratamentoCodigoPostal() {
+  // ENDERECO
 
-    this.atualizaValidatorsEndereco();
+  realizaTratamentoCodigoPostal(tecla) {
 
-    this.dadosColaborador.controls['codigoPostal']
-      .setValue(this.getValueAtributoDadosColaborador('codigoPostal')
-        .replace(/[&\/\\#,+@=!"_ªº¹²³£¢¬()$~%.;':*?<>{}-]/g, "")
-        .replace(/[^0-9.]/g, '')
-        .trim())
+    if (tecla?.inputType != 'deleteContentBackward' || tecla == null) {
+      this.setValueParaAtributoDadosColaborador('codigoPostal', Mask.cepMask(this.getValueAtributoDadosColaborador('codigoPostal')));
+    }
 
-    if (this.dadosColaborador.controls['codigoPostal'].valid && this.getValueAtributoDadosColaborador('codigoPostal').length == 8) {
+    if (this.dadosColaborador.controls['codigoPostal'].valid && this.getValueAtributoDadosColaborador('codigoPostal').length == 9) {
       this.getEnderecoPeloCepSubscription$ =
-        this.brasilApiService.getEnderecoPeloCep(this.getValueAtributoDadosColaborador('codigoPostal')).subscribe({
+        this.brasilApiService.getEnderecoPeloCep(this.getValueAtributoDadosColaborador('codigoPostal').replace('-', '')).subscribe({
           next: resposta => this.setaEnderecoComInformacoesObtidasPeloCep(resposta),
           error: error => {
             this._snackBar.open(error, "Fechar", {
@@ -422,6 +442,66 @@ export class DadosPessoaisComponent {
     else {
       this.municipiosResponse = [];
     }
+  }
+
+  realizaSetupDados(colaborador: ColaboradorResponse) {
+    this.dadosColaborador.setValue({
+      nome: colaborador.nome,
+      cpfCnpj: colaborador.cpfCnpj,
+      email: colaborador.email,
+      dataNascimento: colaborador.dataNascimento,
+      tipoTelefone: Util.isObjectEmpty(colaborador.telefone) ? '' : colaborador.telefone.tipoTelefone,
+      prefixo: Util.isObjectEmpty(colaborador.telefone) ? '' : colaborador.telefone.prefixo,
+      numeroTelefone: Util.isObjectEmpty(colaborador.telefone) ? '' : colaborador.telefone.numero,
+      logradouro: Util.isObjectEmpty(colaborador.endereco) ? '' : colaborador.endereco.logradouro,
+      numero: Util.isObjectEmpty(colaborador.endereco) ? null : colaborador.endereco.numero,
+      bairro: Util.isObjectEmpty(colaborador.endereco) ? '' : colaborador.endereco.bairro,
+      codigoPostal: Util.isObjectEmpty(colaborador.endereco) ? '' : colaborador.endereco.codigoPostal,
+      cidade: Util.isObjectEmpty(colaborador.endereco) ? '' : colaborador.endereco.cidade,
+      complemento: Util.isObjectEmpty(colaborador.endereco) ? '' : colaborador.endereco.complemento,
+      estado: Util.isObjectEmpty(colaborador.endereco) ? '' : colaborador.endereco.estado,
+    })
+
+    this.setupAtualizaValidatorsTelefone();
+    this.atualizaValidatorsEndereco();
+
+  }
+
+  protected setupAtualizaValidatorsTelefone() {
+    this.dadosColaborador.controls['prefixo'].clearValidators();
+    this.dadosColaborador.controls['numeroTelefone'].clearValidators();
+
+    if (this.dadosColaborador.controls['tipoTelefone'].value != '' && this.dadosColaborador.controls['tipoTelefone'].value != null) {
+
+      this.dadosColaborador.controls['prefixo'].enable();
+      this.dadosColaborador.controls['numeroTelefone'].enable();
+
+      if (this.dadosColaborador.controls['tipoTelefone'].value == 'FIXO') {
+        this.inputLengthTelefone = 8;
+        this.inputTelefonePattern = /^\d{4}\d{4}/;
+      }
+
+      else if (this.dadosColaborador.controls['tipoTelefone'].value == 'MOVEL' || this.dadosColaborador.controls['tipoTelefone'].value == 'MOVEL_WHATSAPP') {
+        this.inputLengthTelefone = 9;
+        this.inputTelefonePattern = /^\d\d{4}\d{4}/;
+      }
+
+      this.dadosColaborador.controls['prefixo'].addValidators(Validators.required);
+      this.dadosColaborador.controls['prefixo'].addValidators([Validators.maxLength(this.inputLengthPrefixo), Validators.minLength(this.inputLengthPrefixo)]);
+      this.dadosColaborador.controls['prefixo'].addValidators(Validators.pattern(this.inputPrefixoPattern));
+
+      this.dadosColaborador.controls['numeroTelefone'].addValidators(Validators.required);
+      this.dadosColaborador.controls['numeroTelefone'].addValidators([Validators.maxLength(this.inputLengthTelefone), Validators.minLength(this.inputLengthTelefone)]);
+      this.dadosColaborador.controls['numeroTelefone'].addValidators(Validators.pattern(this.inputTelefonePattern));
+    }
+
+    else {
+      this.dadosColaborador.controls['prefixo'].disable();
+      this.dadosColaborador.controls['numeroTelefone'].disable();
+    }
+
+    this.dadosColaborador.controls['prefixo'].updateValueAndValidity();
+    this.dadosColaborador.controls['numeroTelefone'].updateValueAndValidity();
   }
 
   protected retornaParaVisualizacao() {

@@ -1,35 +1,22 @@
-import { debounceTime, Subscription } from 'rxjs';
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomSelectComponent } from 'src/app/modules/shared/inputs/custom-select/custom-select.component';
-import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription, debounceTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ColaboradorService } from '../../services/colaborador.service';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { Util } from 'src/app/modules/utils/Util';
+import { SelectOption } from '../../../../shared/inputs/models/select-option';
+import { CustomSelectComponent } from '../../../../shared/inputs/custom-select/custom-select.component';
+import { fadeInOutAnimation } from 'src/app/shared/animations';
 import { ColaboradorResponse } from '../../models/response/colaborador/ColaboradorResponse';
-import { ColaboradorRequest } from '../../models/request/colaborador/ColaboradorRequest';
+import { Util } from 'src/app/modules/utils/Util';
 
 @Component({
-  selector: 'app-atualiza-dados-profissionais',
-  templateUrl: './atualiza-dados-profissionais.component.html',
-  styleUrls: ['../atualizacao.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate(300, style({ opacity: 0 }))
-      ])
-    ]),
-  ]
+  selector: 'app-dados-profissionais',
+  templateUrl: './dados-profissionais.component.html',
+  styleUrls: ['../new.component.scss'],
+  animations: [fadeInOutAnimation]
 })
-export class AtualizaDadosProfissionaisComponent {
+export class DadosProfissionaisComponent {
 
   constructor(private formBuilder: FormBuilder,
-    private colaboradorService: ColaboradorService,
     private _snackBar: MatSnackBar,
     private ref: ChangeDetectorRef) { }
 
@@ -48,27 +35,29 @@ export class AtualizaDadosProfissionaisComponent {
 
   protected ocupacoesResponse: string[] = [];
 
-  protected contratoContratacao: File = null;
+  protected contratoContratacao: File;
   @Output() emissorDeContratoContratacao = new EventEmitter<File>();
 
   @ViewChild('selectSetor') selectSetor: CustomSelectComponent;
   @ViewChild('inputSalario') inputSalario: ElementRef;
+  @ViewChild('botaoProximo') botaoProximo: ElementRef;
+  @ViewChild('botaoRetorno') botaoRetorno: ElementRef;
 
   @Input() stepAtual: number;
-  @Input() colaboradorPreAtualizacao: ColaboradorResponse;
+  @Input() setupDadosProfissionaisAtualizacao: ColaboradorResponse;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (Util.isNotObjectEmpty(changes['colaboradorPreAtualizacao'])) {
-      let colaboradorRecebido: ColaboradorRequest = changes['colaboradorPreAtualizacao'].currentValue;
-      if (Util.isNotObjectEmpty(colaboradorRecebido)) this.atualizaFormDadosProfissionaisColaborador();
+    let setupDadosProfissionaisAtualizacao = changes['setupDadosProfissionaisAtualizacao'];
+    if (Util.isNotObjectEmpty(setupDadosProfissionaisAtualizacao)) {
+      if (Util.isNotObjectEmpty(setupDadosProfissionaisAtualizacao.currentValue)) {
+        this.realizaSetupDadosProfissionais(setupDadosProfissionaisAtualizacao.currentValue);
+      }
     }
 
-    if (Util.isNotObjectEmpty(changes['stepAtual'])) {
-      if (this.stepAtual == 1) {
-        setTimeout(() => {
-          this.selectSetor.acionaFoco();
-        }, 300);
-      }
+    if (this.stepAtual == 1) {
+      setTimeout(() => {
+        this.selectSetor.acionaFoco();
+      }, 300);
     }
   }
 
@@ -85,180 +74,24 @@ export class AtualizaDadosProfissionaisComponent {
 
   private createForm(): FormGroup {
     return this.formBuilder.group({
-      tipoOcupacaoEnum: new FormControl(
-        {
-          value: 'TECNICO',
-          disabled: true
-        }
-      ),
-      ocupacao: new FormControl(
-        {
-          value: '',
-          disabled: true
-        }, Validators.maxLength(30)
-      ),
-      statusColaboradorEnum: new FormControl(
-        {
-          value: 'ATIVO',
-          disabled: true
-        }
-      ),
-      modeloContratacaoEnum: new FormControl(
-        {
-          value: 'CLT',
-          disabled: true
-        }
-      ),
-      modeloTrabalhoEnum: new FormControl(
-        {
-          value: 'PRESENCIAL',
-          disabled: true
-        }
-      ),
-      contratoContratacao: new FormControl(
-        {
-          value: '',
-          disabled: true
-        }
-      ),
-      salario: new FormControl(
-        {
-          value: 0.0,
-          disabled: true
-        },
-        [
-          Validators.max(9999999.00),
-          Validators.min(0.00)
-        ]
-      ),
-      entradaEmpresa: new FormControl(
-        {
-          value: '',
-          disabled: true
-        }
-      ),
-      saidaEmpresa: new FormControl(
-        {
-          value: '',
-          disabled: true
-        }
-      ),
-      horaEntrada: new FormControl(
-        {
-          value: '',
-          disabled: true
-        }
-      ),
-      horaSaidaAlmoco: new FormControl(
-        {
-          value: '',
-          disabled: true
-        }
-      ),
-      horaEntradaAlmoco: new FormControl(
-        {
-          value: '',
-          disabled: true
-        }
-      ),
-      horaSaida: new FormControl(
-        {
-          value: '',
-          disabled: true
-        }
-      ),
-      escalaEnum: new FormControl(
-        {
-          value: 'INDEFINIDA',
-          disabled: true
-        }, Validators.required
-      ),
-      cargaHorariaSemanal: new FormControl(
-        {
-          value: '0:00',
-          disabled: true
-        }
-      ),
+      tipoOcupacaoEnum: ['TECNICO'],
+      ocupacao: ['', Validators.maxLength(30)],
+      statusColaboradorEnum: ['ATIVO'],
+      modeloContratacaoEnum: ['CLT'],
+      modeloTrabalhoEnum: ['PRESENCIAL'],
+      contratoContratacao: [null],
+      salario: [0.0, [Validators.max(9999999.00), Validators.min(0.00)]],
+      entradaEmpresa: [''],
+      saidaEmpresa: [{ value: '', disabled: true }],
+      horaEntrada: [''],
+      horaSaidaAlmoco: [{ value: '', disabled: true }],
+      horaEntradaAlmoco: [{ value: '', disabled: true }],
+      horaSaida: [{ value: '', disabled: true }],
+      escalaEnum: [{ value: 'INDEFINIDA', disabled: true }],
+      cargaHorariaSemanal: [{ value: '0:00', disabled: true }],
     });
   }
 
-  private atualizaFormDadosProfissionaisColaborador() {
-    this.setaValoresFormDadosProfissionais();
-    this.administraLiberacaoOuBloqueioDosCamposFormDadosProfissionais();
-    this.setaValidatorsFormDadosProfissionais();
-    this.realizaSetupContratoColaborador();
-    this.emissorDeDadosProfissionaisDoColaborador.emit(this.dadosProfissionais);
-  }
-
-  private setaValoresFormDadosProfissionais() {
-    this.dadosProfissionais.setValue({
-      tipoOcupacaoEnum: this.colaboradorPreAtualizacao.tipoOcupacaoEnum,
-      ocupacao: Util.isEmptyString(this.colaboradorPreAtualizacao.ocupacao) ? '' : this.colaboradorPreAtualizacao.ocupacao,
-      statusColaboradorEnum: this.colaboradorPreAtualizacao.statusColaboradorEnum,
-      modeloContratacaoEnum: this.colaboradorPreAtualizacao.modeloContratacaoEnum,
-      modeloTrabalhoEnum: this.colaboradorPreAtualizacao.modeloTrabalhoEnum,
-      contratoContratacao: '',
-      salario: Util.isEmptyNumber(this.colaboradorPreAtualizacao.salario) ? 0.0 : this.colaboradorPreAtualizacao.salario,
-      entradaEmpresa: Util.isEmptyString(this.colaboradorPreAtualizacao.entradaEmpresa) ? '' : this.colaboradorPreAtualizacao.entradaEmpresa,
-      saidaEmpresa: Util.isEmptyString(this.colaboradorPreAtualizacao.saidaEmpresa) ? '' : this.colaboradorPreAtualizacao.saidaEmpresa,
-      horaEntrada: Util.isObjectEmpty(this.colaboradorPreAtualizacao.expediente) ? '' : this.colaboradorPreAtualizacao.expediente.horaEntrada,
-      horaSaidaAlmoco: Util.isObjectEmpty(this.colaboradorPreAtualizacao.expediente) ? '' : this.colaboradorPreAtualizacao.expediente.horaSaidaAlmoco,
-      horaEntradaAlmoco: Util.isObjectEmpty(this.colaboradorPreAtualizacao.expediente) ? '' : this.colaboradorPreAtualizacao.expediente.horaEntradaAlmoco,
-      horaSaida: Util.isObjectEmpty(this.colaboradorPreAtualizacao.expediente) ? '' : this.colaboradorPreAtualizacao.expediente.horaSaida,
-      escalaEnum: Util.isObjectEmpty(this.colaboradorPreAtualizacao.expediente) ? 'INDEFINIDA' : this.colaboradorPreAtualizacao.expediente.escalaEnum,
-      cargaHorariaSemanal: Util.isObjectEmpty(this.colaboradorPreAtualizacao.expediente) ? '0:00' : this.colaboradorPreAtualizacao.expediente.cargaHorariaSemanal,
-    })
-  }
-
-  private administraLiberacaoOuBloqueioDosCamposFormDadosProfissionais() {
-    this.dadosProfissionais.get('tipoOcupacaoEnum').enable();
-    this.dadosProfissionais.get('ocupacao').enable();
-    this.dadosProfissionais.get('statusColaboradorEnum').enable();
-    this.dadosProfissionais.get('modeloContratacaoEnum').enable();
-    this.dadosProfissionais.get('modeloTrabalhoEnum').enable();
-    this.dadosProfissionais.get('contratoContratacao').enable();
-    this.dadosProfissionais.get('salario').enable();
-    this.dadosProfissionais.get('entradaEmpresa').enable();
-    (this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'FREELANCER'
-      || this.getValueAtributoDadosProfissionais('statusColaboradorEnum') == 'DISPENSADO')
-      ? this.dadosProfissionais.get('saidaEmpresa').enable()
-      : this.dadosProfissionais.get('saidaEmpresa').disable();
-    this.dadosProfissionais.get('horaEntrada').enable();
-    if (Util.isNotEmptyString(this.getValueAtributoDadosProfissionais('horaSaidaAlmoco'))) {
-      this.dadosProfissionais.get('horaSaidaAlmoco').enable();
-      this.dadosProfissionais.get('horaEntradaAlmoco').enable();
-      this.dadosProfissionais.get('horaSaida').enable();
-      this.dadosProfissionais.get('escalaEnum').enable();
-    }
-    else {
-      this.dadosProfissionais.get('horaSaidaAlmoco').disable();
-      this.dadosProfissionais.get('horaEntradaAlmoco').disable();
-      this.dadosProfissionais.get('horaSaida').disable();
-      this.dadosProfissionais.get('escalaEnum').disable();
-    }
-  }
-
-  private setaValidatorsFormDadosProfissionais() {
-    if (Util.isNotEmptyString(this.getValueAtributoDadosProfissionais('horaSaidaAlmoco'))) {
-      this.dadosProfissionais.get('horaSaidaAlmoco').setValidators(Validators.required);
-      this.dadosProfissionais.get('horaEntradaAlmoco').setValidators(Validators.required);
-      this.dadosProfissionais.get('horaSaida').setValidators(Validators.required);
-    }
-  }
-
-  protected realizaSetupContratoColaborador() {
-    if (Util.isObjectEmpty(this.colaboradorPreAtualizacao)) return;
-    else if (Util.isObjectEmpty(this.colaboradorPreAtualizacao.contratoContratacao)) return;
-    else {
-      let file = new File(
-        [this.colaboradorPreAtualizacao.contratoContratacao.arquivo],
-        this.colaboradorPreAtualizacao.contratoContratacao.nome);
-      this.contratoContratacao = file;
-      this.emissorDeContratoContratacao.emit(this.contratoContratacao);
-    };
-  }
-
-  // GETTERS E SETTERS
   protected getValueAtributoDadosProfissionais(atributo: string): any {
     return this.dadosProfissionais.controls[atributo].value;
   }
@@ -726,6 +559,39 @@ export class AtualizaDadosProfissionaisComponent {
   private calculaHoraEmMinutos(horaSplitada: string[]): number {
     if (horaSplitada.length == 2) return (Number((Number(horaSplitada[0]) * 60) + (Number(horaSplitada[1]))));
     else return 0;
+  }
+
+  realizaSetupDadosProfissionais(colaborador: ColaboradorResponse) {
+
+    if (Util.isNotObjectEmpty(colaborador.expediente)) {
+      this.dadosProfissionais.controls['horaEntrada'].enable();
+      this.dadosProfissionais.controls['horaSaidaAlmoco'].enable();
+      this.dadosProfissionais.controls['horaEntradaAlmoco'].enable();
+      this.dadosProfissionais.controls['horaSaida'].enable();
+      this.dadosProfissionais.controls['escalaEnum'].enable();
+    }
+
+    if (Util.isNotEmptyString(colaborador.saidaEmpresa)) {
+      this.dadosProfissionais.controls['saidaEmpresa'].enable();
+    }
+
+    this.dadosProfissionais.setValue({
+      tipoOcupacaoEnum: colaborador.tipoOcupacaoEnum,
+      ocupacao: colaborador.ocupacao,
+      statusColaboradorEnum: colaborador.statusColaboradorEnum,
+      modeloContratacaoEnum: colaborador.modeloContratacaoEnum,
+      modeloTrabalhoEnum: colaborador.modeloTrabalhoEnum,
+      contratoContratacao: null,
+      salario: colaborador.salario,
+      entradaEmpresa: colaborador.entradaEmpresa,
+      saidaEmpresa: colaborador.saidaEmpresa,
+      horaEntrada: Util.isObjectEmpty(colaborador.expediente) ? '' : colaborador.expediente.horaEntrada,
+      horaSaidaAlmoco: Util.isObjectEmpty(colaborador.expediente) ? '' : colaborador.expediente.horaSaidaAlmoco,
+      horaEntradaAlmoco: Util.isObjectEmpty(colaborador.expediente) ? '' : colaborador.expediente.horaEntradaAlmoco,
+      horaSaida: Util.isObjectEmpty(colaborador.expediente) ? '' : colaborador.expediente.horaSaida,
+      escalaEnum: Util.isObjectEmpty(colaborador.expediente) ? '' : colaborador.expediente.escalaEnum,
+      cargaHorariaSemanal: Util.isObjectEmpty(colaborador.expediente) ? '0:00' : colaborador.expediente.cargaHorariaSemanal,
+    })
   }
 
   protected avancaProximaEtapa() {

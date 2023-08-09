@@ -1,42 +1,73 @@
 import { Subscription } from 'rxjs';
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ColaboradorService } from '../../services/colaborador.service';
-import { Router } from '@angular/router';
+import { ColaboradorService } from '../services/colaborador.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ColaboradorRequest } from '../../models/request/colaborador/ColaboradorRequest';
+import { ColaboradorRequest } from '../models/request/colaborador/ColaboradorRequest';
+import { ColaboradorResponse } from '../models/response/colaborador/ColaboradorResponse';
+import { Util } from 'src/app/modules/utils/Util';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-novo',
-  templateUrl: './novo.component.html',
-  styleUrls: ['./novo.component.scss']
+  selector: 'app-new',
+  templateUrl: './new.component.html',
+  styleUrls: ['./new.component.scss']
 })
-export class NovoComponent {
+export class NewComponent {
 
   constructor(private colaboradorService: ColaboradorService,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private datePipe: DatePipe,
+    private activatedRoute: ActivatedRoute) { }
 
   private colaborador: ColaboradorRequest;
+  protected colaboradorPreAtualizacao: ColaboradorResponse;
+
   protected dadosColaborador: FormGroup;
   protected dadosProfissionais: FormGroup;
   protected dadosAcesso: FormGroup;
   protected contratoContratacao: File;
+
   private criaNovoColaboradorSubscription$: Subscription;
+  private obtemColaboradorPorIdSubscription$: Subscription;
+  private atualizaColaboradorSubscription$: Subscription;
 
   stepAtual: number = 0;
 
+  titulo: string = 'Cadastrar novo colaborador';
+  idColaborador: number = null;
+
+  ngOnInit() {
+    this.activatedRoute.queryParamMap.subscribe((params) => {
+      if (params.has('id')) {
+        this.titulo = 'Editar colaborador';
+        let id = params.get('id');
+        if (/^\d+$/.test(id)) {
+          this.idColaborador = parseInt(id);
+          this.inicializaColaborador(parseInt(id));
+        }
+        else {
+          this.router.navigate(['/colaboradores']);
+          this._snackBar.open("O colaborador que você tentou editar não existe", "Fechar", {
+            duration: 3500
+          });
+        }
+      }
+    });
+
+  }
+
   ngAfterViewInit(): void {
-    const startTime = performance.now();
     this.ref.detectChanges();
-    const duration = performance.now() - startTime;
-    console.log(`ngAfterViewInit levou ${duration}ms`);
   }
 
   ngOnDestroy(): void {
     if (this.criaNovoColaboradorSubscription$ != undefined) this.criaNovoColaboradorSubscription$.unsubscribe();
+    if (this.obtemColaboradorPorIdSubscription$ != undefined) this.obtemColaboradorPorIdSubscription$.unsubscribe();
+    if (this.atualizaColaboradorSubscription$ != undefined) this.atualizaColaboradorSubscription$.unsubscribe();
   }
 
   mudaPasso(event) {
@@ -72,6 +103,54 @@ export class NovoComponent {
 
   protected getValueAtributoDadosAcesso(atributo: string): any {
     return this.dadosAcesso.controls[atributo].value;
+  }
+
+  inicializaColaborador(id: number) {
+    this.obtemColaboradorPorIdSubscription$ = this.colaboradorService.obtemColaboradorPorId(id).subscribe({
+      next: (colaborador: ColaboradorResponse) => {
+        this.colaboradorPreAtualizacao = colaborador;
+      },
+      complete: () => {
+        this.colaborador = {
+          id: id,
+          nome: this.colaboradorPreAtualizacao.nome,
+          cpfCnpj: this.colaboradorPreAtualizacao.cpfCnpj,
+          dataNascimento: this.colaboradorPreAtualizacao.dataNascimento,
+          email: this.colaboradorPreAtualizacao.email,
+          telefone: this.colaboradorPreAtualizacao.telefone != null
+            ? {
+              tipoTelefone: this.colaboradorPreAtualizacao.telefone.tipoTelefone,
+              prefixo: this.colaboradorPreAtualizacao.telefone.prefixo,
+              numero: this.colaboradorPreAtualizacao.telefone.numero,
+            }
+            : null,
+          endereco: this.colaboradorPreAtualizacao.endereco != null
+            ? {
+              logradouro: this.colaboradorPreAtualizacao.endereco.logradouro,
+              numero: this.colaboradorPreAtualizacao.endereco.numero,
+              bairro: this.colaboradorPreAtualizacao.endereco.bairro,
+              codigoPostal: this.colaboradorPreAtualizacao.endereco.codigoPostal,
+              cidade: this.colaboradorPreAtualizacao.endereco.cidade,
+              complemento: this.colaboradorPreAtualizacao.endereco.complemento,
+              estado: this.colaboradorPreAtualizacao.endereco.estado,
+            }
+            : null,
+          tipoOcupacaoEnum: this.colaboradorPreAtualizacao.tipoOcupacaoEnum,
+          ocupacao: this.colaboradorPreAtualizacao.ocupacao,
+          statusColaboradorEnum: this.colaboradorPreAtualizacao.statusColaboradorEnum,
+          modeloContratacaoEnum: this.colaboradorPreAtualizacao.modeloContratacaoEnum,
+          modeloTrabalhoEnum: this.colaboradorPreAtualizacao.modeloTrabalhoEnum,
+          salario: this.colaboradorPreAtualizacao.salario,
+          entradaEmpresa: this.colaboradorPreAtualizacao.entradaEmpresa,
+          saidaEmpresa: this.colaboradorPreAtualizacao.saidaEmpresa,
+          contratoContratacao: this.colaboradorPreAtualizacao.contratoContratacao,
+          expediente: this.colaboradorPreAtualizacao.expediente,
+          acessoSistema: this.colaboradorPreAtualizacao.acessoSistema
+        }
+
+        console.log(this.colaborador);
+      }
+    })
   }
 
 
@@ -131,26 +210,49 @@ export class NovoComponent {
     }
   }
 
-  protected enviarFormulario() {
-    let matriculaGerada: string;
+  public direcionaEnvioDeFormulario() {
     this.construirObjetoColaborador();
-    this.criaNovoColaboradorSubscription$ = this.colaboradorService.novoColaborador(this.colaborador, this.contratoContratacao).subscribe({
-      next: (response: string) => {
-        matriculaGerada = response;
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
-        this.router.navigate(['/colaboradores']);
-        this._snackBar.open("Ocorreu um erro durante o cadastro do colaborador. Entre em contato com o suporte", "Fechar", {
-          duration: 5000
-        });
-      },
-      complete: () => {
-        this.router.navigate(['/colaboradores']);
-        this._snackBar.open("Matrícula gerada para o colaborador cadastrado: " + matriculaGerada, "Fechar", {
-          duration: 7500
-        });
-      }
-    });
+    if (Util.isNotEmptyString(this.getValueAtributoDadosColaborador('dataNascimento')))
+      this.colaborador.dataNascimento = this.datePipe.transform(this.getValueAtributoDadosColaborador('dataNascimento'), "yyyy-MM-dd");
+
+    if (this.dadosColaborador.valid && this.dadosAcesso.valid && this.dadosProfissionais.valid) {
+      if (Util.isEmptyNumber(this.idColaborador)) this.enviaFormularioCriacao();
+      else this.enviaFormularioAtualizacao();
+    }
+  }
+
+  private enviaFormularioCriacao() {
+    console.log(this.colaborador);
+    this.criaNovoColaboradorSubscription$ =
+      this.colaboradorService.novoColaborador(this.colaborador, this.contratoContratacao).subscribe({
+        error: error => {
+          this._snackBar.open("Ocorreu um erro ao cadastrar o colaborador", "Fechar", {
+            duration: 3500
+          })
+        },
+        complete: () => {
+          this.router.navigate(['/colaboradores']);
+          this._snackBar.open("Colaborador cadastrado com sucesso", "Fechar", {
+            duration: 3500
+          });
+        }
+      });
+  }
+
+  private enviaFormularioAtualizacao() {
+    this.atualizaColaboradorSubscription$ =
+      this.colaboradorService.atualizaColaborador(this.idColaborador, this.colaborador, this.contratoContratacao).subscribe({
+        error: error => {
+          this._snackBar.open("Ocorreu um erro ao atualizar o colaborador", "Fechar", {
+            duration: 3500
+          })
+        },
+        complete: () => {
+          this.router.navigate(['/colaboradores']);
+          this._snackBar.open("Colaborador atualizado com sucesso", "Fechar", {
+            duration: 3500
+          });
+        }
+      });
   }
 }

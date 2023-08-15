@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SideNavDetails } from '../models/SideNavDetails';
+import { Util } from 'src/app/modules/utils/Util';
 
 @Component({
   selector: 'app-sidenav',
@@ -9,6 +10,8 @@ import { SideNavDetails } from '../models/SideNavDetails';
 export class SidenavComponent implements OnInit {
 
   public screenWidth: any;
+
+  public mesAnoAtual: string = Util.getMesAnoAtual();
 
   public sideNavDetails: SideNavDetails = {
     sidebarDesktop: true,
@@ -22,7 +25,7 @@ export class SidenavComponent implements OnInit {
   }
 
   fechaMenuClicandoNoBackground() {
-    this.sideNavDetails.estadoSidebar=false;
+    this.sideNavDetails.estadoSidebar = false;
   }
 
   ngOnInit(): void {

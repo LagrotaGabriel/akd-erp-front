@@ -1,0 +1,16 @@
+@import '../../../../../dist/variables.scss';
+@import "../../../../../../node_modules/rfs/scss";
+
+.container {
+    width: 100%;
+    padding: 0;
+    font-family: $font-poppins;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    margin: 0 0 1.5rem 0;
+    padding: 0;
+    background-color: $dark-grey;
+}

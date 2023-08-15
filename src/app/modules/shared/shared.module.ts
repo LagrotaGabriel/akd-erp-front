@@ -21,6 +21,7 @@ import { CabecalhoComponent } from './cabecalho/cabecalho.component';
 
 import localePt from '@angular/common/locales/pt';
 import { TituloModuloComponent } from './titulo-modulo/titulo-modulo.component';
+import { TitleContainerComponent } from './inputs/title-container/title-container.component';
 
 registerLocaleData(localePt);
 
@@ -34,7 +35,8 @@ registerLocaleData(localePt);
     TabelaComponent,
     PaginacaoComponent,
     CabecalhoComponent,
-    TituloModuloComponent
+    TituloModuloComponent,
+    TitleContainerComponent,
   ],
   exports: [
     CustomInputComponent,
@@ -45,7 +47,8 @@ registerLocaleData(localePt);
     TabelaComponent,
     CabecalhoComponent,
     PaginacaoComponent,
-    TituloModuloComponent
+    TituloModuloComponent,
+    TitleContainerComponent
   ],
   imports: [
     CommonModule,

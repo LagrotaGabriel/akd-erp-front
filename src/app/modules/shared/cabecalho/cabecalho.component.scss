@@ -30,7 +30,7 @@ div {
     align-items: center;
 }
 
-.bt_header_upper_container  {
+.bt_header_upper_container {
     padding: 0;
     margin: 0;
     display: flex;
@@ -76,7 +76,8 @@ div {
     color: $dark-white;
 }
 
-.bt_header_relatorio, .bt_header_exclusao {
+.bt_header_relatorio,
+.bt_header_exclusao {
     margin: 0 0.5rem 0 0;
     padding: 0;
     border: 1px solid $primary-color;
@@ -182,50 +183,79 @@ div {
     color: $dark-white;
 }
 
+input[type="month"] {
+    text-align: center;
+    padding: 0 0.2rem;
+}
+
+input[type="month"]::-webkit-inner-spin-button,
+input[type="month"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
 @media (max-width: 768px) {
     .bt_header {
         border-radius: 5px;
     }
-    .text_novo, .bt_header_select, .input_busca {
+
+    .text_novo,
+    .bt_header_select,
+    .input_busca {
         font-size: 0.8rem;
     }
+
     .quantidade_exibida {
         font-size: 0.7rem;
     }
+
     .header_icon {
         font-size: 1.3rem;
     }
 }
 
 @media (max-width: 576px) {
-    .text_novo, .bt_header_select, .input_busca {
+
+    .text_novo,
+    .bt_header_select,
+    .input_busca {
         font-size: 0.7rem;
     }
+
     .quantidade_exibida {
         font-size: 0.6rem;
     }
-    .input_filtro_container  {
+
+    .input_filtro_container {
         margin-top: 0.5rem;
     }
-    .bt_header_select  {
+
+    .bt_header_select {
         padding: 0.3rem 0.8rem;
         font-size: 0.8rem;
     }
 }
 
 @media (max-width: 470px) {
-    .text_novo, .bt_header_select, .input_busca {
+
+    .text_novo,
+    .bt_header_select,
+    .input_busca {
         font-size: 0.6rem;
     }
+
     .quantidade_exibida {
         font-size: 0.5rem;
     }
+
     .header_icon {
         font-size: 1.1rem;
     }
-    .bt_header_select  {
+
+    .bt_header_select {
         padding: 0.3rem 0.5rem;
     }
+
     .header_icon_container {
         padding: 0 0.5rem;
         padding-top: 0.1rem;

@@ -1,14 +1,19 @@
 <div class="row input_group">
     <div class="row label_container">
-        <label [ngClass]="{'label_desabilitada': disabledGroup}" class="label" [attr.for]="id">
+        <label [ngClass]="{'label_invalida': !valido, 'label_desabilitada': disabledGroup}"
+            [ngClass]="{'label_desabilitada': disabledGroup}" class="label" [attr.for]="id">
             {{ titulo }}
         </label>
     </div>
     <div class="input_container">
         <input matInput [min]="minDate" [max]="maxDate" [ngClass]="{'emptyDate': vazio }" [(ngModel)]=" value"
             [disabled]="disabledGroup" type="date" [tabindex]="tabIndex" (blur)="onTouchCb($event)" [id]="id"
-            class="input input_data" #input>
+            class="input input_data" [ngClass]="{'input_invalida': !valido, 'input_desabilitada': disabledGroup}"
+            #input>
         <mat-icon [@fadeInOut] [fontIcon]="'calendar_month'" (click)="input.focus()"
+            [ngClass]="{'icone_ok': valido, 'icone_error' : !valido}"
             [ngClass]="{'icone_desabilitado': disabledGroup, 'icone_ok': !disabledGroup}" class="icone"></mat-icon>
     </div>
+
+    <app-custom-error [@fadeInOut] *ngIf="!valido" [mensagemErro]="mensagemErro"></app-custom-error>
 </div>

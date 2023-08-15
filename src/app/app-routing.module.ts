@@ -8,6 +8,10 @@ const routes: Routes = [
     component: SidenavComponent,
     children: [
       {
+        path: 'despesas', 
+        loadChildren: () => import('./modules/pages/despesas/despesas-routing.module').then( m => m.DespesasRoutingModule)
+      },
+      {
         path: 'clientes', 
         loadChildren: () => import('./modules/pages/clientes/clientes-routing.module').then( m => m.ClientesRoutingModule)
       },

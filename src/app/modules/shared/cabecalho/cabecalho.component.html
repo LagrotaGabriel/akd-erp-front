@@ -39,9 +39,22 @@
                 </div>
             </div>
 
+            <!-- <div *ngIf="filtros.length > 0" class="bt_header_container">
+                <div class="row bt_header bt_header_exclusao" [matTooltip]="'Filtrar itens'" matBadgePosition="after"
+                    matBadgeSize="medium" matBadgeColor="accent" matTooltipPosition="above" (click)="exibeFiltros()">
+                    <h5 class="header_icon_container col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <i class="bi bi-funnel-fill header_icon"></i>
+                    </h5>
+                </div>
+            </div> -->
+
         </div>
 
         <div class="row bt_header_upper_container_right">
+
+            <input type="month" class="bt_header" [value]="filtroMesAtual" onfocus="this.showPicker()"
+                onclick="this.showPicker()" (change)="alteraFiltro($event)" [min]="'2020-01'" [max]="'2030-12'" />
+
             <div *ngIf="pageableObject != null" class="bt_header_container page_size_container">
                 <select [(ngModel)]="pageableObject.pageSize"
                     class="bt_header bt_header_select col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"

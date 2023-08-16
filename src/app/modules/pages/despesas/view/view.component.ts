@@ -22,6 +22,7 @@ export class ViewComponent {
   removeItem$: Subscription;
   removeItensEmMassa$: Subscription;
   geraRelatorio$: Subscription;
+  obtemPorId$: Subscription;
 
   filtroMesAtual: string;
 
@@ -96,6 +97,7 @@ export class ViewComponent {
     if (this.removeItem$ != undefined) this.removeItem$.unsubscribe();
     if (this.removeItensEmMassa$ != undefined) this.removeItensEmMassa$.unsubscribe();
     if (this.geraRelatorio$ != undefined) this.geraRelatorio$.unsubscribe();
+    if (this.obtemPorId$ != undefined) this.obtemPorId$.unsubscribe();
   }
 
   obtemThsTabela(): TableTh[] {
@@ -119,6 +121,10 @@ export class ViewComponent {
       },
       {
         campo: 'AGENDAMENTO',
+        hidden: null
+      },
+      {
+        campo: 'RECORRENCIA',
         hidden: null
       }
     );
@@ -169,7 +175,14 @@ export class ViewComponent {
         titleCase: false,
         tableTdCustomClasses: [],
       },
-
+      {
+        campo: 'observacao',
+        hidden: null,
+        maxLength: 30,
+        type: 'string',
+        titleCase: true,
+        tableTdCustomClasses: []
+      }
     );
 
     return tdsTabela;
@@ -236,23 +249,42 @@ export class ViewComponent {
   }
 
   recebeSolicitacaoDeExclusao(id: number) {
-    this.removeItem$ = this.despesaService.removeDespesa(id).subscribe(
+
+    let exclusaoRecorrencias: boolean = false;
+
+    this.obtemPorId$ = this.despesaService.obtemDespesaPorId(id).subscribe(
       {
-        next: () => {
-          this._snackBar.open("Despesa excluída com sucesso", "Fechar", {
-            duration: 3500
-          });
+        next: (response: DespesaResponse) => {
+          if (response.qtdRecorrencias > 0)
+            if (window.confirm('A despesa possui recorrências. Deseja que elas também sejam excluídas?'))
+              exclusaoRecorrencias = true;
         },
         error: () => {
-          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+          this._snackBar.open("Ocorreu um erro na exclusão da despesa", "Fechar", {
+            duration: 3500
+          })
         },
         complete: () => {
-          let itemRemovido: DespesaResponse[] = this.itensSelecionadosNaTabela.filter(item => item.id == id);
-          if (itemRemovido.length == 1) this.itensSelecionadosNaTabela.splice(this.itensSelecionadosNaTabela.indexOf(itemRemovido[0]), 1);
-          this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+          this.removeItem$ = this.despesaService.removeDespesa(id, exclusaoRecorrencias).subscribe(
+            {
+              next: () => {
+                this._snackBar.open("Despesa excluída com sucesso", "Fechar", {
+                  duration: 3500
+                });
+              },
+              error: () => {
+                this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+              },
+              complete: () => {
+                let itemRemovido: DespesaResponse[] = this.itensSelecionadosNaTabela.filter(item => item.id == id);
+                if (itemRemovido.length == 1) this.itensSelecionadosNaTabela.splice(this.itensSelecionadosNaTabela.indexOf(itemRemovido[0]), 1);
+                this.invocaRequisicaoHttpGetParaAtualizarObjetos()
+              }
+            }
+          );
         }
       }
-    );
+    )
   }
 
   recebeSolicitacaoDeExclusaoDeDespesasEmMassa(ids: number[]) {

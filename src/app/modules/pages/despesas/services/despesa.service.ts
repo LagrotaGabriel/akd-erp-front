@@ -37,6 +37,14 @@ export class DespesaService {
     )
   }
 
+  public obtemDespesaPorId(id: number): Observable<DespesaResponse> {
+    this.httpOptions.params = new HttpParams();
+    this.httpOptions.body = null;
+    return this.http.get<DespesaResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/despesas/${id}`, this.httpOptions).pipe(
+      map((resposta) => new DespesaResponse(resposta))
+    )
+  }
+
   public getDespesas(valorBusca: string, mesAno: string, pageableInfo: DespesaPageObject): Observable<DespesaPageObject> {
     this.httpOptions.params = new HttpParams();
     this.httpOptions.body = null;
@@ -64,8 +72,9 @@ export class DespesaService {
     )
   }
 
-  public removeDespesa(id: number): Observable<DespesaResponse> {
+  public removeDespesa(id: number, exclusaoRecorrencias: boolean): Observable<DespesaResponse> {
     this.httpOptions.body = null;
+    this.httpOptions.params = this.httpOptions.params.set('removeRecorrencia', exclusaoRecorrencias);
     return this.http.delete<DespesaResponse>(`${API_CONFIG.baseUrl}api/sistema/v1/despesas/${id}`, this.httpOptions).pipe(
       map(resposta => new DespesaResponse(resposta)),
       catchError((httpErrorResponse: HttpErrorResponse) => {

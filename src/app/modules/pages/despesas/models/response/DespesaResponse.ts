@@ -8,6 +8,8 @@ export class DespesaResponse {
     dataAgendamento: string;
     descricao: string;
     valor: number;
+    qtdRecorrencias: number;
+    observacao: string;
     tipoRecorrencia: string;
     statusDespesa: string;
     tipoDespesa: string;
@@ -22,6 +24,8 @@ export class DespesaResponse {
         this.dataAgendamento = item?.dataAgendamento;
         this.descricao = item?.descricao;
         this.valor = item?.valor;
+        this.qtdRecorrencias = item?.qtdRecorrencias;
+        this.observacao = item?.observacao;
         this.tipoRecorrencia = item?.tipoRecorrencia;
         this.statusDespesa = item?.statusDespesa;
         this.tipoDespesa = item?.tipoDespesa;

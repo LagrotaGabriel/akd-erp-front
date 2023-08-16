@@ -11,6 +11,10 @@
     height: auto;
 }
 
+.tabela_vazia {
+    margin-top: 1.3rem;
+}
+
 table {
     padding: 0 1rem !important;
     background-color: $light-black;
@@ -120,7 +124,11 @@ span {
     font-weight: 400;
 }
 
-.red_span, .yellow_span, .green_span, .purple_span, .blue_span {
+.red_span,
+.yellow_span,
+.green_span,
+.purple_span,
+.blue_span {
     padding: 0.2rem 0.5rem;
 }
 
@@ -173,14 +181,14 @@ span {
     align-items: flex-end;
 }
 
-.dropdown-item:hover > .option_icon, 
-.dropdown-item:hover > .dropdown-item-text {
+.dropdown-item:hover>.option_icon,
+.dropdown-item:hover>.dropdown-item-text {
     color: $primary-color !important;
     transition: 0.2s;
 }
 
-.dropdown-item-excluir:hover > .option_icon-excluir, 
-.dropdown-item-excluir:hover > .dropdown-item-text-excluir {
+.dropdown-item-excluir:hover>.option_icon-excluir,
+.dropdown-item-excluir:hover>.dropdown-item-text-excluir {
     color: $red !important;
     transition: 0.2s;
 }

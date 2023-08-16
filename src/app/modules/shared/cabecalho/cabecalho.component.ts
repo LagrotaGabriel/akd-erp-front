@@ -25,6 +25,7 @@ export class CabecalhoComponent {
   @Input() modulo: string;
   @Input() itensSelecionadosNaTabela: any[];
   @Input() inputPlaceholder: string;
+  @Input() remocaoEmMassaHabilitada: boolean = true;
   @Input() botaoCriarHabilitado: boolean = true;
 
   @Output() emissorDeSolicitacaoDeExclusaoEmMassaDeItens = new EventEmitter<number[]>();
@@ -190,7 +191,7 @@ export class CabecalhoComponent {
 
   emiteSolicitacaoDeExclusaoEmMassaDeItens() {
     let itensSelecionadosNaTabela: number[] = [];
-    this.itensSelecionadosNaTabela.forEach(cliente => { itensSelecionadosNaTabela.push(cliente.id) })
+    this.itensSelecionadosNaTabela.forEach(item => { itensSelecionadosNaTabela.push(item.id) })
     if (this.itensSelecionadosNaTabela.length == 0) return;
     this.emissorDeSolicitacaoDeExclusaoEmMassaDeItens.emit(itensSelecionadosNaTabela);
   }

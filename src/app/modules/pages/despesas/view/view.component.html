@@ -6,7 +6,7 @@
         (emissorDePageSizeComQuantidadeDeItensPorPaginaAlterada)="recebeQtdItensPorPaginaAlterada($event)"
         (emissorDeSolicitacaoDeAtualizacaoDeTabela)="recebeSolicitacaoDeAtualizacaoDaTabela()"
         (emissorDeSolicitacaoDeRelatorio)="recebeSolicitacaoDeRelatorio($event)" [pageableObject]="pageObject"
-        [itensSelecionadosNaTabela]="itensSelecionadosNaTabela" [modulo]="'despesas'"
+        [itensSelecionadosNaTabela]="itensSelecionadosNaTabela" [modulo]="'despesas'" [remocaoEmMassaHabilitada]="false"
         [inputPlaceholder]="'Busca por nome da despesa...'" [botaoCriarHabilitado]="false"></custom-table-header>
 
     <custom-table (emiteSolicitacaoDeExclusaoDoItem)="recebeSolicitacaoDeExclusao($event)"

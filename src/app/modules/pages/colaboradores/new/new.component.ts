@@ -147,8 +147,6 @@ export class NewComponent {
           expediente: this.colaboradorPreAtualizacao.expediente,
           acessoSistema: this.colaboradorPreAtualizacao.acessoSistema
         }
-
-        console.log(this.colaborador);
       }
     })
   }

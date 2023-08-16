@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option';
 import { Util } from 'src/app/modules/utils/Util';
 import { fadeInOutAnimation } from 'src/app/shared/animations';
@@ -9,6 +9,7 @@ import { DespesaRequest } from '../models/request/DespesaRequest';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { DespesaService } from '../services/despesa.service';
+import { DespesaResponse } from '../models/response/DespesaResponse';
 
 @Component({
   selector: 'app-new',
@@ -20,6 +21,7 @@ export class NewComponent {
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private _snackBar: MatSnackBar,
     private datePipe: DatePipe,
     private despesaService: DespesaService,
@@ -30,12 +32,37 @@ export class NewComponent {
   protected dadosDespesa: FormGroup = this.createForm();
 
   protected despesaRequest: DespesaRequest;
+  protected despesaPreAtualizacao: DespesaResponse;
+
   titulo: string = 'Cadastrar nova despesa';
   idDespesa: number = null;
 
   private criaNovaDespesaSubscription$: Subscription;
   private obtemDespesaPorIdSubscription$: Subscription;
   private atualizaDespesaSubscription$: Subscription;
+
+  ngOnInit() {
+    this.activatedRoute.queryParamMap.subscribe((params) => {
+      if (params.has('id')) {
+        this.titulo = 'Editar despesa';
+        let id = params.get('id');
+        if (/^\d+$/.test(id)) {
+          this.idDespesa = parseInt(id);
+          this.inicializaDespesa(parseInt(id));
+        }
+        else {
+          this.router.navigate(['/despesas']);
+          this._snackBar.open("A despesa que você tentou editar não existe", "Fechar", {
+            duration: 3500
+          });
+        }
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.ref.detectChanges();
+  }
 
   ngOnDestroy(): void {
     if (this.criaNovaDespesaSubscription$ != undefined) this.criaNovaDespesaSubscription$.unsubscribe();
@@ -80,13 +107,13 @@ export class NewComponent {
         Util.getDiaMesAnoAtual(),
         [
           Validators.required,
-          this.realizaTratamentoDataPagamento()
+          this.customValidatorDataPagamento()
         ]
       ],
       dataAgendamento: [
         '',
         [
-          this.realizaTratamentoDataAgendamento()
+          this.customValidatorDataAgendamento()
         ]
       ]
     });
@@ -203,7 +230,7 @@ export class NewComponent {
       this.dadosDespesa.controls['dataPagamento'].setValidators(
         [
           Validators.required,
-          this.realizaTratamentoDataPagamento()
+          this.customValidatorDataPagamento()
         ]
       );
     }
@@ -215,13 +242,12 @@ export class NewComponent {
       this.dadosDespesa.controls['dataAgendamento'].setValidators(
         [
           Validators.required,
-          this.realizaTratamentoDataAgendamento()
+          this.customValidatorDataAgendamento()
         ]
       );
     }
     this.dadosDespesa.controls['dataAgendamento'].updateValueAndValidity();
     this.dadosDespesa.controls['dataPagamento'].updateValueAndValidity();
-
   }
 
   protected realizaTratamentoValor(evento) {
@@ -247,7 +273,7 @@ export class NewComponent {
     }
   }
 
-  realizaTratamentoDataPagamento(): ValidatorFn {
+  customValidatorDataPagamento(): ValidatorFn {
 
     return (formGroup: AbstractControl): ValidationErrors | null => {
       if (this.getValueAtributoDadosDespesas('dataPagamento') == null)
@@ -267,7 +293,7 @@ export class NewComponent {
       let dataPagamentoInput = new Date(splittedDataInput[0], splittedDataInput[1] - 1, splittedDataInput[2]);
 
       if (dataPagamentoInput > today
-        || dataPagamentoInput.getFullYear() < minDate.getFullYear()
+        || (dataPagamentoInput.getFullYear() < minDate.getFullYear())
         || dataPagamentoInput.toString() == 'Invalid Date') {
         return { nameWrong: true };
       }
@@ -276,7 +302,7 @@ export class NewComponent {
     }
   }
 
-  realizaTratamentoDataAgendamento(): ValidatorFn {
+  customValidatorDataAgendamento(): ValidatorFn {
 
     return (formGroup: AbstractControl): ValidationErrors | null => {
       if (this.getValueAtributoDadosDespesas('dataAgendamento') == null)
@@ -305,6 +331,71 @@ export class NewComponent {
     }
   }
 
+  inicializaDespesa(id: number) {
+    this.obtemDespesaPorIdSubscription$ = this.despesaService.obtemDespesaPorId(id).subscribe({
+      next: (despesa: DespesaResponse) => {
+        this.despesaPreAtualizacao = despesa;
+      },
+      complete: () => {
+        this.despesaRequest = {
+          id: id,
+          dataPagamento: this.despesaPreAtualizacao.dataPagamento,
+          dataAgendamento: this.despesaPreAtualizacao.dataAgendamento,
+          descricao: this.despesaPreAtualizacao.descricao,
+          valor: this.despesaPreAtualizacao.valor,
+          qtdRecorrencias: this.despesaPreAtualizacao.qtdRecorrencias,
+          statusDespesa: this.despesaPreAtualizacao.statusDespesa,
+          tipoDespesa: this.despesaPreAtualizacao.tipoDespesa,
+        }
+        this.setupValoresFormDespesa();
+        this.setupValidatorsFormDespesa();
+      }
+    })
+  }
+
+  setupValoresFormDespesa() {
+    this.dadosDespesa.setValue(
+      {
+        descricao: this.despesaPreAtualizacao.descricao,
+        valor: this.despesaPreAtualizacao.valor,
+        tipoDespesa: this.despesaPreAtualizacao.tipoDespesa,
+        statusDespesa: this.despesaPreAtualizacao.statusDespesa,
+        qtdRecorrencias: this.despesaPreAtualizacao.qtdRecorrencias,
+        dataPagamento: this.despesaPreAtualizacao.dataPagamento,
+        dataAgendamento: this.despesaPreAtualizacao.dataAgendamento
+      }
+    )
+  }
+
+  setupValidatorsFormDespesa() {
+    let status = this.getValueAtributoDadosDespesas('statusDespesa');
+
+    if (status == 'PAGO') {
+      this.dadosDespesa.controls['dataAgendamento'].setValue('');
+      this.dadosDespesa.controls['dataAgendamento'].removeValidators(Validators.required);
+
+      this.dadosDespesa.controls['dataPagamento'].setValidators(
+        [
+          Validators.required,
+          this.customValidatorDataPagamento()
+        ]
+      );
+    }
+    else if (status == 'PENDENTE') {
+      this.dadosDespesa.controls['dataPagamento'].setValue('');
+      this.dadosDespesa.controls['dataPagamento'].removeValidators(Validators.required);
+
+      this.dadosDespesa.controls['dataAgendamento'].setValidators(
+        [
+          Validators.required,
+          this.customValidatorDataAgendamento()
+        ]
+      );
+    }
+    this.dadosDespesa.controls['dataAgendamento'].updateValueAndValidity();
+    this.dadosDespesa.controls['dataPagamento'].updateValueAndValidity();
+  }
+
   protected retornaParaVisualizacao() {
     this.router.navigate(['/despesas'])
   }
@@ -321,6 +412,9 @@ export class NewComponent {
 
   construirObjetoDespesa() {
     this.despesaRequest = {
+      id: Util.isNotEmptyNumber(this.idDespesa)
+        ? this.idDespesa
+        : null,
       dataPagamento: Util.isNotEmptyString(this.getValueAtributoDadosDespesas('dataPagamento'))
         ? this.getValueAtributoDadosDespesas('dataPagamento')
         : null,

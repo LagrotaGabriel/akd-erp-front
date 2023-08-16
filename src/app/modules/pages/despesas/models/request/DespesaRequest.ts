@@ -1,4 +1,5 @@
 export class DespesaRequest {
+    id: number;
     dataPagamento: string;
     dataAgendamento: string;
     descricao: string;

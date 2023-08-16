@@ -161,6 +161,23 @@ span {
     background-color: #b1bdf1;
 }
 
+.yellow_text {
+    color: #ffea00;
+    font-weight: 400;
+}
+.green_text {
+    color: $online-green;
+    font-weight: 400;
+}
+.orange_text {
+    color: #f08b11;
+    font-weight: 400;
+}
+.red_text {
+    color: #f70707;
+    font-weight: 400;
+}
+
 .dropdown-menu,
 .dropdown-item {
     background-color: $light-black !important;

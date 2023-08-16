@@ -141,7 +141,12 @@ export class ViewComponent {
         maxLength: 30,
         type: 'date',
         titleCase: false,
-        tableTdCustomClasses: [],
+        tableTdCustomClasses: [
+          {
+            value: 'Agendado',
+            className: 'yellow_text'
+          },
+        ],
       },
       {
         campo: 'descricao',
@@ -173,7 +178,20 @@ export class ViewComponent {
         maxLength: 30,
         type: 'date',
         titleCase: false,
-        tableTdCustomClasses: [],
+        tableTdCustomClasses: [
+          // {
+          //   value: 'Pago',
+          //   className: 'green_text'
+          // },
+          // {
+          //   value: 'Amanhã',
+          //   className: 'orange_text'
+          // },
+          // {
+          //   value: 'Atrasado',
+          //   className: 'red_text'
+          // },
+        ],
       },
       {
         campo: 'observacao',

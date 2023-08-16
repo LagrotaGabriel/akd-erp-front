@@ -43,6 +43,35 @@ export class TabelaComponent {
       valorCampo = objeto['telefone'].telefoneCompleto;
     }
 
+    // if (tbody.campo == 'dataAgendamento') {
+    //   let valorDataAgendamento = objeto['dataAgendamento'];
+
+
+    //   let valorDataAgendamentoSplitted;
+    //   let today: Date = new Date();
+    //   today.setHours(0, 0, 0, 0);
+
+    //   let tomorrow: Date = today;
+    //   tomorrow.setDate(today.getDate() + 1);
+
+    //   if (valorDataAgendamento.split('-').length == 3) {
+    //     valorDataAgendamentoSplitted = valorDataAgendamento.split('-');
+    //     valorDataAgendamentoSplitted =
+    //       new Date(valorDataAgendamentoSplitted[0], valorDataAgendamentoSplitted[1] - 1, valorDataAgendamentoSplitted[2])
+    //   }
+
+    //   if (valorDataAgendamento == Util.getDiaMesAnoAtual()) {
+    //     valorCampo = this.datePipe.transform(valorDataAgendamento) + ' (Hoje)';
+    //   }
+    //   else if (valorDataAgendamentoSplitted == tomorrow.toString()) {
+    //     valorCampo = this.datePipe.transform(valorDataAgendamento) + ' (Amanhã)';
+    //   }
+    //   else if (valorDataAgendamentoSplitted < today) {
+    //     valorCampo = this.datePipe.transform(valorDataAgendamento) + ' (Atrasado)';
+    //   }
+
+    // }
+
     let td: TableTd = {
       campo: valorCampo,
       hidden: tbody.hidden,
@@ -62,7 +91,9 @@ export class TabelaComponent {
     if (tableTd.tableTdCustomClasses.length == 0) return customClassName;
     else {
       tableTd.tableTdCustomClasses.forEach(customClass => {
-        if (tableTd.campo == customClass.value) customClassName = customClass.className;
+        if (tableTd.campo == customClass.value) {
+          customClassName = customClass.className;
+        }
       })
     }
     return customClassName;
@@ -76,7 +107,12 @@ export class TabelaComponent {
         break;
       }
       case 'date': {
-        valor = Util.isNotEmptyString(tableTd.campo) && tableTd.campo != '-' ? (this.datePipe.transform(tableTd.campo, 'dd/MM/yyyy')) : '-';
+        if (tableTd.campo.split('-').length == 3) {
+          valor = Util.isNotEmptyString(tableTd.campo) && tableTd.campo != '-'
+            ? (this.datePipe.transform(tableTd.campo, 'dd/MM/yyyy'))
+            : '-';
+
+        }
         break;
       }
       default: {

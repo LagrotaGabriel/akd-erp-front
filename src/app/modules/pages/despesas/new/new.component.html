@@ -22,11 +22,11 @@
             [mensagemErro]="'Campo obrigatório'" formControlName="descricao" #inputDescricao></app-custom-input>
 
         <!-- SELECT GROUP TIPO -->
-        <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" formControlName="tipoDespesa"
+        <app-custom-select class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" formControlName="tipoDespesa"
             [tabIndex]="2" [titulo]="'Tipo'" #selectTipo [options]="geraOptionsTipoDespesa()"></app-custom-select>
 
         <!-- SELECT GROUP STATUS -->
-        <app-custom-select class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" formControlName="statusDespesa"
+        <app-custom-select class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" formControlName="statusDespesa"
             [tabIndex]="3" [titulo]="'Status'" [options]="geraOptionsStatusDespesa()" #selectStatus
             (change)="alteraStatusDespesa()"></app-custom-select>
 

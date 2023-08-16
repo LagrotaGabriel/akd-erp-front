@@ -50,8 +50,8 @@
       </p>
     </div>
 
-    <div #despesas="routerLinkActive" class="sidenav_item" (click)="limpaLocalStorage()" [routerLink]="['/despesas']"
-      [queryParams]="{date: mesAnoAtual}" routerLinkActive tabindex="-1" matRipple>
+    <div #despesas="routerLinkActive" class="sidenav_item" [routerLinkActiveOptions]="{exact: false}"
+      (click)="limpaLocalStorage()" [routerLink]="['/despesas']" routerLinkActive tabindex="-1" matRipple>
       <mat-icon fontIcon="money_off" class="sidenav_icon" [ngClass]="{'icone_ativo': despesas.isActive }"></mat-icon>
       <p class="icon_text" [ngClass]="{'titulo_item_ativo': despesas.isActive }">
         Despesas

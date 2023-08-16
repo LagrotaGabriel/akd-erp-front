@@ -30,7 +30,7 @@ export class TituloModuloComponent {
           || parseInt(date.split('-')[0]) > 2100
           || parseInt(date.split('-')[1]) < 1
           || parseInt(date.split('-')[1]) > 12) {
-          this.filtroMesAtual = Util.getMesAnoAtual();
+          this.filtroMesAtual = Util.obtemMesAnoPorExtenso(Util.getMesAnoAtual());
           return false;
         }
         else {
@@ -39,12 +39,12 @@ export class TituloModuloComponent {
         }
       }
       else {
-        this.filtroMesAtual = Util.getMesAnoAtual();
+        this.filtroMesAtual = Util.obtemMesAnoPorExtenso(Util.getMesAnoAtual());
         return false;
       }
     }
     else {
-      this.filtroMesAtual = Util.getMesAnoAtual();
+      this.filtroMesAtual = Util.obtemMesAnoPorExtenso(Util.getMesAnoAtual());
       return false;
     }
   }

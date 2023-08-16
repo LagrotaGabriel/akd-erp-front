@@ -6,7 +6,7 @@ import { SelectOption } from 'src/app/modules/shared/inputs/models/select-option
 import { Util } from 'src/app/modules/utils/Util';
 import { fadeInOutAnimation } from 'src/app/shared/animations';
 import { DespesaRequest } from '../models/request/DespesaRequest';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { DespesaService } from '../services/despesa.service';
 import { DespesaResponse } from '../models/response/DespesaResponse';
@@ -24,6 +24,7 @@ export class NewComponent {
     private activatedRoute: ActivatedRoute,
     private _snackBar: MatSnackBar,
     private datePipe: DatePipe,
+    private location: Location,
     private despesaService: DespesaService,
     private ref: ChangeDetectorRef) { }
 
@@ -396,8 +397,8 @@ export class NewComponent {
     this.dadosDespesa.controls['dataPagamento'].updateValueAndValidity();
   }
 
-  protected retornaParaVisualizacao() {
-    this.router.navigate(['/despesas'])
+  retornaParaTelaAnterior() {
+    this.location.back();
   }
 
   protected solicitarEnvioDeFormulario() {

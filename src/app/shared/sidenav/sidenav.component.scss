@@ -152,3 +152,14 @@
         padding: 0.50rem 1rem;
     }
 }
+
+@media print {
+    .sidenav, app-header {
+        visibility: hidden !important;
+        display: none !important;
+    }
+
+    .conteudo, .container {
+        margin: 0 !important;
+    }
+}

@@ -9,13 +9,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { ViewComponent } from './view/view.component';
 import { SharedModule } from '../../shared/shared.module';
 import { NewComponent } from './new/new.component';
+import { DetailsComponent } from './details/details.component';
 
 
 
 @NgModule({
   declarations: [
     ViewComponent,
-    NewComponent
+    NewComponent,
+    DetailsComponent
   ],
   imports: [
     CommonModule,

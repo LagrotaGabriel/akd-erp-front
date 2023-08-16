@@ -1,0 +1,120 @@
+<div class="container row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mat-elevation-z8">
+    <div class="subcontainer row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <h1 class="titulo_principal"> {{ 'DETALHES DA DESPESA ' }} </h1>
+        <hr class="hr_titulo_principal">
+
+        <div class="dados row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="display: flex; justify-content: center;">
+                <h1 class="titulo_despesa mat-elevation-z4">
+                    {{ despesa?.descricao }}
+                </h1>
+            </div>
+
+            <div class="block_dados row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <label class="titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Descrição
+                </label>
+                <p class="descricao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ despesa?.descricao }}
+                </p>
+            </div>
+
+            <div class="block_dados row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <label class="titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Data de cadastro
+                </label>
+                <p class="descricao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ (despesa?.dataCadastro | date: 'dd/MM/yyyy') + ' às ' + (despesa?.horaCadastro.slice(0, 5)) }}
+                </p>
+            </div>
+
+            <div class="block_dados row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <label class="titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Valor
+                </label>
+                <p class="descricao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ despesa?.valor | currency: 'BRL' }}
+                </p>
+            </div>
+
+            <div class="block_dados row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <label class="titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Tipo
+                </label>
+                <p class="descricao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ despesa?.tipoDespesa | titlecase }}
+                </p>
+            </div>
+
+            <div class="block_dados row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <label class="titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Status
+                </label>
+                <p class="descricao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ despesa?.statusDespesa | titlecase }}
+                </p>
+            </div>
+
+            <div class="block_dados row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <label class="titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ (despesa?.statusDespesa == 'PAGO')
+                    ? 'Data do pagamento'
+                    : 'Data do agendamento'
+                    }}
+                </label>
+                <p class="descricao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ (despesa?.statusDespesa == 'PAGO')
+                    ? (despesa?.dataPagamento | date: 'dd/MM/yyyy')
+                    : (despesa?.dataAgendamento | date: 'dd/MM/yyyy')
+                    }}
+                </p>
+            </div>
+
+            <div class="block_dados row col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <label class="titulo col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    Recorrências
+                </label>
+                <p class="descricao col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {{ despesa?.observacao | titlecase }}
+                </p>
+            </div>
+
+        </div>
+
+        <hr class="hr_titulo_principal">
+
+        <div class="container_acoes row col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+            <div class="row acao_block" (click)="retornaParaTelaAnterior()">
+                <mat-icon fontIcon="'arrow_back'" class="icone"></mat-icon>
+                <div class="acao_texto">
+                    Voltar
+                </div>
+            </div>
+
+            <div class="row acao_block" (click)="redirecionaParaEdicao()">
+                <mat-icon fontIcon="'edit'" class="icone"></mat-icon>
+                <div class="acao_texto">
+                    Editar
+                </div>
+            </div>
+
+            <div class="row acao_block" (click)="imprimeDespesa()">
+                <mat-icon fontIcon="'print'" class="icone"></mat-icon>
+                <div class="acao_texto">
+                    Imprimir
+                </div>
+            </div>
+
+            <div class="row acao_block acao_block_remover" (click)="removeDespesa()">
+                <mat-icon fontIcon="'delete'" class="icone"></mat-icon>
+                <div class="acao_texto">
+                    Remover
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
